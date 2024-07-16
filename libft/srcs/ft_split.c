@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 14:43:23 by mstracke          #+#    #+#             */
-/*   Updated: 2024/01/17 12:03:40 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/07/16 10:40:19 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 /*RETURN VALUE: */
 /* The array of new strings resulting from the split. */
 /*NULL if the allocation fails. */
-/* */
-static void	*ft_free(char **dest, int arrno)
+static void	*ft_free_i(char **dest, int arrno)
 {
 	int	i;
 
@@ -51,7 +50,7 @@ static char	**ft_strcut(char **dest, const char *s, char c, size_t i)
 			else
 				dest[a] = ft_substr(s, p, (i - p));
 			if (!(dest[a]))
-				return (ft_free(dest, a));
+				return (ft_free_i(dest, a));
 			while (s[i + 1] == c)
 				i++;
 			p = i + 1;

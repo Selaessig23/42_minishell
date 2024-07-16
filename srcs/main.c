@@ -3,29 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 09:36:30 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/16 10:26:50 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/07/16 10:47:30 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *const envp[])
+int	main(int argc, char **argv, char *const env[])
 {
 	int	exitcode;
+	int	i;
 
+	(void) argv;
+	i = 0;
 	exitcode = 0;
 	if (argc == 1)
 	{
 		ft_printf("test\n");
-		if (!*envp)
+		if (!*env)
 			error_handling(4);
-		while (*envp)
+		while (*env)
 		{
-			ft_printf("%s", *envp);
-			envp++;
+			ft_printf("%s\n", *env);
+			env++;
 		}
 		//while (*envp && ft_strncmp("PATH", *envp, 4))
 		//	envp++;
