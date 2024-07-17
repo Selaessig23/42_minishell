@@ -6,13 +6,13 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 09:36:30 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/16 10:47:30 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/07/16 17:15:27 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char *const env[])
+int	main(int argc, char **argv)
 {
 	int	exitcode;
 	int	i;
@@ -23,12 +23,12 @@ int	main(int argc, char **argv, char *const env[])
 	if (argc == 1)
 	{
 		ft_printf("test\n");
-		if (!*env)
+		if (!*__environ)
 			error_handling(4);
-		while (*env)
+		while (*__environ)
 		{
-			ft_printf("%s\n", *env);
-			env++;
+			ft_printf("%s\n", *__environ);
+			__environ++;
 		}
 		//while (*envp && ft_strncmp("PATH", *envp, 4))
 		//	envp++;

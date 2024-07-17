@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 12:20:13 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/16 10:09:04 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/07/16 17:14:01 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments to execute minishell\n"
+
+//it is "a good practice" to use a global variable for environment instead of picking it in the main
+extern char	**environ;
 
 //maybe rename to bin_path for binary path
 typedef struct s_envp{
