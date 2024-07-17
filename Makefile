@@ -6,7 +6,7 @@
 #    By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 09:59:44 by mstracke          #+#    #+#              #
-#    Updated: 2024/07/17 17:38:35 by mstracke         ###   ########.fr        #
+#    Updated: 2024/07/17 17:48:55 by mstracke         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CUR_DIR = $(shell pwd)
 LIBFT_PATH = $(CUR_DIR)/libft
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g -Iinclude -Isrcs
+CFLAGS = -Wall -Werror -Wextra -g -Iinclude -Isrcs -Ireadline
 RLFLAG = -lreadline
 
 #sources
