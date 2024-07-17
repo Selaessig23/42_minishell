@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 12:20:13 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/16 17:14:01 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:28:53 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@
 # include <errno.h>
 //to be able to work with function waitpid
 # include <sys/wait.h>
+// to be able to work with function readline
+// we also have to include -lreadline to our Makefile 
+// to consider readline while compiling
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments to execute minishell\n"

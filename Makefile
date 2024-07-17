@@ -6,7 +6,7 @@
 #    By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 09:59:44 by mstracke          #+#    #+#              #
-#    Updated: 2024/07/16 09:50:01 by mstracke         ###   ########.fr        #
+#    Updated: 2024/07/17 17:38:35 by mstracke         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ LIBFT_PATH = $(CUR_DIR)/libft
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g -Iinclude -Isrcs
+RLFLAG = -lreadline
 
 #sources
 #VPATH = sources:include
@@ -45,7 +46,7 @@ all: $(NAME)
 
 #to create a program:
 $(NAME): $(OBJS) $(LIBFT_LIBRARY)
-	$(CC) $(CFLAGS) $^ -o $@ 
+	$(CC) $(CFLAGS) $^ -o $@ $(RLFLAG)
 	@echo -- prog created, try it by using ./minishell
 
 #%.o rule will compile one .c file to its correspondig object (.o) file: without this rule it would not update correctly
