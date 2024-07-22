@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 12:20:13 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/17 17:28:53 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/07/22 13:50:00 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ typedef struct s_envp{
 //void	free_struct(t_envp *infos);
 //void	error_handling(int err, t_envp *i, int com_no);
 void	error_handling(int err);
+char	**create_nodes(char *readline_str);
 
 #endif

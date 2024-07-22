@@ -6,7 +6,7 @@
 #    By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 09:59:44 by mstracke          #+#    #+#              #
-#    Updated: 2024/07/17 17:48:55 by mstracke         ###   ########.fr        #
+#    Updated: 2024/07/22 13:49:39 by mstracke         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ RLFLAG = -lreadline
 #VPATH = sources:include
 #INCLUDES = minishell.h
 SRCS =	main.c \
-		error_handling.c 
+		error_handling.c \
+		lexer.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c
