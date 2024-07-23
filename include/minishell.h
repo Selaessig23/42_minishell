@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 12:20:13 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/16 10:09:04 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/07/22 13:50:00 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,18 @@
 # include <errno.h>
 //to be able to work with function waitpid
 # include <sys/wait.h>
+// to be able to work with function readline
+// we also have to include -lreadline to our Makefile 
+// to consider readline while compiling
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments to execute minishell\n"
+
+//it is "a good practice" to use a global variable for environment instead of picking it in the main
+extern char	**environ;
 
 //maybe rename to bin_path for binary path
 typedef struct s_envp{
@@ -60,5 +69,6 @@ typedef struct s_envp{
 //void	free_struct(t_envp *infos);
 //void	error_handling(int err, t_envp *i, int com_no);
 void	error_handling(int err);
+char	**create_nodes(char *readline_str);
 
 #endif

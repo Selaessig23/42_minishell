@@ -6,41 +6,81 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 09:36:30 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/16 10:47:30 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:34:31 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char *const env[])
+int	main(int argc, char **argv)
 {
-	int	exitcode;
-	int	i;
+	int		exitcode;
+	int		i;
+	char	*input;
+	char	*prompt;
+	char	**input_arr;
 
 	(void) argv;
 	i = 0;
 	exitcode = 0;
 	if (argc == 1)
 	{
-		ft_printf("test\n");
-		if (!*env)
+		if (!*__environ)
 			error_handling(4);
-		while (*env)
+		prompt = ft_strdup("Marina's and Markus' minishell>");
+		while (1)
 		{
-			ft_printf("%s\n", *env);
-			env++;
+			// testinput = readline("Marina's and Markus' minishell>");
+			input = readline(prompt);
+			if (!input)
+			{
+				//free session
+				exit(EXIT_FAILURE);
+			}
+			if (input)
+				add_history(input);
+			
+			input_arr = create_nodes(input);
+			// free(input);
+			// input = NULL;
+			if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "env", 3) && ft_strlen(input_arr[0]) == 3))
+			{
+				while (*__environ)
+				{
+					ft_printf("%s\n", *__environ);
+					__environ++;
+				}
+			}
+			else if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "exit", 4) && ft_strlen(input_arr[0]) == 4))
+			{
+				ft_free(input_arr);
+				free(prompt);
+				prompt = NULL;
+				rl_clear_history();
+				exit (EXIT_SUCCESS);
+			}
+			else
+			{
+				i = 0;
+				while (input_arr[i])
+				{
+					ft_printf("arr[%i]: %s\n", i, input_arr[i]);
+					// free(*input_arr);
+					i++;
+				}
+				// input_arr = NULL;
+				// ft_putchar_fd('\n', 1);
+			}
+			ft_free(input_arr);
+			// ft_free(input_arr);
+			// 	ft_printf("%s\n", testinput);
 		}
-		//while (*envp && ft_strncmp("PATH", *envp, 4))
-		//	envp++;
-		//paths = ft_split(*envp, ':');
-		//if (!paths)
-		//	error_handling(2);
-		//init_check(argv, paths, &infos);
-		//ft_free(paths);
-		//exitcode = init_ms(envp);
-		//free_struct(&infos);
+		rl_clear_history();
+		free(prompt);
+		prompt = NULL;
 	}
 	else
 		error_handling(1);
-	return (exitcode);
+	exit (exitcode);
+	// return (exitcode);
 }
