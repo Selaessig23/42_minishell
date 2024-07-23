@@ -84,7 +84,7 @@ static size_t	ft_amc(size_t i, const char *s, char c)
 		return (amountc);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c, char x, char y)
 {
 	char	**dest;
 	size_t	len;
