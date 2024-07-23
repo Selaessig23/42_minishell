@@ -44,6 +44,20 @@ static int	ft_count(char *src)
 	len = 0;
 	while (*src)
 	{
+		if (*src == '\"')
+		{
+			len++;
+			while (++src && *src != '\"')
+				len++;
+			len += 2;
+		}
+		else if (*src == '\'')
+		{
+			len++;
+			while (++src && *src != '\'')
+				len++;
+			len += 2;
+		}
 		if (multi_syntax_check(*src, (*src + 1)))
 		{
 			len += 4;
@@ -75,18 +89,75 @@ static char	*ft_clean_input(char *src)
 
 	dest = NULL;
 	len = ft_count(src);
-	// ft_printf("malloced len: %i\n", len);
+	ft_printf("malloced len for cleaned input: %i\n", len);
 	i = 0;
 	j = 0; 
 	if (len == (ft_strlen(src)))
 	{
-		// ft_printf("No modification of input required. Delete this message\n");
-		return (src);
+		ft_printf("No modification of input required. Delete this message\n");
+		return (ft_strdup(src));
 	}
 	dest = (char *)malloc(sizeof(char) * (len + 1));
 	while (src[i])
 	{
-		if (multi_syntax_check(src[i], src[i + 1]))
+		if (src[i] == '\"')
+		{
+			dest[j++] = ' ';
+			// j++;
+			dest[j++] = src[i];
+			// ft_printf("test\n");
+			if (src[i + 1] == '\"')
+			{
+				i++;
+				dest[j++] = src[i];
+			}
+			else if (src[i + 1] != '\0')
+			{
+				i++;
+				dest[j++] = src[i++];
+				// i++;
+				// j++;
+				while (src[i] && src[i] != '\"')
+					dest[j++] = src[i++];
+				dest[j++] = src[i];
+			}
+			// j++;
+			dest[j] = ' ';
+		}
+		else if (src[i] == '\'')
+		{
+			dest[j] = ' ';
+			j++;
+			dest[j] = src[i];
+			j++;
+			if (src[i + 1] == '\'')
+			{
+				i++;
+				dest[j++] = src[i];
+			}
+			else if (src[i + 1] != '\0')
+			{
+				i++;
+				dest[j++] = src[i++];
+				while (src[i] && src[i] != '\'')
+					dest[j++] = src[i++];
+				dest[j++] = src[i];
+			}
+			dest[j] = ' ';
+		}
+		// else if (src[i] == '\'')
+		// {
+		// 	dest[j] = src[i];
+		// 	while (src[++i] && src[i] != '\'')
+		// 		dest[++j] = src[i];
+		// 	dest[j] = src[i];
+		// 	i++;
+		// 	j++;
+		// 	dest[j] = src[i];
+		// 	i++;
+		// 	j++;
+		// }
+		else if (multi_syntax_check(src[i], src[i + 1]))
 		{
 			dest[j] = ' ';
 			j++;
@@ -107,11 +178,12 @@ static char	*ft_clean_input(char *src)
 		}
 		else
 			dest[j] = src[i];
-		i++;
+		if (src[i] != '\0')
+			i++;
 		j++;
 	}
 	dest[j] = '\0';
-	// ft_printf("real len: %i\n", ft_strlen(dest));
+	ft_printf("real len of cleaned input: %i\n", ft_strlen(dest));
 	return (dest);
 }
 
@@ -147,4 +219,3 @@ char	**create_nodes(char *readline_input)
 	}
 	return (input_arr);
 }
-
