@@ -40,7 +40,7 @@ static void	*ft_free_i(char **dest, int arrno)
  * @param c char to search for (beside tabs)
  * @param i the index to start iterating from
  */
-static int	ft_space_tab_jump(char *s, char c, int i)
+static int	ft_space_tab_jump(const char *s, char c, int i)
 {
 	while (s[i] && (s[i] == c 
 			|| (s[i] >= 9 && s[i] <= 13)))
@@ -54,7 +54,7 @@ static int	ft_space_tab_jump(char *s, char c, int i)
  * @param s string to search in for quotation marks
  * @param i the index to start searching
  */
-static int	ft_quo_handling(char *s, int i)
+static int	ft_quo_handling(const char *s, int i)
 {
 	if (s[i] == '\'')
 	{
@@ -83,7 +83,7 @@ static char	**ft_strcut(char **dest, const char *s, char c, size_t i)
 	p = i;
 	while (s[i])
 	{
-		if (s[i] == "\"" || s[i] == "\'")
+		if (s[i] == '\"' || s[i] == '\'')
 			i = ft_quo_handling(s, i);
 		else if (s[i] == c || ((i == ft_strlen(s) - 1) && s[i] != c))
 		{
@@ -122,7 +122,7 @@ static size_t	ft_amc(size_t i, const char *s, char c)
 	amountc = 0;
 	while (s[i])
 	{
-		if (s[i] == "\"" || s[i] == "\'")
+		if (s[i] == '\"' || s[i] == '\'')
 			i = ft_quo_handling(s, i);
 		else if (s[i] == c)
 		{
@@ -155,17 +155,17 @@ char	**ft_split_quotes(char const *s, char c)
 	size_t	i;
 
 	i = 0;
+	//we have to adapt this loop to ignore spaces and tabs 
+	//at the beginning of input-string
+	// while (s[i] == c)
+	// 	i++;
+	i = ft_space_tab_jump(s, c, i);
 	if (ft_strncmp(s, "", 1) == 0)
 	{
 		dest = ft_calloc(1, sizeof(char *));
 		if (!dest)
 			return (NULL);
 	}
-	//we have to adapt this loop to ignore spaces and tabs 
-	//at the beginning of input-string
-	// while (s[i] == c)
-	// 	i++;
-	i = ft_space_tab_jump(s, c, i);
 	else
 	{
 		len = ft_amc(i, s, c);
