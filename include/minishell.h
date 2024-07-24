@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 12:20:13 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/22 13:50:00 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/07/24 11:34:05 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ typedef struct s_envp{
 //void	error_handling(int err, t_envp *i, int com_no);
 void	error_handling(int err);
 char	**create_nodes(char *readline_str);
+char	**ft_split_quotes(char const *s, char c);
 
 #endif

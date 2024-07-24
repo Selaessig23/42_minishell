@@ -209,7 +209,7 @@ char	**create_nodes(char *readline_input)
 		//TODO: error_handling;
 		exit (EXIT_FAILURE);
 	}
-	input_arr = ft_split(clean_input, ' ');
+	input_arr = ft_split_quotes(clean_input, ' ');
 	free(clean_input);
 	clean_input = NULL;
 	if (!input_arr)
