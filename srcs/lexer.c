@@ -47,16 +47,24 @@ static int	ft_count(char *src)
 		if (*src == '\"')
 		{
 			len++;
-			while (++src && *src != '\"')
+			src++;
+			while (*src && *src != '\"')
+			{
 				len++;
+				src++;
 			// len += 1;
+			}
 		}
 		else if (*src == '\'')
 		{
 			len++;
-			while (++src && *src != '\'')
+			src++;
+			while (*src && *src != '\'')
+			{
 				len++;
+				src++;
 			// len += 1;
+			}
 		}
 		if (double_operator_check(*src, (*src + 1)))
 		{
@@ -65,8 +73,11 @@ static int	ft_count(char *src)
 		}
 		else if (single_operator_check(*src))
 			len += 2;
-		len++;
-		src++;
+		if (*src)
+		{
+			len++;
+			src++;
+		}
 	}
 	return (len);
 }
@@ -104,15 +115,17 @@ static char	*ft_clean_input(char *src)
 		{
 			// dest[j++] = ' ';
 			// j++;
-			dest[j++] = src[i];
+			dest[j] = src[i];
 			// ft_printf("test\n");
 			if (src[i + 1] == '\"')
 			{
+				j++;
 				i++;
 				dest[j] = src[i];
 			}
 			else if (src[i + 1] != '\0')
 			{
+				j++;
 				i++;
 				dest[j++] = src[i++];
 				// i++;
@@ -120,7 +133,8 @@ static char	*ft_clean_input(char *src)
 				while (src[i] && src[i] != '\"')
 					dest[j++] = src[i++];
 				// dest[j++] = src[i];
-				dest[j] = src[i];
+				if (src[i] != '\0')
+					dest[j] = src[i];
 			}
 			// j++;
 			// dest[j] = ' ';
@@ -130,20 +144,23 @@ static char	*ft_clean_input(char *src)
 			// dest[j] = ' ';
 			// j++;
 			dest[j] = src[i];
-			j++;
+			// j++;
 			if (src[i + 1] == '\'')
 			{
+				j++;
 				i++;
 				dest[j] = src[i];
 			}
 			else if (src[i + 1] != '\0')
 			{
 				i++;
+				j++;
 				dest[j++] = src[i++];
 				while (src[i] && src[i] != '\'')
 					dest[j++] = src[i++];
 				// dest[j++] = src[i];
-				dest[j] = src[i];
+				if (src[i] != '\0')
+					dest[j] = src[i];
 			}
 			// dest[j] = ' ';
 		}
@@ -181,8 +198,10 @@ static char	*ft_clean_input(char *src)
 		else
 			dest[j] = src[i];
 		if (src[i] != '\0')
+		{
 			i++;
-		j++;
+			j++;
+		}
 	}
 	dest[j] = '\0';
 	ft_printf("real len of cleaned input: %i\n", ft_strlen(dest));
