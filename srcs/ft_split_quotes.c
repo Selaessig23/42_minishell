@@ -97,7 +97,7 @@ static char	**ft_strcut(char **dest, const char *s, char c, size_t i)
 			//between tokens and at the end of input-string
 			// while (s[i + 1] == c)
 			// 	i++;
-			i = ft_space_tab_jump(s, c, (i + 1));
+			i = (ft_space_tab_jump(s, c, (i + 1)) - 1);
 			p = i + 1;
 			a++;
 		}
@@ -131,7 +131,7 @@ static size_t	ft_amc(size_t i, const char *s, char c)
 			//between tokens and at the end of input-string
 			// while (s[i + 1] == c)
 			// 	i++;
-			i = ft_space_tab_jump(s, c, (i + 1));
+			i = (ft_space_tab_jump(s, c, (i + 1)) - 1);
 		}
 		i++;
 	}
