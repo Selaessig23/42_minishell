@@ -7,7 +7,7 @@
  * @param c the first char to search in
  * @param k the second char to search in
  */
-static bool	multi_syntax_check(char c, char k)
+static bool	double_operator_check(char c, char k)
 {
 	if ((c == '<' && k == '<')
 		|| (c == '>' && k == '>'))
@@ -21,7 +21,7 @@ static bool	multi_syntax_check(char c, char k)
  * 
  * @param c the char to search in
  */
-static bool	single_syntax_check(char c)
+static bool	single_operator_check(char c)
 {
 	if ((c == '<')
 		|| (c == '>')
@@ -58,12 +58,12 @@ static int	ft_count(char *src)
 				len++;
 			len += 2;
 		}
-		if (multi_syntax_check(*src, (*src + 1)))
+		if (double_operator_check(*src, (*src + 1)))
 		{
 			len += 4;
 			src++;
 		}
-		else if (single_syntax_check(*src))
+		else if (single_operator_check(*src))
 			len += 2;
 		len++;
 		src++;
@@ -157,7 +157,7 @@ static char	*ft_clean_input(char *src)
 		// 	i++;
 		// 	j++;
 		// }
-		else if (multi_syntax_check(src[i], src[i + 1]))
+		else if (double_operator_check(src[i], src[i + 1]))
 		{
 			dest[j] = ' ';
 			j++;
@@ -168,7 +168,7 @@ static char	*ft_clean_input(char *src)
 			j++;
 			dest[j] = ' ';
 		}
-		else if (single_syntax_check(src[i]))
+		else if (single_operator_check(src[i]))
 		{
 			dest[j] = ' ';
 			j++;
