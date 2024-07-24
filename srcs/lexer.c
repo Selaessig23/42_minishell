@@ -49,14 +49,14 @@ static int	ft_count(char *src)
 			len++;
 			while (++src && *src != '\"')
 				len++;
-			len += 2;
+			len += 1;
 		}
 		else if (*src == '\'')
 		{
 			len++;
 			while (++src && *src != '\'')
 				len++;
-			len += 2;
+			len += 1;
 		}
 		if (double_operator_check(*src, (*src + 1)))
 		{
@@ -119,10 +119,11 @@ static char	*ft_clean_input(char *src)
 				// j++;
 				while (src[i] && src[i] != '\"')
 					dest[j++] = src[i++];
-				dest[j++] = src[i];
+				// dest[j++] = src[i];
+				dest[j] = src[i];
 			}
 			// j++;
-			dest[j] = ' ';
+			// dest[j] = ' ';
 		}
 		else if (src[i] == '\'')
 		{
@@ -141,9 +142,10 @@ static char	*ft_clean_input(char *src)
 				dest[j++] = src[i++];
 				while (src[i] && src[i] != '\'')
 					dest[j++] = src[i++];
-				dest[j++] = src[i];
+				// dest[j++] = src[i];
+				dest[j] = src[i];
 			}
-			dest[j] = ' ';
+			// dest[j] = ' ';
 		}
 		// else if (src[i] == '\'')
 		// {

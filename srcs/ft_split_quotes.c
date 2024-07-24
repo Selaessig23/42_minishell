@@ -93,11 +93,11 @@ static char	**ft_strcut(char **dest, const char *s, char c, size_t i)
 				dest[a] = ft_substr(s, p, (i - p));
 			if (!(dest[a]))
 				return (ft_free_i(dest, a));
-			//we have to adapt this loop to ignore spaces and tabs 
+			//if we have to adapt this loop to ignore spaces and tabs 
 			//between tokens and at the end of input-string
+			i = (ft_space_tab_jump(s, c, (i + 1)) - 1);
 			// while (s[i + 1] == c)
 			// 	i++;
-			i = (ft_space_tab_jump(s, c, (i + 1)) - 1);
 			p = i + 1;
 			a++;
 		}
@@ -127,11 +127,11 @@ static size_t	ft_amc(size_t i, const char *s, char c)
 		else if (s[i] == c)
 		{
 			amountc++;
-			//we have to adapt this loop to ignore spaces and tabs 
+			//if we have to adapt this loop to ignore spaces and tabs 
 			//between tokens and at the end of input-string
+			i = (ft_space_tab_jump(s, c, (i + 1)) - 1);
 			// while (s[i + 1] == c)
 			// 	i++;
-			i = (ft_space_tab_jump(s, c, (i + 1)) - 1);
 		}
 		i++;
 	}
@@ -155,11 +155,11 @@ char	**ft_split_quotes(char const *s, char c)
 	size_t	i;
 
 	i = 0;
-	//we have to adapt this loop to ignore spaces and tabs 
+	//if we have to adapt this loop to ignore spaces and tabs 
 	//at the beginning of input-string
+	i = ft_space_tab_jump(s, c, i);
 	// while (s[i] == c)
 	// 	i++;
-	i = ft_space_tab_jump(s, c, i);
 	if (ft_strncmp(s, "", 1) == 0)
 	{
 		dest = ft_calloc(1, sizeof(char *));
