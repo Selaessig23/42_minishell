@@ -109,7 +109,7 @@ static char	*ft_clean_input(char *src)
 			if (src[i + 1] == '\"')
 			{
 				i++;
-				dest[j++] = src[i];
+				dest[j] = src[i];
 			}
 			else if (src[i + 1] != '\0')
 			{
@@ -134,7 +134,7 @@ static char	*ft_clean_input(char *src)
 			if (src[i + 1] == '\'')
 			{
 				i++;
-				dest[j++] = src[i];
+				dest[j] = src[i];
 			}
 			else if (src[i + 1] != '\0')
 			{

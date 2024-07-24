@@ -49,7 +49,7 @@ static int	ft_space_tab_jump(const char *s, char c, int i)
 }
 
 /**
- * @brief function to ignore text within quotation marks
+ * @brief function to exclude content within quotation marks from splitting
  * 
  * @param s string to search in for quotation marks
  * @param i the index to start searching
@@ -58,16 +58,20 @@ static int	ft_quo_handling(const char *s, int i)
 {
 	if (s[i] == '\'')
 	{
-		i++;
+		if (s[i + 1] != '\0')
+			i++;
 		while (s[i] && s[i] != '\'')
 			i++;
 	}
 	else if (s[i] == '\"')
 	{
-		i++;
+		if (s[i + 1] != '\0')
+			i++;
 		while (s[i] && s[i] != '\"')
 			i++;
 	}
+	if (s[i] == '\0')
+		i--;
 	return (i);
 }
 
@@ -85,7 +89,7 @@ static char	**ft_strcut(char **dest, const char *s, char c, size_t i)
 	{
 		if (s[i] == '\"' || s[i] == '\'')
 			i = ft_quo_handling(s, i);
-		else if (s[i] == c || ((i == ft_strlen(s) - 1) && s[i] != c))
+		if (s[i] == c || ((i == ft_strlen(s) - 1) && s[i] != c))
 		{
 			if ((i == ft_strlen(s) - 1) && s[i] != c)
 				dest[a] = ft_substr(s, p, (i + 1 - p));
