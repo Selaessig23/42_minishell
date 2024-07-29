@@ -1,1 +1,12 @@
-hello    was
+total 60
+-rw-r--r-- 1 mstracke 2023_berlin     0 Jul 22 11:45 fd2
+drwxr-xr-x 2 mstracke 2023_berlin    25 Jul 24 14:14 include
+drwxr-xr-x 9 mstracke 2023_berlin   146 Jul 25 10:42 libft
+-rw-r--r-- 1 mstracke 2023_berlin  3522 Jul 24 14:14 Makefile
+-rwxr-xr-x 1 mstracke 2023_berlin 42112 Jul 25 10:42 minishell
+drwxr-xr-x 2 mstracke 2023_berlin    84 Jul 25 10:42 obj
+-rw-r--r-- 1 mstracke 2023_berlin   875 Jul 22 10:26 outfile
+-rw-r--r-- 1 mstracke 2023_berlin   922 Jul 24 14:14 README.md
+drwxr-xr-x 2 mstracke 2023_berlin    84 Jul 24 15:25 srcs
+-rw-r--r-- 1 mstracke 2023_berlin   155 Jul 22 10:22 test_file.txt
+-rw-r--r-- 1 mstracke 2023_berlin     0 Jul 29 16:27 testout.txt

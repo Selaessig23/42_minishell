@@ -1,9 +1,11 @@
 /**
  * DESCRIPTION: 
- * Allocates (with malloc(3)) and returns an array
- * of strings obtained by splitting string ’s’ using
- * a delimiters. The array must end
- * with a NULL pointer and considers edge cases << and >>. 
+ * Modified ft_spilt-function to exclude text in quotes from
+ * splitting string by using a delimiter. 
+ * What is more, it also considers spaces / tabs/ newlines
+ * 
+ * The array must end with a NULL pointer 
+ * and considers edge cases << and >>. 
  * 
  * RETURN VALUE:
  * The array of new strings resulting from the split.

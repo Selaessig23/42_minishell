@@ -1,12 +1,6 @@
-/* for testing purpose: valgrind --leak-check=full 
---show-leak-kinds=all --track-origins=yes --track-fds=yes */
+Hello\nwhat\nis-
+thi
+is
+a
+testfile
 
-hello
-little
-dog
-where
-the frog
-?
-?
-/
-/n

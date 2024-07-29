@@ -2,6 +2,20 @@
 #include "minishell.h"
 
 /**
+ * DESRIPTION: 
+ * in this file the lexer-part of creating a shell (NAME?) is organised
+ * 1st it searches for operators (except those in quotes) 
+ * and adds spaces before and after
+ * 2nd it searches for spaces (except those in quotes) 
+ * and splits the input string from readline into an array of strings
+ * 3rd / 4th (?) it integrates variables if listed within a word 
+ * and deletes the quotes
+ * 3rd / 4th it creates an linked list out of the array of strings 
+ * wich saves command right, command left, value, token (word / operator)
+ */
+
+
+/**
  * @brief function that checks for double operators
  * 
  * @param c the first char to search in
@@ -35,7 +49,8 @@ static bool	single_operator_check(char c)
 
 /**
  * @brief function that counts the amount of operators
- *  
+ * 
+ * @param src the string to count in  
  */
 static int	ft_count(char *src)
 {
@@ -211,7 +226,7 @@ static char	*ft_clean_input(char *src)
 /**
  * @brief function that 
  * 1st creates an array of strings out of the cleaned input
- * 2nd creates a linked list out of this array of strings
+ * 2nd creates a linked list out of this array of strings --> TO-DO
  * 
  * @param readline_str the input of command line read by function readline
  * @return: a linked list with all input keywords or an array of strings???
@@ -238,5 +253,6 @@ char	**create_nodes(char *readline_input)
 		//TODO: error_handling;
 		exit (EXIT_FAILURE);
 	}
+	//TO-DO: create a linked list
 	return (input_arr);
 }
