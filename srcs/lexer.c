@@ -48,42 +48,51 @@ static bool	single_operator_check(char c)
 }
 
 /**
- * @brief function that counts the amount of operators
+ * @brief a helper function for ft_count, 
+ * it loops through not necessary parts of a string
+ * (within quotes)
+ * while continuing counting the indexer
+ * 
+ * @param src the string to loop in
+ * @param len the indexer to continue counting while iterating
+ * @param endsign the sign until the indexer should jump to
+ */
+static char	*ft_jumper(char *src, int *len, char endsign)
+{
+	len++;
+	src++;
+	while (*src && *src != endsign)
+	{
+		len++;
+		src++;
+	}
+	return (src);
+}
+
+
+/**
+ * @brief function that checks for occurence of unquoted operators
+ * and calculates extra memory space (len) for adding spaces in
+ * between
  * 
  * @param src the string to count in  
  */
 static int	ft_count(char *src)
 {
-	int	len;
+	int		len;
+	char	*temp;
 
 	len = 0;
+	temp = src;
 	while (*src)
 	{
 		if (*src == '\"')
-		{
-			len++;
-			src++;
-			while (*src && *src != '\"')
-			{
-				len++;
-				src++;
-			// len += 1;
-			}
-		}
+			temp = ft_jumper(src, &len, '\"');
 		else if (*src == '\'')
+			temp = ft_jumper(src, &len, '\'');
+		if (double_operator_check(*src, *(src + 1)))
 		{
-			len++;
-			src++;
-			while (*src && *src != '\'')
-			{
-				len++;
-				src++;
-			// len += 1;
-			}
-		}
-		if (double_operator_check(*src, (*src + 1)))
-		{
-			len += 4;
+			len += 3;
 			src++;
 		}
 		else if (single_operator_check(*src))
@@ -96,6 +105,49 @@ static int	ft_count(char *src)
 	}
 	return (len);
 }
+
+/**
+ * @brief a helper function for ft_clean_input;
+ * it adds spaces before and after operators
+ * 
+ * @param dest the destination string where to integrate additional 
+ * spaces before an after operators
+ * @param src the source string to create dest
+ * @param i index of src
+ * @param j index of dest
+ */
+static void	ft_op_separator(char *dest, char *src, int *i, int *j)
+{
+	(void) i;
+	//double
+	// if (double_operator_check(*src, *(src + 1)))
+	// {
+	// 	*dest = ' ';
+	// 	dest++;
+	// 	j++;
+	// 	*dest = *src;
+	// 	i++;
+	// 	src++;
+	// 	j++;
+	// 	dest++;
+	// 	*dest = *src;
+	// 	dest++;
+	// 	j++;
+	// 	*dest = ' ';
+	// }
+	// //single
+	// else
+	// {
+		*dest = ' ';
+		dest++;
+		*j = *j + 1;
+		*dest = *src;
+		dest++;
+		*j = *j + 1;
+		*dest = ' ';
+	// }
+}
+
 
 /**
  * @brief function that creates a new cleaned input-string 
@@ -128,10 +180,7 @@ static char	*ft_clean_input(char *src)
 	{
 		if (src[i] == '\"')
 		{
-			// dest[j++] = ' ';
-			// j++;
 			dest[j] = src[i];
-			// ft_printf("test\n");
 			if (src[i + 1] == '\"')
 			{
 				j++;
@@ -143,23 +192,15 @@ static char	*ft_clean_input(char *src)
 				j++;
 				i++;
 				dest[j++] = src[i++];
-				// i++;
-				// j++;
 				while (src[i] && src[i] != '\"')
 					dest[j++] = src[i++];
-				// dest[j++] = src[i];
 				if (src[i] != '\0')
 					dest[j] = src[i];
 			}
-			// j++;
-			// dest[j] = ' ';
 		}
 		else if (src[i] == '\'')
 		{
-			// dest[j] = ' ';
-			// j++;
 			dest[j] = src[i];
-			// j++;
 			if (src[i + 1] == '\'')
 			{
 				j++;
@@ -173,26 +214,13 @@ static char	*ft_clean_input(char *src)
 				dest[j++] = src[i++];
 				while (src[i] && src[i] != '\'')
 					dest[j++] = src[i++];
-				// dest[j++] = src[i];
 				if (src[i] != '\0')
 					dest[j] = src[i];
 			}
-			// dest[j] = ' ';
 		}
-		// else if (src[i] == '\'')
-		// {
-		// 	dest[j] = src[i];
-		// 	while (src[++i] && src[i] != '\'')
-		// 		dest[++j] = src[i];
-		// 	dest[j] = src[i];
-		// 	i++;
-		// 	j++;
-		// 	dest[j] = src[i];
-		// 	i++;
-		// 	j++;
-		// }
 		else if (double_operator_check(src[i], src[i + 1]))
 		{
+			// ft_op_separator(&dest[j], &src[i], &i, &j);
 			dest[j] = ' ';
 			j++;
 			dest[j] = src[i];
@@ -204,11 +232,12 @@ static char	*ft_clean_input(char *src)
 		}
 		else if (single_operator_check(src[i]))
 		{
-			dest[j] = ' ';
-			j++;
-			dest[j] = src[i];
-			j++;
-			dest[j] = ' ';
+			ft_op_separator(&dest[j], &src[i], &i, &j);
+			// dest[j] = ' ';
+			// j++;
+			// dest[j] = src[i];
+			// j++;
+			// dest[j] = ' ';
 		}
 		else
 			dest[j] = src[i];
