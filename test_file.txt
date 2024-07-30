@@ -1,6 +1,1 @@
-Hello\nwhat\nis-
-thi
-is
-a
-testfile
-
+Hello\nwhat\nis

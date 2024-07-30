@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 09:36:30 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/23 16:51:15 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/07/30 12:02:17 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ int	main(int argc, char **argv)
 				exit(EXIT_FAILURE);
 			}
 			if (input)
-				add_history(input);
+			{
+					add_history(input);
+					//integrate history_list for fun
+			}
 			ft_printf("input length: %i\n", ft_strlen(input));
 			input_arr = create_nodes(input);
 			free(input);
