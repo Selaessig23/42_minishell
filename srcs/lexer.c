@@ -106,9 +106,15 @@ static int	ft_count(char *src)
 }
 
 /**
- * jumper for copying
- * if (src[i] == '\"') ||
- * if (src[i] == '\'')
+ * @brief a helper function for ft_create_clean_input
+ * it loops through not necessary parts of a string
+ * (within quotes)
+ * while continuing copying from src
+ * if (src[i] == '\"') || if (src[i] == '\'')
+ * 
+ * @param dest the destination pointer to copy in
+ * @param src the source pointer to copy from
+ * @param endsign the sign until the indexer should copy to
  */
 static void	ft_jump_copy(char **dest, char **src, char endsign)
 {
@@ -132,7 +138,7 @@ static void	ft_jump_copy(char **dest, char **src, char endsign)
 }
 
 /**
- * @brief a helper function for ft_clean_input;
+ * @brief a helper function for ft_create_clean_input;
  * it adds spaces before and after operators
  * 
  * @param dest the destination string where to integrate additional 
@@ -161,6 +167,14 @@ static void	ft_op_separator(char **dest, char **src)
 		**dest = ' ';
 	}
 }
+
+/**
+ * @brief this function copies from src to dest under certain certain 
+ * circumstances (unquoted operators have to be seperated by spaces)
+ * 
+ * @param dest the destination string where to copy to
+ * @param src the source string where to compy from
+ */
 static void	ft_create_clean_input(char *dest, char *src)
 {
 	while (*src)
@@ -186,10 +200,10 @@ static void	ft_create_clean_input(char *dest, char *src)
 
 /**
  * @brief function that creates a new cleaned input-string 
- * with spaces between operators if there are no in src
+ * with spaces for an after unquoted operators 
  * 
  * @param src the source string to clean
- * @return src in case there are no operators 
+ * @return src in case there are no operators, otherwise dest_original
  */
 static char	*ft_clean_input(char *src)
 {
@@ -209,25 +223,6 @@ static char	*ft_clean_input(char *src)
 	dest = (char *)malloc(sizeof(char) * (len + 1));
 	dest_original = dest;
 	ft_create_clean_input(dest, src);
-	// while (*src)
-	// {
-	// 	if (*src == '\"')
-	// 		ft_jump_copy(&dest, &src, '\"');
-	// 	else if (*src == '\'')
-	// 		ft_jump_copy(&dest, &src, '\'');
-	// 	else if (double_operator_check(*src, *(src + 1)))
-	// 		ft_op_separator(&dest, &src);
-	// 	else if (single_operator_check(*src))
-	// 		ft_op_separator(&dest, &src);
-	// 	else
-	// 		*dest = *src;
-	// 	if (*src != '\0')
-	// 	{
-	// 		dest++;
-	// 		src++;
-	// 	}
-	// }
-	// *dest = '\0';
 	ft_printf("real len of cleaned input: %i\n", ft_strlen(dest_original));
 	return (dest_original);
 }
