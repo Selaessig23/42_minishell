@@ -70,34 +70,6 @@ static char	*ft_jumper(char *src, int *len, char endsign)
 }
 
 /**
- * jumper for copying
- * if (src[i] == '\"') ||
- * if (src[i] == '\'')
- */
-/*
-static int	*ft_jump_copy(char *dest, char *src, int *i, char endsign)
-{
-	*dest = *src;
-	if (*(src + 1) == '\"')
-	{
-		dest++;
-		src++;
-		*dest = *src;
-	}
-	else if (*(src + 1) != '\0')
-	{
-		dest++;
-		src++;
-		*dest++ = *src++;
-		while (*src && *src != '\"')
-			*dest++ = *src++;
-		if (*src != '\0')
-			*dest = *src;
-	}
-}
-}*/
-
-/**
  * @brief function that checks for occurence of unquoted operators
  * and calculates extra memory space (len) for adding spaces in
  * between
@@ -134,6 +106,32 @@ static int	ft_count(char *src)
 }
 
 /**
+ * jumper for copying
+ * if (src[i] == '\"') ||
+ * if (src[i] == '\'')
+ */
+static void	ft_jump_copy(char **dest, char **src, char endsign)
+{
+	**dest = **src;
+	if (*(*src + 1) == endsign)
+	{
+		(*dest)++;
+		(*src)++;
+		**dest = **src;
+	}
+	else if (*(*src + 1) != '\0')
+	{
+		(*dest)++;
+		(*src)++;
+		*(*dest)++ = *(*src)++;
+		while (*(*src) && *(*src) != endsign)
+			*(*dest)++ = *(*src)++;
+		if (*(*src) != '\0')
+			**dest = **src;
+	}
+}
+
+/**
  * @brief a helper function for ft_clean_input;
  * it adds spaces before and after operators
  * 
@@ -163,74 +161,14 @@ static void	ft_op_separator(char **dest, char **src)
 		**dest = ' ';
 	}
 }
-
-
-/**
- * @brief function that creates a new cleaned input-string 
- * with spaces between operators if there are no in src
- * 
- * @param src the source string to clean
- * @return src in case there are no operators 
- */
-static char	*ft_clean_input(char *src)
+static void	ft_create_clean_input(char *dest, char *src)
 {
-	char	*dest;
-	char	*dest_original;
-	size_t	len;
-	
-	dest = NULL;
-	len = ft_count(src);
-	ft_printf("malloced len for cleaned input: %i\n", len);
-	if (len == (ft_strlen(src)))
-	{
-		ft_printf("No modification of input required. Delete this message\n");
-		return (ft_strdup(src));
-	}
-	//better to use calloc
-	dest = (char *)malloc(sizeof(char) * (len + 1));
-	dest_original = dest;
 	while (*src)
 	{
 		if (*src == '\"')
-		{
-			*dest = *src;
-			if (*(src + 1) == '\"')
-			{
-				dest++;
-				src++;
-				*dest = *src;
-			}
-			else if (*(src + 1) != '\0')
-			{
-				dest++;
-				src++;
-				*dest++ = *src++;
-				while (*src && *src != '\"')
-					*dest++ = *src++;
-				if (*src != '\0')
-					*dest = *src;
-			}
-		}
+			ft_jump_copy(&dest, &src, '\"');
 		else if (*src == '\'')
-		{
-			*dest = *src;
-			if (*(src + 1) == '\'')
-			{
-				dest++;
-				src++;
-				*dest = *src;
-			}
-			else if (*(src + 1) != '\0')
-			{
-				dest++;
-				src++;
-				*dest++ = *src++;
-				while (*src && *src != '\'')
-					*dest++ = *src++;
-				if (*src != '\0')
-					*dest = *src;
-			}
-		}
+			ft_jump_copy(&dest, &src, '\'');
 		else if (double_operator_check(*src, *(src + 1)))
 			ft_op_separator(&dest, &src);
 		else if (single_operator_check(*src))
@@ -244,6 +182,52 @@ static char	*ft_clean_input(char *src)
 		}
 	}
 	*dest = '\0';
+}
+
+/**
+ * @brief function that creates a new cleaned input-string 
+ * with spaces between operators if there are no in src
+ * 
+ * @param src the source string to clean
+ * @return src in case there are no operators 
+ */
+static char	*ft_clean_input(char *src)
+{
+	char	*dest;
+	char	*dest_original;
+	size_t	len;
+
+	dest = NULL;
+	len = ft_count(src);
+	ft_printf("malloced len for cleaned input: %i\n", len);
+	if (len == (ft_strlen(src)))
+	{
+		ft_printf("No modification of input required. Delete this message\n");
+		return (ft_strdup(src));
+	}
+	//better to use calloc
+	dest = (char *)malloc(sizeof(char) * (len + 1));
+	dest_original = dest;
+	ft_create_clean_input(dest, src);
+	// while (*src)
+	// {
+	// 	if (*src == '\"')
+	// 		ft_jump_copy(&dest, &src, '\"');
+	// 	else if (*src == '\'')
+	// 		ft_jump_copy(&dest, &src, '\'');
+	// 	else if (double_operator_check(*src, *(src + 1)))
+	// 		ft_op_separator(&dest, &src);
+	// 	else if (single_operator_check(*src))
+	// 		ft_op_separator(&dest, &src);
+	// 	else
+	// 		*dest = *src;
+	// 	if (*src != '\0')
+	// 	{
+	// 		dest++;
+	// 		src++;
+	// 	}
+	// }
+	// *dest = '\0';
 	ft_printf("real len of cleaned input: %i\n", ft_strlen(dest_original));
 	return (dest_original);
 }
