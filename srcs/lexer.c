@@ -59,16 +59,41 @@ static bool	single_operator_check(char c)
  */
 static char	*ft_jumper(char *src, int *len, char endsign)
 {
-	len++;
+	*len = *len + 1;
 	src++;
 	while (*src && *src != endsign)
 	{
-		len++;
+		(*len)++;
 		src++;
 	}
 	return (src);
 }
 
+/**
+ * jumper for copying
+ * if (src[i] == '\"') ||
+ * if (src[i] == '\'')
+ */
+static int	*ft_jump_copy(char *dest, char *src, int *i, char endsign)
+{
+	dest[j] = src[i];
+			if (src[i + 1] == '\"')
+			{
+				j++;
+				i++;
+				dest[j] = src[i];
+			}
+			else if (src[i + 1] != '\0')
+			{
+				j++;
+				i++;
+				dest[j++] = src[i++];
+				while (src[i] && src[i] != endsign)
+					dest[j++] = src[i++];
+				if (src[i] != '\0')
+					dest[j] = src[i];
+			}
+}
 
 /**
  * @brief function that checks for occurence of unquoted operators
@@ -84,23 +109,23 @@ static int	ft_count(char *src)
 
 	len = 0;
 	temp = src;
-	while (*src)
+	while (*temp)
 	{
-		if (*src == '\"')
-			temp = ft_jumper(src, &len, '\"');
-		else if (*src == '\'')
-			temp = ft_jumper(src, &len, '\'');
-		if (double_operator_check(*src, *(src + 1)))
+		if (*temp == '\"')
+			temp = ft_jumper(temp, &len, '\"');
+		else if (*temp == '\'')
+			temp = ft_jumper(temp, &len, '\'');
+		if (double_operator_check(*temp, *(temp + 1)))
 		{
 			len += 3;
-			src++;
+			temp++;
 		}
-		else if (single_operator_check(*src))
+		else if (single_operator_check(*temp))
 			len += 2;
-		if (*src)
+		if (*temp)
 		{
 			len++;
-			src++;
+			temp++;
 		}
 	}
 	return (len);
@@ -113,39 +138,35 @@ static int	ft_count(char *src)
  * @param dest the destination string where to integrate additional 
  * spaces before an after operators
  * @param src the source string to create dest
- * @param i index of src
- * @param j index of dest
+ * @param i pointer to index of src
+ * @param j pointer to index of dest
  */
 static void	ft_op_separator(char *dest, char *src, int *i, int *j)
 {
-	(void) i;
-	//double
-	// if (double_operator_check(*src, *(src + 1)))
-	// {
-	// 	*dest = ' ';
-	// 	dest++;
-	// 	j++;
-	// 	*dest = *src;
-	// 	i++;
-	// 	src++;
-	// 	j++;
-	// 	dest++;
-	// 	*dest = *src;
-	// 	dest++;
-	// 	j++;
-	// 	*dest = ' ';
-	// }
-	// //single
-	// else
-	// {
+	if (double_operator_check(*src, *(src + 1)))
+	{
+		ft_printf("double\n");
 		*dest = ' ';
 		dest++;
-		*j = *j + 1;
+		*dest = *src;
+		src++;
+		dest++;
 		*dest = *src;
 		dest++;
-		*j = *j + 1;
 		*dest = ' ';
-	// }
+		*j = *j + 3;
+		*i = *i + 1;
+	}
+	else
+	{
+		ft_printf("single\n");
+		*dest = ' ';
+		dest++;
+		*dest = *src;
+		dest++;
+		*dest = ' ';
+		*j = *j + 2;
+	}
 }
 
 
@@ -155,8 +176,6 @@ static void	ft_op_separator(char *dest, char *src, int *i, int *j)
  * 
  * @param src the source string to clean
  * @return src in case there are no operators 
- * (MAYBE ADAPT ALSO TO THE CASE, IF THERE ARE NO "INCLUDED" OPERATORS), otherwise
- * a cleaned version of src (operators were liberated) is returned
  */
 static char	*ft_clean_input(char *src)
 {
@@ -175,8 +194,9 @@ static char	*ft_clean_input(char *src)
 		ft_printf("No modification of input required. Delete this message\n");
 		return (ft_strdup(src));
 	}
+	//better to use calloc
 	dest = (char *)malloc(sizeof(char) * (len + 1));
-	while (src[i])
+	while (*src[i])
 	{
 		if (src[i] == '\"')
 		{
@@ -219,26 +239,9 @@ static char	*ft_clean_input(char *src)
 			}
 		}
 		else if (double_operator_check(src[i], src[i + 1]))
-		{
-			// ft_op_separator(&dest[j], &src[i], &i, &j);
-			dest[j] = ' ';
-			j++;
-			dest[j] = src[i];
-			i++;
-			j++;
-			dest[j] = src[i];
-			j++;
-			dest[j] = ' ';
-		}
-		else if (single_operator_check(src[i]))
-		{
 			ft_op_separator(&dest[j], &src[i], &i, &j);
-			// dest[j] = ' ';
-			// j++;
-			// dest[j] = src[i];
-			// j++;
-			// dest[j] = ' ';
-		}
+		else if (single_operator_check(src[i]))
+			ft_op_separator(&dest[j], &src[i], &i, &j);
 		else
 			dest[j] = src[i];
 		if (src[i] != '\0')
