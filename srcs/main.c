@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 09:36:30 by mstracke          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2024/07/30 12:02:17 by mstracke         ###   ########.fr       */
+=======
+/*   Updated: 2024/07/30 19:02:36 by mpeshko          ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +24,7 @@ int	main(int argc, char **argv)
 	char	*prompt;
 	char	**input_arr;
 
-	(void) argv;
+	(void)argv;
 	i = 0;
 	exitcode = 0;
 	if (argc == 1)
@@ -34,7 +38,7 @@ int	main(int argc, char **argv)
 			input = readline(prompt);
 			if (!input)
 			{
-				//free session
+				// free session
 				exit(EXIT_FAILURE);
 			}
 			if (input)
@@ -46,7 +50,8 @@ int	main(int argc, char **argv)
 			input_arr = create_nodes(input);
 			free(input);
 			input = NULL;
-			if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "env", 3) && ft_strlen(input_arr[0]) == 3))
+			if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "env",
+						3) && ft_strlen(input_arr[0]) == 3))
 			{
 				while (*__environ)
 				{
@@ -54,20 +59,28 @@ int	main(int argc, char **argv)
 					__environ++;
 				}
 			}
-			else if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "exit", 4) && ft_strlen(input_arr[0]) == 4))
+			else if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0],
+						"exit", 4) && ft_strlen(input_arr[0]) == 4))
 			{
 				ft_free(input_arr);
 				free(prompt);
 				prompt = NULL;
 				rl_clear_history();
-				exit (EXIT_SUCCESS);
+				exit(EXIT_SUCCESS);
 			}
 			else
 			{
 				i = 0;
 				while (input_arr[i])
 				{
-					ft_printf("arr[%i]: %s\n", i, input_arr[i]);
+					if (!ft_strncmp(input_arr[i], "$USER", ft_strlen("$USER"))
+						&& ft_strlen("$USER") == ft_strlen(input_arr[i]))
+					{
+						ft_printf("arr[%i]: %s\n", i, input_arr[i]);
+						ft_printf("after expand function $USER is \"user_name\"\n");
+					}
+					else
+						ft_printf("arr[%i]: %s\n", i, input_arr[i]);
 					// free(*input_arr);
 					i++;
 				}
@@ -84,6 +97,7 @@ int	main(int argc, char **argv)
 	}
 	else
 		error_handling(1);
-	exit (exitcode);
+	exit(exitcode);
 	// return (exitcode);
 }
+
