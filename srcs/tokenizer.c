@@ -61,6 +61,11 @@ t_list	*ft_tokenizer(char **input_arr)
 	lexx = NULL;
 	ft_creat_list(input_arr, &lexx);
 	test_print(lexx);
+	if (((ft_lstlast(lexx))->token == 'DOUBLE-QUOTED'
+			&& (ft_lstlast(lexx))->content[(ft_strlen(content) - 1)] != "\"")
+		|| ((ft_lstlast(lexx))->token == 'SINGLE-QUOTED'
+			&& (ft_lstlast(lexx))->content[(ft_strlen(content) - 1)] != "\'"))
+			ft_expander(&lexx);
 }
 
 

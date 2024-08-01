@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 12:20:13 by mstracke          #+#    #+#             */
-/*   Updated: 2024/08/01 12:31:33 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:09:06 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_envp{
 
 //linked list for lexer analysis -> token system
 typedef struct s_list{
-	void			*value;
+	void			*content;
 	struct s_list	*next;
 }				t_list;
 //required functions from libft
