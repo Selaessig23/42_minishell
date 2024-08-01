@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 12:20:13 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/24 11:34:05 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:06:16 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,30 +46,24 @@ typedef struct s_envp{
 	size_t	commands_no;
 }				t_envp;
 
+//linked list for lexer analysis -> token system
+typedef struct s_list{
+	void	*value;
+	char	*next;
+}				t_list;
 //required functions from libft
 //
 //f
 
 // main.c
 //
-//init.c
-//int		init_infile(t_envp *infos, char *infile);
-//void	init_compath(t_envp *infos, char **argv, char **paths);
-//void	init_outfile(t_envp *infos);
-//int		init_check(char **argv, char **paths, t_envp *infos);
-//inputcheck.c
-//char	*flagcheck(const char *argv);
-//int		bin_paths_init(char *command, char **paths, char **bin_paths);
-//exec.c
-//int		ft_execute(t_envp *infos, char *const envp[]);
-// void		ft_execute(t_envp *infos, char *const envp[]);
-//utils.c
-//size_t	ft_arrlen(char **arr_str);
-//void	ft_free(char **arr);
-//void	free_struct(t_envp *infos);
-//void	error_handling(int err, t_envp *i, int com_no);
+//error_handling.c
 void	error_handling(int err);
+//lexer.c
 char	**create_nodes(char *readline_str);
+//ft_split_quotes.c
 char	**ft_split_quotes(char const *s, char c);
+//tokenizer.c
+void	ft_tokenizer(char **input_arr);
 
 #endif
