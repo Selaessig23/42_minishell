@@ -6,7 +6,7 @@
 #    By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 09:59:44 by mstracke          #+#    #+#              #
-#    Updated: 2024/07/24 11:34:43 by mstracke         ###   ########.fr        #
+#    Updated: 2024/08/01 12:26:52 by mstracke         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ RLFLAG = -lreadline
 SRCS =	main.c \
 		error_handling.c \
 		ft_split_quotes.c \
-		lexer.c
+		lexer.c \
+		tokenizer.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c

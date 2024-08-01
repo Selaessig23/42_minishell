@@ -54,7 +54,7 @@ static void	ft_creat_list(char **input_arr, t_list **lexx)
  * @param input_arr the cleaned array of strings created out of the 
  * command line input
  */
-void    ft_tokenizer(char **input_arr)
+t_list	*ft_tokenizer(char **input_arr)
 {
 	t_list	*lexx;
 

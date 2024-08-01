@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 12:20:13 by mstracke          #+#    #+#             */
-/*   Updated: 2024/08/01 12:06:16 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:31:33 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ typedef struct s_envp{
 
 //linked list for lexer analysis -> token system
 typedef struct s_list{
-	void	*value;
-	char	*next;
+	void			*value;
+	struct s_list	*next;
 }				t_list;
 //required functions from libft
 //
@@ -64,6 +64,6 @@ char	**create_nodes(char *readline_str);
 //ft_split_quotes.c
 char	**ft_split_quotes(char const *s, char c);
 //tokenizer.c
-void	ft_tokenizer(char **input_arr);
+t_list	*ft_tokenizer(char **input_arr);
 
 #endif

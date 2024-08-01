@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 09:36:30 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/30 12:02:17 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:26:22 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,34 +46,34 @@ int	main(int argc, char **argv)
 			input_arr = create_nodes(input);
 			free(input);
 			input = NULL;
-			if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "env", 3) && ft_strlen(input_arr[0]) == 3))
-			{
-				while (*__environ)
-				{
-					ft_printf("%s\n", *__environ);
-					__environ++;
-				}
-			}
-			else if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "exit", 4) && ft_strlen(input_arr[0]) == 4))
-			{
-				ft_free(input_arr);
-				free(prompt);
-				prompt = NULL;
-				rl_clear_history();
-				exit (EXIT_SUCCESS);
-			}
-			else
-			{
-				i = 0;
-				while (input_arr[i])
-				{
-					ft_printf("arr[%i]: %s\n", i, input_arr[i]);
-					// free(*input_arr);
-					i++;
-				}
-				// input_arr = NULL;
-				// ft_putchar_fd('\n', 1);
-			}
+			// if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "env", 3) && ft_strlen(input_arr[0]) == 3))
+			// {
+			// 	while (*__environ)
+			// 	{
+			// 		ft_printf("%s\n", *__environ);
+			// 		__environ++;
+			// 	}
+			// }
+			// else if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "exit", 4) && ft_strlen(input_arr[0]) == 4))
+			// {
+			// 	ft_free(input_arr);
+			// 	free(prompt);
+			// 	prompt = NULL;
+			// 	rl_clear_history();
+			// 	exit (EXIT_SUCCESS);
+			// }
+			// else
+			// {
+			// 	i = 0;
+			// 	while (input_arr[i])
+			// 	{
+			// 		ft_printf("arr[%i]: %s\n", i, input_arr[i]);
+			// 		// free(*input_arr);
+			// 		i++;
+			// 	}
+			// 	// input_arr = NULL;
+			// 	// ft_putchar_fd('\n', 1);
+			// }
 			ft_free(input_arr);
 			// ft_free(input_arr);
 			// 	ft_printf("%s\n", testinput);
