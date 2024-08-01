@@ -1,5 +1,6 @@
 
 #include "minishell.h"
+//test for git merging
 
 int	main(int argc, char **argv)
 {
