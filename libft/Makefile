@@ -6,7 +6,7 @@
 #    By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 13:00:58 by mstracke          #+#    #+#              #
-#    Updated: 2024/08/01 12:54:22 by mstracke         ###   ########.fr        #
+#    Updated: 2024/08/01 13:44:30 by mstracke         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -129,7 +129,7 @@ $(OBJS_GNL): objs_gnl/%.o : srcs_gnl/%.c
 	@mkdir -p objs_gnl
 	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
 
-$(OBJS_BONUS): objs_add/%.o : srcs_add/%.c 
+$(OBJS_ADD): objs_add/%.o : srcs_add/%.c 
 	@mkdir -p objs_add
 	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
 	

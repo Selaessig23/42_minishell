@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libft_bonus.h"
 
 /*Iterates through a linked list ‘lst’ and applies the function ‘f’ to each
 node’s content. If ‘lst’ or ‘f’ is NULL, the function returns. The loop runs

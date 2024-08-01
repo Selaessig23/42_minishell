@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 12:20:13 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/30 19:13:37 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/08/01 13:37:03 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,22 @@
 //it is "a good practice" to use a global variable for environment instead of picking it in the main
 extern char	**environ;
 
+// Struct representing command data
+typedef struct s_data
+{
+	int infile; // Input file descriptor (defaults to stdin)
+	int outfile; // Output file descriptor (defaults to stdout)
+	char			**cmd; // Command and arguments
+}					t_data;
+
+// Linked list containing a s_data nodes with
+// all commands separated by pipes
+typedef struct s_list
+{
+	t_data			*cmds; // Command data
+	struct t_list	*next; // Pointer to the next list node
+}					t_list;
+
 // Main struct containing the list of commands and
 // a copy of the environment
 typedef struct s_big
@@ -44,22 +60,6 @@ typedef struct s_big
 	t_list			*list; // Linked list of commands
 	char			**env; // Copy of environment variables
 }					t_big;
-
-// Linked list containing a s_data nodes with
-// all commands separated by pipes
-typedef struct t_list
-{
-	s_data			*cmds; // Command data
-	struct t_list	*next; // Pointer to the next list node
-}					t_list;
-
-// Struct representing command data
-typedef struct s_data
-{
-	int infile; // Input file descriptor (defaults to stdin)
-	int outfile; // Output file descriptor (defaults to stdout)
-	char			**cmd; // Command and arguments
-}					s_data;
 
 ////////////////////////////
 //maybe rename to bin_path for binary path

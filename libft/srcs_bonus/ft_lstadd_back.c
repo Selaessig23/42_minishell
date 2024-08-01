@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 00:55:48 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/06/07 20:09:52 by mpeshko          ###   ########.fr       */
+/*   Created: 2024/01/08 00:54:14 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/06/07 19:57:09 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libft_bonus.h"
 
-// Calculates and returns the number of nodes in a given linked list ‘lst’.
-int	ft_lstsize(t_list *lst)
+// Adds the given element ‘new’ to the end of the linked list pointed
+// to by ‘lst’. If ‘lst’ is an empty list, ‘new’ becomes the first element.
+
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	int		i;
-	t_list	*tmp;
+	t_list	*last;
 
-	tmp = lst;
-	i = 0;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		i++;
-	}
-	return (i);
+	last = ft_lstlast(*lst);
+	if (!last)
+		*lst = new;
+	last->next = new;
 }

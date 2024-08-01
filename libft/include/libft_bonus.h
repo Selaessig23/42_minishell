@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   libft_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 19:32:22 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/08/01 13:03:06 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/08/01 13:26:47 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#ifndef LIBFT_BONUS_H
+# define LIBFT_BONUS_H
 
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <libft.h>
 
 typedef struct	s_list
 {

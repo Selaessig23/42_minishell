@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
+/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 18:34:46 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/06/07 20:09:06 by mpeshko          ###   ########.fr       */
+/*   Created: 2024/01/08 00:55:08 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/06/07 20:06:51 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libft_bonus.h"
 
-// Adds the given element ‘new’ to the front of the linked list
-
-void	ft_lstadd_front(t_list **lst, t_list *new)
+// Returns a pointer to the last node of a linked list ‘lst’.
+t_list	*ft_lstlast(t_list *lst)
 {
-	new->next = *lst;
-	*lst = new;
+	t_list	*tmp;
+
+	if (!lst)
+		return (NULL);
+	tmp = lst;
+	while (tmp->next)
+		tmp = tmp->next;
+	return (tmp);
 }

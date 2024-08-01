@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libft_bonus.h"
 
 /*Deletes a single node ‘lst’ from the linked list and frees its content using
 the ‘del’ function, then deallocates the memory for the node. However, it fails

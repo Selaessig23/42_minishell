@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libft_bonus.h"
 
 /* Clears the entire linked list pointed to by ‘lst’ and deallocates memory
 for each node. The ‘del’ function is used to free the memory associated with

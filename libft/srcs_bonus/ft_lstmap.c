@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libft_bonus.h"
 
 /* Creates a new linked list by applying the function ‘f’ to the content of
 each node in the input list ‘lst’. If ‘lst’, ‘f’, or ‘del’ is NULL or if memory
