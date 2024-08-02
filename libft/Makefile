@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+         #
+#    By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 13:00:58 by mstracke          #+#    #+#              #
-#    Updated: 2023/11/13 15:09:34 by mstracke         ###   ########.fr        #
+#    Updated: 2024/08/01 13:44:30 by mstracke         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-#here are the declarations
+
 CUR_DIR = $(shell pwd)
 NAME = libft.a
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g -Iinclude -Isrcs -Isrcs_printf -Isrcs_gnl
+CFLAGS = -Wall -Werror -Wextra -g -Iinclude -Isrcs -Isrcs_bonus -Isrcs_printf -Isrcs_gnl -Isrcs_add
 
 #to create a program for testing reasons
 #PROGRAM = test
@@ -53,8 +53,16 @@ SRCS = ft_isalpha.c \
 		ft_putstr_fd.c \
 		ft_putendl_fd.c \
 		ft_putnbr_fd.c \
-		ft_free.c \
-		ft_arrlen.c
+
+SRCS_BONUS = ft_lstnew.c \
+		ft_lstadd_front.c \
+		ft_lstsize.c \
+		ft_lstlast.c \
+		ft_lstadd_back.c \
+		ft_lstdelone.c \
+		ft_lstclear.c \
+		ft_lstiter.c \
+		ft_lstmap.c \
 
 SRCS_PRINTF = ft_printf.c \
 		ft_printint.c \
@@ -67,11 +75,15 @@ SRCS_PRINTF = ft_printf.c \
 SRCS_GNL = get_next_line_bonus.c \
 		get_next_line_utils_bonus.c
 
+SRCS_ADD = ft_free.c \
+		ft_arrlen.c
+
 #variable substitution		
 OBJS = $(SRCS:%.c=objs/%.o)
+OBJS_BONUS = $(SRCS_BONUS:%.c=objs_bonus/%.o)
 OBJS_PRINTF = $(SRCS_PRINTF:%.c=objs_printf/%.o)
 OBJS_GNL = $(SRCS_GNL:%.c=objs_gnl/%.o)
-#OBJS := $(SRC:%.c=%.o)
+OBJS_ADD = $(SRCS_ADD:%.c=objs_add/%.o)
 
 #The %.o: %.c pattern specifies that in order to build something whose file name ends with .o, you need to have a file that has the same prefix but then ends with .c rather than .o.
 #%.o rule will compile one .c file to its correspondig object (.o) file
@@ -96,13 +108,17 @@ all: $(NAME)
 #use of ar -rc or ar -rcs?
 # compiles each source into an object file (c-flag); the The -I./ flag ensures that the compiler looks for header files in the current directory when compiling the source files specified in $(SRCS) (The -I. is included so that gcc will look in the current directory (.) for the include file .h ). -r  updates archive (replace or add files) or (c) create if it doesn't exist. -s could be useful for including an index
 #ranlib creates and index which improves the efficiency of certain operations, such as quickly looking up symbols within the library.The index is stored in the archive itself.
-$(NAME): $(OBJS) $(OBJS_PRINTF) $(OBJS_GNL)
-	ar -rcs $(NAME) $(OBJS) $(OBJS_PRINTF) $(OBJS_GNL)
+$(NAME): $(OBJS) $(OBJS_BONUS) $(OBJS_PRINTF) $(OBJS_GNL) $(OBJS_ADD)
+	ar -rcs $(NAME) $(OBJS) $(OBJS_BONUS) $(OBJS_PRINTF) $(OBJS_GNL) $(OBJS_ADD)
 	ranlib $(NAME)
 	@echo -- Libft compiled, lib created / updated
 
 $(OBJS): objs/%.o : srcs/%.c 
 	@mkdir -p objs
+	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
+
+$(OBJS_BONUS): objs_bonus/%.o : srcs_bonus/%.c 
+	@mkdir -p objs_bonus
 	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
 
 $(OBJS_PRINTF): objs_printf/%.o : srcs_printf/%.c 
@@ -113,13 +129,17 @@ $(OBJS_GNL): objs_gnl/%.o : srcs_gnl/%.c
 	@mkdir -p objs_gnl
 	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
 
+$(OBJS_ADD): objs_add/%.o : srcs_add/%.c 
+	@mkdir -p objs_add
+	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
+	
 #clean: This target removes the object files ($(OFILES)).
 #use rm -rf or rm -f? 
 #r: This option allows rm to remove directories and their contents recursively, not necessary?
 #f: "force" -->prevents the command from prompting for confirmation
 clean: 
 #	rm -f $(OBJS) $(OBJS_PRINTF) $(OBJS_GNL)
-	@rm -rf objs objs_printf objs_gnl
+	@rm -rf objs objs_bonus objs_printf objs_gnl objs_add
 	@echo -- Deleting all .o-files
 	
 # fclean: this target depends on clean. Once all object files are deleted, this rule will delete the created executable / the compiled binary ('$(NAME)') 

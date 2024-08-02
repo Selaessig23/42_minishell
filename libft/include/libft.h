@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:07:24 by mstracke          #+#    #+#             */
-/*   Updated: 2023/12/07 15:16:46 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/08/02 16:27:45 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <ctype.h>
 # include "ft_printf.h"
 # include "get_next_line_bonus.h"
+# include "libft_bonus.h"
 
 //part-1 functions
 int		ft_isalpha(int c); 

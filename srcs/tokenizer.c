@@ -15,6 +15,24 @@
  */
 
 /**
+ * function to free the linked list
+ */
+void	ft_free_ll(t_list **ll)
+{
+	t_list	*temp;
+	t_list	*curr;
+
+	curr = *ll;
+	while (curr != NULL)
+	{
+		temp = curr;
+		curr = curr->next;
+		free(temp);
+	}
+	curr = NULL;
+}
+
+/**
  * test function to print the content of the linked list
  */
 static void	test_print(t_list *lexx)
@@ -23,12 +41,57 @@ static void	test_print(t_list *lexx)
 	int		i;
 
 	i = 0;
-	curr = lexx->next;
-	while (lexx->next != NULL)
+	curr = lexx;
+	while (curr != NULL)
 	{
-		ft_printf("node (%i): %s", i, lexx->value);
+		if (!ft_strncmp(curr->content, "exit", 4) 
+			&& ft_strlen(curr->content) == 4)
+		{
+			//valgrind-error as prompt, input_arr, 
+			ft_free_ll(&lexx);
+			rl_clear_history();
+			exit(EXIT_SUCCESS);
+		}
+		else if (!ft_strncmp(curr->content, "env", 3) 
+			&& ft_strlen(curr->content) == 3)
+		{
+			while (*__environ)
+			{
+				ft_printf("%s\n", *__environ);
+				__environ++;
+			}
+		}
+		else
+		{
+			ft_printf("node (%i): %s\n", i, curr->content);
+			if (!ft_strncmp(curr->content, "$USER", ft_strlen("$USER"))
+				&& ft_strlen("$USER") == ft_strlen(curr->content))
+				ft_printf("after expand function $USER is \"user_name\"\n");
+		}
 		i++;
 		curr = curr->next;
+	}
+}
+
+/**
+ * @brief function to initiate the tokens
+ * 
+ * @param lexx linked list with cleaned input of 
+ * command line input
+ */
+static void	ft_creat_tokens(&lex)
+{
+	t_list	*curr;
+	
+	curr = lexx;
+	while (curr != NULL)
+	{
+		if ((!ft_strncmp(curr->content, ">", ft_strlen(">")) 
+				&& ft_strlen(curr->content) == ft_strlen(">")))
+			curr->token = REDIRECT_INPUT;
+		else if ((!ft_strncmp(curr->content, "<", ft_strlen("<")) 
+				&& ft_strlen(curr->content) == ft_strlen("<")))
+			curr->token = REDIRECT_OUTPUT;
 	}
 }
 
@@ -42,8 +105,11 @@ static void	ft_creat_list(char **input_arr, t_list **lexx)
 {
 	while (*input_arr)
 	{
+		// ft_printf("test: %s\n", *input_arr);
 		ft_lstadd_back(lexx, ft_lstnew(*input_arr));
+		// ft_printf("test 2\n");
 		input_arr++;
+		// ft_printf("test: %s\n", *input_arr);
 	}
 
 }
@@ -61,11 +127,13 @@ t_list	*ft_tokenizer(char **input_arr)
 	lexx = NULL;
 	ft_creat_list(input_arr, &lexx);
 	test_print(lexx);
-	if (((ft_lstlast(lexx))->token == 'DOUBLE-QUOTED'
-			&& (ft_lstlast(lexx))->content[(ft_strlen(content) - 1)] != "\"")
-		|| ((ft_lstlast(lexx))->token == 'SINGLE-QUOTED'
-			&& (ft_lstlast(lexx))->content[(ft_strlen(content) - 1)] != "\'"))
-			ft_expander(&lexx);
+	ft_creat_tokens(&lex);
+	// if (((ft_lstlast(lexx))->token == 'DOUBLE-QUOTED'
+	// 		&& (ft_lstlast(lexx))->content[(ft_strlen(content) - 1)] != "\"")
+	// 	|| ((ft_lstlast(lexx))->token == 'SINGLE-QUOTED'
+	// 		&& (ft_lstlast(lexx))->content[(ft_strlen(content) - 1)] != "\'"))
+	// 		ft_expander(&lexx);
+	return (lexx);
 }
 
 

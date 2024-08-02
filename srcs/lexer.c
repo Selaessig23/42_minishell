@@ -39,8 +39,7 @@ static bool	single_operator_check(char c)
 {
 	if ((c == '<')
 		|| (c == '>')
-		|| (c == '|')
-		|| (c == '$')
+		|| (c == '|') //		|| (c == '$')
 		|| (c == ';'))
 		return (1);
 	else
