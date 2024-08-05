@@ -1,5 +1,7 @@
 
 #include "minishell.h"
+// #include <curses.h>
+// #include <term.h>
 
 /**
  * DESRIPTION: 
@@ -30,48 +32,6 @@ void	ft_free_ll(t_list **ll)
 		free(temp);
 	}
 	curr = NULL;
-}
-
-/**
- * test function to print the content of the linked list
- */
-static void	test_print(t_list *lexx)
-{
-	t_list	*curr;
-	int		i;
-
-	i = 0;
-	curr = lexx;
-	while (curr != NULL)
-	{
-		if (!ft_strncmp(curr->content, "exit", 4) 
-			&& ft_strlen(curr->content) == 4)
-		{
-			//valgrind-error as prompt, input_arr, 
-			ft_free_ll(&lexx);
-			rl_clear_history();
-			exit(EXIT_SUCCESS);
-		}
-		else if (!ft_strncmp(curr->content, "env", 3) 
-			&& ft_strlen(curr->content) == 3)
-		{
-			while (*__environ)
-			{
-				ft_printf("%s\n", *__environ);
-				__environ++;
-			}
-		}
-		else
-		{
-			ft_printf("node (%i): %s\n", i, curr->content);
-			ft_printf("token (%i): %d\n", i, (int)curr->token);
-			if (!ft_strncmp(curr->content, "$USER", ft_strlen("$USER"))
-				&& ft_strlen("$USER") == ft_strlen(curr->content))
-				ft_printf("after expand function $USER is \"user_name\"\n");
-		}
-		i++;
-		curr = curr->next;
-	}
 }
 bool helper(char *content, char checker)
 {
@@ -153,6 +113,43 @@ static void	ft_creat_list(char **input_arr, t_list **lexx)
 }
 
 /**
+ * @brief function that checks if the command line input requires
+ * a new line
+ * 
+ * @param
+ */
+// static void	ft_cline_expander(t_list *lexx)
+// {
+// 	t_list	*curr;
+// 	int	check;
+// 	const char	*id;
+// 	char	**area;
+
+// 	curr = lexx;
+// 	check = 0;
+// 	id = NULL;
+// 	area = NULL;
+// 	while (curr != NULL)
+// 	{
+// 		check = 0;
+// 		if (curr->token == 8
+// 			|| curr->token == 9)
+// 		{
+// 			tgetstr(id, area);
+// 		}
+// 		if (check > 0)
+// 		{
+// 			while (**area)
+// 			{
+// 				ft_printf("test getstr: %s", **area);
+// 				area++;
+// 			}
+// 		}
+// 		curr = curr->next;
+// 	}
+// }
+
+/**
  * this function organises the tokenizing of the cleaned input array
  * 
  * @param input_arr the cleaned array of strings created out of the 
@@ -165,7 +162,7 @@ t_list	*ft_tokenizer(char **input_arr)
 	lexx = NULL;
 	ft_creat_list(input_arr, &lexx);
 	ft_creat_tokens(lexx);
-	test_print(lexx);
+	// ft_cline_expander(lexx);
 	// if (((ft_lstlast(lexx))->token == 'DOUBLE-QUOTED'
 	// 		&& (ft_lstlast(lexx))->content[(ft_strlen(content) - 1)] != "\"")
 	// 	|| ((ft_lstlast(lexx))->token == 'SINGLE-QUOTED'

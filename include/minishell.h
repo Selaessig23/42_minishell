@@ -96,5 +96,10 @@ char	**create_nodes(char *readline_str);
 char	**ft_split_quotes(char const *s, char c);
 //tokenizer.c
 t_list	*ft_tokenizer(char **input_arr);
+void	ft_free_ll(t_list **ll);
+//testprints.c --> only test functions
+void	test_print(t_list *lexx);
+void ft_test_arr_print(char **input_arr, char *prompt);
+
 
 #endif
