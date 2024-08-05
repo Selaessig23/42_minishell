@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 19:32:22 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/08/02 18:24:06 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/08/05 12:16:27 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,34 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include "minishell.h"
+// # include "../../include/minishell.h"
 
-// commented out as it was redefined in minishell.h
-/*
-typedef struct	s_list
-{
-	void		*content;
+typedef enum e_tokentype {
+	WORD = 1,
+	D_QUOTED = 2, 
+	S_QUOTED = 3, 
+	PIPE = 4,
+	HEREDOC = 5,
+	REDIRECT_INPUT = 6,
+	REDIRECT_OUTPUT = 7,
+	D_QUOTED_F = 8, 
+	S_QUOTED_F = 9, 
+}	t_tokentype;
+
+// commented out as it was redefined for minishell.h
+typedef struct s_list{
+	void			*content;
+	t_tokentype		token;
 	struct s_list	*next;
 }			t_list;
+
+/*
+// linked list for lexer analysis -> token system, redefined from libft_bonus.h
+typedef struct s_list{
+	void			*content;
+	t_tokentype		token;
+	struct s_list	*next;
+}				t_list;
 */
 
 t_list	*ft_lstnew(void *content);

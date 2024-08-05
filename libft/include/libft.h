@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:07:24 by mstracke          #+#    #+#             */
-/*   Updated: 2024/08/02 16:27:45 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/08/05 12:12:44 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	ft_putnbr_fd(int n, int fd);
 //own functions
 void	ft_free(char **arr);
 size_t	ft_arrlen(char **arr_str);
+// void	*ft_lstnew_gen(void *content, size_t node_size);
+// void	ft_lstadd_back_gen(void **lst, void *new);
 
 //printf functions
 /*int		ft_printf(const char *format, ...);

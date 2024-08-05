@@ -64,6 +64,7 @@ static void	test_print(t_list *lexx)
 		else
 		{
 			ft_printf("node (%i): %s\n", i, curr->content);
+			ft_printf("token (%i): %d\n", i, (int)curr->token);
 			if (!ft_strncmp(curr->content, "$USER", ft_strlen("$USER"))
 				&& ft_strlen("$USER") == ft_strlen(curr->content))
 				ft_printf("after expand function $USER is \"user_name\"\n");
@@ -72,6 +73,34 @@ static void	test_print(t_list *lexx)
 		curr = curr->next;
 	}
 }
+bool helper(char *content, char checker)
+{
+	if (content[ft_strlen(content) - 1] == checker)
+		return (0);
+	else
+		return (1);
+}
+/**
+ * 
+ */
+static void	ft_creat_str_token(t_list *lexx)
+{
+	if (!ft_strncmp(lexx->content, "\'", 1)
+		&& !helper(lexx->content, '\''))
+		lexx->token = 2;
+	else if (!ft_strncmp(lexx->content, "\'", 1)
+		&& helper(lexx->content, '\''))
+		lexx->token = 9;
+	else if (!ft_strncmp(lexx->content, "\"", 1)
+		&& !helper(lexx->content, '\"'))
+		lexx->token = 3;
+	else if (!ft_strncmp(lexx->content, "\"", 1)
+		&& helper(lexx->content, '\"'))
+		lexx->token = 8;
+	else
+		lexx->token = 1;
+
+}
 
 /**
  * @brief function to initiate the tokens
@@ -79,19 +108,28 @@ static void	test_print(t_list *lexx)
  * @param lexx linked list with cleaned input of 
  * command line input
  */
-static void	ft_creat_tokens(&lex)
+static void	ft_creat_tokens(t_list *lexx)
 {
 	t_list	*curr;
-	
+
 	curr = lexx;
 	while (curr != NULL)
 	{
-		if ((!ft_strncmp(curr->content, ">", ft_strlen(">")) 
+		if ((!ft_strncmp(curr->content, "|", ft_strlen("|")) 
+				&& ft_strlen(curr->content) == ft_strlen("|")))
+			curr->token = 4;
+		else if ((!ft_strncmp(curr->content, ">>", ft_strlen(">>")) 
+				&& ft_strlen(curr->content) == ft_strlen(">>")))
+			curr->token = 5;
+		else if ((!ft_strncmp(curr->content, ">", ft_strlen(">")) 
 				&& ft_strlen(curr->content) == ft_strlen(">")))
-			curr->token = REDIRECT_INPUT;
+			curr->token = 6;
 		else if ((!ft_strncmp(curr->content, "<", ft_strlen("<")) 
 				&& ft_strlen(curr->content) == ft_strlen("<")))
-			curr->token = REDIRECT_OUTPUT;
+			curr->token = 7;
+		else
+			ft_creat_str_token(curr);
+		curr = curr->next;
 	}
 }
 
@@ -126,8 +164,8 @@ t_list	*ft_tokenizer(char **input_arr)
 
 	lexx = NULL;
 	ft_creat_list(input_arr, &lexx);
+	ft_creat_tokens(lexx);
 	test_print(lexx);
-	ft_creat_tokens(&lex);
 	// if (((ft_lstlast(lexx))->token == 'DOUBLE-QUOTED'
 	// 		&& (ft_lstlast(lexx))->content[(ft_strlen(content) - 1)] != "\"")
 	// 	|| ((ft_lstlast(lexx))->token == 'SINGLE-QUOTED'
@@ -135,5 +173,3 @@ t_list	*ft_tokenizer(char **input_arr)
 	// 		ft_expander(&lexx);
 	return (lexx);
 }
-
-

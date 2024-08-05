@@ -6,7 +6,7 @@
 #    By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 13:00:58 by mstracke          #+#    #+#              #
-#    Updated: 2024/08/01 13:44:30 by mstracke         ###   ########.fr        #
+#    Updated: 2024/08/05 11:21:00 by mstracke         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,9 @@ SRCS_GNL = get_next_line_bonus.c \
 		get_next_line_utils_bonus.c
 
 SRCS_ADD = ft_free.c \
-		ft_arrlen.c
+		ft_arrlen.c \
+		ft_lstadd_back_gen.c \
+		ft_lst_new_gen.c
 
 #variable substitution		
 OBJS = $(SRCS:%.c=objs/%.o)

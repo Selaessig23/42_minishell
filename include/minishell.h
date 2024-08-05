@@ -6,6 +6,7 @@
 //stdio.h (for debugging) | stdlib.h (for malloc & free) | 
 //unistd.h (for write) is included in libft.h
 # include "../libft/include/libft.h"
+# include "../libft/include/libft_bonus.h"
 //#include <limits.h>
 //to use data type bool
 # include <stdbool.h>
@@ -23,26 +24,31 @@
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments to execute minishell\n"
 
-//it is "a good practice" to use a global variable for environment instead of picking it in the main
+//it is "a good practice" to use a global variable for environment 
+//instead of picking it in the main
 extern char	**environ;
 
 // to define all different tokens
-typedef enum e_tokentype {
-	WORD,
-	D_QUOTED, 
-	S_QUOTED, 
-	PIPE,
-	HEREDOC,
-	REDIRECT_INPUT,
-	REDIRECT_OUTPUT,
-}	t_tokentype;
+// see libft_bonus
+// typedef enum e_tokentype {
+// 	WORD = 1,
+// 	D_QUOTED = 2, 
+// 	S_QUOTED = 3, 
+// 	PIPE = 4,
+// 	HEREDOC = 5,
+// 	REDIRECT_INPUT = 6,
+// 	REDIRECT_OUTPUT = 7,
+// 	D_QUOTED_F = 8, 
+// 	S_QUOTED_F = 9, 
+// }	t_tokentype;
 
-// linked list for lexer analysis -> token system, redefined from libft_bonus.h
-typedef struct s_list{
-	void			*content;
-	t_tokentype		token;
-	struct s_list	*next;
-}				t_list;
+// linked list for lexer analysis -> token system, defined in libft_bonus.h
+// does not work
+// typedef struct s_lexlist{
+// 	t_list	base;
+// 	t_tokentype		token;
+// }				t_lexlist;
+
 
 // Struct representing command data
 typedef struct s_data
