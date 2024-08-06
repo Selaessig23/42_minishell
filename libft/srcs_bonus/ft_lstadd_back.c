@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 00:54:14 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/08/05 10:47:29 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/08/06 12:29:15 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,3 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		curr = curr->next;
 	curr->next = new;
 }
-
-/*
-// a generic version of ft_lstadd_back
-void	ft_lstadd_back(void **lst, void *new)
-{
-	void	*curr;
-
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	curr = *lst;
-	while (curr->next != NULL)
-		curr = curr->next;
-	curr->next = new;
-}
-*/
