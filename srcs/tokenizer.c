@@ -27,6 +27,7 @@ void	ft_free_ll(t_list **ll)
 	{
 		temp = curr;
 		curr = curr->next;
+		free(temp->content);
 		free(temp);
 	}
 	curr = NULL;
@@ -144,7 +145,7 @@ static void	ft_creat_list(char **input_arr, t_list **lexx)
 	while (*input_arr)
 	{
 		// ft_printf("test: %s\n", *input_arr);
-		ft_lstadd_back(lexx, ft_lstnew(*input_arr));
+		ft_lstadd_back(lexx, ft_lstnew(ft_strdup(*input_arr)));
 		// ft_printf("test 2\n");
 		input_arr++;
 		// ft_printf("test: %s\n", *input_arr);

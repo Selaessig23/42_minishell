@@ -44,8 +44,15 @@ int	main(int argc, char **argv)
 			// otherwise I would add this function call to create_nodes-function
 			// in lexer.c
 			lexx = ft_tokenizer(input_arr);
-			ft_test_ll_print(lexx, input_arr);
+			//comment out this free-function if ft_test_arr_print is in use
+			// ft_test_ll_print(lexx, prompt);
+			ft_free(input_arr);
+			//to seperate debug-infos of lexer from bash-output
+			ft_printf("\n");
+			if (!ft_syntax(lexx))
+				ft_test_ll_print(lexx, prompt);
 		}
+		ft_free_ll(&lexx);
 		rl_clear_history();
 		free(prompt);
 		prompt = NULL;

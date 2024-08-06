@@ -83,7 +83,7 @@ static char	*print_tokens(int i)
 /**
  * test function to print the content of the linked list
  */
-void	ft_test_ll_print(t_list *lexx, char **input_arr)
+void	ft_test_ll_print(t_list *lexx, char *prompt)
 {
 	t_list	*curr;
 	char	*token_print;
@@ -97,7 +97,9 @@ void	ft_test_ll_print(t_list *lexx, char **input_arr)
 		if (!ft_strncmp(curr->content, "exit", 4) 
 			&& ft_strlen(curr->content) == 4)
 		{
-			ft_free(input_arr);
+			// ft_free(input_arr);
+			free(prompt);
+			prompt = NULL;
 			ft_free_ll(&lexx);
 			rl_clear_history();
 			exit(EXIT_SUCCESS);
@@ -125,6 +127,6 @@ void	ft_test_ll_print(t_list *lexx, char **input_arr)
 		i++;
 		curr = curr->next;
 	}
-	ft_free(input_arr);
+	// ft_free(input_arr);
 	ft_free_ll(&lexx);
 }

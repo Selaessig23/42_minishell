@@ -100,7 +100,10 @@ t_list	*ft_tokenizer(char **input_arr);
 void	ft_free_ll(t_list **ll);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt);
-void	ft_test_ll_print(t_list *lexx, char **input_arr);
-
+void	ft_test_ll_print(t_list *lexx, char *prompt);
+//syntax.c
+int		ft_syntax(t_list *lexx);
+//syntaxerrors.c
+void	ft_syntax_errors(t_list *lexx, int errorno);
 
 #endif

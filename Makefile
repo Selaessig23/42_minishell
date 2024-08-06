@@ -6,7 +6,7 @@
 #    By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 09:59:44 by mstracke          #+#    #+#              #
-#    Updated: 2024/08/05 17:25:16 by mstracke         ###   ########.fr        #
+#    Updated: 2024/08/06 16:54:10 by mstracke         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,8 @@ SRCS =	main.c \
 		ft_split_quotes.c \
 		lexer.c \
 		tokenizer.c \
+		syntax.c \
+		syntaxerrors.c \
 		testprints.c
 #		inputcheck.c \
 #		exe.c \
