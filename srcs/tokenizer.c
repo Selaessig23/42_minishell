@@ -1,23 +1,21 @@
 
 #include "minishell.h"
+// to be able to use tgetstr
 // #include <curses.h>
 // #include <term.h>
 
 /**
  * DESRIPTION: 
  * in this file the cleaned input and by delimiters separated array of strings
- * (1) will be transformed to a linked list called lexer
+ * (1) will be transformed to a linked list called lexx
  * (2) data of linked list will be initiated (esps. the tokens)
- * (3) analyses data if command line input has to be expanded
- * if last token of linked list is quoted string && last char of value does  
- * 3rd / 4th (?) it integrates variables if listed within a word 
- * and deletes the quotesexer-part of creati
- * 3rd / 4th it creates an linked list out of the array of strings 
- * wich saves command right, command left, value, token (word / operator)
+ * (?3?) analyses data if command line input has to be expanded 
  */
 
 /**
- * function to free the linked list
+ * @brief function to free the linked list
+ * 
+ * @param ll the linked list to free
  */
 void	ft_free_ll(t_list **ll)
 {
@@ -33,37 +31,79 @@ void	ft_free_ll(t_list **ll)
 	}
 	curr = NULL;
 }
-bool helper(char *content, char checker)
+
+/**
+ * @brief function to check the occurance of char in string
+ * 
+ * @param content the string to search in
+ * @param checker the char to search for
+ */
+static int	ft_check_totalchar(char *content, char checker)
+{
+	int	i;
+
+	i = 0;
+	while (*content)
+	{
+		if (*content == checker)
+			i++;
+		content++;
+	}
+	return (i);
+}
+
+/**
+ * @brief helper function for ft_creat_str_token, 
+ * that checks if last character of string content
+ * is equal to char checker
+ * 
+ * @param content the string to seach in
+ * @param checker the char to search for
+ */
+static bool	ft_check_lastchar(char *content, char checker)
 {
 	if (content[ft_strlen(content) - 1] == checker)
 		return (0);
 	else
 		return (1);
 }
+
 /**
+ * @brief function to initiate variable token of linked list lexx,
+ * here: alls kinds of strings
  * 
+ * @param linked list with cleaned input of 
+ * command line input
  */
 static void	ft_creat_str_token(t_list *lexx)
 {
 	if (!ft_strncmp(lexx->content, "\'", 1)
-		&& !helper(lexx->content, '\''))
-		lexx->token = 2;
+		&& !ft_check_lastchar(lexx->content, '\''))
+		lexx->token = 3;
 	else if (!ft_strncmp(lexx->content, "\'", 1)
-		&& helper(lexx->content, '\''))
+		&& ft_check_lastchar(lexx->content, '\'')
+		&& ft_check_totalchar(lexx->content, '\'') > 1)
+		lexx->token = 10;
+	else if (!ft_strncmp(lexx->content, "\'", 1)
+		&& ft_check_lastchar(lexx->content, '\''))
 		lexx->token = 9;
 	else if (!ft_strncmp(lexx->content, "\"", 1)
-		&& !helper(lexx->content, '\"'))
-		lexx->token = 3;
+		&& !ft_check_lastchar(lexx->content, '\"'))
+		lexx->token = 2;
 	else if (!ft_strncmp(lexx->content, "\"", 1)
-		&& helper(lexx->content, '\"'))
+		&& ft_check_lastchar(lexx->content, '\"')
+		&& ft_check_totalchar(lexx->content, '\"') > 1)
+		lexx->token = 10;
+	else if (!ft_strncmp(lexx->content, "\"", 1)
+		&& ft_check_lastchar(lexx->content, '\"'))
 		lexx->token = 8;
 	else
 		lexx->token = 1;
-
 }
 
 /**
- * @brief function to initiate the tokens
+ * @brief function to initiate variable token of linked list lexx,
+ * here: all operators
  * 
  * @param lexx linked list with cleaned input of 
  * command line input
@@ -163,10 +203,5 @@ t_list	*ft_tokenizer(char **input_arr)
 	ft_creat_list(input_arr, &lexx);
 	ft_creat_tokens(lexx);
 	// ft_cline_expander(lexx);
-	// if (((ft_lstlast(lexx))->token == 'DOUBLE-QUOTED'
-	// 		&& (ft_lstlast(lexx))->content[(ft_strlen(content) - 1)] != "\"")
-	// 	|| ((ft_lstlast(lexx))->token == 'SINGLE-QUOTED'
-	// 		&& (ft_lstlast(lexx))->content[(ft_strlen(content) - 1)] != "\'"))
-	// 		ft_expander(&lexx);
 	return (lexx);
 }

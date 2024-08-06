@@ -74,16 +74,19 @@ static char	*print_tokens(int i)
 		return (ft_strdup("D_QUOTED_F"));
 	else if (i == 9)
 		return (ft_strdup("S_QUOTED_F"));
+	else if (i == 10)
+		return (ft_strdup("Q_WORD"));
 	else
 		return (NULL);
 }
+
 /**
  * test function to print the content of the linked list
  */
-void	test_print(t_list *lexx)
+void	ft_test_ll_print(t_list *lexx, char **input_arr)
 {
 	t_list	*curr;
-	char 	*token_print;
+	char	*token_print;
 	int		i;
 
 	i = 0;
@@ -94,7 +97,7 @@ void	test_print(t_list *lexx)
 		if (!ft_strncmp(curr->content, "exit", 4) 
 			&& ft_strlen(curr->content) == 4)
 		{
-			//valgrind-error as prompt, input_arr, 
+			ft_free(input_arr);
 			ft_free_ll(&lexx);
 			rl_clear_history();
 			exit(EXIT_SUCCESS);
@@ -122,4 +125,6 @@ void	test_print(t_list *lexx)
 		i++;
 		curr = curr->next;
 	}
+	ft_free(input_arr);
+	ft_free_ll(&lexx);
 }

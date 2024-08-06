@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 19:32:22 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/08/05 12:16:27 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/08/06 10:28:10 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef enum e_tokentype {
 	REDIRECT_OUTPUT = 7,
 	D_QUOTED_F = 8, 
 	S_QUOTED_F = 9, 
+	Q_WORD = 10,
 }	t_tokentype;
 
 // commented out as it was redefined for minishell.h
