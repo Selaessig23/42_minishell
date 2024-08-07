@@ -51,6 +51,8 @@ int	main(int argc, char **argv)
 			ft_printf("\n");
 			if (!ft_syntax(lexx))
 				ft_test_ll_print(lexx, prompt);
+			else
+				ft_free_ll(&lexx);
 		}
 		ft_free_ll(&lexx);
 		rl_clear_history();
