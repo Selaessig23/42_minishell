@@ -57,24 +57,28 @@ void ft_test_arr_print(char **input_arr, char *prompt)
 static char	*print_tokens(int i)
 {
 	if (i == 1)
-		return (ft_strdup("WORD"));
-	else if (i == 2)
-		return (ft_strdup("D_QUOTED"));
-	else if (i == 3)
-		return (ft_strdup("S_QUOTED"));
-	else if (i == 4)
 		return (ft_strdup("PIPE"));
-	else if (i == 5)
+	else if (i == 2)
+		return (ft_strdup("SEMI"));
+	else if (i == 3)
 		return (ft_strdup("HEREDOC"));
+	else if (i == 4)
+		return (ft_strdup("REDIRECT_IN"));
+	else if (i == 5)
+		return (ft_strdup("REDIRECT_OUT"));
 	else if (i == 6)
-		return (ft_strdup("REDIRECT_INPUT"));
-	else if (i == 7)
-		return (ft_strdup("REDIRECT_OUTPUT"));
-	else if (i == 8)
+		return (ft_strdup("REDIRECT_OUT_ADD"));
+	else if (i == 20)
+		return (ft_strdup("WORD"));
+	else if (i == 21)
+		return (ft_strdup("D_QUOTED"));
+	else if (i == 22)
+		return (ft_strdup("S_QUOTED"));
+	else if (i == 23)
 		return (ft_strdup("D_QUOTED_F"));
-	else if (i == 9)
+	else if (i == 24)
 		return (ft_strdup("S_QUOTED_F"));
-	else if (i == 10)
+	else if (i == 25)
 		return (ft_strdup("Q_WORD"));
 	else
 		return (NULL);

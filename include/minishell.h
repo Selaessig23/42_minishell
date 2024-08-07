@@ -31,16 +31,18 @@ extern char	**environ;
 // to define all different tokens
 // see libft_bonus
 // typedef enum e_tokentype {
-// 	WORD = 1,
-// 	D_QUOTED = 2, //double quoted word
-// 	S_QUOTED = 3, //single quoted word
-// 	PIPE = 4,
-// 	HEREDOC = 5,
-// 	REDIRECT_INPUT = 6,
-// 	REDIRECT_OUTPUT = 7,
-// 	D_QUOTED_F = 8, //to define cases like 'argument1withoutquotend
-// 	S_QUOTED_F = 9, //to define cases like "argument1withoutquotend
-// 	Q_WORD = 10, //to define cases like "argument1"withoutspaceafterquotes and 'argument1'withoutspaceafterquotes
+// 	PIPE = 1,
+//  SEMI = 2
+// 	HEREDOC = 3,
+// 	REDIRECT_IN = 4,
+// 	REDIRECT_OUT = 5,
+// 	REDIRECT_OUT_APP = 6,
+// 	WORD = 20,
+// 	D_QUOTED = 21, //double quoted word
+// 	S_QUOTED = 22, //single quoted word
+// 	D_QUOTED_F = 23, //to define cases like 'argument1withoutquotend
+// 	S_QUOTED_F = 24, //to define cases like "argument1withoutquotend
+// 	Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes and 'argument1'withoutspaceafterquotes
 // }	t_tokentype;
 
 // linked list for lexer analysis -> token system, defined in libft_bonus.h

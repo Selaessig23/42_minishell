@@ -70,7 +70,8 @@ static bool	ft_check_lastchar(char *content, char checker)
 }
 
 /**
- * @brief function to initiate variable token of linked list lexx,
+ * @brief helper function of ft_creat_tokens
+ * to initiate variable token of linked list lexx,
  * here: alls kinds of strings
  * 
  * @param linked list with cleaned input of 
@@ -80,31 +81,55 @@ static void	ft_creat_str_token(t_list *lexx)
 {
 	if (!ft_strncmp(lexx->content, "\'", 1)
 		&& !ft_check_lastchar(lexx->content, '\''))
-		lexx->token = 3;
+		lexx->token = 22;
 	else if (!ft_strncmp(lexx->content, "\'", 1)
 		&& ft_check_lastchar(lexx->content, '\'')
 		&& ft_check_totalchar(lexx->content, '\'') > 1)
-		lexx->token = 10;
+		lexx->token = 25;
 	else if (!ft_strncmp(lexx->content, "\'", 1)
 		&& ft_check_lastchar(lexx->content, '\''))
-		lexx->token = 9;
+		lexx->token = 24;
 	else if (!ft_strncmp(lexx->content, "\"", 1)
 		&& !ft_check_lastchar(lexx->content, '\"'))
-		lexx->token = 2;
+		lexx->token = 21;
 	else if (!ft_strncmp(lexx->content, "\"", 1)
 		&& ft_check_lastchar(lexx->content, '\"')
 		&& ft_check_totalchar(lexx->content, '\"') > 1)
-		lexx->token = 10;
+		lexx->token = 25;
 	else if (!ft_strncmp(lexx->content, "\"", 1)
 		&& ft_check_lastchar(lexx->content, '\"'))
-		lexx->token = 8;
+		lexx->token = 23;
 	else
-		lexx->token = 1;
+		lexx->token = 20;
+}
+
+/**
+ * @brief helper function of ft_creat_tokens
+ * to initiate variable token of linked list lexx,
+ * here: alls kinds of redirections
+ * 
+ * @param linked list with cleaned input of 
+ * command line input
+ */
+static void	ft_creat_redir_token(t_list *lexx)
+{
+	if ((!ft_strncmp(lexx->content, ">>", ft_strlen(">>")) 
+			&& ft_strlen(lexx->content) == ft_strlen(">>")))
+		lexx->token = 6;
+	else if ((!ft_strncmp(lexx->content, ">", ft_strlen(">")) 
+			&& ft_strlen(lexx->content) == ft_strlen(">")))
+		lexx->token = 5;
+	else if ((!ft_strncmp(lexx->content, "<<", ft_strlen("<<")) 
+			&& ft_strlen(lexx->content) == ft_strlen("<<")))
+		lexx->token = 3;
+	else if ((!ft_strncmp(lexx->content, "<", ft_strlen("<")) 
+			&& ft_strlen(lexx->content) == ft_strlen("<")))
+		lexx->token = 4;
 }
 
 /**
  * @brief function to initiate variable token of linked list lexx,
- * here: all operators
+ * here: operators (except redirect operators)
  * 
  * @param lexx linked list with cleaned input of 
  * command line input
@@ -118,18 +143,16 @@ static void	ft_creat_tokens(t_list *lexx)
 	{
 		if ((!ft_strncmp(curr->content, "|", ft_strlen("|")) 
 				&& ft_strlen(curr->content) == ft_strlen("|")))
-			curr->token = 4;
-		else if ((!ft_strncmp(curr->content, ">>", ft_strlen(">>")) 
-				&& ft_strlen(curr->content) == ft_strlen(">>")))
-			curr->token = 5;
-		else if ((!ft_strncmp(curr->content, ">", ft_strlen(">")) 
-				&& ft_strlen(curr->content) == ft_strlen(">")))
-			curr->token = 6;
-		else if ((!ft_strncmp(curr->content, "<", ft_strlen("<")) 
-				&& ft_strlen(curr->content) == ft_strlen("<")))
-			curr->token = 7;
+			curr->token = 1;
+		else if ((!ft_strncmp(curr->content, ";", ft_strlen(";")) 
+				&& ft_strlen(curr->content) == ft_strlen(";")))
+			curr->token = 2;
 		else
-			ft_creat_str_token(curr);
+		{
+			ft_creat_redir_token(curr);
+			if (!curr->token)
+				ft_creat_str_token(curr);
+		}
 		curr = curr->next;
 	}
 }
