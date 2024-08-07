@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+         #
+#    By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 09:59:44 by mstracke          #+#    #+#              #
-#    Updated: 2024/07/24 11:34:43 by mstracke         ###   ########.fr        #
+#    Updated: 2024/08/05 18:25:59 by mpeshko          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,9 @@ RLFLAG = -lreadline
 SRCS =	main.c \
 		error_handling.c \
 		ft_split_quotes.c \
-		lexer.c
+		lexer.c \
+		extra_prompt.c \
+		str_spaces_trimer.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c
