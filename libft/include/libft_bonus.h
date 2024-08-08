@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 19:32:22 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/08/01 13:26:47 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:46:03 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,15 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <libft.h>
 
-typedef struct	s_list
-{
-    void		*content;
-    struct s_list	*next;
+typedef struct s_list{
+	void			*content;
+	struct s_list	*next;
 }			t_list;
 
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
-int	ft_lstsize(t_list *lst);
+int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));

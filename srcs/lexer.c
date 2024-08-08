@@ -247,7 +247,9 @@ char	**create_nodes(char *readline_input)
 {
 	char	*clean_input;
 	char	**input_arr;
+	// t_list	*lexx;
 
+	// lexx = NULL;
 	clean_input = NULL;
 	input_arr = NULL;
 	while (is_open_pipe(readline_input))
@@ -266,6 +268,7 @@ char	**create_nodes(char *readline_input)
 		// TODO: error_handling;
 		exit(EXIT_FAILURE);
 	}
-	// TO-DO: create a linked list
+	// lexx = ft_tokenizer(input_arr);
+	//return (lexx);
 	return (input_arr);
 }

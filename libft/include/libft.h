@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:07:24 by mstracke          #+#    #+#             */
-/*   Updated: 2023/12/07 15:16:46 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/08/05 12:12:44 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <ctype.h>
 # include "ft_printf.h"
 # include "get_next_line_bonus.h"
+# include "libft_bonus.h"
 
 //part-1 functions
 int		ft_isalpha(int c); 
@@ -62,6 +63,8 @@ void	ft_putnbr_fd(int n, int fd);
 //own functions
 void	ft_free(char **arr);
 size_t	ft_arrlen(char **arr_str);
+// void	*ft_lstnew_gen(void *content, size_t node_size);
+// void	ft_lstadd_back_gen(void **lst, void *new);
 
 //printf functions
 /*int		ft_printf(const char *format, ...);

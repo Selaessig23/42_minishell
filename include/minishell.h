@@ -1,29 +1,19 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/03 12:20:13 by mstracke          #+#    #+#             */
-/*   Updated: 2024/08/06 17:45:23 by mpeshko          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 // to avoid duplications
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-// stdio.h (for debugging) | stdlib.h (for malloc & free) |
-// unistd.h (for write) is included in libft.h
-#include "../libft/include/libft.h"
-// #include <limits.h>
-//  to use data type bool
-#include <stdbool.h>
-// to provide a standardized way to report and interpret error conditions
-#include <errno.h>
-// to be able to work with function waitpid
-#include <sys/wait.h>
+//stdio.h (for debugging) | stdlib.h (for malloc & free) | 
+//unistd.h (for write) is included in libft.h
+# include "../libft/include/libft.h"
+# include "../libft/include/libft_bonus.h"
+//#include <limits.h>
+//to use data type bool
+# include <stdbool.h>
+//to provide a standardized way to report and interpret error conditions
+# include <errno.h>
+//to be able to work with function waitpid
+# include <sys/wait.h>
 // to be able to work with function readline
 // we also have to include -lreadline to our Makefile
 // to consider readline while compiling
@@ -31,35 +21,61 @@
 #include <readline/readline.h>
 #include <stdio.h>
 
-// define error message
-#define INPUT_ERROR "Not correct number of input arguments to execute minishell\n"
+//define error message
+# define INPUT_ERROR "Not correct number of input arguments\
+to execute minishell\n"
 
-// it is "a good practice" to use a global variable for environment instead of picking it in the main
-extern char **environ;
+//it is "a good practice" to use a global variable for environment 
+//instead of picking it in the main
+extern char	**environ;
+
+// to define all different tokens
+// see libft_bonus
+typedef enum e_tokentype {
+	PIPE = 1,
+	SEMI = 2,
+	HEREDOC = 3,
+	REDIRECT_IN = 4,
+	REDIRECT_OUT = 5,
+	REDIRECT_OUT_APP = 6,
+	WORD = 20,
+	D_QUOTED = 21, //double quoted word
+	S_QUOTED = 22, //single quoted word
+	D_QUOTED_F = 23, //to define cases like 'argument1withoutquotend
+	S_QUOTED_F = 24, //to define cases like "argument1withoutquotend
+	Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes and 'argument1'withoutspaceafterquotes
+}	t_tokentype;
+
+// struct for lexer analysis
+typedef struct s_lexer{
+	char			*value;
+	t_tokentype		token;
+}				t_lexer;
+
 
 // Struct representing command data
 typedef struct s_data
 {
-	int infile;	 // Input file descriptor (defaults to stdin)
-	int outfile; // Output file descriptor (defaults to stdout)
-	char **cmd;	 // Command and arguments
-} t_data;
+	int		infile; // Input file descriptor (defaults to stdin)
+	int		outfile; // Output file descriptor (defaults to stdout)
+	char	**cmd; // Command and arguments
+}					t_data;
 
 // Linked list containing a s_data nodes with
 // all commands separated by pipes
-typedef struct s_list
-{
-	t_data *cmds;		 // Command data
-	struct t_list *next; // Pointer to the next list node
-} t_list;
+// typedef struct s_list
+// {
+// 	t_data			*cmds; // Command data
+// 	struct t_list	*next; // Pointer to the next list node
+// }					t_list;
 
 // Main struct containing the list of commands and
 // a copy of the environment
 typedef struct s_big
 {
-	t_list *list; // Linked list of commands
-	char **env;	  // Copy of environment variables
-} t_big;
+	t_list	*list; // Linked list of commands
+	char	**env; // Copy of environment variables
+}					t_big;
 
 ////////////////////////////
 // maybe rename to bin_path for binary path
@@ -71,6 +87,7 @@ typedef struct s_envp
 	char *infile;
 	size_t commands_no;
 } t_envp;
+
 
 // main.c
 //
@@ -93,12 +110,28 @@ typedef struct s_envp
 void error_handling(int err);
 char **create_nodes(char *readline_str);
 char **ft_split_quotes(char const *s, char c);
-
-// new Marina's functions
+// extra_prompt.c
 int is_open_pipe(char *clean_input);
 void close_pipe(char **readline_input);
 char *extra_prompt(void);
 void update_read_input(char **main, char *extra);
+//str_spaces_trimer.c
 void trim_out_spaces(char **str);
+//error_handling.c
+void	error_handling(int err);
+//lexer.c
+char	**create_nodes(char *readline_str);
+//ft_split_quotes.c
+char	**ft_split_quotes(char const *s, char c);
+//tokenizer.c
+t_list	*ft_tokenizer(char **input_arr);
+void	ft_free_ll(t_list **ll);
+//testprints.c --> only test functions
+void	ft_test_arr_print(char **input_arr, char *prompt);
+void	ft_test_ll_print(t_list *lexx, char *prompt);
+//syntax.c
+int		ft_syntax(t_list *lexx);
+//syntaxerrors.c
+void	ft_syntax_errors(t_list *lexx, int errorno);
 
 #endif

@@ -1,14 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/01/11 09:59:44 by mstracke          #+#    #+#              #
-#    Updated: 2024/08/05 18:25:59 by mpeshko          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
 #declarations
 #variables
@@ -27,7 +16,11 @@ SRCS =	main.c \
 		ft_split_quotes.c \
 		lexer.c \
 		extra_prompt.c \
-		str_spaces_trimer.c
+		str_spaces_trimer.c \
+		tokenizer.c \
+		syntax.c \
+		syntaxerrors.c \
+		testprints.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c
