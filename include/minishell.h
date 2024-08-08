@@ -22,7 +22,8 @@
 # include <readline/history.h>
 
 //define error message
-# define INPUT_ERROR "Not correct number of input arguments to execute minishell\n"
+# define INPUT_ERROR "Not correct number of input arguments\
+to execute minishell\n"
 
 //it is "a good practice" to use a global variable for environment 
 //instead of picking it in the main
@@ -30,27 +31,26 @@ extern char	**environ;
 
 // to define all different tokens
 // see libft_bonus
-// typedef enum e_tokentype {
-// 	PIPE = 1,
-//  SEMI = 2
-// 	HEREDOC = 3,
-// 	REDIRECT_IN = 4,
-// 	REDIRECT_OUT = 5,
-// 	REDIRECT_OUT_APP = 6,
-// 	WORD = 20,
-// 	D_QUOTED = 21, //double quoted word
-// 	S_QUOTED = 22, //single quoted word
-// 	D_QUOTED_F = 23, //to define cases like 'argument1withoutquotend
-// 	S_QUOTED_F = 24, //to define cases like "argument1withoutquotend
-// 	Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes and 'argument1'withoutspaceafterquotes
-// }	t_tokentype;
+typedef enum e_tokentype {
+	PIPE = 1,
+	SEMI = 2,
+	HEREDOC = 3,
+	REDIRECT_IN = 4,
+	REDIRECT_OUT = 5,
+	REDIRECT_OUT_APP = 6,
+	WORD = 20,
+	D_QUOTED = 21, //double quoted word
+	S_QUOTED = 22, //single quoted word
+	D_QUOTED_F = 23, //to define cases like 'argument1withoutquotend
+	S_QUOTED_F = 24, //to define cases like "argument1withoutquotend
+	Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes and 'argument1'withoutspaceafterquotes
+}	t_tokentype;
 
-// linked list for lexer analysis -> token system, defined in libft_bonus.h
-// does not work
-// typedef struct s_lexlist{
-// 	t_list	base;
-// 	t_tokentype		token;
-// }				t_lexlist;
+// struct for lexer analysis
+typedef struct s_lexer{
+	char			*value;
+	t_tokentype		token;
+}				t_lexer;
 
 
 // Struct representing command data

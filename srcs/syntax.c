@@ -20,8 +20,9 @@ static int	ft_redirect_check(t_list *lexx)
 	curr = lexx;
 	while (curr != NULL)
 	{
-		if ((curr->token >= 3 && curr->token <= 6)
-			&& (curr->next->token < 20))
+		if ((((t_lexer *)curr->content)->token >= 3 
+				&& ((t_lexer *)curr->content)->token <= 6)
+			&& (((t_lexer *)curr->next->content)->token < 20))
 		{
 			ft_syntax_errors(lexx->next, 1);
 			return (1);
@@ -64,18 +65,17 @@ static int	ft_pipe_check(t_list *lexx)
 /**
  * @brief function that checks very first input argument
  * 
- * @param lexx linked list with cleaned command line input
+ * @param start first node of cleaned command line input
  */
 static int	ft_start_check(t_list *start)
 {
-	if (start->token == 4)
+	if (((t_lexer *)start->content)->token == 1)
 	{
 		ft_syntax_errors(start, 1);
 		return (1);
 	}
-	else if ((start->token == 5 
-			|| start->token == 6
-			|| start->token == 7)
+	else if ((((t_lexer *)start->content)->token <= 6 
+			&& ((t_lexer *)start->content)->token >= 3)
 		&& start->next == NULL)
 	{
 		ft_syntax_errors(start, 2);
@@ -96,10 +96,11 @@ static int	ft_quotes_check(t_list *lexx)
 	t_list	*curr;
 
 	curr = lexx;
+	// ft_printf("test token: %d\n", (int)curr->token);
 	while (curr != NULL)
 	{
-		if (curr->token == 23
-			|| curr->token == 24)
+		if (((t_lexer *)curr->content)->token == 23
+			|| ((t_lexer *)curr->content)->token == 24)
 		{
 			ft_syntax_errors(curr, 3);
 			return (1);
@@ -116,8 +117,6 @@ static int	ft_quotes_check(t_list *lexx)
  */
 int	ft_syntax(t_list *lexx)
 {
-	// t_list	*curr;
-
 	if (ft_quotes_check(lexx))
 		return (1);
 	else if (ft_start_check(lexx))

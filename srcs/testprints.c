@@ -98,8 +98,8 @@ void	ft_test_ll_print(t_list *lexx, char *prompt)
 	curr = lexx;
 	while (curr != NULL)
 	{
-		if (!ft_strncmp(curr->content, "exit", 4) 
-			&& ft_strlen(curr->content) == 4)
+		if (!ft_strncmp(((t_lexer *)curr->content)->value, "exit", 4) 
+			&& ft_strlen(((t_lexer *)curr->content)->value) == 4)
 		{
 			// ft_free(input_arr);
 			free(prompt);
@@ -108,8 +108,8 @@ void	ft_test_ll_print(t_list *lexx, char *prompt)
 			rl_clear_history();
 			exit(EXIT_SUCCESS);
 		}
-		else if (!ft_strncmp(curr->content, "env", 3) 
-			&& ft_strlen(curr->content) == 3)
+		else if (!ft_strncmp(((t_lexer *)curr->content)->value, "env", 3) 
+			&& ft_strlen(((t_lexer *)curr->content)->value) == 3)
 		{
 			while (*__environ)
 			{
@@ -119,13 +119,13 @@ void	ft_test_ll_print(t_list *lexx, char *prompt)
 		}
 		else
 		{
-			token_print = print_tokens((int)curr->token);
-			ft_printf("node (%i): %s\n", i, curr->content);
+			token_print = print_tokens(((t_lexer *)curr->content)->token);
+			ft_printf("node (%i): %s\n", i, ((t_lexer *)curr->content)->value);
 			// ft_printf("token (%i): %d\n", i, (int)curr->token);
 			ft_printf("token (%i): %s\n", i, token_print);
 			free (token_print);
-			if (!ft_strncmp(curr->content, "$USER", ft_strlen("$USER"))
-				&& ft_strlen("$USER") == ft_strlen(curr->content))
+			if ((!ft_strncmp(((t_lexer *)curr->content)->value, "$USER", ft_strlen("$USER")))
+				&& (ft_strlen("$USER") == ft_strlen(((t_lexer *)curr->content)->value)))
 				ft_printf("after expand function $USER is \"user_name\"\n");
 		}
 		i++;

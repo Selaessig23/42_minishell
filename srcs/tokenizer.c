@@ -27,6 +27,7 @@ void	ft_free_ll(t_list **ll)
 	{
 		temp = curr;
 		curr = curr->next;
+		free(((t_lexer *)temp->content)->value);
 		free(temp->content);
 		free(temp);
 	}
@@ -74,33 +75,33 @@ static bool	ft_check_lastchar(char *content, char checker)
  * to initiate variable token of linked list lexx,
  * here: alls kinds of strings
  * 
- * @param linked list with cleaned input of 
+ * @param input_arr string with cleaned input of 
  * command line input
  */
-static void	ft_creat_str_token(t_list *lexx)
+static t_tokentype	ft_creat_str_token(char *input_arr)
 {
-	if (!ft_strncmp(lexx->content, "\'", 1)
-		&& !ft_check_lastchar(lexx->content, '\''))
-		lexx->token = 22;
-	else if (!ft_strncmp(lexx->content, "\'", 1)
-		&& ft_check_lastchar(lexx->content, '\'')
-		&& ft_check_totalchar(lexx->content, '\'') > 1)
-		lexx->token = 25;
-	else if (!ft_strncmp(lexx->content, "\'", 1)
-		&& ft_check_lastchar(lexx->content, '\''))
-		lexx->token = 24;
-	else if (!ft_strncmp(lexx->content, "\"", 1)
-		&& !ft_check_lastchar(lexx->content, '\"'))
-		lexx->token = 21;
-	else if (!ft_strncmp(lexx->content, "\"", 1)
-		&& ft_check_lastchar(lexx->content, '\"')
-		&& ft_check_totalchar(lexx->content, '\"') > 1)
-		lexx->token = 25;
-	else if (!ft_strncmp(lexx->content, "\"", 1)
-		&& ft_check_lastchar(lexx->content, '\"'))
-		lexx->token = 23;
+	if (!ft_strncmp(input_arr, "\'", 1)
+		&& !ft_check_lastchar(input_arr, '\''))
+		return (22);
+	else if (!ft_strncmp(input_arr, "\'", 1)
+		&& ft_check_lastchar(input_arr, '\'')
+		&& ft_check_totalchar(input_arr, '\'') > 1)
+		return (25);
+	else if (!ft_strncmp(input_arr, "\'", 1)
+		&& ft_check_lastchar(input_arr, '\''))
+		return (24);
+	else if (!ft_strncmp(input_arr, "\"", 1)
+		&& !ft_check_lastchar(input_arr, '\"'))
+		return (21);
+	else if (!ft_strncmp(input_arr, "\"", 1)
+		&& ft_check_lastchar(input_arr, '\"')
+		&& ft_check_totalchar(input_arr, '\"') > 1)
+		return (25);
+	else if (!ft_strncmp(input_arr, "\"", 1)
+		&& ft_check_lastchar(input_arr, '\"'))
+		return (23);
 	else
-		lexx->token = 20;
+		return (20);
 }
 
 /**
@@ -108,53 +109,52 @@ static void	ft_creat_str_token(t_list *lexx)
  * to initiate variable token of linked list lexx,
  * here: alls kinds of redirections
  * 
- * @param linked list with cleaned input of 
+ * @param input_arr string with cleaned input of 
  * command line input
  */
-static void	ft_creat_redir_token(t_list *lexx)
+static t_tokentype	ft_creat_redir_token(char *input_arr)
 {
-	if ((!ft_strncmp(lexx->content, ">>", ft_strlen(">>")) 
-			&& ft_strlen(lexx->content) == ft_strlen(">>")))
-		lexx->token = 6;
-	else if ((!ft_strncmp(lexx->content, ">", ft_strlen(">")) 
-			&& ft_strlen(lexx->content) == ft_strlen(">")))
-		lexx->token = 5;
-	else if ((!ft_strncmp(lexx->content, "<<", ft_strlen("<<")) 
-			&& ft_strlen(lexx->content) == ft_strlen("<<")))
-		lexx->token = 3;
-	else if ((!ft_strncmp(lexx->content, "<", ft_strlen("<")) 
-			&& ft_strlen(lexx->content) == ft_strlen("<")))
-		lexx->token = 4;
+	if ((!ft_strncmp(input_arr, ">>", ft_strlen(">>")) 
+			&& ft_strlen(input_arr) == ft_strlen(">>")))
+		return (6);
+	else if ((!ft_strncmp(input_arr, ">", ft_strlen(">")) 
+			&& ft_strlen(input_arr) == ft_strlen(">")))
+		return (5);
+	else if ((!ft_strncmp(input_arr, "<<", ft_strlen("<<")) 
+			&& ft_strlen(input_arr) == ft_strlen("<<")))
+		return (3);
+	else if ((!ft_strncmp(input_arr, "<", ft_strlen("<")) 
+			&& ft_strlen(input_arr) == ft_strlen("<")))
+		return (4);
+	else 
+		return (0);
 }
 
 /**
  * @brief function to initiate variable token of linked list lexx,
  * here: operators (except redirect operators)
  * 
- * @param lexx linked list with cleaned input of 
+ * @param input_arr string with cleaned input of 
  * command line input
  */
-static void	ft_creat_tokens(t_list *lexx)
+static t_tokentype	ft_creat_tokens(char *input_arr)
 {
-	t_list	*curr;
+	t_tokentype	token;
 
-	curr = lexx;
-	while (curr != NULL)
+	token = 0;
+	if ((!ft_strncmp(input_arr, "|", ft_strlen("|")) 
+			&& ft_strlen(input_arr) == ft_strlen("|")))
+		token = 1;
+	else if ((!ft_strncmp(input_arr, ";", ft_strlen(";")) 
+			&& ft_strlen(input_arr) == ft_strlen(";")))
+		token = 2;
+	else
 	{
-		if ((!ft_strncmp(curr->content, "|", ft_strlen("|")) 
-				&& ft_strlen(curr->content) == ft_strlen("|")))
-			curr->token = 1;
-		else if ((!ft_strncmp(curr->content, ";", ft_strlen(";")) 
-				&& ft_strlen(curr->content) == ft_strlen(";")))
-			curr->token = 2;
-		else
-		{
-			ft_creat_redir_token(curr);
-			if (!curr->token)
-				ft_creat_str_token(curr);
-		}
-		curr = curr->next;
+		token = ft_creat_redir_token(input_arr);
+		if (!token)
+			token = ft_creat_str_token(input_arr);
 	}
+	return (token);
 }
 
 /**
@@ -162,18 +162,22 @@ static void	ft_creat_tokens(t_list *lexx)
  * 
  * @param input_arr the cleaned array of strings created out of the 
  * command line input
+ * @param lexx linked list to prepare all important variables for
+ * syntax analysis
  */
-static void	ft_creat_list(char **input_arr, t_list **lexx)
+static void	ft_init_llist(char **input_arr, t_list **lexx)
 {
+	t_lexer	*lexx_input;
+
+	lexx_input = NULL;
 	while (*input_arr)
 	{
-		// ft_printf("test: %s\n", *input_arr);
-		ft_lstadd_back(lexx, ft_lstnew(ft_strdup(*input_arr)));
-		// ft_printf("test 2\n");
+		lexx_input = ft_calloc(1, sizeof(t_lexer));
+		lexx_input->value = ft_strdup(*input_arr);
+		lexx_input->token = ft_creat_tokens(*input_arr);
+		ft_lstadd_back(lexx, ft_lstnew(lexx_input));
 		input_arr++;
-		// ft_printf("test: %s\n", *input_arr);
 	}
-
 }
 
 /**
@@ -224,8 +228,6 @@ t_list	*ft_tokenizer(char **input_arr)
 	t_list	*lexx;
 
 	lexx = NULL;
-	ft_creat_list(input_arr, &lexx);
-	ft_creat_tokens(lexx);
-	// ft_cline_expander(lexx);
+	ft_init_llist(input_arr, &lexx);
 	return (lexx);
 }
