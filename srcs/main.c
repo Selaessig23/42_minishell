@@ -27,7 +27,6 @@ int	main(int argc, char **argv)
 				// free session
 				exit(EXIT_FAILURE);
 			}
-<<<<<<< HEAD
 			else if (!*input)
 				free(input);
 			else if (input)
@@ -37,16 +36,6 @@ int	main(int argc, char **argv)
 				input_arr = create_nodes(input);
 				if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0],
 							"env", 3) && ft_strlen(input_arr[0]) == 3))
-=======
-			if (input)
-					add_history(input);
-			ft_printf("input length: %i\n", ft_strlen(input));
-			input_arr = create_nodes(input);
-			if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "env",
-						3) && ft_strlen(input_arr[0]) == 3))
-			{
-				while (*__environ)
->>>>>>> b50d9a17b9425c11a6aed61b731f673c28d1eeff
 				{
 					while (*__environ)
 					{
@@ -57,7 +46,6 @@ int	main(int argc, char **argv)
 				else if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0],
 							"exit", 4) && ft_strlen(input_arr[0]) == 4))
 				{
-<<<<<<< HEAD
 					ft_free(input_arr);
 					free(prompt);
 					prompt = NULL;
@@ -75,13 +63,6 @@ int	main(int argc, char **argv)
 				}
 				ft_free(input_arr);
 			}
-=======
-					ft_printf("arr[%i]: %s\n", i, input_arr[i]);
-					i++;
-				}
-			}
-			ft_free(input_arr);
->>>>>>> b50d9a17b9425c11a6aed61b731f673c28d1eeff
 		}
 		rl_clear_history();
 		free(prompt);
