@@ -1,4 +1,5 @@
 #include "minishell.h"
+
 /**
  * DESRIPTION:
  * in this file the lexer-part of creating a shell (NAME?) is organised
@@ -194,7 +195,7 @@ static void	ft_create_clean_input(char *dest, char *src)
 /**
  * @brief function that creates a new cleaned input-string
  * with spaces for an after unquoted operators
- * 
+ *
  * Marina: new function trim_out_spaces.
  * Maybe we can delete it. I created it for extra input,
  * but I shifted it up in a program.
@@ -225,8 +226,6 @@ static char	*ft_clean_input(char *src)
 	return (dest);
 }
 
-
-
 /**
  * @brief function that
  * 1st creates an array of strings out of the cleaned input
@@ -236,7 +235,8 @@ static char	*ft_clean_input(char *src)
  * - extra_prompt - function that takes additional input and concetanates it
  * - with readline_input.
  * Marina:
- * - changes in ft_clean_input: function that trim all leading and trailing spaces.
+ *
+	- changes in ft_clean_input: function that trim all leading and trailing spaces.
  * (It might be that we don't need it, since later same job
  * will be done in ft_split_quotes)
  *
@@ -247,13 +247,16 @@ char	**create_nodes(char *readline_input)
 {
 	char	*clean_input;
 	char	**input_arr;
-	// t_list	*lexx;
 
+	// t_list	*lexx;
 	// lexx = NULL;
 	clean_input = NULL;
 	input_arr = NULL;
 	while (is_open_pipe(readline_input))
+	{
 		close_pipe(&readline_input);
+		ft_printf("readline_input: $%s$\n", readline_input);
+	}
 	clean_input = ft_clean_input(readline_input);
 	if (!clean_input)
 	{
@@ -269,6 +272,6 @@ char	**create_nodes(char *readline_input)
 		exit(EXIT_FAILURE);
 	}
 	// lexx = ft_tokenizer(input_arr);
-	//return (lexx);
+	// return (lexx);
 	return (input_arr);
 }
