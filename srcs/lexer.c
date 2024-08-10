@@ -218,8 +218,10 @@ static char	*ft_clean_input(char *src)
 	// better to use calloc
 	dest = (char *)malloc(sizeof(char) * (len + 1));
 	ft_create_clean_input(dest, src);
-	free(src);
-	src = NULL;
+
+	// free(src);
+	// src = NULL;
+
 	ft_printf("real len of cleaned input: %i\n", ft_strlen(dest));
 	trim_out_spaces(&dest);
 	return (dest);
@@ -241,7 +243,7 @@ static char	*ft_clean_input(char *src)
  * @param readline_str the input of command line read by function readline
  * @return: a linked list with all input keywords or an array of strings???
  */
-char	**create_nodes(char *readline_input)
+char	**create_nodes(char **readline_input)
 {
 	char	*clean_input;
 	char	**input_arr;
@@ -250,9 +252,9 @@ char	**create_nodes(char *readline_input)
 	// lexx = NULL;
 	clean_input = NULL;
 	input_arr = NULL;
-	while (is_open_pipe(readline_input))
-		close_pipe(&readline_input);
-	clean_input = ft_clean_input(readline_input);
+	while (is_open_pipe(*readline_input))
+		close_pipe(readline_input);
+	clean_input = ft_clean_input(*readline_input);
 	if (!clean_input)
 	{
 		// TODO: error_handling;
