@@ -56,7 +56,10 @@ int	main(int argc, char **argv)
 				//to seperate debug-infos of lexer from bash-output
 				ft_printf("\n");
 				if (!ft_syntax(lexx))
+				{
+					// ft_printf("test\n");
 					ft_test_ll_print(lexx, prompt);
+				}
 				else
 					ft_free_ll(&lexx);
 			}

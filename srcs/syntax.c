@@ -22,13 +22,23 @@ static int	ft_redirect_check(t_list *lexx)
 	{
 		if ((((t_lexer *)curr->content)->token >= 3 
 				&& ((t_lexer *)curr->content)->token <= 6)
-			&& (((t_lexer *)curr->next->content)->token < 20))
+			&& (curr->next == NULL))
+
 		{
-			ft_syntax_errors(lexx->next, 1);
+			ft_syntax_errors(curr, 2);
+			return (1);
+		}
+		else if ((((t_lexer *)curr->content)->token >= 3 
+				&& ((t_lexer *)curr->content)->token <= 6)
+			&& ((t_lexer *)curr->next->content)->token < 20)
+
+		{
+			ft_syntax_errors(curr->next, 1);
 			return (1);
 		}
 		curr = curr->next;
 	}
+	// ft_printf("test3\n");
 	return (0);
 }
 
@@ -64,12 +74,15 @@ static int	ft_pipe_check(t_list *lexx)
 
 /**
  * @brief function that checks very first input argument
+ * token 1 = |, 2 = ;
+ * token 3 - 6 = redirect ops
  * 
  * @param start first node of cleaned command line input
  */
 static int	ft_start_check(t_list *start)
 {
-	if (((t_lexer *)start->content)->token == 1)
+	if (((t_lexer *)start->content)->token == 1
+		|| ((t_lexer *)start->content)->token == 2)
 	{
 		ft_syntax_errors(start, 1);
 		return (1);
@@ -81,6 +94,7 @@ static int	ft_start_check(t_list *start)
 		ft_syntax_errors(start, 2);
 		return (1);
 	}
+	// ft_printf("test2\n");
 	return (0);
 }
 
@@ -107,6 +121,7 @@ static int	ft_quotes_check(t_list *lexx)
 		}
 		curr = curr->next;
 	}
+	// ft_printf("test1\n");
 	return (0);
 }
 
@@ -117,6 +132,7 @@ static int	ft_quotes_check(t_list *lexx)
  */
 int	ft_syntax(t_list *lexx)
 {
+	// ft_printf("test0\n");
 	if (ft_quotes_check(lexx))
 		return (1);
 	else if (ft_start_check(lexx))
