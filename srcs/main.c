@@ -27,18 +27,17 @@ int	main(int argc, char **argv)
 				// free session
 				exit(EXIT_FAILURE);
 			}
-			if(*input)
+			if (*input)
 			{
 				if (input)
 				{
-						add_history(input);
-						//integrate history_list for fun
+					add_history(input);
+					// integrate history_list for fun
 				}
 				ft_printf("input length: %i\n", ft_strlen(input));
-				input_arr = create_nodes(input);
-				
-				//free(input);
-				//input = NULL;
+				input_arr = create_nodes(&input);
+				free(input);
+				input = NULL;
 
 				// ft_test_arr_print(input_arr, prompt);
 				// attempt to use both ways, to not destroy the work
@@ -48,10 +47,10 @@ int	main(int argc, char **argv)
 				// ft_printf("test0\n");
 				lexx = ft_tokenizer(input_arr);
 				// ft_printf("test1\n");
-				//comment out this free-function if ft_test_arr_print is in use
+				// comment out this free-function if ft_test_arr_print is in use
 				// ft_test_ll_print(lexx, prompt);
 				ft_free(input_arr);
-				//to seperate debug-infos of lexer from bash-output
+				// to seperate debug-infos of lexer from bash-output
 				ft_printf("\n");
 				if (!ft_syntax(lexx))
 				{

@@ -108,7 +108,6 @@ typedef struct s_envp
 // void	free_struct(t_envp *infos);
 // void	error_handling(int err, t_envp *i, int com_no);
 void error_handling(int err);
-char **create_nodes(char *readline_str);
 char **ft_split_quotes(char const *s, char c);
 // extra_prompt.c
 int is_open_pipe(char *clean_input);
@@ -120,7 +119,7 @@ void trim_out_spaces(char **str);
 //error_handling.c
 void	error_handling(int err);
 //lexer.c
-char	**create_nodes(char *readline_str);
+char	**create_nodes(char **readline_input);
 //ft_split_quotes.c
 char	**ft_split_quotes(char const *s, char c);
 //tokenizer.c
