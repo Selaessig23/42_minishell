@@ -225,8 +225,6 @@ static char	*ft_clean_input(char *src)
 	return (dest);
 }
 
-
-
 /**
  * @brief function that
  * 1st creates an array of strings out of the cleaned input
@@ -269,6 +267,6 @@ char	**create_nodes(char *readline_input)
 		exit(EXIT_FAILURE);
 	}
 	// lexx = ft_tokenizer(input_arr);
-	//return (lexx);
+	// return (lexx);
 	return (input_arr);
 }

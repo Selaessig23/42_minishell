@@ -6,7 +6,7 @@
 int	main(int argc, char **argv)
 {
 	int		exitcode;
-	int		i;
+	//int		i;
 	char	*input;
 	char	*prompt;
 	char	**input_arr;
@@ -14,7 +14,7 @@ int	main(int argc, char **argv)
 
 	(void)argv;
 	lexx = NULL;
-	i = 0;
+	//i = 0;
 	exitcode = 0;
 	if (argc == 1)
 	{
@@ -38,8 +38,10 @@ int	main(int argc, char **argv)
 				}
 				ft_printf("input length: %i\n", ft_strlen(input));
 				input_arr = create_nodes(input);
-				free(input);
-				input = NULL;
+				
+				//free(input);
+				//input = NULL;
+
 				// ft_test_arr_print(input_arr, prompt);
 				// attempt to use both ways, to not destroy the work
 				// with input_arr on extra input of marina
