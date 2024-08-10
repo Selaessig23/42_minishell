@@ -6,7 +6,7 @@
 int	main(int argc, char **argv)
 {
 	int		exitcode;
-	int		i;
+	//int		i;
 	char	*input;
 	char	*prompt;
 	char	**input_arr;
@@ -14,7 +14,7 @@ int	main(int argc, char **argv)
 
 	(void)argv;
 	lexx = NULL;
-	i = 0;
+	//i = 0;
 	exitcode = 0;
 	if (argc == 1)
 	{
