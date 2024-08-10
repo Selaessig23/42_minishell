@@ -79,7 +79,8 @@ void	close_pipe(char **readline_input)
  * The function checks if there is PIPE in the end of input.
  * It ignores all SPACES in the end of the input.
  * It returns 0 if all input is only one PIPE and if
- * if the preceding character (excluding all spaces) is PIPE.
+ * if the preceding character (excluding all spaces) is PIPE '|' or
+ * LESS '<' or GREATER '>'.
  * (c) Marina
  */
 int	is_open_pipe(char *input)
@@ -99,7 +100,8 @@ int	is_open_pipe(char *input)
 		i--;
 		while (input[i] == 32)
 			i--;
-		if (input[i] && input[i] != '|')
+		if (input[i] && input[i] != '|' && input[i] != '>'
+			&& input[i] != '<')
 			return (1);
 		return (0);
 	}

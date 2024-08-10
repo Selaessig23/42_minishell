@@ -13,6 +13,8 @@
 >cat |ls-l
 
 # error because of extra-prompt handling
+// Marina's comment. I fixed my function is_open_pipe.
+// Now it doesn't open extra prompt in these cases:
 echo hi>|
 echo hi | < |
 echo hi |   |
