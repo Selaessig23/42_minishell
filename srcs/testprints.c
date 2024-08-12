@@ -27,27 +27,7 @@ void ft_test_arr_print(char **input_arr, char *prompt)
 		rl_clear_history();
 		exit(EXIT_SUCCESS);
 	}
-	else
-	{
-		i = 0;
-		while (input_arr[i])
-		{
-			if (!ft_strncmp(input_arr[i], "$USER", ft_strlen("$USER"))
-				&& ft_strlen("$USER") == ft_strlen(input_arr[i]))
-			{
-				ft_printf("arr[%i]: %s\n", i, input_arr[i]);
-				ft_printf("after expand function $USER is \"user_name\"\n");
-			}
-			else
-				ft_printf("arr[%i]: %s\n", i, input_arr[i]);
-			// free(*input_arr);
-			i++;
-		}
-		// input_arr = NULL;
-		// ft_putchar_fd('\n', 1);
-	}
 	ft_free(input_arr);
-	// ft_free(input_arr);
 	// 	ft_printf("%s\n", testinput);
 }
 
