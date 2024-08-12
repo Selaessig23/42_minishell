@@ -107,15 +107,15 @@ typedef struct s_envp
 // void	ft_free(char **arr);
 // void	free_struct(t_envp *infos);
 // void	error_handling(int err, t_envp *i, int com_no);
-void error_handling(int err);
-char **ft_split_quotes(char const *s, char c);
+void	error_handling(int err);
+char	**ft_split_quotes(char const *s, char c);
 // extra_prompt.c
-int is_open_pipe(char *clean_input);
-void close_pipe(char **readline_input);
-char *extra_prompt(void);
-void update_read_input(char **main, char *extra);
+int		is_open_pipe(char *clean_input);
+void	close_pipe(char **readline_input);
+char	*extra_prompt(void);
+void	update_read_input(char **main, char *extra);
 //str_spaces_trimer.c
-void trim_out_spaces(char **str);
+void	trim_out_spaces(char **str);
 //error_handling.c
 void	error_handling(int err);
 //lexer.c

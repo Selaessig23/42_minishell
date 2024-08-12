@@ -24,7 +24,7 @@
 void	error_handling(int err)
 {
 	if (err == 4)
-		ft_putstr_fd("PATH not readible from ENVP", 1);
+		ft_putstr_fd("PATH not readable from ENVP", 1);
 	else if (err == 1)
 	{
 		errno = 5;
