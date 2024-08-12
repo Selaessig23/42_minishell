@@ -6,9 +6,6 @@
  */
 void ft_test_arr_print(char **input_arr, char *prompt)
 {
-	int	i;
-
-	i = 0;
 	if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "env",
 						3) && ft_strlen(input_arr[0]) == 3))
 	{

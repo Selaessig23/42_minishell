@@ -118,6 +118,10 @@ void	update_read_input(char **main, char *extra);
 void	trim_out_spaces(char **str);
 //error_handling.c
 void	error_handling(int err);
+//t_big_and_env_copy.c
+t_big *init_t_big(char **envp);
+void	printf_env(t_big *big); // temp function
+void	free_t_big(t_big *big); // temp cleanup function
 //lexer.c
 char	**create_nodes(char **readline_input);
 //ft_split_quotes.c
