@@ -1,8 +1,22 @@
 
 #include "minishell.h"
 
-// test branch2
-
+// **Note for Markus. 12 Aug** I moved it up "if (argc != 1) error_handling(1);"
+// The reason is that is generally common to start by checking for invalid input
+// or error conditions first. In the context of command-line arguments, this 
+// often means checking for incorrect argument counts before proceeding with
+// the valid case. Please look at it, and say if it works for you. Thanks!
+/**
+ * (To be continued...)
+ * An INFINITE LOOP to continuously prompt for and process user input
+ * using the 'readline' function. Inside a loop there are three 'if' statements.
+ * 1. Check if 'readline' failed to get input.
+ * 2. Check if the input is an empty string (user pressed Enter without typing anything).
+ * If the input is empty, free the memory allocated for 'input' and assign 0 to 'exitcode'.
+ * 3. If input is not empty, proceed with the program logic.
+ * 
+ * @param input a pointer to a character string that will hold user input
+ */
 int	main(int argc, char **argv)
 {
 	int		exitcode;
@@ -14,7 +28,9 @@ int	main(int argc, char **argv)
 	(void)argv;
 	lexx = NULL;
 	exitcode = 0;
-	if (argc == 1)
+	if (argc != 1)
+		error_handling(1);
+	else if (argc == 1)
 	{
 		if (!*__environ)
 			error_handling(4);
@@ -27,13 +43,15 @@ int	main(int argc, char **argv)
 				// free session
 				exit(EXIT_FAILURE);
 			}
-			if (*input)
+			else if (!*input)
 			{
-				if (input)
-				{
-					add_history(input);
-					// integrate history_list for fun
-				}
+				free(input);
+				exitcode = 0;
+			}
+			else if (*input)
+			{
+				add_history(input);
+				// integrate history_list for fun
 				ft_printf("input length: %i\n", ft_strlen(input));
 				input_arr = create_nodes(&input);
 				free(input);
@@ -60,16 +78,12 @@ int	main(int argc, char **argv)
 				else
 					ft_free_ll(&lexx);
 			}
-			else if (!*input)
-				free(input);
 		}
 		ft_free_ll(&lexx);
 		rl_clear_history();
 		free(prompt);
 		prompt = NULL;
 	}
-	else
-		error_handling(1);
 	exit(exitcode);
 	// return (exitcode);
 }

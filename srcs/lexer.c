@@ -240,7 +240,7 @@ static char	*ft_clean_input(char *src)
  * (It might be that we don't need it, since later same job
  * will be done in ft_split_quotes)
  *
- * @param readline_str the input of command line read by function readline
+ * @param readline_input the input of command line read by function readline
  * @return: a linked list with all input keywords or an array of strings???
  */
 char	**create_nodes(char **readline_input)
