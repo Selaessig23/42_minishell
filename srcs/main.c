@@ -3,7 +3,7 @@
 
 // **Note for Markus. 12 Aug** I moved it up "if (argc != 1) error_handling(1);"
 // The reason is that is generally common to start by checking for invalid input
-// or error conditions first. In the context of command-line arguments, this 
+// or error conditions first. In the context of command-line arguments, this
 // often means checking for incorrect argument counts before proceeding with
 // the valid case. Please look at it, and say if it works for you. Thanks!
 /**
@@ -14,20 +14,24 @@
  * 2. Check if the input is an empty string (user pressed Enter without typing anything).
  * If the input is empty, free the memory allocated for 'input' and assign 0 to 'exitcode'.
  * 3. If input is not empty, proceed with the program logic.
- * 
+ *
  * @param input a pointer to a character string that will hold user input
  */
-int	main(int argc, char **argv)
+int main(int argc, char **argv, char **envp)
 {
 	int		exitcode;
 	char	*input;
 	char	*prompt;
 	char	**input_arr;
 	t_list	*lexx;
+	t_big	*big;
 
 	(void)argv;
 	lexx = NULL;
 	exitcode = 0;
+	big = init_t_big(envp);
+	printf_env(big);
+	free_t_big(big);
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)

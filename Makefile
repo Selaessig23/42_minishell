@@ -20,7 +20,8 @@ SRCS =	main.c \
 		tokenizer.c \
 		syntax.c \
 		syntaxerrors.c \
-		testprints.c
+		testprints.c \
+		t_big_and_env_copy.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c
