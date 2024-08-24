@@ -17,7 +17,7 @@
 /* we will be able to write to the file it references */
 /* thanks to the write system call from the <unistd.h> library. */
 /* Prototype: */
-/* fd = open("path/to/file", O_WRONLY | O_TRUNC | O_CREAT, 0640); */ 
+/* fd = open("path/to/file", O_WRONLY | O_TRUNC | O_CREAT, 0640); */
 /* (truncated write only mode (overwrite with 0 when exists) | */
 /* create the file if it doesn't already exist with read and write */
 /* permissions for the owner, */

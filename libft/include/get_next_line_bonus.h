@@ -32,7 +32,7 @@ to the usual flags. You can choose the default value of your choice.*/
 //to use open & read
 # include <fcntl.h>
 //need to integrate the libft because of duplicates of ft_calloc
-#include "libft.h"
+# include "libft.h"
 
 //delete before uploading the project
 //# include "../libft/libft.h"

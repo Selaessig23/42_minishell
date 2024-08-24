@@ -18,7 +18,7 @@
 /* for an array of nmemb elements of size bytes each */
 /* and returns a pointer to the allocated memory. */
 /* The memory is set to zero */
-/* (what is the main difference to malloc, which is uninitialized). */ 
+/* (what is the main difference to malloc, which is uninitialized). */
 /* Therefor calloc is slightly slower than malloc. */
 /* But it can be more convenient when working with arrays */
 /* where all elements should start with a known value (zero). */

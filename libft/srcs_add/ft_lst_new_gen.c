@@ -1,4 +1,3 @@
-
 #include "libft_bonus.h"
 
 // a generic version of ft_lstnew_gen

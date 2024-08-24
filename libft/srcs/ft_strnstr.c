@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 /* NAME: locate a substring in a string */
-/* The strnstr() function locates the first occurrence */ 
+/* The strnstr() function locates the first occurrence */
 /* of the null-terminated string little in the */
 /* string big, where not more than len characters are searched. */
 /* Characters that appear after a ‘\0’ character are not searched. */
