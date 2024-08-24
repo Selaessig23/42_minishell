@@ -30,7 +30,7 @@ int main(int argc, char **argv, char **envp)
 	lexx = NULL;
 	exitcode = 0;
 	big = init_t_big(envp);
-	printf_env(big);
+	//printf_env(big);
 	free_t_big(big);
 	if (argc != 1)
 		error_handling(1);

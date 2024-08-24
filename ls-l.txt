@@ -1,0 +1,20 @@
+total 124
+-rw-r--r--  1 mari_unix mari_unix     0 Aug 10 14:53 $out
+-rw-r--r--  1 mari_unix mari_unix     0 Aug 10 14:53 ()
+-rw-r--r--  1 mari_unix mari_unix  2848 Aug 13 23:13 Makefile
+-rw-r--r--  1 mari_unix mari_unix   952 Aug 10 17:53 README.md
+-rw-r--r--  1 mari_unix mari_unix     0 Aug 10 17:36 cat
+-rw-r--r--  1 mari_unix mari_unix  1666 Aug 24 13:14 env.txt
+-rw-r--r--  1 mari_unix mari_unix     4 Aug 10 17:53 errfile
+-rw-r--r--  1 mari_unix mari_unix     0 Aug  7 19:45 fd2
+drwxr-xr-x  2 mari_unix mari_unix  4096 Aug 13 23:07 include
+-rw-r--r--  1 mari_unix mari_unix    89 Aug 10 17:53 infile
+drwxr-xr-x 13 mari_unix mari_unix  4096 Aug 24 13:11 libft
+-rw-r--r--  1 mari_unix mari_unix     0 Aug 24 13:14 ls-l.txt
+-rwxr-xr-x  1 mari_unix mari_unix 72328 Aug 24 13:13 minishell
+drwxr-xr-x  2 mari_unix mari_unix  4096 Aug 24 13:13 obj
+-rw-r--r--  1 mari_unix mari_unix   909 Aug 10 17:53 outfile
+drwxr-xr-x  2 mari_unix mari_unix  4096 Aug 13 23:21 srcs
+-rw-r--r--  1 mari_unix mari_unix    91 Aug 10 17:53 test_file.txt
+-rw-r--r--  1 mari_unix mari_unix    33 Aug 10 17:53 test_file2.txt
+-rw-r--r--  1 mari_unix mari_unix    72 Aug 10 17:53 testout.txt

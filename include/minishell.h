@@ -1,7 +1,6 @@
-
 // to avoid duplications
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
 //stdio.h (for debugging) | stdlib.h (for malloc & free) | 
 //unistd.h (for write) is included in libft.h
@@ -17,9 +16,9 @@
 // to be able to work with function readline
 // we also have to include -lreadline to our Makefile
 // to consider readline while compiling
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <stdio.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stdio.h>
 
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments\
@@ -31,7 +30,8 @@ extern char	**environ;
 
 // to define all different tokens
 // see libft_bonus
-typedef enum e_tokentype {
+typedef enum e_tokentype
+{
 	PIPE = 1,
 	SEMI = 2,
 	HEREDOC = 3,
@@ -43,15 +43,16 @@ typedef enum e_tokentype {
 	S_QUOTED = 22, //single quoted word
 	D_QUOTED_F = 23, //to define cases like 'argument1withoutquotend
 	S_QUOTED_F = 24, //to define cases like "argument1withoutquotend
-	Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes and 'argument1'withoutspaceafterquotes
+	Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes
+	// and 'argument1'withoutspaceafterquotes
 }	t_tokentype;
 
 // struct for lexer analysis
-typedef struct s_lexer{
+typedef struct s_lexer
+{
 	char			*value;
 	t_tokentype		token;
 }				t_lexer;
-
 
 // Struct representing command data
 typedef struct s_data
@@ -81,13 +82,12 @@ typedef struct s_big
 // maybe rename to bin_path for binary path
 typedef struct s_envp
 {
-	char **bin_paths;
-	char ***commands;
-	char *outfile;
-	char *infile;
-	size_t commands_no;
-} t_envp;
-
+	char	**bin_paths;
+	char	***commands;
+	char	*outfile;
+	char	*infile;
+	size_t	commands_no;
+}	t_envp;
 
 // main.c
 //
@@ -119,7 +119,7 @@ void	trim_out_spaces(char **str);
 //error_handling.c
 void	error_handling(int err);
 //t_big_and_env_copy.c
-t_big *init_t_big(char **envp);
+t_big	*init_t_big(char **envp);
 void	printf_env(t_big *big); // temp function
 void	free_t_big(t_big *big); // temp cleanup function
 //lexer.c

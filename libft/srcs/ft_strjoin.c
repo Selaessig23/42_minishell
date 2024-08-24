@@ -19,7 +19,7 @@
 static char	*ft_strcat(char *dest, const char *s2)
 {
 	int	i;
-	int	n; 
+	int	n;
 
 	i = 0;
 	n = ft_strlen(dest);
@@ -54,7 +54,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	len = (ft_strlen(s1)) + (ft_strlen(s2));
 	if (len == 0)
 		r = ft_strdup("");
-	else 
+	else
 	{
 		r = (char *)malloc(sizeof(char) * (len + 1));
 		if (!r)

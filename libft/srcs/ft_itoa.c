@@ -64,7 +64,7 @@ char	*ft_itoa(int n)
 	}
 	if (n < 0)
 		s = 1;
-	else 
+	else
 		s = 0;
 	i = ft_allochar(n, s);
 	dest = malloc((i + 2) * sizeof(char));

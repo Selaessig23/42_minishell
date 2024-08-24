@@ -13,7 +13,7 @@
 #include "libft.h"
 
 /* DESCRIPTION: */
-/* The strlcpy() and strlcat() functions copy and concatenate */ 
+/* The strlcpy() and strlcat() functions copy and concatenate */
 /* strings respectively. They are designed to be safer, */
 /* more consistent, and less error prone replacements for */
 /* strncpy(3) and strncat(3). Unlike those functions, */
