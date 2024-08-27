@@ -126,6 +126,15 @@ static t_tokentype	ft_creat_redir_token(char *input_arr)
 	else if ((!ft_strncmp(input_arr, "<", ft_strlen("<")) 
 			&& ft_strlen(input_arr) == ft_strlen("<")))
 		return (4);
+	else if ((!ft_strncmp(input_arr, "2>", ft_strlen("2>")) 
+			&& ft_strlen(input_arr) == ft_strlen("2>")))
+		return (7);
+	else if ((!ft_strncmp(input_arr, "&>", ft_strlen("&>")) 
+			&& ft_strlen(input_arr) == ft_strlen("&>")))
+		return (8);
+	else if ((!ft_strncmp(input_arr, "2>&1", ft_strlen("2>&1")) 
+			&& ft_strlen(input_arr) == ft_strlen("2>&1")))
+		return (9);
 	else 
 		return (0);
 }
@@ -142,12 +151,21 @@ static t_tokentype	ft_creat_tokens(char *input_arr)
 	t_tokentype	token;
 
 	token = 0;
-	if ((!ft_strncmp(input_arr, "|", ft_strlen("|")) 
+	if ((!ft_strncmp(input_arr, "||", ft_strlen("||")) 
+			&& ft_strlen(input_arr) == ft_strlen("||")))
+		token = 12;
+	else if ((!ft_strncmp(input_arr, "&&", ft_strlen("&&")) 
+			&& ft_strlen(input_arr) == ft_strlen("&&")))
+		token = 11;
+	else if ((!ft_strncmp(input_arr, "|", ft_strlen("|")) 
 			&& ft_strlen(input_arr) == ft_strlen("|")))
 		token = 1;
 	else if ((!ft_strncmp(input_arr, ";", ft_strlen(";")) 
 			&& ft_strlen(input_arr) == ft_strlen(";")))
 		token = 2;
+	else if ((!ft_strncmp(input_arr, "&", ft_strlen("&")) 
+			&& ft_strlen(input_arr) == ft_strlen("&")))
+		token = 10;
 	else
 	{
 		token = ft_creat_redir_token(input_arr);
