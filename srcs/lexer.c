@@ -13,6 +13,39 @@
  */
 
 /**
+ * @brief function that checks for special cases of 
+ * double operators (helper function of double_operator_check)
+ * 
+ * WHAT ABOUT 2>&1: Merges standard error with standard output???
+ * 
+ * @param c the first char to search in
+ * @param k the second char to search in
+ */
+// static bool	specialcases_check(char c, char k)
+// {
+	// if ((c == '&' && k == '>') || (c == '2' && k == '>'))
+		// return (1);
+	// else
+		// return (0);
+// }
+
+/**
+ * @brief function that checks for bonus-part cases 
+ * (according to subject) of double operators 
+ * (helper function of double_operator_check)
+ *
+ * @param c the first char to search in
+ * @param k the second char to search in
+ */
+static bool	bonuscases_check(char c, char k)
+{
+	if ((c == '|' && k == '|') || (c == '&' && k == '&'))
+		return (1);
+	else
+		return (0);
+}
+
+/**
  * @brief function that checks for double operators
  *
  * @param c the first char to search in
@@ -22,6 +55,10 @@ static bool	double_operator_check(char c, char k)
 {
 	if ((c == '<' && k == '<') || (c == '>' && k == '>'))
 		return (1);
+	else if (bonuscases_check(c, k))
+		return (1);
+	// else if (specialcases_check(c, k))
+		// return (1);
 	else
 		return (0);
 }
@@ -33,7 +70,8 @@ static bool	double_operator_check(char c, char k)
  */
 static bool	single_operator_check(char c)
 {
-	if ((c == '<') || (c == '>') || (c == '|') || (c == ';'))
+	if ((c == '<') || (c == '>') || (c == '|') || (c == ';')
+		||c == '&')
 		return (1);
 	else
 		return (0);
