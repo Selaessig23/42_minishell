@@ -64,6 +64,29 @@ static bool	double_operator_check(char c, char k)
 }
 
 /**
+ * @brief function that checks for special redirectors
+ * like &> and 2>
+ *
+ * @param c the char to search in
+ */
+static bool	special_redirector_check(char *temp, char *start)
+{
+	if (ft_strlen(temp) == (ft_strlen(start) - 1)
+		&& (*temp == '>')
+		&& ((*(temp - 1) == '&')
+			|| (*(temp - 1) == '2')))
+		return (0);
+	else if (ft_strlen(temp) < (ft_strlen(start) - 2)
+		&& (*temp == '>')
+		&& ((*(temp - 1) == '&')
+			|| (*(temp - 1) == '2'))
+		&& (*(temp - 2) == ' '))
+		return (0);
+	else
+		return (1);
+}
+
+/**
  * @brief function that checks for single operators
  *
  * @param c the char to search in
@@ -71,7 +94,7 @@ static bool	double_operator_check(char c, char k)
 static bool	single_operator_check(char c)
 {
 	if ((c == '<') || (c == '>') || (c == '|') || (c == ';')
-		||c == '&')
+		|| (c == '&'))
 		return (1);
 	else
 		return (0);
@@ -124,7 +147,8 @@ static int	ft_count(char *src)
 			len += 3;
 			temp++;
 		}
-		else if (single_operator_check(*temp))
+		else if (single_operator_check(*temp)
+			&& special_redirector_check (temp, src))
 			len += 2;
 		if (*temp)
 		{
@@ -208,6 +232,9 @@ static void	ft_op_separator(char **dest, char **src)
  */
 static void	ft_create_clean_input(char *dest, char *src)
 {
+	char	*start;
+
+	start = src;
 	while (*src)
 	{
 		if (*src == '\"')
@@ -216,7 +243,8 @@ static void	ft_create_clean_input(char *dest, char *src)
 			ft_jump_copy(&dest, &src, '\'');
 		else if (double_operator_check(*src, *(src + 1)))
 			ft_op_separator(&dest, &src);
-		else if (single_operator_check(*src))
+		else if (single_operator_check(*src)
+			&& special_redirector_check(src, start))
 			ft_op_separator(&dest, &src);
 		else
 			*dest = *src;
