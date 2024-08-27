@@ -8,6 +8,57 @@
  */
 
 /**
+ * @brief function that checks if the command line input consists
+ * of parts of the bonus part (use of || or &&)
+ * 
+ * @param lexx linked list with cleaned command line input
+ */
+static int	ft_bonus_check(t_list *lexx)
+{
+	t_list	*curr;
+
+	curr = lexx;
+	while (curr != NULL)
+	{
+		if (((t_lexer *)curr->content)->token == 11
+			|| ((t_lexer *)curr->content)->token == 12)
+		{
+			ft_syntax_errors(lexx, 4);
+			return (1);
+		}
+		curr = curr->next;
+	}
+	return (0);
+}
+
+/**
+ * @brief function that checks if there is a further token pipe 
+ * after token pipe
+ * 
+ * @param lexx linked list with cleaned command line input
+ */
+static int	ft_pipe_check(t_list *lexx)
+{
+	t_list	*curr;
+
+	curr = lexx;
+	while (curr != NULL)
+	{
+		if ((((t_lexer *)curr->content)->token == 1
+				|| ((t_lexer *)curr->content)->token == 12)
+			&& (curr->next != NULL
+				&& (((t_lexer *)curr->content)->token == 1
+				|| ((t_lexer *)curr->content)->token == 12)))
+		{
+			ft_syntax_errors(curr->next, 1);
+			return (1);
+		}
+		curr = curr->next;
+	}
+	return (0);
+}
+
+/**
  * @brief function that checks if there are words before 
  * and after a redirect signal
  * 
@@ -41,36 +92,6 @@ static int	ft_redirect_check(t_list *lexx)
 	// ft_printf("test3\n");
 	return (0);
 }
-
-/**
- * @brief function that checks if there are words before an after pipe
- * 
- * @param lexx linked list with cleaned command line input
- */
-/*
-static int	ft_pipe_check(t_list *lexx)
-{
-	t_list	*curr;
-
-	curr = lexx;
-	while (curr != NULL)
-	{
-		if (curr->next != NULL
-			&& curr->next->token == 4
-			&& curr->next->next != NULL
-			&& ((curr->token > 3
-					&& curr->token != 10)
-				|| (curr->next->next->token > 3
-					&& curr->next->next->token != 10)))
-		{
-			ft_syntax_errors(lexx, 1);
-			return (1);
-		}
-		curr = curr->next;
-	}
-	return (0);
-}
-*/
 
 /**
  * @brief function that checks very first input argument
@@ -139,7 +160,9 @@ int	ft_syntax(t_list *lexx)
 		return (1);
 	else if (ft_redirect_check(lexx))
 		return (1);
-	// else if (ft_pipe_check(lexx))
-	// 	return (1);
+	else if (ft_pipe_check(lexx))
+		return (1);
+	else if (ft_bonus_check(lexx))
+		return (1);
 	return (0);
 }

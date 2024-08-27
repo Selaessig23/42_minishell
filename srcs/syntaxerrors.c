@@ -18,4 +18,7 @@ void	ft_syntax_errors(t_list *lexx, int errorno)
 	else if (errorno == 3)
 		ft_printf("minishell: unclosed quotes cannot be interpreted "
 			"in this version: \'%s\'\n", ((t_lexer *)lexx->content)->value);
+	else if (errorno == 4)
+		ft_printf("minishell: command line input contains bonus part operators:"
+			" \'%s\'\n", ((t_lexer *)lexx->content)->value);
 }
