@@ -36,8 +36,15 @@ typedef enum e_tokentype
 	SEMI = 2,
 	HEREDOC = 3,
 	REDIRECT_IN = 4,
-	REDIRECT_OUT = 5,
-	REDIRECT_OUT_APP = 6,
+	REDIRECT_STDOUT = 5,
+	REDIRECT_STDOUT_APP = 6,
+	REDIRECT_ERROUT = 7, //2>: Redirects standard error to a file.
+	REDIRECT_STDERROUT = 8, //&>: Redirects both standard output and standard error to a file.
+	REDIRECT_STDERROUT_MERGE = 9, //2>&1: Merges standard error with standard output.
+	AMPERSAND = 10, // &
+	DOUBLE_AMPERSAND = 11, // &&
+	DOUBLE_PIPE = 12, // ||
+	LOG_NEG = 13, //Logical Negation (!)
 	WORD = 20,
 	D_QUOTED = 21, //double quoted word
 	S_QUOTED = 22, //single quoted word
