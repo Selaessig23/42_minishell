@@ -13,21 +13,32 @@
  */
 
 /**
- * @brief function that checks for special cases of 
- * double operators (helper function of double_operator_check)
+ * @brief function that checks for special case of 
+ * double operators (helper function of double_operator_check):
+ * 2>
+ * in this case only the characters after 2> will be separated into
+ * 2 pointers
  * 
- * WHAT ABOUT 2>&1: Merges standard error with standard output???
  * 
- * @param c the first char to search in
- * @param k the second char to search in
+ * @param temp the part of the string to check in
+ * @param start the original start of the string pointer,
+ * required to respect boundaries of pointer memory space
  */
-// static bool	specialcases_check(char c, char k)
-// {
-	// if ((c == '&' && k == '>') || (c == '2' && k == '>'))
-		// return (1);
-	// else
-		// return (0);
-// }
+static bool	specialcase_check(char *temp, char *start)
+{
+	if ((ft_strlen(temp) == ft_strlen(start))
+		&& (*(temp) == '2' )
+		&& (*(temp + 1) == '>'))
+		return (1);
+	if ((ft_strlen(temp) <= ft_strlen(start) - 1)
+		&& ((*(temp - 1) >= 9 && *(temp - 1) <= 13)
+			|| (*(temp - 1) == 32))
+		&& (*(temp) == '2' )
+		&& (*(temp + 1) == '>'))
+		return (1);
+	else
+		return (0);
+}
 
 /**
  * @brief function that checks for bonus-part cases 
@@ -40,6 +51,8 @@
 static bool	bonuscases_check(char c, char k)
 {
 	if ((c == '|' && k == '|') || (c == '&' && k == '&'))
+		return (1);
+	else if ((c == '&' && k == '>'))
 		return (1);
 	else
 		return (0);
@@ -57,30 +70,45 @@ static bool	double_operator_check(char c, char k)
 		return (1);
 	else if (bonuscases_check(c, k))
 		return (1);
-	// else if (specialcases_check(c, k))
-		// return (1);
 	else
 		return (0);
 }
 
 /**
- * @brief function that checks for special redirectors
- * like &> and 2>
+ * @brief function that checks for special redirection advice
+ * like 2>&1
  *
- * @param c the char to search in
- */
+ * @param temp the part of the string to check in
+ * @param start the original start of the string pointer,
+ * required to respect boundaries of pointer memory space
+*/
 static bool	special_redirector_check(char *temp, char *start)
 {
 	if (ft_strlen(temp) == (ft_strlen(start) - 1)
 		&& (*temp == '>')
-		&& ((*(temp - 1) == '&')
-			|| (*(temp - 1) == '2')))
+		&& (*(temp - 1) == '2')
+		&& (*(temp + 1) == '&')
+		&& (*(temp + 2) == '1'))
 		return (0);
-	else if (ft_strlen(temp) < (ft_strlen(start) - 2)
+	if (ft_strlen(temp) < (ft_strlen(start) - 1)
 		&& (*temp == '>')
-		&& ((*(temp - 1) == '&')
-			|| (*(temp - 1) == '2'))
-		&& (*(temp - 2) == ' '))
+		&& (*(temp - 1) == '2')
+		&& (*(temp - 2) == ' ')
+		&& (*(temp + 1) == '&')
+		&& (*(temp + 2) == '1'))
+		return (0);
+	else if (ft_strlen(temp) == (ft_strlen(start) - 2)
+		&& (*temp == '&')
+		&& (*(temp - 1) == '>')
+		&& (*(temp - 2) == '2')
+		&& (*(temp + 1) == '1'))
+		return (0);
+	else if (ft_strlen(temp) < (ft_strlen(start) - 3)
+		&& (*temp == '&')
+		&& (*(temp - 1) == '>')
+		&& (*(temp - 2) == '2')
+		&& (*(temp - 3) == ' ')
+		&& (*(temp + 1) == '1'))
 		return (0);
 	else
 		return (1);
@@ -126,6 +154,11 @@ static char	*ft_jumper(char *src, int *len, char endsign)
  * @brief function that checks for occurence of unquoted operators
  * and calculates extra memory space (len) for adding spaces in
  * between
+ * 
+ * MAYBE MERGE DOUBLE_OPERATOR_CHECK AND SPEXCIALCASE_CHECK
+ * (if yes: dapt also in ft_op_separator)
+ * this would result in an additional space in cleaned array
+ * which would be deleted by split function anyhow
  *
  * @param src the string to count in
  */
@@ -147,8 +180,11 @@ static int	ft_count(char *src)
 			len += 3;
 			temp++;
 		}
+		else if (specialcase_check(temp, src))
+			len++;
 		else if (single_operator_check(*temp)
-			&& special_redirector_check (temp, src))
+			&& special_redirector_check (temp, src)
+			)
 			len += 2;
 		if (*temp)
 		{
@@ -194,13 +230,18 @@ static void	ft_jump_copy(char **dest, char **src, char endsign)
 /**
  * @brief a helper function for ft_create_clean_input;
  * it adds spaces before and after operators
+ * 
+ * MAYBE MERGE DOUBLE_OPERATOR_CHECK AND SPEXCIALCASE_CHECK
+ * (if yes: dapt also in ft_count)
+ * this would result in an additional space in cleaned array
+ * which would be deleted by split function anyhow
  *
  * @param dest the destination string where to integrate additional
  * spaces before an after operators
  * @param src the source string required to create dest
  */
 /// (c) changed by Marina: not put spaces that we do not need
-static void	ft_op_separator(char **dest, char **src)
+static void	ft_op_separator(char **dest, char **src, char *start)
 {
 	if (double_operator_check(*(*src), *(*src + 1)))
 	{
@@ -213,8 +254,19 @@ static void	ft_op_separator(char **dest, char **src)
 		(*dest)++;
 		**dest = ' ';
 	}
+	else if (specialcase_check(*(src), start))
+	{
+		// ft_printf("test3\n");
+		**dest = **src;
+		(*src)++;
+		(*dest)++;
+		**dest = **src;
+		(*dest)++;
+		**dest = ' ';
+	}
 	else
 	{
+		// ft_printf("test2\n");
 		**dest = ' ';
 		(*dest)++;
 		**dest = **src;
@@ -242,10 +294,13 @@ static void	ft_create_clean_input(char *dest, char *src)
 		else if (*src == '\'')
 			ft_jump_copy(&dest, &src, '\'');
 		else if (double_operator_check(*src, *(src + 1)))
-			ft_op_separator(&dest, &src);
+			ft_op_separator(&dest, &src, start);
+		else if (specialcase_check(src, start))
+			ft_op_separator(&dest, &src, start);
 		else if (single_operator_check(*src)
-			&& special_redirector_check(src, start))
-			ft_op_separator(&dest, &src);
+			&& special_redirector_check(src, start)
+			)
+			ft_op_separator(&dest, &src, start);
 		else
 			*dest = *src;
 		if (*src != '\0')
