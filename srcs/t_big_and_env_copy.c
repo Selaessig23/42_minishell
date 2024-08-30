@@ -2,6 +2,7 @@
 
 /**
  * Function to clean t_big struct.
+ * A task: to modify it for 
 */
 void	free_t_big(t_big *big)
 {

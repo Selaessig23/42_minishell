@@ -64,11 +64,11 @@ typedef struct s_data
 
 // Linked list containing a s_data nodes with
 // all commands separated by pipes
-// typedef struct s_list
-// {
-// 	t_data			*cmds; // Command data
-// 	struct t_list	*next; // Pointer to the next list node
-// }					t_list;
+typedef struct s_list
+{
+	t_data			*cmds; // Command data
+	struct t_list	*next; // Pointer to the next list node
+}					t_list;
 
 // Main struct containing the list of commands and
 // a copy of the environment
