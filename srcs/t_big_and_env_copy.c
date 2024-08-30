@@ -24,37 +24,37 @@ void	printf_env(t_big *big)
 	ft_printf("big->env[%i]:\n%s\n", i, big->env[i]);
 }
 
-/**
- * Function counts a number of strings in array of strings.
- * It serves for memory allocation for an array of strings.
-*/
-static int	count_strings(char **envp)
-{
-	int	i;
+// /**
+//  * Function counts a number of strings in array of strings.
+//  * It serves for memory allocation for an array of strings.
+// */
+// static int	count_strings(char **envp)
+// {
+// 	int	i;
 
-	i = 0;
-	while (*envp)
-	{
-		i++;
-		envp++;
-	}
-	return (i);
-}
+// 	i = 0;
+// 	while (*envp)
+// 	{
+// 		i++;
+// 		envp++;
+// 	}
+// 	return (i);
+// }
 
 /**
  * The function copies array of strings from enironmental 
  * variables into array of strings that is a part of
- * struct t_big.
+ * struct t_big. Temp.
 */
 static char	**copy_envp(char **envp)
 {
 	char	**copy;
-	int		i;
-	int		j;
-	int		str_size;
+	size_t	i;
+	size_t	j;
+	size_t	str_size;
 
 	j = 0;
-	i = count_strings(envp);
+	i = ft_arrlen(envp);
 	str_size = 0;
 	copy = ft_calloc(i + 1, sizeof(char *));
 	if (!copy)
