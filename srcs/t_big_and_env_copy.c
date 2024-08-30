@@ -24,23 +24,6 @@ void	printf_env(t_big *big)
 	ft_printf("big->env[%i]:\n%s\n", i, big->env[i]);
 }
 
-// /**
-//  * Function counts a number of strings in array of strings.
-//  * It serves for memory allocation for an array of strings.
-// */
-// static int	count_strings(char **envp)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (*envp)
-// 	{
-// 		i++;
-// 		envp++;
-// 	}
-// 	return (i);
-// }
-
 /**
  * The function copies array of strings from enironmental 
  * variables into array of strings that is a part of
