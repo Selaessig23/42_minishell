@@ -1,11 +1,6 @@
 
 #include "minishell.h"
 
-// **Note for Markus. 12 Aug** I moved it up "if (argc != 1) error_handling(1);"
-// The reason is that is generally common to start by checking for invalid input
-// or error conditions first. In the context of command-line arguments, this
-// often means checking for incorrect argument counts before proceeding with
-// the valid case. Please look at it, and say if it works for you. Thanks!
 /**
  * (To be continued...)
  * An INFINITE LOOP to continuously prompt for and process user input

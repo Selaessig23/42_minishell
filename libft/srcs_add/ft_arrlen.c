@@ -13,7 +13,7 @@
 #include "libft.h"
 
 /**
- * counts an returns the size of an array of strings
+ * counts and returns the size of an array of strings
  * 
  * @param arr_str the array of strings to count
  */
