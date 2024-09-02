@@ -2,40 +2,52 @@
 
 /**
  * Function to clean t_big struct.
- * A task: to modify it for 
-*/
-void	free_t_big(t_big *big)
+ * A task: to modify it for
+ */
+void free_t_big(t_big *big)
 {
 	ft_free(big->env);
 	free(big->list);
 	free(big);
 }
 
-// Temporary function to display what t_big holds.
-void	printf_env(t_big *big)
+// Proto function for built-in env
+void	printf_env(t_list *lexx, t_big *big)
 {
-	int	i;
+	t_list *curr;
+	int i;
 
 	i = 0;
-	while (big->env[i])
+	curr = lexx;
+	while (curr != NULL)
 	{
-		ft_printf("big->env[%i]:\n%s\n", i, big->env[i]);
-		i++;
+		if (!ft_strncmp(((t_lexer *)curr->content)->value, "env", 3)
+			&& ft_strlen(((t_lexer *)curr->content)->value) == 3)
+		{
+			while (big->env[i])
+			{
+				ft_printf("%s\n", big->env[i]);
+				i++;
+			}
+			i = 0;
+		}
+		else
+			i++;
+		curr = curr->next;
 	}
-	ft_printf("big->env[%i]:\n%s\n", i, big->env[i]);
 }
 
 /**
- * The function copies array of strings from enironmental 
+ * The function copies array of strings from enironmental
  * variables into array of strings that is a part of
  * struct t_big. Temp.
-*/
-static char	**copy_envp(char **envp)
+ */
+static char **copy_envp(char **envp)
 {
-	char	**copy;
-	size_t	i;
-	size_t	j;
-	size_t	str_size;
+	char **copy;
+	size_t i;
+	size_t j;
+	size_t str_size;
 
 	j = 0;
 	i = ft_arrlen(envp);
@@ -59,16 +71,16 @@ static char	**copy_envp(char **envp)
 /**
  * Function initialize t_big struct and copies the environmental
  * varibles into array of strings char **env.
- * 
+ *
  * @param t_big	*big
  * @param char **envp
  * @param char	**env
-*/
+ */
 
-t_big	*init_t_big(char **envp)
+t_big *init_t_big(char **envp)
 {
-	t_big	*big;
-	char	**env;
+	t_big *big;
+	char **env;
 
 	big = ft_calloc(1, sizeof(t_big));
 	if (big == NULL)

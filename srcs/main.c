@@ -25,8 +25,6 @@ int main(int argc, char **argv, char **envp)
 	lexx = NULL;
 	exitcode = 0;
 	big = init_t_big(envp);
-	//printf_env(big);
-	free_t_big(big);
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)
@@ -50,7 +48,6 @@ int main(int argc, char **argv, char **envp)
 			else if (*input)
 			{
 				add_history(input);
-				// integrate history_list for fun
 				ft_printf("input length: %i\n", ft_strlen(input));
 				input_arr = create_nodes(&input);
 				free(input);
@@ -64,14 +61,12 @@ int main(int argc, char **argv, char **envp)
 				// ft_printf("test0\n");
 				lexx = ft_tokenizer(input_arr);
 				// ft_printf("test1\n");
-				// comment out this free-function if ft_test_arr_print is in use
-				// ft_test_ll_print(lexx, prompt);
 				ft_free(input_arr);
 				// to seperate debug-infos of lexer from bash-output
 				ft_printf("\n");
 				if (!ft_syntax(lexx))
 				{
-					// ft_printf("test\n");
+					printf_env(lexx, big);
 					ft_test_ll_print(lexx, prompt);
 				}
 				else
@@ -79,6 +74,7 @@ int main(int argc, char **argv, char **envp)
 			}
 		}
 		ft_free_ll(&lexx);
+		free_t_big(big);
 		rl_clear_history();
 		free(prompt);
 		prompt = NULL;

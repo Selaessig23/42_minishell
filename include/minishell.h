@@ -70,17 +70,15 @@ typedef struct s_big
 }					t_big;
 
 // maybe rename to bin_path for binary path
-typedef struct s_envp
+/*typedef struct s_envp
 {
 	char	**bin_paths;
 	char	***commands;
 	char	*outfile;
 	char	*infile;
 	size_t	commands_no;
-}	t_envp;
+}	t_envp;*/
 
-// main.c
-//
 // init.c
 // int		init_infile(t_envp *infos, char *infile);
 // void	init_compath(t_envp *infos, char **argv, char **paths);
@@ -110,7 +108,7 @@ void	trim_out_spaces(char **str);
 void	error_handling(int err);
 //t_big_and_env_copy.c
 t_big	*init_t_big(char **envp);
-void	printf_env(t_big *big); // temp function
+void	printf_env(t_list *lexx, t_big *big);
 void	free_t_big(t_big *big); // temp cleanup function
 //lexer.c
 char	**create_nodes(char **readline_input);
