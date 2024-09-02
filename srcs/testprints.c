@@ -21,6 +21,7 @@ void ft_test_arr_print(char **input_arr, char *prompt)
 		ft_free(input_arr);
 		free(prompt);
 		prompt = NULL;
+		free_t_big(big);
 		rl_clear_history();
 		exit(EXIT_SUCCESS);
 	}
@@ -81,6 +82,7 @@ void	ft_test_ll_print(t_list *lexx, char *prompt)
 			// ft_free(input_arr);
 			free(prompt);
 			prompt = NULL;
+			free_t_big(big);
 			ft_free_ll(&lexx);
 			rl_clear_history();
 			exit(EXIT_SUCCESS);

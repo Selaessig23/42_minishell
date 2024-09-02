@@ -29,9 +29,6 @@ int main(int argc, char **argv, char **envp)
 	(void)argv;
 	lexx = NULL;
 	exitcode = 0;
-	big = init_t_big(envp);
-	//printf_env(big);
-	free_t_big(big);
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)
@@ -77,16 +74,23 @@ int main(int argc, char **argv, char **envp)
 				if (!ft_syntax(lexx))
 				{
 					// ft_printf("test\n");
-					ft_test_ll_print(lexx, prompt);
+					ft_test_ll_print(lexx, prompt, big);
 				}
 				else
+				{	
 					ft_free_ll(&lexx);
+					free_t_big(big);
+				}
+				big = init_t_big(envp);
+				//printf_env(big);
+				ft_ext_precond(lexx, )
 			}
 		}
 		ft_free_ll(&lexx);
 		rl_clear_history();
 		free(prompt);
 		prompt = NULL;
+		free_t_big(big);
 	}
 	exit(exitcode);
 	// return (exitcode);
