@@ -76,6 +76,7 @@ typedef struct s_big
 {
 	t_list	*list; // Linked list of commands
 	char	**env; // Copy of environment variables
+	int		error_code;
 }					t_big;
 
 ////////////////////////////
@@ -130,11 +131,13 @@ char	**ft_split_quotes(char const *s, char c);
 t_list	*ft_tokenizer(char **input_arr);
 void	ft_free_ll(t_list **ll);
 //testprints.c --> only test functions
-void	ft_test_arr_print(char **input_arr, char *prompt);
-void	ft_test_ll_print(t_list *lexx, char *prompt);
+void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
+void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
 //syntax.c
 int		ft_syntax(t_list *lexx);
 //syntaxerrors.c
 void	ft_syntax_errors(t_list *lexx, int errorno);
+//extender.c
+void	ft_ext_precond(t_list *lexx, t_big *big);
 
 #endif

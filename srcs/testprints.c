@@ -4,7 +4,7 @@
 /**
  * function to print and work with cleaned array of strings
  */
-void ft_test_arr_print(char **input_arr, char *prompt)
+void ft_test_arr_print(char **input_arr, char *prompt, t_big *big)
 {
 	if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "env",
 						3) && ft_strlen(input_arr[0]) == 3))
@@ -65,7 +65,7 @@ static char	*print_tokens(int i)
 /**
  * test function to print the content of the linked list
  */
-void	ft_test_ll_print(t_list *lexx, char *prompt)
+void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 {
 	t_list	*curr;
 	char	*token_print;

@@ -92,5 +92,6 @@ t_big	*init_t_big(char **envp)
 	big->list = NULL;
 	env = copy_envp(envp);
 	big->env = env;
+	big->error_code = 0;
 	return (big);
 }

@@ -83,7 +83,7 @@ int main(int argc, char **argv, char **envp)
 				}
 				big = init_t_big(envp);
 				//printf_env(big);
-				ft_ext_precond(lexx, )
+				ft_ext_precond(lexx, big);
 			}
 		}
 		ft_free_ll(&lexx);
