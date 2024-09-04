@@ -21,7 +21,8 @@ SRCS =	main.c \
 		syntax.c \
 		syntaxerrors.c \
 		testprints.c \
-		t_big_and_env_copy.c
+		t_big_and_env_copy.c \
+		extender.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c

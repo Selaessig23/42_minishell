@@ -76,7 +76,7 @@ typedef struct s_big
 {
 	t_list	*list; // Linked list of commands
 	char	**env; // Copy of environment variables
-	int		error_code;
+	int		exit_code;
 }					t_big;
 
 ////////////////////////////
