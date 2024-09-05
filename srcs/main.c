@@ -73,17 +73,16 @@ int main(int argc, char **argv, char **envp)
 				ft_printf("\n");
 				if (!ft_syntax(lexx))
 				{
+					big = init_t_big(envp);
+					//printf_env(big);
+					// ft_ext_precond(lexx, big);
 					// ft_printf("test\n");
 					ft_test_ll_print(lexx, prompt, big);
 				}
 				else
-				{	
+				{
 					ft_free_ll(&lexx);
-					free_t_big(big);
 				}
-				big = init_t_big(envp);
-				//printf_env(big);
-				ft_ext_precond(lexx, big);
 			}
 		}
 		ft_free_ll(&lexx);

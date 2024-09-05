@@ -7,7 +7,9 @@ void	free_t_big(t_big *big)
 {
 	ft_free(big->env);
 	free(big->list);
+	big->list = NULL;
 	free(big);
+	big = NULL;
 }
 
 // Temporary function to display what t_big holds.
