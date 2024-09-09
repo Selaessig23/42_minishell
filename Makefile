@@ -22,7 +22,7 @@ SRCS =	main.c \
 		syntaxerrors.c \
 		testprints.c \
 		t_big_and_env_copy.c \
-		extender.c
+		expander.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c

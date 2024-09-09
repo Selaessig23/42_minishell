@@ -102,6 +102,7 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 			ft_printf("node (%i): %s\n", i, ((t_lexer *)curr->content)->value);
 			// ft_printf("token (%i): %d\n", i, (int)curr->token);
 			ft_printf("token (%i): %s\n", i, token_print);
+			ft_printf("length token (%i): %i\n", i, ft_strlen(((t_lexer *)curr->content)->value));
 			free (token_print);
 			if ((!ft_strncmp(((t_lexer *)curr->content)->value, "$USER", ft_strlen("$USER")))
 				&& (ft_strlen("$USER") == ft_strlen(((t_lexer *)curr->content)->value)))

@@ -36,6 +36,7 @@ int main(int argc, char **argv, char **envp)
 		if (!*__environ)
 			error_handling(4);
 		prompt = ft_strdup("Marina's and Markus' minishell>");
+		big = init_t_big(envp);
 		while (1)
 		{
 			input = readline(prompt);
@@ -73,9 +74,8 @@ int main(int argc, char **argv, char **envp)
 				ft_printf("\n");
 				if (!ft_syntax(lexx))
 				{
-					big = init_t_big(envp);
 					//printf_env(big);
-					// ft_ext_precond(lexx, big);
+					ft_expa_precond(lexx, big);
 					// ft_printf("test\n");
 					ft_test_ll_print(lexx, prompt, big);
 				}

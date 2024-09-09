@@ -138,6 +138,6 @@ int		ft_syntax(t_list *lexx);
 //syntaxerrors.c
 void	ft_syntax_errors(t_list *lexx, int errorno);
 //extender.c
-void	ft_ext_precond(t_list *lexx, t_big *big);
+void	ft_expa_precond(t_list *lexx, t_big *big);
 
 #endif

@@ -2,8 +2,8 @@
 
 /**
  * DESRIPTION: 
- * in this file specific string-tokens will be extended with
- * content from env if there is $
+ * in this file specific string-tokens will be cleaned and extended with
+ * special content if there is $, which serves as sign for var-start
  */
 
 
@@ -11,9 +11,11 @@
  * @brief function that deletes part after $ from value
  * as it could not be verified as variable of envp
  * 
+ * @param value_old	the value of the command line input token that has
+ * to be adapted
  * @param wrongenvp not matching envp variable name, starting with $
  */
-char	*delete_false_from_value(char *value_old, char *wrongenvp)
+char	*delete_varname_from_value(char *value_old, char *wrongenvp)
 {
 	int		i;
 	char	*value_new;
@@ -24,6 +26,7 @@ char	*delete_false_from_value(char *value_old, char *wrongenvp)
 	printf("test 3A: value_old: %s\nwrongenvp: %s\n", value_old, wrongenvp);
 	i = (ft_strlen(value_old) - ft_strlen(wrongenvp));
 	value_new = ft_calloc((i + 1), sizeof(char));
+	// printf("calloc: %i\n", (i + 1));
 	if (!value_new)
 		error_handling(2);
 	i = 0;
@@ -38,10 +41,8 @@ char	*delete_false_from_value(char *value_old, char *wrongenvp)
 		i++;
 	}
 	value_new[i] = '\0';
-	printf("test 4B value_new: %s\n", value_new);
+	// printf("test 4B value_new: %s\n", value_new);
 	return (value_new);
-	// value_old = value_new;
-	// free(temp);
 }
 
 /**
@@ -51,16 +52,14 @@ char	*delete_false_from_value(char *value_old, char *wrongenvp)
  * (1) overwrite the former value of command input token (and remalloc before)
  * (2) create new string, free old string and set new string to node of linked list with tokens as new value
  * 
- * @param value	value of command input token
+ * @param value_old	the value of the command line input token that has
+ * to be adapted
  * @param env	value of env variable
- * @param env_name envp variable name, starting with $
- * @param variablesize 1 (for $) + variablesize of envp-variablename, therefor not additional byte for terminating NUll required
+ * @param env_name env variable name, starting with $
  */
 char	*add_env_to_value(char *value_old, char *env, char *env_name)
 {
 	char	*value_new;
-	// char	*temp;
-	//char	*start;
 	int	i;
 	int	j;
 	
@@ -74,7 +73,7 @@ char	*add_env_to_value(char *value_old, char *env, char *env_name)
 	//NO: all $-signs are already cleaned / extended
 	i = 0;
 	j = 0;
-	printf("test 3A: %s\nvalue_old: %s\n", (env), value_old);
+	// printf("test 3A: %s\nvalue_old: %s\n", (env), value_old);
 	while (value_old[i] && (!ft_strnstr(&(value_old[i]), env_name, ft_strlen(env_name))))
 	{
 		value_new[i] = value_old[i];
@@ -92,36 +91,32 @@ char	*add_env_to_value(char *value_old, char *env, char *env_name)
 		i++;
 	}
 	value_new[i + j] = '\0';
-	// temp = value_old;
-	// value_old = value_new;
-	printf("test 4A\n");
+	// printf("test 4A\n");
 	return (value_new);
-	// free (temp);
-	//*(start - 1) to exclude '$'
-	//ft_strncpy((*(start - 1)), (*(env + 1)), ft_strlen(*(env + 1)));
-	//*(temp + 1) to exclude '$'
-	//ft_strncpy((*start (- 1 + (ft_strlen(*(env + 1))))), (*(temp + 1)), ft_strlen(*(temp + 1)));
 }
 
 /**
  * @brief function that checks if the &keywords is part of envp
  * 
- * @param temp potential env variable name, starting with $
+ * @param value_old the value of the command line input token that has
+ * to be adapted
+ * @param var_name potential env variable name, starting with $
+ * @param env 
  */
-char	*ft_extender(char *value, char *temp, char **env)
+static char	*ft_var_envchecker(char *value_old, char *var_name, char **env)
 {
-	printf("env variable name: %s\nlength: %zu\n", (temp + 1), ft_strlen(temp + 1));
+	// printf("env variable name: %s\nlength: %zu\n", (var_name + 1), ft_strlen(var_name + 1));
 	while (env && *env)
 	{
-		printf("test 2A: %s\n", *env);
-		if (!ft_strncmp(*env, (temp + 1), ft_strlen(temp + 1)))
+		// printf("test 2A: %s\n", *env);
+		if (!ft_strncmp(*env, (var_name + 1), ft_strlen(var_name + 1)))
 		{
-			return (add_env_to_value(value, (*env + (ft_strlen(temp + 1) + 1)), temp));
+			return (add_env_to_value(value_old, (*env + (ft_strlen(var_name + 1) + 1)), var_name));
 		}
 		env++;
 	}
-	printf("test2B\n");
-	return (delete_false_from_value(value, temp));
+	// printf("test2B\n");
+	return (delete_varname_from_value(value_old, var_name));
 	
 }
 
@@ -130,10 +125,11 @@ char	*ft_extender(char *value, char *temp, char **env)
  * by searching for 1st occurance of $ and the following variable name,
  * than sending this to ft_extender
  * 
- * @param value_old the old value of the command line input token
- * @param env the environment variables of minishell
+ * @param value_old the value of the command line input token that has
+ * to be adapted
+ * @param env the environment variables of minishell that have to be checked for
  */
-char	*ft_env_extender(char *value_old, char **env)
+static char	*ft_var_creator(char *value_old, char **env)
 {
 	char	*temp;
 	char	*value_new;
@@ -154,12 +150,12 @@ char	*ft_env_extender(char *value_old, char **env)
 					&& (value_old[i] != ' ')))
 					i++;
 			temp = ft_substr(value_old, k, (i - k));
-			printf("Variable name to search for: %s\n", temp);
+			// printf("Variable name to search for: %s\n", temp);
 			if (!temp)
 				error_handling(2);
-			value_new = ft_extender(value_old, temp, env);
+			value_new = ft_var_envchecker(value_old, temp, env);
 			free(temp);
-			printf("test 5\n");
+			// printf("test 5\n");
 			return (value_new);
 		}
 		i++;
@@ -168,10 +164,10 @@ char	*ft_env_extender(char *value_old, char **env)
 }
 
 /**
- * @brief function that extends the tokens' value with pid infos
+ * @brief function that expands the tokens' value with pid infos
  * 
  * @param 
-ft_pid_extender(((char *)curr->content)->value)
+char	*ft_pid_expander(((char *)curr->content)->value)
 {
 	int	i;
 	int	pids_no;
@@ -200,23 +196,99 @@ ft_pid_extender(((char *)curr->content)->value)
  */
 
 /**
+ * @brief helper function to transform a number in char* and return it
+ * 
+ * @param nbr the number to transform from
+ */
+static char	*ft_givenbr(int nbr)
+{
+	char	*charnbr;
+	int		count;
+	int		nbr_save;
+
+	count = 0;
+	nbr_save = nbr;
+	charnbr = NULL;
+	if (nbr == -2147483648)
+		return (ft_strdup("-2147483648"));
+	else if (nbr == 0)
+		return (ft_strdup("0"));
+	else
+	{
+		if (nbr <= 0)
+			count++;
+		while (nbr != 0)
+		{
+			nbr /= 10;
+			count++;
+		}
+		charnbr = ft_calloc(count, sizeof(char));
+
+		if (nbr < 0)
+		{
+		//	ft_putchar_fd(45, fd);
+	//		ft_putnbr_fd((nbr * (-1)), fd);
+		}
+		else if (nbr > 9)
+		{
+	//		ft_putnbr_fd((n / 10), fd);
+	//		ft_putchar_fd(((n % 10) + 48), fd);
+		}
+		// else
+	//		ft_putchar_fd((n + 48), fd);
+		return (charnbr);
+	}
+}
+
+/**
  * @brief function that extends the tokens' value with exit_code infos
  * 
- * @param
+ * @param value_old the tokens value that has to be adapted
+ * @param exit_code the value that has to be inserted
  */
-static void	ft_exit_extender(char *value_old, int exit_code)
+static char	*ft_exit_expander(char *value_old, int exit_code)
 {
 	char	*value_new;
+	char	*value_old_save;
+	char	*exit_code_input;
+	char	*exit_code_input_save;
+	int		i;
 
-	(void) value_new;
-	(void) exit_code;
-	while (*value_old)
+	i = 0;
+	value_old_save = value_old;
+	exit_code_input = ft_givenbr(exit_code);
+	exit_code_input_save = exit_code_input;
+	value_new = ft_calloc((ft_strlen(exit_code_input) + ft_strlen(value_old) + 1), sizeof(char));
+	if (exit_code_input[0] == '0')
 	{
-		if (*value_old == '$' && *(value_old + 1) == '?')
+		while (*value_old && 
+			!(*value_old == '$' && *(value_old + 1) == '?'))
 		{
-			//create new string with exit_code instead of $?, see struct big
+			value_new[i] = *value_old;
+			i += 1;
+			value_old += 1;
 		}
-		value_old++;
+		while(*exit_code_input)
+		{
+			value_new[i] = *exit_code_input;
+			i += 1;
+			exit_code_input += 1;
+		}
+		while (*value_old)
+		{
+			value_new[i] = *value_old;
+			i += 1;
+			value_old += 1;
+		}
+		value_new[i] = '\0';
+		free(exit_code_input_save);
+		return (value_new);
+	}
+	else
+	{
+		free(value_new);
+		free(exit_code_input_save);
+		return (ft_strdup(value_old_save));
 	}
 }
 
@@ -229,38 +301,42 @@ static void	ft_exit_extender(char *value_old, int exit_code)
  * treated and therefor not seen as special character
  * except $env and $?
  * 
- * @param curr 
+ * @param token node of token-list that has to be cleaned from quotes
+ * @param big structure which contains the environmental variable array
  */
 static void	ft_var_checker(void	**token, t_big *big)
 {
 	t_lexer	*temp;
-	char	*temp2;
+	char	*value_new;
+	char	*value_old;
 	int		i;
 
 	i = 0;
-	// temp2 = *curr;
-	// temp = (((t_lexer *)temp2->content)->value);
 	temp = *token;
-	temp2 = temp->value;
-	while (temp2[i])
+	value_new = NULL;
+	value_old = temp->value;
+	while (value_old[i])
 	{
-		if (temp2[i] == '$' && temp2[i + 1] == '?')
+		if (value_old[i] == '$' && value_old[i + 1] == '?')
 		{
-			//(((char *)curr->content)->value) = 
-			// ft_exit_extender(((t_lexer *)temp->content)->value, big->exit_code);
-			ft_exit_extender(temp2, big->exit_code);
+			value_new = ft_exit_expander(value_old, big->exit_code);
+			temp->value = value_new;
+			// printf("test 6: %s\n", (temp->value));
+			free (value_old);
+			value_old = NULL;
+			value_old = temp->value;
 		}
-		// else if (*temp == '$' && *(temp + 1) == '$')
-			// ft_pid_extender(((char *)curr->content)->value);
-		else if (temp2[i] == '$')
+		else if (value_old[i] == '$')
 		{
-			// temp2 = *((t_lexer *)curr->content)->value;
-			// (((t_lexer *)curr->content)->value) = &(ft_env_extender(((t_lexer *)curr->content)->value, big->env));
-			((t_lexer *)token)->value = ft_env_extender(temp2, big->env);
-			printf("test 6: %s\n", ((t_lexer *)token)->value);
-			free (temp);
+			value_new = ft_var_creator(value_old, big->env);
+			temp->value = value_new;
+			// printf("test 6: %s\n", (temp->value));
+			free (value_old);
+			value_old = NULL;
+			value_old = temp->value;
 		}
-		i++;
+		if (value_old[i])
+			i += 1;
 	}
 }
 
@@ -270,9 +346,9 @@ static void	ft_var_checker(void	**token, t_big *big)
  * 
  * DO I HAVE TO ENSURE THAT value_old has enough characters to remove quotes?
  * 
- * @param 
+ * @param token node of token-list that has to be cleaned from quotes
  */
-void	ft_quote_remover(void **token)
+static void	ft_quote_remover(void **token)
 {
 	char	*value_new;
 	t_lexer	*temp;
@@ -291,7 +367,8 @@ void	ft_quote_remover(void **token)
 	}
 	value_new[i] = '\0';
 	temp->value = value_new;
-	printf ("Calloc: %lu, real: %zu\n",((ft_strlen(value_old) - 2)), ft_strlen(value_new));
+	// printf ("Calloc: %lu, real: %zu\n",
+		// ((ft_strlen(value_old) - 2)), ft_strlen(value_new));
 	free(value_old);
 }
 
@@ -302,8 +379,9 @@ void	ft_quote_remover(void **token)
  * MISSING, if we want to handle UNCLOSED QUOTES: delete them
  * 
  * @param lexx linked list with cleaned command line input and tokens
+ * @param big structure which contains the environmental variable array
  */
-void	ft_ext_precond(t_list *lexx, t_big *big)
+void	ft_expa_precond(t_list *lexx, t_big *big)
 {
 	t_list	*curr;
 
@@ -317,7 +395,7 @@ void	ft_ext_precond(t_list *lexx, t_big *big)
 			|| (((t_lexer *)curr->content)->token == 21))
 		{
 			ft_var_checker(&curr->content, big);
-			printf("test 7: %s\n", (((t_lexer *)curr->content)->value));
+			// printf("test 7: %s\n", (((t_lexer *)curr->content)->value));
 		}
 		curr = curr->next;
 	}
