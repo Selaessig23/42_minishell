@@ -146,8 +146,9 @@ static char	*ft_var_creator(char *value_old, char **env)
 			k = i;
 			i++;
 			while (value_old[i]
-					&& ((value_old[i] < 9 || value_old[i] > 13)
-					&& (value_old[i] != ' ')))
+					&& !((value_old[i] >= 9 && value_old[i] <= 13)
+					|| (value_old[i] == ' ')
+					|| !(ft_isalnum(value_old[i]))))
 					i++;
 			temp = ft_substr(value_old, k, (i - k));
 			// printf("Variable name to search for: %s\n", temp);
@@ -196,6 +197,46 @@ char	*ft_pid_expander(((char *)curr->content)->value)
  */
 
 /**
+ * @brief recursive function to transform a number to a string
+ * 
+ * @param charnbr the string to integrate the number in
+ * @param nbr the int to integrate
+ * @param count	the index at which point to integrate nbr in
+ */
+void	ft_create_nbr(char *charnbr, int nbr, int count)
+{
+	if (nbr > 9)
+	{
+		charnbr[count] = (nbr % 10) + '0';
+		ft_create_nbr ((charnbr), (nbr / 10), (count - 1));
+	}
+	else
+		charnbr[count] = (nbr % 10) + '0';
+}
+
+/**
+ * @brief helper function for ft_givenbr to count length of
+ * nbr to be able to malloc a char
+ * 
+ * @param nbr the int to count in
+ */
+int	ft_count_nbr(int nbr)
+{
+	int	count;
+
+	count = 0;
+	if (nbr <= 0)
+		count += 1;
+	while (nbr != 0)
+	{
+		nbr /= 10;
+		count += 1;
+	}
+	return (count);
+
+}
+
+/**
  * @brief helper function to transform a number in char* and return it
  * 
  * @param nbr the number to transform from
@@ -204,38 +245,31 @@ static char	*ft_givenbr(int nbr)
 {
 	char	*charnbr;
 	int		count;
-	int		nbr_save;
+	int		i;
 
 	count = 0;
-	nbr_save = nbr;
 	charnbr = NULL;
+	i = 0;
 	if (nbr == -2147483648)
 		return (ft_strdup("-2147483648"));
-	else if (nbr == 0)
-		return (ft_strdup("0"));
 	else
 	{
-		if (nbr <= 0)
-			count++;
-		while (nbr != 0)
-		{
-			nbr /= 10;
-			count++;
-		}
-		charnbr = ft_calloc(count, sizeof(char));
-
+		count = ft_count_nbr(nbr);
+		charnbr = ft_calloc((count + 1), sizeof(char));
+		ft_printf("count no: %i\n", count);
+		if (!charnbr)
+			error_handling(2);
 		if (nbr < 0)
 		{
-		//	ft_putchar_fd(45, fd);
-	//		ft_putnbr_fd((nbr * (-1)), fd);
+			charnbr[i] = '-';
+			i += 1;
+			nbr *= (-1);
 		}
-		else if (nbr > 9)
-		{
-	//		ft_putnbr_fd((n / 10), fd);
-	//		ft_putchar_fd(((n % 10) + 48), fd);
-		}
-		// else
-	//		ft_putchar_fd((n + 48), fd);
+		if (nbr > 9)
+			ft_create_nbr(charnbr, nbr, (count - 1));
+		else
+			charnbr[i] = nbr + '0';
+		charnbr[count] = '\0';
 		return (charnbr);
 	}
 }
@@ -259,8 +293,8 @@ static char	*ft_exit_expander(char *value_old, int exit_code)
 	exit_code_input = ft_givenbr(exit_code);
 	exit_code_input_save = exit_code_input;
 	value_new = ft_calloc((ft_strlen(exit_code_input) + ft_strlen(value_old) + 1), sizeof(char));
-	if (exit_code_input[0] == '0')
-	{
+	// if (exit_code_input[0] == '0')
+	// {
 		while (*value_old && 
 			!(*value_old == '$' && *(value_old + 1) == '?'))
 		{
@@ -274,6 +308,7 @@ static char	*ft_exit_expander(char *value_old, int exit_code)
 			i += 1;
 			exit_code_input += 1;
 		}
+		value_old += 2;
 		while (*value_old)
 		{
 			value_new[i] = *value_old;
@@ -283,13 +318,13 @@ static char	*ft_exit_expander(char *value_old, int exit_code)
 		value_new[i] = '\0';
 		free(exit_code_input_save);
 		return (value_new);
-	}
-	else
-	{
-		free(value_new);
-		free(exit_code_input_save);
-		return (ft_strdup(value_old_save));
-	}
+	// }
+	// else
+	// {
+		// free(value_new);
+		// free(exit_code_input_save);
+		// return (ft_strdup(value_old_save));
+	// }
 }
 
 /**
