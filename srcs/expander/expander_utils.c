@@ -7,6 +7,23 @@
  */
 
 /**
+ * @brief helper function for ft_env_varname_creator in expander_env.c
+ * that checks for characters that are defined to be part of
+ * the var_name within (beginning og) the env-variable-value
+ * 
+ * @param c the character that has to be checked
+*/
+int	ft_is_env_var(char c)
+{
+	if ((c >= 'A' && c <= 'Z')
+		|| c == '_'
+		|| ft_isdigit(c))
+		return (1);
+	else
+		return (0);
+}
+
+/**
  * @brief recursive (helper) function for ft_givenbr
  * to transform a number to a string
  * 
