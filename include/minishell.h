@@ -137,7 +137,19 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
 int		ft_syntax(t_list *lexx);
 //syntaxerrors.c
 void	ft_syntax_errors(t_list *lexx, int errorno);
-//extender.c
+//expander.c
 void	ft_expa_precond(t_list *lexx, t_big *big);
+//expander_env.c
+char	*ft_var_creator(char *value_old, char **env);
+//expander_env_no.c
+char	*delete_varname_from_value(char *value_old, char *wrongenvp);
+//expander_env_yes.c
+char	*add_env_to_value(char *value_old, char *env, char *env_name);
+//expander_pid.c
+//expander_exit.c
+char	*ft_exit_expander(char *value_old, int exit_code);
+//expander_utils.c
+char	*ft_givenbr(int nbr);
+
 
 #endif
