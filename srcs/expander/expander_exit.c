@@ -17,11 +17,11 @@
  * @param value_new the tokens value that has to be adapted
  * @param exit_code the value that has to be inserted
  */
-static int	ft_add_exit_status(int i, char **value_new, char *exit_code_input)
+static int	ft_add_exit_status(int i, char *value_new, char *exit_code_input)
 {
 	char	*temp;
 
-	temp = *value_new;
+	temp = value_new;
 	while (*exit_code_input)
 	{
 		*temp = *exit_code_input;
@@ -60,7 +60,7 @@ char	*ft_exit_expander(char *value_old, int exit_code)
 	}
 	// while (*exit_code_input)
 	// {
-		i = ft_add_exit_status(i, &value_new, exit_code_input);
+		i = ft_add_exit_status(i, &value_new[i], exit_code_input);
 		// value_new[i] = *exit_code_input;
 		// i += 1;
 		// exit_code_input += 1;
