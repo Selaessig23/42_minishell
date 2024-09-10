@@ -61,7 +61,7 @@ $(NAME): $(OBJS) $(LIBFT_LIBRARY)
 # otherwise If the target doesn’t include a directory (i.e., it's in the current directory), $(@D) expands to . (representing the current directory).
 $(OBJS): obj%.o : srcs%.c 
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
+	$(CC) $(CFLAGS) -c $< -o $@
 
 #The -C option is used to change the directory to the specified path before executing make. In this context, it ensures that make operates in the subfolder, not the current directory.
 $(LIBFT_LIBRARY): $(LIBFT_CREATE)
