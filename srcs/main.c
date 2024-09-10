@@ -33,8 +33,8 @@ int main(int argc, char **argv, char **envp)
 		error_handling(1);
 	else if (argc == 1)
 	{
-		if (!*__environ)
-			error_handling(4);
+		// if (!*__environ)
+			// error_handling(4);
 		prompt = ft_strdup("Marina's and Markus' minishell>");
 		big = init_t_big(envp);
 		while (1)

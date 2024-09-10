@@ -6,13 +6,18 @@
  */
 void ft_test_arr_print(char **input_arr, char *prompt, t_big *big)
 {
+	char	**env_list;
+	int		i;
+
+	i = 0;
+	env_list = big->env;
 	if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "env",
 						3) && ft_strlen(input_arr[0]) == 3))
 	{
-		while (*__environ)
+		while (env_list && *env_list)
 		{
-			ft_printf("%s\n", *__environ);
-			__environ++;
+			ft_printf("%s\n", *env_list);
+			env_list += 1;
 		}
 	}
 	else if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0],
@@ -24,6 +29,25 @@ void ft_test_arr_print(char **input_arr, char *prompt, t_big *big)
 		free_t_big(big);
 		rl_clear_history();
 		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		i = 0;
+		while (input_arr[i])
+		{
+			if (!ft_strncmp(input_arr[i], "$USER", ft_strlen("$USER"))
+				&& ft_strlen("$USER") == ft_strlen(input_arr[i]))
+			{
+				ft_printf("arr[%i]: %s\n", i, input_arr[i]);
+				ft_printf("after expand function $USER is \"user_name\"\n");
+			}
+			else
+				ft_printf("arr[%i]: %s\n", i, input_arr[i]);
+			// free(*input_arr);
+			i++;
+		}
+		// input_arr = NULL;
+		// ft_putchar_fd('\n', 1);
 	}
 	ft_free(input_arr);
 	// 	ft_printf("%s\n", testinput);
@@ -70,10 +94,12 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 	t_list	*curr;
 	char	*token_print;
 	int		i;
+	char	**env_list;
 
 	i = 0;
 	token_print = NULL;
 	curr = lexx;
+	env_list = big->env;
 	while (curr != NULL)
 	{
 		if (!ft_strncmp(((t_lexer *)curr->content)->value, "exit", 4) 
@@ -90,10 +116,10 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 		else if (!ft_strncmp(((t_lexer *)curr->content)->value, "env", 3) 
 			&& ft_strlen(((t_lexer *)curr->content)->value) == 3)
 		{
-			while (*__environ)
+			while (env_list && *env_list)
 			{
-				ft_printf("%s\n", *__environ);
-				__environ++;
+				ft_printf("%s\n", *env_list);
+				env_list += 1;
 			}
 		}
 		else

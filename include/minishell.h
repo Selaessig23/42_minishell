@@ -24,9 +24,10 @@
 # define INPUT_ERROR "Not correct number of input arguments\
 to execute minishell\n"
 
-//it is "a good practice" to use a global variable for environment 
-//instead of picking it in the main
-extern char	**environ;
+// it is "a good practice" to use a global variable for environment 
+// instead of picking it in the main
+// but it is not allowd to use global variables
+// extern char	**environ;
 
 // to define all different tokens
 // see libft_bonus

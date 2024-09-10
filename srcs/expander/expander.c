@@ -31,7 +31,7 @@ static void	ft_var_checker(void	**token, t_big *big)
 	value_old = temp->value;
 	while (value_old[i])
 	{
-		if (value_old[i] == '$')
+		if (value_old[i + 1] && value_old[i] == '$')
 		{
 			// if (value_old[i] == '$' && value_old[i + 1] == '?')
 			if (value_old[i + 1] == '?')
