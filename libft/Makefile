@@ -117,23 +117,23 @@ $(NAME): $(OBJS) $(OBJS_BONUS) $(OBJS_PRINTF) $(OBJS_GNL) $(OBJS_ADD)
 
 $(OBJS): objs/%.o : srcs/%.c 
 	@mkdir -p objs
-	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJS_BONUS): objs_bonus/%.o : srcs_bonus/%.c 
 	@mkdir -p objs_bonus
-	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJS_PRINTF): objs_printf/%.o : srcs_printf/%.c 
 	@mkdir -p objs_printf
-	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJS_GNL): objs_gnl/%.o : srcs_gnl/%.c 
 	@mkdir -p objs_gnl
-	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJS_ADD): objs_add/%.o : srcs_add/%.c 
 	@mkdir -p objs_add
-	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
+	$(CC) $(CFLAGS) -c $< -o $@
 	
 #clean: This target removes the object files ($(OFILES)).
 #use rm -rf or rm -f? 
