@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 // **Note for Markus. 12 Aug** I moved it up "if (argc != 1) error_handling(1);"

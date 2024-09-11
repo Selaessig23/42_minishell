@@ -55,32 +55,22 @@ typedef struct s_lexer
 	t_tokentype		token;
 }				t_lexer;
 
-// Struct representing command data
-typedef struct s_data
-{
-	int		infile; // Input file descriptor (defaults to stdin)
-	int		outfile; // Output file descriptor (defaults to stdout)
-	char	**cmd; // Command and arguments
-}					t_data;
-
-// Linked list containing a s_data nodes with
-// all commands separated by pipes
-// typedef struct s_list
-// {
-// 	t_data			*cmds; // Command data
-// 	struct t_list	*next; // Pointer to the next list node
-// }					t_list;
+typedef struct s_data {
+    int  infile;  // Input file descriptor (defaults to stdin)
+    int  outfile; // Output file descriptor (defaults to stdout)
+    char **cmd;   // Command and arguments
+	size_t commands_no; // if helpful
+}				t_data;
 
 // Main struct containing the list of commands and
 // a copy of the environment
 typedef struct s_big
 {
-	t_list	*list; // Linked list of commands
+	t_list	*list; // Linked list t_data
 	char	**env; // Copy of environment variables
 	int		exit_code;
 }					t_big;
 
-////////////////////////////
 // maybe rename to bin_path for binary path
 typedef struct s_envp
 {
