@@ -151,6 +151,7 @@ char	*add_env_to_value(char *value_old, char *env, char *env_name);
 char	*ft_exit_expander(char *value_old, int exit_code);
 //expander_utils.c
 char	*ft_givenbr(int nbr);
+int		ft_is_env_var(char c);
 
 
 #endif

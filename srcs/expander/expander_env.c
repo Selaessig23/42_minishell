@@ -32,7 +32,7 @@ static char **ft_env_varname_creator(char **env)
 		i = 0;
 		// j = 0;
 		env_value = *env;
-		printf("env_value: %s\n", env_value);
+		// printf("env_value: %s\n", env_value);
 		while(env_value[i] && ft_is_env_var(env_value[i]))
 		{
 			// (*env) += 1;
@@ -47,11 +47,10 @@ static char **ft_env_varname_creator(char **env)
 		}
 		// printf("env_var_name: %s\n", *env_var_names);
 		env_var_names += 1;
-		env++;
+		env += 1;
 	}
 	*env_var_names = NULL;
 	return (env_var_names_save);
-
 }
 
 /**
@@ -74,7 +73,7 @@ static char	*ft_var_envchecker(char *value_old, char *var_name, char **env)
 	// printf("env variable name: %s\nlength: %zu\n", (var_name + 1), ft_strlen(var_name + 1));
 	while (env_var_names && *env_var_names)
 	{
-		printf("test 2A: %s\n", *env_var_names);
+		// printf("test 2A: %s\n", *env_var_names);
 		if (!ft_strncmp(*env_var_names, 
 				(var_name + 1), ft_strlen(*env_var_names)))
 		{
