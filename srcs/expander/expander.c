@@ -147,10 +147,12 @@ void	ft_expa_precond(t_list *lexx, t_big *big)
 	{
 		if ((((t_lexer *)curr->content)->token == 21)
 			|| (((t_lexer *)curr->content)->token == 22)
-			|| (((t_lexer *)curr->content)->token == 25))
+			|| (((t_lexer *)curr->content)->token == 25)
+			|| (((t_lexer *)curr->content)->token == 26))
 			ft_quote_checker(&curr->content);
 		if ((((t_lexer *)curr->content)->token == 20)
-			|| (((t_lexer *)curr->content)->token == 21))
+			|| (((t_lexer *)curr->content)->token == 21)
+			|| (((t_lexer *)curr->content)->token == 25))
 			ft_var_checker(&curr->content, big);
 		curr = curr->next;
 	}

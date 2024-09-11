@@ -42,10 +42,10 @@ typedef enum e_tokentype
 	WORD = 20,
 	D_QUOTED = 21, //double quoted word
 	S_QUOTED = 22, //single quoted word
-	D_QUOTED_F = 23, //to define cases like 'argument1withoutquotend
-	S_QUOTED_F = 24, //to define cases like "argument1withoutquotend
-	Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes
-	// and 'argument1'withoutspaceafterquotes
+	D_QUOTED_F = 23, //to define cases like "argument1withoutquotend
+	S_QUOTED_F = 24, //to define cases like 'argument1withoutquotend
+	D_Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes
+	S_Q_WORD = 26 // to define cases like 'argument1'withoutspaceafterquotes
 }	t_tokentype;
 
 // struct for lexer analysis

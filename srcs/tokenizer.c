@@ -86,7 +86,7 @@ static t_tokentype	ft_creat_str_token(char *input_arr)
 	else if (!ft_strncmp(input_arr, "\'", 1)
 		&& ft_check_lastchar(input_arr, '\'')
 		&& ft_check_totalchar(input_arr, '\'') > 1)
-		return (25);
+		return (26);
 	else if (!ft_strncmp(input_arr, "\'", 1)
 		&& ft_check_lastchar(input_arr, '\''))
 		return (24);
