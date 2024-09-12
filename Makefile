@@ -17,7 +17,8 @@ SRCS =	main.c \
 		lexer.c \
 		extra_prompt.c \
 		str_spaces_trimer.c \
-		tokenizer.c \
+		tokenizer/tokenizer.c \
+		tokenizer/tokenizer_strings.c \
 		syntax.c \
 		syntaxerrors.c \
 		testprints.c \

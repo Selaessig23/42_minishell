@@ -42,10 +42,12 @@ typedef enum e_tokentype
 	WORD = 20,
 	D_QUOTED = 21, //double quoted word
 	S_QUOTED = 22, //single quoted word
-	D_QUOTED_F = 23, //to define cases like "argument1withoutquotend
-	S_QUOTED_F = 24, //to define cases like 'argument1withoutquotend
-	D_Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes
-	S_Q_WORD = 26 // to define cases like 'argument1'withoutspaceafterquotes
+	D_QUOTED_F = 23, //to define cases without closing quotation mark like "argument1withoutquotend
+	S_QUOTED_F = 24, //to define cases without closing quotation mark like 'argument1withoutquotend
+	D_Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes or argument1"withoutspace"afterquotes...
+	S_Q_WORD = 26, // to define cases like 'argument1'withoutspaceafterquotes or argument1'withoutspace'afterquotes...
+	D_Q_WORD_F = 27, //to define cases with a single double quotation mark like argument1"withoutspaceafterquotes
+	S_Q_WORD_F = 28 // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
 }	t_tokentype;
 
 // struct for lexer analysis
@@ -118,9 +120,11 @@ void	free_t_big(t_big *big); // temp cleanup function
 char	**create_nodes(char **readline_input);
 //ft_split_quotes.c
 char	**ft_split_quotes(char const *s, char c);
-//tokenizer.c
+//tokenizer/tokenizer.c
 t_list	*ft_tokenizer(char **input_arr);
 void	ft_free_ll(t_list **ll);
+//tokenizer/tokenizer_strings.c
+t_tokentype	ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
@@ -128,18 +132,18 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
 int		ft_syntax(t_list *lexx);
 //syntaxerrors.c
 void	ft_syntax_errors(t_list *lexx, int errorno);
-//expander.c
+//expander/expander.c
 void	ft_expa_precond(t_list *lexx, t_big *big);
-//expander_env.c
+//expander/expander_env.c
 char	*ft_var_creator(char *value_old, char **env);
-//expander_env_no.c
+//expander/expander_env_no.c
 char	*delete_varname_from_value(char *value_old, char *wrongenvp);
-//expander_env_yes.c
+//expander/expander_env_yes.c
 char	*add_env_to_value(char *value_old, char *env, char *env_name);
-//expander_pid.c
-//expander_exit.c
+//expander/expander_pid.c
+//expander/expander_exit.c
 char	*ft_exit_expander(char *value_old, int exit_code);
-//expander_utils.c
+//expander/expander_utils.c
 char	*ft_givenbr(int nbr);
 int		ft_is_env_var(char c);
 
