@@ -37,7 +37,7 @@ static int	ft_quote_remover(char *value_new, char *value_old, char sign)
 
 /**
  * @brief this functions deletes quotation marks at the beginning and end of
- * the value of token single_quoted / double_quoted
+ * the value of token 21 / 22 / 27 / 28
  * 
  * DO I HAVE TO ENSURE THAT value_old has enough characters to remove quotes?
  * 
@@ -59,11 +59,6 @@ static void	ft_quote_checker(void **token)
 		i = ft_quote_remover(value_new, &value_old[i + 1], '\"');
 	else if (value_old[i] == '\'')
 		i = ft_quote_remover(value_new, &value_old[i + 1], '\'');
-	// while (value_old[i + 1] && value_old[i + 1] != '\"') 
-	// {
-	// 	value_new[i] = value_old[i + 1];
-	// 	i += 1;
-	// }
 	value_new[i] = '\0';
 	temp->value = value_new;
 	// printf ("Calloc: %lu, real: %zu\n, i: %i\n",
