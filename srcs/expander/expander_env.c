@@ -75,7 +75,8 @@ static char	*ft_var_envchecker(char *value_old, char *var_name, char **env)
 	{
 		// printf("test 2A: %s\n", *env_var_names);
 		if (!ft_strncmp(*env_var_names, 
-				(var_name + 1), ft_strlen(*env_var_names)))
+				(var_name + 1), ft_strlen(*env_var_names))
+			&& (ft_strlen(*env_var_names) == ft_strlen (var_name + 1)))
 		{
 			ft_free(env_var_names_save);
 			return (add_env_to_value(value_old, 
