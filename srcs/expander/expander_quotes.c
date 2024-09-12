@@ -43,7 +43,7 @@ static int	ft_quote_remover(char *value_new, char *value_old, char sign)
  * 
  * @param token node of token-list that has to be cleaned from quotes
  */
-static void	ft_quote_checker(void **token)
+void	ft_quote_checker(void **token)
 {
 	char	*value_new;
 	t_lexer	*temp;

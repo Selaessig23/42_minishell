@@ -134,6 +134,8 @@ int		ft_syntax(t_list *lexx);
 void	ft_syntax_errors(t_list *lexx, int errorno);
 //expander/expander.c
 void	ft_expa_precond(t_list *lexx, t_big *big);
+//expander/expander_quotes.c
+void	ft_quote_checker(void **token);
 //expander/expander_env.c
 char	*ft_var_creator(char *value_old, char **env);
 //expander/expander_env_no.c

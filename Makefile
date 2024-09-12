@@ -24,6 +24,7 @@ SRCS =	main.c \
 		testprints.c \
 		t_big_and_env_copy.c \
 		expander/expander.c \
+		expander/expander_quotes.c \
 		expander/expander_env.c \
 		expander/expander_env_yes.c \
 		expander/expander_env_no.c \
