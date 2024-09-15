@@ -64,7 +64,7 @@ static char **copy_envp(char **envp)
 		copy[j] = ft_memcpy(copy[j], envp[j], str_size);
 		j++;
 	}
-	envp[j] = NULL;
+	copy[j] = NULL;
 	return (copy);
 }
 
