@@ -17,25 +17,27 @@
  * 
  * @return returns 0 if checker char is not 1st quotation found
  */
-static int	ft_check_fstquote(char *content, char checker)
+int	ft_check_fstquote(char *content, char checker)
 {
-	char	c;
-	int		i;
-	int		j;
+	char	counterpart;
+	int		count_counter;
+	int		count_checker;
 
-	i = 0;
-	j = 0;
+	count_counter = 0;
+	count_checker = 0;
 	if (checker == '\'')
-		c = '\"';
+		counterpart = '\"';
 	else if (checker == '\"')
-		c = '\'';
+		counterpart = '\'';
 	else
-		c = '\0';
-	while (content[i] && content[i] != c)
-		i += 1;
-	while (content[j] && content[j] != checker)
-		j += 1;
-	if ((i + j) == 0 || (i - j) == 0 || i < j)
+		counterpart = '\0';
+	while (content[count_counter] && content[count_counter] != counterpart)
+		count_counter += 1;
+	while (content[count_checker] && content[count_checker] != checker)
+		count_checker += 1;
+	if ((count_counter + count_checker) == 0 
+		|| (count_counter - count_checker) == 0 
+		|| count_counter < count_checker)
 		return (1);
 	else
 		return (0);
@@ -91,13 +93,17 @@ static bool	ft_check_lastchar(char *content, char checker)
 static t_tokentype	ft_creat_dquoted_token(char *input_string)
 {
 	if (!ft_strncmp(input_string, "\"", 1)
+		&& ft_check_totalchar(input_string, '\"') == 2
 		&& !ft_check_lastchar(input_string, '\"'))
 		return (21);
-	else if (ft_check_totalchar(input_string, '\"') >= 2
-		&& !(ft_check_totalchar(input_string, '\"') % 2))
+	// else if (ft_check_totalchar(input_string, '\"') >= 2
+	// 	&& !(ft_check_totalchar(input_string, '\"') % 2))
+	else if (ft_check_totalchar(input_string, '\"') >= 2)
+		// && (ft_strncmp(input_string, "\"", 1) || ft_check_lastchar(input_string, '\"')))
 		return (25);
-	else if (ft_check_totalchar(input_string, '\"') >= 0
-		&& (ft_check_totalchar(input_string, '\"') % 2))
+	// else if (ft_check_totalchar(input_string, '\"') >= 0
+		// && (ft_check_totalchar(input_string, '\"') % 2))
+	else if (ft_check_totalchar(input_string, '\"') == 1)
 		return (27);
 	else if (!ft_strncmp(input_string, "\"", 1)
 		&& ft_check_lastchar(input_string, '\"'))
@@ -118,13 +124,17 @@ static t_tokentype	ft_creat_dquoted_token(char *input_string)
 t_tokentype	ft_creat_str_token(char *input_string)
 {
 	if (!ft_strncmp(input_string, "\'", 1)
+		&& ft_check_totalchar(input_string, '\'') == 2
 		&& !ft_check_lastchar(input_string, '\''))
 		return (22);
-	else if (ft_check_totalchar(input_string, '\'') >= 2
-		&& !(ft_check_totalchar(input_string, '\'') % 2))
+	// else if (ft_check_totalchar(input_string, '\'') >= 2
+		// && !(ft_check_totalchar(input_string, '\'') % 2))
+	else if (ft_check_totalchar(input_string, '\'') >= 2)
+		// && (ft_strncmp(input_string, "\'", 1) || ft_check_lastchar(input_string, '\'')))
 		return (26);
-	else if (ft_check_totalchar(input_string, '\'') >= 0
-		&& (ft_check_totalchar(input_string, '\'') % 2) != 0)
+	// else if (ft_check_totalchar(input_string, '\'') >= 0
+		// && (ft_check_totalchar(input_string, '\'') % 2) != 0)
+	else if (ft_check_totalchar(input_string, '\'') == 1)
 		return (28);
 	else if (!ft_strncmp(input_string, "\'", 1)
 		&& ft_check_lastchar(input_string, '\''))

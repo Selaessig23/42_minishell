@@ -34,17 +34,85 @@ void	ft_free_ll(t_list **ll)
 }
 
 /**
+ * @helper function for ft_qword_special which returns the pointer 
+ * to part of string after second "\'" if token == 26 or
+ * pointer to part of string after second "\"" if token == 25
+ * 
+ * @param 
+ */
+char	*ft_get_quotendpointer(char *input_string, t_tokentype token)
+{
+	int		i;
+	char	countsign;
+
+	i = 0;
+	if (token == 25)
+		countsign = '\"';
+	else
+		countsign = '\'';
+	while (*input_string && i <= 1)
+	{
+		if (*input_string == countsign)
+			i += 1;
+		input_string += 1;
+	}
+	printf("quotepointer: %s\n", input_string);
+	return (input_string);
+}
+
+/**
  * @brief function to handle a special case
  * of command line input in token 
  * D_Q_WORD = 25, e. g. "argument1"withoutspaceafter"quotes''""
  * S_Q_WORD = 26, // e. g. argument1'withoutspace'afterquotes'"'"...
+ * if any of this tokens end up with an unequal number of quotes
+ * (whether single or double) the have to be handled as 
+ * cases with unclosed qoutation marks
+ * 
+ * function ft_creat_str_token in tokenizer_strings.c
+ * 
+ * @param input_string string as part of input_arr with cleaned input of 
+ * command line input
+ * @param token_old the token that has to be checked for
  */
-void	ft_qword_special(t_tokentype *token_old)
+void	ft_qword_special(char *input_string, t_tokentype *token_old)
 {
-	t_tokentype	token_new;
+	// t_tokentype	token_new;
+	int		count_squote;
+	int		count_dquote;
+	char	*input_string_copy;
 
-	(void) token_old;
-	(void) token_new;
+	count_squote = 0;
+	count_dquote = 0;
+	input_string_copy = input_string;
+	while (*input_string)
+	{
+		if (*input_string == '\'')
+			count_squote += 1; 
+		else if (*input_string == '\"')
+			count_dquote += 1;
+		input_string += 1;
+	}
+	printf("test count_squote: %i\ntest count_dquote: %i\n", count_squote, count_dquote);
+	if (count_squote != 0 && (count_squote % 2 != 0) 
+		//get pointer to part of string after second "\'" if token == 26 or
+		//get pointer to part of string after second "\"" if token == 25
+		&& !ft_check_fstquote(ft_get_quotendpointer(input_string_copy, *token_old), '\'')
+	)
+		*token_old = 28;
+	else if (count_dquote != 0 && (count_dquote % 2 != 0)
+		//get pointer to part of string after second "\'" if token == 26 or
+		//get pointer to part of string after second "\"" if token == 25
+		// && !ft_check_fstquote(pointer, '\"')
+		&& !ft_check_fstquote(ft_get_quotendpointer(input_string_copy, *token_old), '\"')
+	)
+	{
+		*token_old = 27;
+		printf("test2\n");
+	}	
+	// else
+	// 	token_new = *token_old;
+	// token_old = &token_new;
 }
 
 /**
@@ -70,8 +138,9 @@ static t_tokentype	ft_creat_tokens(char *input_string)
 		token = ft_creat_redir_token(input_string);
 	else
 		token = ft_creat_str_token(input_string);
+	printf("token_defined: %i\n", token);
 	if (token == 25 || token == 26)
-		ft_qword_special(&token);
+		ft_qword_special(input_string, &token);
 	return (token);
 }
 

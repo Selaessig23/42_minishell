@@ -127,7 +127,8 @@ void	ft_free_ll(t_list **ll);
 t_tokentype	ft_creat_redir_token(char *input_string);
 t_tokentype	ft_creat_operators_token(char *input_string);
 //tokenizer/tokenizer_strings.c
-t_tokentype	ft_creat_str_token(char *input_string);
+int		ft_check_fstquote(char *content, char checker);
+t_tokentype			ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);

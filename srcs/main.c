@@ -71,17 +71,17 @@ int main(int argc, char **argv, char **envp)
 				ft_free(input_arr);
 				// to seperate debug-infos of lexer from bash-output
 				ft_printf("\n");
-				if (!ft_syntax(lexx))
-				{
+				// if (!ft_syntax(lexx))
+				// {
 					//printf_env(big);
 					ft_expa_precond(lexx, big);
 					// ft_printf("test\n");
 					ft_test_ll_print(lexx, prompt, big);
-				}
-				else
-				{
-					ft_free_ll(&lexx);
-				}
+				// }
+				// else
+				// {
+					// ft_free_ll(&lexx);
+				// }
 			}
 		}
 		ft_free_ll(&lexx);
