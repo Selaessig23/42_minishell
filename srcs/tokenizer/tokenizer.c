@@ -34,34 +34,21 @@ void	ft_free_ll(t_list **ll)
 }
 
 /**
- * @brief helper function of ft_creat_tokens
- * to initiate variable token of linked list lexx,
- * here: alls kinds of redirections
- * 
- * @param input_string string as part of input_arr with cleaned input of 
- * command line input
+ * @brief function to handle a special case
+ * of command line input in token 
+ * D_Q_WORD = 25, e. g. "argument1"withoutspaceafter"quotes''""
+ * S_Q_WORD = 26, // e. g. argument1'withoutspace'afterquotes'"'"...
  */
-static t_tokentype	ft_creat_redir_token(char *input_string)
+void	ft_qword_special(t_tokentype *token_old)
 {
-	if ((!ft_strncmp(input_string, ">>", ft_strlen(">>")) 
-			&& ft_strlen(input_string) == ft_strlen(">>")))
-		return (6);
-	else if ((!ft_strncmp(input_string, ">", ft_strlen(">")) 
-			&& ft_strlen(input_string) == ft_strlen(">")))
-		return (5);
-	else if ((!ft_strncmp(input_string, "<<", ft_strlen("<<")) 
-			&& ft_strlen(input_string) == ft_strlen("<<")))
-		return (3);
-	else if ((!ft_strncmp(input_string, "<", ft_strlen("<")) 
-			&& ft_strlen(input_string) == ft_strlen("<")))
-		return (4);
-	else 
-		return (0);
+	t_tokentype	token_new;
+
+	(void) token_old;
+	(void) token_new;
 }
 
 /**
- * @brief function to initiate variable token of linked list lexx,
- * here: operators (except redirect operators)
+ * @brief function to initiate variable token of linked list lexx
  * 
  * @param input_string string as part of input_arr with cleaned input of 
  * command line input
@@ -71,18 +58,20 @@ static t_tokentype	ft_creat_tokens(char *input_string)
 	t_tokentype	token;
 
 	token = 0;
-	if ((!ft_strncmp(input_string, "|", ft_strlen("|")) 
-			&& ft_strlen(input_string) == ft_strlen("|")))
-		token = 1;
-	else if ((!ft_strncmp(input_string, ";", ft_strlen(";")) 
-			&& ft_strlen(input_string) == ft_strlen(";")))
-		token = 2;
-	else
-	{
+	if (ft_creat_operators_token(input_string))
+		token = ft_creat_operators_token(input_string);
+	// if ((!ft_strncmp(input_string, "|", ft_strlen("|")) 
+	// 		&& ft_strlen(input_string) == ft_strlen("|")))
+	// 	token = 1;
+	// else if ((!ft_strncmp(input_string, ";", ft_strlen(";")) 
+	// 		&& ft_strlen(input_string) == ft_strlen(";")))
+	// 	token = 2;
+	else if (ft_creat_redir_token(input_string))
 		token = ft_creat_redir_token(input_string);
-		if (!token)
-			token = ft_creat_str_token(input_string);
-	}
+	else
+		token = ft_creat_str_token(input_string);
+	if (token == 25 || token == 26)
+		ft_qword_special(&token);
 	return (token);
 }
 

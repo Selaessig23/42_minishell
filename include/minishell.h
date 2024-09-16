@@ -123,6 +123,9 @@ char	**ft_split_quotes(char const *s, char c);
 //tokenizer/tokenizer.c
 t_list	*ft_tokenizer(char **input_arr);
 void	ft_free_ll(t_list **ll);
+//tokenizer/tokenizer_operators.c
+t_tokentype	ft_creat_redir_token(char *input_string);
+t_tokentype	ft_creat_operators_token(char *input_string);
 //tokenizer/tokenizer_strings.c
 t_tokentype	ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions

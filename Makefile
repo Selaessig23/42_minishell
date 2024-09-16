@@ -19,6 +19,7 @@ SRCS =	main.c \
 		str_spaces_trimer.c \
 		tokenizer/tokenizer.c \
 		tokenizer/tokenizer_strings.c \
+		tokenizer/tokenizer_operators.c \
 		syntax.c \
 		syntaxerrors.c \
 		testprints.c \
