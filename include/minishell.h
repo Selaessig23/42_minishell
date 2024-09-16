@@ -58,10 +58,14 @@ typedef struct s_lexer
 }				t_lexer;
 
 typedef struct s_data {
-    int  infile;  // Input file descriptor (defaults to stdin)
-    int  outfile; // Output file descriptor (defaults to stdout)
-    char **cmd;   // Command and arguments
-	size_t commands_no; // if helpful
+	// int	infile;// Input file descriptor (defaults to stdin)
+	// int	outfile;// Output file descriptor (defaults to stdout)
+	bool	in_heredoc;
+	bool	out_append;
+	char	*infile;
+	char	*outfile;
+	char	**cmd;// Command and arguments
+	size_t	commands_no;// if helpful
 }				t_data;
 
 // Main struct containing the list of commands and
