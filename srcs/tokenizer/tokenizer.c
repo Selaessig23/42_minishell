@@ -48,6 +48,10 @@ char	*ft_get_quotendpointer(char *input_string, t_tokentype token)
 	i = 0;
 	if (token == 25)
 		countsign = '\"';
+	else if (token == 25)
+		countsign = '\'';
+	else if (!ft_check_fstquote(input_string, '\"'))
+		countsign = '\"';
 	else
 		countsign = '\'';
 	while (*input_string && i <= 1)
@@ -56,8 +60,16 @@ char	*ft_get_quotendpointer(char *input_string, t_tokentype token)
 			i += 1;
 		input_string += 1;
 	}
-	printf("quotepointer: %s\n", input_string);
-	return (input_string);
+	if (i <= 1)
+	{
+		printf("quotepointer: %s\n", input_string);
+		return (NULL);
+	}
+	else
+	{	
+		printf("quotepointer: %s\n", input_string);
+		return (input_string);
+	}
 }
 
 /**
@@ -85,26 +97,30 @@ void	ft_qword_special(char *input_string, t_tokentype *token_old)
 	count_squote = 0;
 	count_dquote = 0;
 	input_string_copy = input_string;
-	while (*input_string)
+	//test
+	while (*input_string_copy && (ft_get_quotendpointer(input_string_copy, *token_old) != NULL))
+		input_string_copy = ft_get_quotendpointer(input_string_copy, 0);
+	//testend
+	while (*input_string_copy)
 	{
-		if (*input_string == '\'')
+		if (*input_string_copy == '\'')
 			count_squote += 1; 
-		else if (*input_string == '\"')
+		else if (*input_string_copy == '\"')
 			count_dquote += 1;
-		input_string += 1;
+		input_string_copy += 1;
 	}
 	printf("test count_squote: %i\ntest count_dquote: %i\n", count_squote, count_dquote);
 	if (count_squote != 0 && (count_squote % 2 != 0) 
 		//get pointer to part of string after second "\'" if token == 26 or
 		//get pointer to part of string after second "\"" if token == 25
-		&& !ft_check_fstquote(ft_get_quotendpointer(input_string_copy, *token_old), '\'')
+		// && !ft_check_fstquote(ft_get_quotendpointer(input_string_copy, *token_old), '\'')
 	)
 		*token_old = 28;
 	else if (count_dquote != 0 && (count_dquote % 2 != 0)
 		//get pointer to part of string after second "\'" if token == 26 or
 		//get pointer to part of string after second "\"" if token == 25
 		// && !ft_check_fstquote(pointer, '\"')
-		&& !ft_check_fstquote(ft_get_quotendpointer(input_string_copy, *token_old), '\"')
+		// && !ft_check_fstquote(ft_get_quotendpointer(input_string_copy, *token_old), '\"')
 	)
 	{
 		*token_old = 27;
@@ -138,7 +154,7 @@ static t_tokentype	ft_creat_tokens(char *input_string)
 		token = ft_creat_redir_token(input_string);
 	else
 		token = ft_creat_str_token(input_string);
-	printf("token_defined: %i\n", token);
+	printf("token_defiexitned: %i\n", token);
 	if (token == 25 || token == 26)
 		ft_qword_special(input_string, &token);
 	return (token);
