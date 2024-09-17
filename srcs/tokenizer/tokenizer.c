@@ -12,33 +12,16 @@
  */
 
 /**
- * @brief function to free the linked list
- * 
- * @param ll the linked list to free
- */
-void	ft_free_ll(t_list **ll)
-{
-	t_list	*temp;
-	t_list	*curr;
-
-	curr = *ll;
-	while (curr != NULL)
-	{
-		temp = curr;
-		curr = curr->next;
-		free(((t_lexer *)temp->content)->value);
-		free(temp->content);
-		free(temp);
-	}
-	curr = NULL;
-}
-
-/**
  * @helper function for ft_qword_special which returns the pointer 
  * to part of string after second "\'" if token == 26 or
- * pointer to part of string after second "\"" if token == 25
+ * pointer to part of string after second "\"" if token == 25 or 
+ * pointer to part of string after second quote (depends 
+ * on which kind of quote comes first in string) if there is no exact
+ * information about the token (=0) 
  * 
- * @param 
+ * @param input_string string as part of input_arr with cleaned input of 
+ * command line input
+ * @param token
  */
 char	*ft_get_quotendpointer(char *input_string, t_tokentype token)
 {
@@ -48,7 +31,7 @@ char	*ft_get_quotendpointer(char *input_string, t_tokentype token)
 	i = 0;
 	if (token == 25)
 		countsign = '\"';
-	else if (token == 25)
+	else if (token == 26)
 		countsign = '\'';
 	else if (!ft_check_fstquote(input_string, '\"'))
 		countsign = '\"';
@@ -66,7 +49,7 @@ char	*ft_get_quotendpointer(char *input_string, t_tokentype token)
 		return (NULL);
 	}
 	else
-	{	
+	{
 		printf("quotepointer: %s\n", input_string);
 		return (input_string);
 	}

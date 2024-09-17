@@ -18,6 +18,7 @@ SRCS =	main.c \
 		extra_prompt.c \
 		str_spaces_trimer.c \
 		tokenizer/tokenizer.c \
+		tokenizer/tokenizer_utils.c \
 		tokenizer/tokenizer_strings.c \
 		tokenizer/tokenizer_operators.c \
 		syntax.c \

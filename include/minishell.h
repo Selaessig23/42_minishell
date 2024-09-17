@@ -122,12 +122,13 @@ char	**create_nodes(char **readline_input);
 char	**ft_split_quotes(char const *s, char c);
 //tokenizer/tokenizer.c
 t_list	*ft_tokenizer(char **input_arr);
+//tokenizer/tokenizer_utils.c
 void	ft_free_ll(t_list **ll);
+int		ft_check_fstquote(char *content, char checker);
 //tokenizer/tokenizer_operators.c
 t_tokentype	ft_creat_redir_token(char *input_string);
 t_tokentype	ft_creat_operators_token(char *input_string);
 //tokenizer/tokenizer_strings.c
-int		ft_check_fstquote(char *content, char checker);
 t_tokentype			ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
