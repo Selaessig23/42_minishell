@@ -72,7 +72,7 @@ typedef struct s_data {
 // a copy of the environment
 typedef struct s_big
 {
-	t_list	*list; // Linked list t_data
+	t_list	*cmdlist; // Linked list t_data
 	char	**env; // Copy of environment variables
 	int		exit_code;
 }					t_big;
@@ -132,7 +132,7 @@ t_tokentype	ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
-void	ft_test_command_print(t_list *comm, char *prompt, t_big *big);
+void	ft_test_command_print(char *prompt, t_data *comm_info);
 //syntax.c
 int		ft_syntax(t_list *lexx);
 //syntaxerrors.c
@@ -154,9 +154,14 @@ char	*ft_exit_expander(char *value_old, int exit_code);
 char	*ft_givenbr(int nbr);
 int		ft_is_env_var(char c);
 //commands/command_list.c
-t_list	*ft_commands(t_list *lexx);
+void	ft_commands(t_list *lexx, t_big **big);
 //commands/command_utils.c
 void	ft_free_cl(t_list **ll);
-
+//commands/command_reader.c
+int    ft_executer(t_big *big, char *prompt);
+//builtins/exit.c
+void    ft_exit_minishell(t_big *big, char *prompt);
+//builtins/env.c
+void	ft_print_env(t_big *big);
 
 #endif

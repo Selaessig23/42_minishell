@@ -2,7 +2,7 @@
 #include "minishell.h"
 
 /**
- * @brief function to free the linked list
+ * @brief function to free the linked list of commands
  * 
  * @param ll the linked list to free
  */
@@ -10,16 +10,18 @@ void	ft_free_cl(t_list **ll)
 {
 	t_list	*temp;
 	t_list	*curr;
+	t_data	*comm_info;
 
 	curr = *ll;
 	while (curr != NULL)
 	{
 		temp = curr;
+		comm_info = temp->content;
 		curr = curr->next;
-		free(((t_data *)temp->content)->infile);
-        free(((t_data *)temp->content)->outfile);
-        ft_free(((t_data *)temp->content)->cmd);
-		free(temp->content);
+		free(comm_info->infile);
+		free(comm_info->outfile);
+		ft_free(comm_info->cmd);
+		free(comm_info);
 		free(temp);
 	}
 	curr = NULL;

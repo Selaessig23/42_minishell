@@ -29,23 +29,23 @@ void	ft_add_arr_back(char *token_value, t_data **p_comm_info)
 	// command_array_old = *p_command_array;
 	command_array_old = comm_info->cmd;
 	count = ft_arrlen(command_array_old);
-	printf("what the hack A, count:: %zu\n", count);
+	// printf("what the hack A, count:: %zu\n", count);
 	command_array_new = (char **)malloc(sizeof(char *) * (count + 2));
 	if (!command_array_new)
 		error_handling(2);
 	if (count > 0)
 	{
-		printf("what the hack A-a, count\n");
+		// printf("what the hack A-a, count\n");
 		while (command_array_old[i] != NULL)
 		{
-			printf("what the hack A-b, count\n");
+			// printf("what the hack A-b, count\n");
 			command_array_new[i] = ft_strdup(command_array_old[i]);
 			i++;
 		}
 	}
-	printf("what the hack A-c, count\n");
+	// printf("what the hack A-c, count\n");
 	command_array_new[i] = ft_strdup(token_value);
-	printf("what the hack A-d, count\n");
+	// printf("what the hack A-d, count\n");
 	if (!command_array_new[i])
 		error_handling(2);
 	i += 1;
@@ -53,7 +53,7 @@ void	ft_add_arr_back(char *token_value, t_data **p_comm_info)
 	// p_command_array = &command_array_new;
 	comm_info->cmd = command_array_new;
 	// printf("what the hack B: %s\n", *p_command_array[0]);;
-	printf("what the hack B: %s\n", comm_info->cmd[0]);;
+	// printf("what the hack B: %s\n", comm_info->cmd[0]);;
 	if ((command_array_old))
 		ft_free(command_array_old);
 }
@@ -101,11 +101,12 @@ static void	ft_init_clist(t_list **lexx, t_list **comm)
 	comm_info = ft_calloc(1, sizeof(t_data));
 	if (!comm_info)
 		error_handling(2);
-	printf("what the hack II\n");
+	// printf("what the hack II\n");
 	init_comm_zero(&comm_info); //set all values to zero
 	while (curr_lexx != NULL && token->token != 1 && token->token != 2)
 	{
-		printf("what the hack III\n");
+		// token = curr_lexx->content;
+		// printf("what the hack III\n");
 		if (token->token == 3) //heredoc
 		{
 			comm_info->in_heredoc = true;
@@ -115,9 +116,13 @@ static void	ft_init_clist(t_list **lexx, t_list **comm)
 		}
 		else if (token->token == 4) //redirect in
 		{
+			// printf("test1\n");
 			curr_lexx = curr_lexx->next;
+			// printf("test2\n");
 			token = curr_lexx->content;
+			// printf("test3\n");
 			comm_info->infile = ft_strdup(token->value);
+			// printf("test4\n");
 		}
 		else if (token->token == 5) //redirect out
 		{
@@ -136,40 +141,45 @@ static void	ft_init_clist(t_list **lexx, t_list **comm)
 		{
 			ft_add_arr_back(token->value, &comm_info);
 			test_arr = comm_info->cmd;
-			printf("what the hack IV: %s\n", test_arr[0]);
+			// printf("what the hack IV: %s\n", test_arr[0]);
 		}
+		// printf("test5\n");
 		curr_lexx = curr_lexx->next;
 		if (curr_lexx != NULL)
 			token = curr_lexx->content;
 	}
+	// printf("test6\n");
 	ft_lstadd_back(comm, ft_lstnew(comm_info));
-	printf("what the hack V\n");
+	// printf("what the hack V\n");
 	if (token->token == 1 || token->token == 2)
 	{
-		printf("recursive\n");
+		// printf("recursive\n");
 		ft_init_clist(&curr_lexx->next, comm);
 	}
-	printf("what the hack VI\n");
+	// printf("what the hack VI\n");
 }
 
 /**
  * @brief function to create a linked list of commands
  */
-t_list	*ft_commands(t_list *lexx)
+void	ft_commands(t_list *lexx, t_big **p_big)
 {
 	t_list	*lexx_curr;
 	t_list	*comm;
 	t_list	*comm_curr;
 	t_lexer	*token;
+	t_big	*big;
 	// t_data	*testprint;
 
 	lexx_curr = lexx;
 	token = lexx_curr->content;
-	//function to init comm
+	big = *p_big;
 	comm = NULL;
 	comm_curr = comm;
-	printf("what the hack I\n");
+	// printf("what the hack I\n");
 	ft_init_clist(&lexx, &comm);
+	big->cmdlist = comm;
+	// printf("test7\n");
 	// while (curr != NULL)
 	// {
 
@@ -178,8 +188,8 @@ t_list	*ft_commands(t_list *lexx)
 	// 	curr = curr->next;
 	// 	token == ((t_lexer)->content)->token;
 	// }
-	printf("what the hack VII\n");
+	// printf("what the hack VII\n");
 	// testprint = comm->next->content;
 	// printf("arrayprint: %s\n", testprint->cmd[0]);
-	return (comm);
+	// return (comm);
 }
