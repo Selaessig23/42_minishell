@@ -8,7 +8,7 @@
 
 /**
  * @brief function that checks if there is a $-sign within the 
- * specific string sent by ft_ext_precond and send the string 
+ * specific string sent by ft_expa_precond and send the string 
  * to further functions according to the special parameter
  * 
  * $$, $#, $*, $@, $0, $1.., $[10].., $_, $!, $-, $, $$ are not
