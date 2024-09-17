@@ -132,6 +132,7 @@ t_tokentype	ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
+void	ft_test_command_print(t_list *comm, char *prompt, t_big *big);
 //syntax.c
 int		ft_syntax(t_list *lexx);
 //syntaxerrors.c
@@ -152,6 +153,10 @@ char	*ft_exit_expander(char *value_old, int exit_code);
 //expander/expander_utils.c
 char	*ft_givenbr(int nbr);
 int		ft_is_env_var(char c);
+//commands/command_list.c
+t_list	*ft_commands(t_list *lexx);
+//commands/command_utils.c
+void	ft_free_cl(t_list **ll);
 
 
 #endif

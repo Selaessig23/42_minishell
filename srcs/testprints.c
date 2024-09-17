@@ -94,6 +94,7 @@ static char	*print_tokens(int i)
 
 /**
  * test function to print the content of the linked list
+ * lexx (= command line input)
  */
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 {
@@ -146,4 +147,70 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 	}
 	// ft_free(input_arr);
 	ft_free_ll(&lexx);
+}
+
+/**
+ * test function to print the content of the linked list
+ * comm (command struct)
+ */
+void	ft_test_command_print(t_list *comm, char *prompt, t_big *big)
+{
+	t_list	*curr;
+	// char	*token_print;
+	int		i;
+	char	**env_list;
+	t_data	*comm_info;
+
+	i = 0;
+	// token_print = NULL;
+	env_list = big->env;
+	curr = comm;
+	comm_info = curr->content;
+	while (curr != NULL)
+	{
+		i = 0;
+		comm_info = curr->content;
+		// printf("what the hack VIII: %s\n", comm_info->cmd[0]);
+		if (comm_info->cmd && !ft_strncmp(comm_info->cmd[0], "exit", 4) 
+			&& ft_strlen(comm_info->cmd[0]) == 4)
+		{
+			// ft_free(input_arr);
+			free(prompt);
+			prompt = NULL;
+			free_t_big(big);
+			ft_free_ll(&comm);
+			rl_clear_history();
+			exit(EXIT_SUCCESS);
+		}
+		else if (comm_info->cmd && !ft_strncmp(comm_info->cmd[0], "env", 3) 
+			&& ft_strlen(comm_info->cmd[0]) == 3)
+		{
+			while (env_list && *env_list)
+			{
+				ft_printf("%s\n", *env_list);
+				env_list += 1;
+			}
+		}
+		else
+		{
+			printf("what the hack IX\n");
+			ft_printf("in_heredoc: %i\n", comm_info->in_heredoc);
+			ft_printf("out_append: %i\n", comm_info->out_append);
+			ft_printf("infile: %s\n", comm_info->infile);
+			ft_printf("outfile: %s\n", comm_info->outfile);
+			ft_printf("command no: %i\n", comm_info->commands_no);
+			while (comm_info->cmd && comm_info->cmd[i])
+			{
+				ft_printf("command_array (%i): %s\n", i, comm_info->cmd[i]);
+				i += 1;
+			}
+			ft_printf("-------------------------------------\n");
+		}
+		curr = curr->next;
+		// if (curr != NULL)
+		// 	comm_info = curr->content;
+		// ft_printf("test\n");
+	}
+	// ft_printf("test 2\n");
+	ft_free_cl(&comm);
 }

@@ -23,10 +23,12 @@ int main(int argc, char **argv, char **envp)
 	char	*prompt;
 	char	**input_arr;
 	t_list	*lexx;
+	t_list	*comm;
 	t_big	*big;
 
 	(void)argv;
 	lexx = NULL;
+	comm = NULL;
 	exitcode = 0;
 	if (argc != 1)
 		error_handling(1);
@@ -76,8 +78,16 @@ int main(int argc, char **argv, char **envp)
 					//printf_env(big);
 					ft_expa_precond(lexx, big);
 					// ft_printf("test\n");
-					ft_test_ll_print(lexx, prompt, big);
-				}
+					// ft_test_ll_print(lexx, prompt, big);
+					comm = ft_commands(lexx);
+					ft_free_ll(&lexx);
+				// 	if (ft_executer(comm) == 2)
+
+				// 	else if 
+
+				// 	else
+				// 		ft_test_command_print(comm, prompt, big);
+				// }
 				else
 				{
 					ft_free_ll(&lexx);

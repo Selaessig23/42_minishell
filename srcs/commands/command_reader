@@ -1,0 +1,77 @@
+
+#include "minishell.h"
+
+/**
+ * DESCRIPTION
+ * 
+ */
+
+/**
+ * @brief function to check for built-in-commands
+ */
+int	ft_builtin_checker(t_data	*comm_info)
+{
+	char	**cmds;
+
+	cmds = comm_info->cmd;
+	if (cmds && ft_strncmp(cmds[0], "echo", ft_strlen(cmds)))
+	{
+		//integrate link to echo-function here
+		return (1);
+	}
+	else if (cmds && ft_strncmp(cmds[0], "cd", ft_strlen(cmds)))
+	{
+		//integrate link to cd-function here
+		return (1);
+	}
+	else if (cmds && ft_strncmp(cmds[0], "pwd", ft_strlen(cmds)))
+	{
+		//integrate link to pwd-function here
+		return (1);
+	}
+	else if (cmds && ft_strncmp(cmds[0], "export", ft_strlen(cmds)))
+	{
+		//integrate link to export-function here
+		return (1);
+	}
+	else if (cmds && ft_strncmp(cmds[0], "unset", ft_strlen(cmds)))
+	{
+		//integrate link to unset-function here
+		return (1);
+	}
+	else if (cmds && ft_strncmp(cmds[0], "env", ft_strlen(cmds)))
+	{
+		//integrate link to env-function here
+		return (1);
+	}
+	else if (cmds && ft_strncmp(cmds[0], "exit", ft_strlen(cmds)))
+	{
+		//integrate link to exit-function here
+		return (2);
+	}
+	else
+		return (0);
+}
+
+
+/**
+ * @brief function to organises the execution part
+ */
+int    ft_executer(t_list *comm)
+{
+	t_list  *curr;
+	t_data  *comm_info;
+
+	curr = comm;
+	comm_info = curr->content;
+	while (curr != NULL)
+	{
+		comm_info = curr->content;
+		if (ft_builtin_checker(comm_info) == 2)
+			return (2);
+		else if (ft_builtin_checker(comm_info) == 2)
+			return (1);
+		curr = curr->next;
+	}
+	return (0);
+}
