@@ -17,11 +17,25 @@ SRCS =	main.c \
 		lexer.c \
 		extra_prompt.c \
 		str_spaces_trimer.c \
-		tokenizer.c \
+		tokenizer/tokenizer.c \
+		tokenizer/tokenizer_strings.c \
 		syntax.c \
 		syntaxerrors.c \
 		testprints.c \
-		t_big_and_env_copy.c
+		t_big_and_env_copy.c \
+		expander/expander.c \
+		expander/expander_quotes.c \
+		expander/expander_env.c \
+		expander/expander_env_yes.c \
+		expander/expander_env_no.c \
+		expander/expander_exit.c \
+		expander/expander_pid.c \
+		expander/expander_utils.c \
+		commands/command_list.c \
+		commands/command_utils.c \
+		commands/command_reader.c \
+		builtins/exit.c \
+		builtins/env.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c
@@ -47,12 +61,14 @@ $(NAME): $(OBJS) $(LIBFT_LIBRARY)
 	$(CC) $(CFLAGS) $^ -o $@ $(RLFLAG)
 	@echo -- prog created, try it by using ./minishell
 
-#%.o rule will compile one .c file to its correspondig object (.o) file: without this rule it would not update correctly
-#automatic variables: $@ = the file name of the target of the rule, $< = the name of the prerequisite
-#-p (parent option): This option tells mkdir to create the directory and any necessary parent directories if they do not already exist. It also suppresses error messages if the directory already exists.
-$(OBJS): obj/%.o : srcs/%.c 
-	@mkdir -p obj
-	$(CC) $(CFLAGS) -c $< -o $@ && printf "Compiling: $(notdir $<)"
+# %.o rule will compile one .c file to its correspondig object (.o) file: without this rule it would not update correctly
+# automatic variables: $@ = the file name of the target of the rule, $< = the name of the prerequisite
+# -p (parent option): This option tells mkdir to create the directory and any necessary parent directories if they do not already exist. It also suppresses error messages if the directory already exists.
+# $(@D) is a special variable: if target is a file located in some directory, $(@D) will extract just the directory path from the target, 
+# otherwise If the target doesn’t include a directory (i.e., it's in the current directory), $(@D) expands to . (representing the current directory).
+$(OBJS): obj%.o : srcs%.c 
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 #The -C option is used to change the directory to the specified path before executing make. In this context, it ensures that make operates in the subfolder, not the current directory.
 $(LIBFT_LIBRARY): $(LIBFT_CREATE)

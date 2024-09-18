@@ -4,15 +4,20 @@
 /**
  * function to print and work with cleaned array of strings
  */
-/*void ft_test_arr_print(char **input_arr, char *prompt)
+/*void ft_test_arr_print(char **input_arr, char *prompt, t_big *big)
 {
+	char	**env_list;
+	int		i;
+
+	i = 0;
+	env_list = big->env;
 	if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0], "env",
 						3) && ft_strlen(input_arr[0]) == 3))
 	{
-		while (*__environ)
+		while (env_list && *env_list)
 		{
-			ft_printf("%s\n", *__environ);
-			__environ++;
+			ft_printf("%s\n", *env_list);
+			env_list += 1;
 		}
 	}
 	else if (ft_arrlen(input_arr) == 1 && (!ft_strncmp(input_arr[0],
@@ -21,8 +26,28 @@
 		ft_free(input_arr);
 		free(prompt);
 		prompt = NULL;
+		free_t_big(big);
 		rl_clear_history();
 		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		i = 0;
+		while (input_arr[i])
+		{
+			if (!ft_strncmp(input_arr[i], "$USER", ft_strlen("$USER"))
+				&& ft_strlen("$USER") == ft_strlen(input_arr[i]))
+			{
+				ft_printf("arr[%i]: %s\n", i, input_arr[i]);
+				ft_printf("after expand function $USER is \"user_name\"\n");
+			}
+			else
+				ft_printf("arr[%i]: %s\n", i, input_arr[i]);
+			// free(*input_arr);
+			i++;
+		}
+		// input_arr = NULL;
+		// ft_putchar_fd('\n', 1);
 	}
 	ft_free(input_arr);
 	// 	ft_printf("%s\n", testinput);
@@ -56,23 +81,32 @@ static char	*print_tokens(int i)
 	else if (i == 24)
 		return (ft_strdup("S_QUOTED_F"));
 	else if (i == 25)
-		return (ft_strdup("Q_WORD"));
+		return (ft_strdup("D_Q_WORD"));
+	else if (i == 26)
+		return (ft_strdup("S_Q_WORD"));
+	else if (i == 27)
+		return (ft_strdup("S_Q_WORD_F"));
+	else if (i == 28)
+		return (ft_strdup("S_Q_WORD_F"));
 	else
 		return (NULL);
 }
 
 /**
  * test function to print the content of the linked list
+ * lexx (= command line input)
  */
-void	ft_test_ll_print(t_list *lexx, char *prompt)
+void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 {
 	t_list	*curr;
 	char	*token_print;
 	int		i;
+	char	**env_list;
 
 	i = 0;
 	token_print = NULL;
 	curr = lexx;
+	env_list = big->env;
 	while (curr != NULL)
 	{
 		if (!ft_strncmp(((t_lexer *)curr->content)->value, "exit", 4) 
@@ -81,6 +115,7 @@ void	ft_test_ll_print(t_list *lexx, char *prompt)
 			// ft_free(input_arr);
 			free(prompt);
 			prompt = NULL;
+			free_t_big(big);
 			ft_free_ll(&lexx);
 			rl_clear_history();
 			exit(EXIT_SUCCESS);
@@ -88,10 +123,10 @@ void	ft_test_ll_print(t_list *lexx, char *prompt)
 		/*else if (!ft_strncmp(((t_lexer *)curr->content)->value, "env", 3) 
 			&& ft_strlen(((t_lexer *)curr->content)->value) == 3)
 		{
-			while (*__environ)
+			while (env_list && *env_list)
 			{
-				ft_printf("%s\n", *__environ);
-				__environ++;
+				ft_printf("%s\n", *env_list);
+				env_list += 1;
 			}
 		}*/
 		else
@@ -99,6 +134,8 @@ void	ft_test_ll_print(t_list *lexx, char *prompt)
 			token_print = print_tokens(((t_lexer *)curr->content)->token);
 			ft_printf("node (%i): %s\n", i, ((t_lexer *)curr->content)->value);
 			ft_printf("token (%i): %s\n", i, token_print);
+			ft_printf("length token (%i): %i\n", i, ft_strlen(((t_lexer *)curr->content)->value));
+			ft_printf("-------------------------------------\n");
 			free (token_print);
 			if ((!ft_strncmp(((t_lexer *)curr->content)->value, "$USER", ft_strlen("$USER")))
 				&& (ft_strlen("$USER") == ft_strlen(((t_lexer *)curr->content)->value)))
@@ -109,4 +146,75 @@ void	ft_test_ll_print(t_list *lexx, char *prompt)
 	}
 	// ft_free(input_arr);
 	ft_free_ll(&lexx);
+}
+
+/**
+ * test function to print the content of the linked list
+ * comm (command struct)
+ */
+void	ft_test_command_print(char *prompt, t_data *comm_info)
+{
+	// t_list	*curr;
+	// char	*token_print;
+	int		i;
+	// char	**env_list;
+	// t_data	*comm_info;
+
+	i = 0;
+	// token_print = NULL;
+	// env_list = big->env;
+	// printf("testA\n");
+	// curr = big->cmdlist;
+	// printf("testB\n");
+	// comm_info = curr->content;
+	(void) prompt;
+	// while (curr != NULL)
+	// {
+		i = 0;
+		// comm_info = curr->content;
+		// printf("what the hack VIII: %s\n", comm_info->cmd[0]);
+		// if (comm_info->cmd && !ft_strncmp(comm_info->cmd[0], "exit", 4) 
+		// 	&& ft_strlen(comm_info->cmd[0]) == 4)
+		// {
+		// 	// ft_free(input_arr);
+		// 	free(prompt);
+		// 	prompt = NULL;
+		// 	free_t_big(big);
+		// 	// ft_free_ll(&comm);
+		// 	rl_clear_history();
+		// 	exit(EXIT_SUCCESS);
+		// }
+		// else if (comm_info->cmd && !ft_strncmp(comm_info->cmd[0], "env", 3) 
+		// 	&& ft_strlen(comm_info->cmd[0]) == 3)
+		// {
+		// 	while (env_list && *env_list)
+		// 	{
+		// 		ft_printf("%s\n", *env_list);
+		// 		env_list += 1;
+		// 	}
+		// }
+		// else
+		// {
+			printf("no builtin command was found\n");
+			ft_printf("in_heredoc: %i\n", comm_info->in_heredoc);
+			ft_printf("out_append: %i\n", comm_info->out_append);
+			ft_printf("infile: %s\n", comm_info->infile);
+			ft_printf("outfile: %s\n", comm_info->outfile);
+			ft_printf("command no: %i\n", comm_info->commands_no);
+			if (!comm_info->cmd || !comm_info->cmd[0])
+				ft_printf("command_array (%i): empty\n", i);
+			while (comm_info->cmd && comm_info->cmd[i])
+			{
+				ft_printf("command_array (%i): %s\n", i, comm_info->cmd[i]);
+				i += 1;
+			}
+			ft_printf("--------------------------------------\n");
+		// }
+		// curr = curr->next;
+		// if (curr != NULL)
+		// 	comm_info = curr->content;
+		// ft_printf("test\n");
+	// }
+	// ft_printf("test 2\n");
+	// ft_free_cl(&(big->cmdlist));
 }

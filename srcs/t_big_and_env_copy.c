@@ -2,55 +2,62 @@
 
 /**
  * Function to clean t_big struct.
- * A task: to modify it for
- */
-void free_t_big(t_big *big)
+*/
+void	free_t_big(t_big *big)
 {
 	ft_free(big->env);
-	free(big->list);
+	ft_free_cl(&(big->cmdlist));
+	// free(big->cmdlist);
+	// big->cmdlist = NULL;
 	free(big);
+	big = NULL;
 }
 
-// Proto function for built-in env
-void	printf_env(t_list *lexx, t_big *big)
+// Temporary function to display what t_big holds.
+void	printf_env(t_big *big)
 {
-	t_list *curr;
-	int i;
+	int	i;
 
 	i = 0;
-	curr = lexx;
-	while (curr != NULL)
+	while (big->env[i])
 	{
-		if (!ft_strncmp(((t_lexer *)curr->content)->value, "env", 3)
-			&& ft_strlen(((t_lexer *)curr->content)->value) == 3)
-		{
-			while (big->env[i])
-			{
-				ft_printf("%s\n", big->env[i]);
-				i++;
-			}
-			i = 0;
-		}
-		else
-			i++;
-		curr = curr->next;
+		ft_printf("big->env[%i]:\n%s\n", i, big->env[i]);
+		i++;
 	}
+	ft_printf("big->env[%i]:\n%s\n", i, big->env[i]);
+}
+
+/**
+ * Function counts a number of strings in array of strings.
+ * It serves for memory allocation for an array of strings.
+*/
+static int	count_strings(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (*envp)
+	{
+		i++;
+		envp++;
+	}
+	return (i);
 }
 
 /**
  * The function copies array of strings from enironmental
  * variables into array of strings that is a part of
- * struct t_big. Temp.
- */
-static char **copy_envp(char **envp)
+ * struct t_big.
+*/
+static char	**copy_envp(char **envp)
 {
-	char **copy;
-	size_t i;
-	size_t j;
-	size_t str_size;
+	char	**copy;
+	int		i;
+	int		j;
+	int		str_size;
 
 	j = 0;
-	i = ft_arrlen(envp);
+	i = count_strings(envp);
 	str_size = 0;
 	copy = ft_calloc(i + 1, sizeof(char *));
 	if (!copy)
@@ -85,8 +92,9 @@ t_big *init_t_big(char **envp)
 	big = ft_calloc(1, sizeof(t_big));
 	if (big == NULL)
 		error_handling(2);
-	big->list = NULL;
+	big->cmdlist = NULL;
 	env = copy_envp(envp);
 	big->env = env;
+	big->exit_code = -127;
 	return (big);
 }

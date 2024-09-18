@@ -1,6 +1,10 @@
-
 #include "minishell.h"
 
+// **Note for Markus. 12 Aug** I moved it up "if (argc != 1) error_handling(1);"
+// The reason is that is generally common to start by checking for invalid input
+// or error conditions first. In the context of command-line arguments, this
+// often means checking for incorrect argument counts before proceeding with
+// the valid case. Please look at it, and say if it works for you. Thanks!
 /**
  * (To be continued...)
  * An INFINITE LOOP to continuously prompt for and process user input
@@ -19,19 +23,21 @@ int main(int argc, char **argv, char **envp)
 	char	*prompt;
 	char	**input_arr;
 	t_list	*lexx;
+	// t_list	*comm;
 	t_big	*big;
 
 	(void)argv;
 	lexx = NULL;
+	// comm = NULL;
 	exitcode = 0;
-	big = init_t_big(envp);
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)
 	{
-		if (!*__environ)
-			error_handling(4);
+		// if (!*__environ)
+			// error_handling(4);
 		prompt = ft_strdup("Marina's and Markus' minishell>");
+		big = init_t_big(envp);
 		while (1)
 		{
 			input = readline(prompt);
@@ -66,11 +72,19 @@ int main(int argc, char **argv, char **envp)
 				ft_printf("\n");
 				if (!ft_syntax(lexx))
 				{
-					printf_env(lexx, big);
-					ft_test_ll_print(lexx, prompt);
+					//printf_env(big);
+					ft_expa_precond(lexx, big);
+					// ft_printf("test\n");
+					// ft_test_ll_print(lexx, prompt, big);
+					ft_commands(lexx, &big);
+					ft_free_ll(&lexx);
+					// printf("test8\n");
+					ft_executer(big, prompt);
 				}
 				else
+				{
 					ft_free_ll(&lexx);
+				}
 			}
 		}
 		ft_free_ll(&lexx);
@@ -78,6 +92,7 @@ int main(int argc, char **argv, char **envp)
 		rl_clear_history();
 		free(prompt);
 		prompt = NULL;
+		free_t_big(big);
 	}
 	exit(exitcode);
 	// return (exitcode);

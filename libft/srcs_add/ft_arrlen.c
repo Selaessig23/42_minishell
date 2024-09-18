@@ -22,6 +22,8 @@ size_t	ft_arrlen(char **arr_str)
 	size_t	i;
 
 	i = 0;
+	if (!arr_str)
+		return (0);
 	while (arr_str[i])
 		i++;
 	return (i);

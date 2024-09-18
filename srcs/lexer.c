@@ -81,12 +81,12 @@ static int	ft_count(char *src)
 			temp = ft_jumper(temp, &len, '\"');
 		else if (*temp == '\'')
 			temp = ft_jumper(temp, &len, '\'');
-		if (double_operator_check(*temp, *(temp + 1)))
+		if (*temp && *(temp + 1) && double_operator_check(*temp, *(temp + 1)))
 		{
 			len += 3;
 			temp++;
 		}
-		else if (single_operator_check(*temp))
+		else if (*temp && single_operator_check(*temp))
 			len += 2;
 		if (*temp)
 		{
@@ -176,16 +176,17 @@ static void	ft_create_clean_input(char *dest, char *src)
 			ft_jump_copy(&dest, &src, '\"');
 		else if (*src == '\'')
 			ft_jump_copy(&dest, &src, '\'');
-		else if (double_operator_check(*src, *(src + 1)))
+		else if (*(src) && 
+			*(src + 1) && double_operator_check(*src, *(src + 1)))
 			ft_op_separator(&dest, &src);
-		else if (single_operator_check(*src))
+		else if (*(src) && single_operator_check(*src))
 			ft_op_separator(&dest, &src);
-		else
+		else if (*(src))
 			*dest = *src;
 		if (*src != '\0')
 		{
-			dest++;
-			src++;
+			dest += 1;
+			src += 1;
 		}
 	}
 	*dest = '\0';
