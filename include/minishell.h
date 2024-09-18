@@ -77,16 +77,6 @@ typedef struct s_big
 	int		exit_code;
 }					t_big;
 
-// maybe rename to bin_path for binary path
-typedef struct s_envp
-{
-	char	**bin_paths;
-	char	***commands;
-	char	*outfile;
-	char	*infile;
-	size_t	commands_no;
-}	t_envp;
-
 // main.c
 //
 // init.c
@@ -163,5 +153,7 @@ int    ft_executer(t_big *big, char *prompt);
 void    ft_exit_minishell(t_big *big, char *prompt);
 //builtins/env.c
 void	ft_print_env(t_big *big);
+//builtins/pwd.c
+void	ft_print_pwd(t_big *big, t_data *comm_info);
 
 #endif

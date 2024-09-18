@@ -2,49 +2,61 @@
 #include "minishell.h"
 
 /**
- * DESCRIPTION
- * 
+ * DESCRIPTION:
+ * file to read from cmdlist and organises execution of 
+ * builtin-functions as well as system-fuctions (binaries)
  */
 
 /**
  * @brief function to check for built-in-commands
+ * 
+ * @param comm_info struct with all necessary infos to 
+ * execute a single command
+ * @param big big struct with all command infos 
+ * that are required for executing builtins or 
+ * that have to be freed in case of builtin exit
+ * @param prompt string that has to be freed in case of builtin exit
  */
 int	ft_builtin_checker(t_data *comm_info, t_big *big, char *prompt)
 {
-	char	**cmds;
+	char	**argv;
 
-	cmds = comm_info->cmd;
-	if (cmds[0] && !ft_strncmp(cmds[0], "echo", ft_strlen(cmds[0])))
+	argv = comm_info->cmd;
+	if (argv[0] && !ft_strncmp(argv[0], "echo", ft_strlen(argv[0])))
 	{
+		printf("builtin function for %s not yet created\n", argv[0]);
 		//integrate link to echo-function here
 		return (1);
 	}
-	else if (cmds[0] && !ft_strncmp(cmds[0], "cd", ft_strlen(cmds[0])))
+	else if (argv[0] && !ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
 	{
+		printf("builtin function for %s not yet created\n", argv[0]);
 		//integrate link to cd-function here
 		return (1);
 	}
-	else if (cmds[0] && !ft_strncmp(cmds[0], "pwd", ft_strlen(cmds[0])))
+	else if (argv[0] && !ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
 	{
-		//integrate link to pwd-function here
+		ft_print_pwd(big, comm_info);
 		return (1);
 	}
-	else if (cmds[0] && !ft_strncmp(cmds[0], "export", ft_strlen(cmds[0])))
+	else if (argv[0] && !ft_strncmp(argv[0], "export", ft_strlen(argv[0])))
 	{
+		printf("builtin function for %s not yet created\n", argv[0]);
 		//integrate link to export-function here
 		return (1);
 	}
-	else if (cmds[0] && !ft_strncmp(cmds[0], "unset", ft_strlen(cmds[0])))
+	else if (argv[0] && !ft_strncmp(argv[0], "unset", ft_strlen(argv[0])))
 	{
+		printf("builtin function for %s not yet created\n", argv[0]);
 		//integrate link to unset-function here
 		return (1);
 	}
-	else if (cmds[0] && !ft_strncmp(cmds[0], "env", ft_strlen(cmds[0])))
+	else if (argv[0] && !ft_strncmp(argv[0], "env", ft_strlen(argv[0])))
 	{
 		ft_print_env(big);
 		return (1);
 	}
-	else if (cmds[0] && !ft_strncmp(cmds[0], "exit", ft_strlen(cmds[0])))
+	else if (argv[0] && !ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))
 	{
 		ft_exit_minishell(big, prompt);
 		return (2);
@@ -56,6 +68,13 @@ int	ft_builtin_checker(t_data *comm_info, t_big *big, char *prompt)
 
 /**
  * @brief function to organises the execution part
+ * 1st it checks for builtin-functions
+ * 2nd if there are no it prints out the command details
+ * (2nd part has to be overwritten by execution-part)
+ * 
+ * @param big structure that holds all importand information 
+ * for execution part like cmdlist, env, last exit status
+ * @param prompt string that has to be freed in case of builtin exit
  */
 int    ft_executer(t_big *big, char *prompt)
 {
