@@ -2,6 +2,12 @@
 #include "minishell.h"
 
 /**
+ * DESCRIPTION:
+ * file which holds all functions of feat command
+ * that are required by more than one function
+ */
+
+/**
  * @brief function to free the linked list of commands
  * 
  * @param ll the linked list to free
