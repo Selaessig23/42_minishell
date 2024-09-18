@@ -17,13 +17,11 @@
  * that have to be freed
  * @param prompt string that has to be freed before exit the program
  */
-void    ft_exit_minishell(t_big *big, char *prompt)
+void	ft_exit_minishell(t_big *big, char *prompt)
 {
-			// ft_free(input_arr);
-			free(prompt);
-			prompt = NULL;
-			free_t_big(big);
-			// ft_free_ll(&comm);
-			rl_clear_history();
-			exit(EXIT_SUCCESS);
+	free(prompt);
+	prompt = NULL;
+	free_t_big(big);
+	rl_clear_history();
+	exit(EXIT_SUCCESS);
 }

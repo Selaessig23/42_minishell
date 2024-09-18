@@ -5,7 +5,6 @@
  * in this file the inbuilt-function "pwd"
  * which should work similar to the bash-function
  * of same name is created
- * 
  */
 
 /**
@@ -14,7 +13,8 @@
  * MAYBE REWRITE FOR GENERAL USAGE OF EXECUTION PART
  * IMPROVE AND CHECKE !!! (WAS JUST COPIED FROM PIPEX)
  * 
- * @param comm_info 
+ * @param comm_info struct with all necessary infos to 
+ * execute a single command
  */
 int	ft_get_fd(t_data *comm_info)
 {
@@ -49,7 +49,8 @@ int	ft_get_fd(t_data *comm_info)
  * 
  * @param big the struct which holds all information for 
  * execution part incl. cmdlist and env
- * @param comm_info 
+ * @param comm_info struct with all necessary infos to 
+ * execute a single command
  */
 void	ft_print_pwd(t_big *big, t_data *comm_info)
 {

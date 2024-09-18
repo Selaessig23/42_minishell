@@ -24,11 +24,13 @@ int	ft_builtin_checker(t_data *comm_info, t_big *big, char *prompt)
 	argv = comm_info->cmd;
 	if (argv[0] && !ft_strncmp(argv[0], "echo", ft_strlen(argv[0])))
 	{
+		printf("builtin function for %s not yet created\n", argv[0]);
 		//integrate link to echo-function here
 		return (1);
 	}
 	else if (argv[0] && !ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
 	{
+		printf("builtin function for %s not yet created\n", argv[0]);
 		//integrate link to cd-function here
 		return (1);
 	}
@@ -39,11 +41,13 @@ int	ft_builtin_checker(t_data *comm_info, t_big *big, char *prompt)
 	}
 	else if (argv[0] && !ft_strncmp(argv[0], "export", ft_strlen(argv[0])))
 	{
+		printf("builtin function for %s not yet created\n", argv[0]);
 		//integrate link to export-function here
 		return (1);
 	}
 	else if (argv[0] && !ft_strncmp(argv[0], "unset", ft_strlen(argv[0])))
 	{
+		printf("builtin function for %s not yet created\n", argv[0]);
 		//integrate link to unset-function here
 		return (1);
 	}
@@ -64,6 +68,9 @@ int	ft_builtin_checker(t_data *comm_info, t_big *big, char *prompt)
 
 /**
  * @brief function to organises the execution part
+ * 1st it checks for builtin-functions
+ * 2nd if there are no it prints out the command details
+ * (2nd part has to be overwritten by execution-part)
  * 
  * @param big structure that holds all importand information 
  * for execution part like cmdlist, env, last exit status

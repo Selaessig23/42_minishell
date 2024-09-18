@@ -8,9 +8,12 @@
  */
 
 /**
- * @brief function to create an array of commands
+ * @brief function to create an array of commands (**cmd) which 
+ * will serve as argv in execution part
  * 
- * @param 
+ * @param token_value the value of the specific token (node) of the 
+ * command line input that has to be added to **cmd
+ * @param p_comm_info pointer to the struct of command information
  */
 void	ft_add_arr_back(char *token_value, t_data **p_comm_info)
 {
@@ -73,10 +76,11 @@ void	init_comm_zero(t_data **p_comm_info)
 }
 
 /**
- * @brief this function initiate the linked list of commands
+ * @brief this function initiate the linked list of commands by
+ * checking the tokens of the command line input
  * 
- * would have been better to name the variable token in struct 
- * t_lexer tokentype instead of token
+ * !would have been better to name the variable token in struct 
+ * t_lexer tokentype instead of token!
  * 
  * @param lexx the expanded linked list with command line input 
  * @param comm linked list of commands which should be filled
@@ -100,7 +104,6 @@ static void	ft_init_clist(t_list **lexx, t_list **comm)
 	init_comm_zero(&comm_info); //set all values to zero
 	while (curr_lexx != NULL && token->token != 1 && token->token != 2)
 	{
-		// token = curr_lexx->content;
 		// printf("what the hack III\n");
 		if (token->token == 3) //heredoc
 		{
@@ -155,7 +158,8 @@ static void	ft_init_clist(t_list **lexx, t_list **comm)
 }
 
 /**
- * @brief function to create a linked list of commands as part of big
+ * @brief function to create a linked list of commands 
+ * which should be part of the struct big (cmdlist)
  * 
  * @param lexx the expanded linked list with command line input
  * @param p_big pointer to the struct big to integrate a linked list of
