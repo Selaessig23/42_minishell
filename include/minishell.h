@@ -156,6 +156,6 @@ void	ft_print_env(t_big *big);
 //builtins/pwd.c
 void	ft_print_pwd(t_big *big, t_data *comm_info);
 //builtins/cd.c
-void	ft_cd(t_big *big);
+void	ft_cd(t_big *big, char **argv);
 
 #endif

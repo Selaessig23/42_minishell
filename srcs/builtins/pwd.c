@@ -8,6 +8,24 @@
  */
 
 /**
+ * @brief function to get and print current working directory
+ * if there is no variable for it in env
+ * 
+ * @param fd the file descriptor to write in
+ */
+static void	ft_get_env_pwd(int fd)
+{
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		error_handling(2);
+	ft_putstr_fd(pwd, fd);
+	ft_putchar_fd('\n', fd);
+	free(pwd);
+}
+
+/**
  * @brief function to get the fd of the outfile
  * 
  * MAYBE REWRITE FOR GENERAL USAGE OF EXECUTION PART
@@ -70,7 +88,12 @@ void	ft_print_pwd(t_big *big, t_data *comm_info)
 	}
 	while (*envp && ft_strncmp("PWD=", *envp, 4))
 		envp++;
-	ft_putstr_fd(*envp + 4, fd);
-	ft_putchar_fd('\n', fd);
+	if (*envp == NULL || ft_strncmp("PWD=", *envp, 4))
+		ft_get_env_pwd(fd);
+	else
+	{
+		ft_putstr_fd(*envp + 4, fd);
+		ft_putchar_fd('\n', fd);
+	}
 	// return (0);
 }
