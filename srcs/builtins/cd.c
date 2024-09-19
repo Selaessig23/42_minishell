@@ -11,14 +11,15 @@
  * if there is no variable for it in env
  * 
  */
-static char	*ft_get_cwd(void)
+static void	ft_get_cwd(char **p_pwd)
 {
 	char	*pwd;
 
+	pwd = *p_pwd;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		error_handling(2);
-	return (pwd);
+	// return (pwd);
 }
 
 /**
@@ -43,7 +44,7 @@ void	ft_update_oldpwd(char **p_env_oldpwd, char *new_pwd)
  * @param big the struct which holds all information for 
  * execution part incl. cmdlist and env
  */
-static void	ft_update_env(t_big *big, char **argv)
+static void	ft_update_env(t_big *big)
 {
 	char	**envp;
 	char	*temp1;
@@ -55,7 +56,7 @@ static void	ft_update_env(t_big *big, char **argv)
 	while (*envp && ft_strncmp("PWD=", *envp, 4))
 		envp++;
 	if (*envp == NULL || ft_strncmp("PWD=", *envp, 4))
-		temp1 = ft_get_cwd;
+		ft_get_cwd(&temp1);
 	else
 	{
 		temp1 = *envp;
@@ -69,7 +70,7 @@ static void	ft_update_env(t_big *big, char **argv)
 	while (*envp && ft_strncmp("OLDPWD=", *envp, 7))
 		envp++;
 	if (*envp && !ft_strncmp("OLDPWD=", *envp, 7))
-		ft_update_oldpwd(&envp, (temp1));
+		ft_update_oldpwd(&(*envp), (temp1));
 	// printf("temp before freeing: %s\n", temp);
 	free(temp1);
 	// fre(temp2);
@@ -100,8 +101,8 @@ void	ft_cd(t_big *big, char **argv)
 		i = chdir(argv[1]);
 		if (i < 0)
 			error_handling(0);
+		ft_update_env(big);
 	}
-	ft_update_env(big, argv);
 	// //maybe use also getcwd to check if it was set correctly?
 	// while (*envp && ft_strncmp("PWD=", *envp, 4))
 	// 	envp++;
