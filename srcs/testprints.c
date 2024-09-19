@@ -101,12 +101,12 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 	t_list	*curr;
 	char	*token_print;
 	int		i;
-	char	**env_list;
+	//char	**env_list;
 
 	i = 0;
 	token_print = NULL;
 	curr = lexx;
-	env_list = big->env;
+	//env_list = big->env;
 	while (curr != NULL)
 	{
 		if (!ft_strncmp(((t_lexer *)curr->content)->value, "exit", 4) 
