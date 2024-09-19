@@ -8,6 +8,33 @@
  */
 
 /**
+ * @brief (helper) function (for to ft_add_arr_back) to add existing 
+ * strings from command_array_old to command_array_new
+ * 
+ * @param p_old pointer to the old command array (to copy from)
+ * @param p_new pointer to the new command array (to copy to)
+ */
+static int	ft_arrcpy(char ***p_old, char ***p_new)
+{
+	int		i;
+	char	**old;
+	char	**new;
+
+	i = 0;
+	if (*p_old == NULL)
+		return (0);
+	old = *p_old;
+	new = *p_new;
+	while (old[i] != NULL)
+	{
+		// printf("what the hack A-b, count\n");
+		new[i] = ft_strdup(old[i]);
+		i++;
+	}
+	return (i);
+}
+
+/**
  * @brief function to create an array of commands (**cmd) which 
  * will serve as argv in execution part
  * 
@@ -32,15 +59,7 @@ void	ft_add_arr_back(char *token_value, t_data **p_comm_info)
 	if (!command_array_new)
 		error_handling(2);
 	if (count > 0)
-	{
-		// printf("what the hack A-a, count\n");
-		while (command_array_old[i] != NULL)
-		{
-			// printf("what the hack A-b, count\n");
-			command_array_new[i] = ft_strdup(command_array_old[i]);
-			i++;
-		}
-	}
+		i += ft_arrcpy(&command_array_old, &command_array_new);
 	// printf("what the hack A-c, count\n");
 	command_array_new[i] = ft_strdup(token_value);
 	// printf("what the hack A-d, count\n");
@@ -157,7 +176,7 @@ static void	ft_init_clist(t_list **lexx, t_list **comm)
 		else //strings become part of command_array
 		{
 			ft_add_arr_back(token->value, &comm_info);
-			test_arr = comm_info->cmd;
+			// test_arr = comm_info->cmd;
 			// printf("what the hack IV: %s\n", test_arr[0]);
 		}
 		// printf("test5\n");
@@ -189,6 +208,8 @@ void	ft_commands(t_list *lexx, t_big **p_big)
 	t_list	*comm;
 	t_big	*big;
 
+	if (!lexx)
+		error_handling(0);
 	big = *p_big;
 	comm = NULL;
 	// printf("what the hack I\n");
