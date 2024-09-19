@@ -56,13 +56,46 @@ void	ft_add_arr_back(char *token_value, t_data **p_comm_info)
 }
 
 /**
+ * 
+ */
+static t_list	*ft_set_r_out(t_lexer *token, t_data **cominfo, t_list *lexx)
+{
+	t_data	*comm_info;
+
+	comm_info = *cominfo;
+	if (token->token == 6)
+		comm_info->out_append = true;
+	lexx = lexx->next;
+	token = lexx->content;
+	comm_info->outfile = ft_strdup(token->value);
+	return (lexx);
+}
+
+/**
+ * 
+ */
+static t_list	*ft_set_r_in(t_lexer *token, t_data **cominfo, t_list *lexx)
+{
+	t_data	*comm_info;
+
+	comm_info = *cominfo;
+	if (token->token == 3)
+		comm_info->in_heredoc = true;
+	lexx = lexx->next;
+	token = lexx->content;
+	comm_info->infile = ft_strdup(token->value);
+
+	return (lexx);
+}
+
+/**
  * @brief function to set all values 
  * of the command info struct to 0
  * 
  * @param p_comm_info pointer to the struct that 
  * should be set to zero
  */
-void	init_comm_zero(t_data **p_comm_info)
+static void	init_comm_zero(t_data **p_comm_info)
 {
 	t_data	*comm_info;
 
@@ -91,10 +124,10 @@ static void	ft_init_clist(t_list **lexx, t_list **comm)
 	t_data	*comm_info;
 	t_list	*curr_lexx;
 	t_lexer	*token;
-	char	**test_arr;
+	// char	**test_arr;
 
-	comm_info = NULL;
-	test_arr = NULL;
+	// comm_info = NULL;
+	// test_arr = NULL;
 	curr_lexx = *lexx;
 	token = curr_lexx->content;
 	comm_info = ft_calloc(1, sizeof(t_data));
@@ -105,36 +138,10 @@ static void	ft_init_clist(t_list **lexx, t_list **comm)
 	while (curr_lexx != NULL && token->token != 1 && token->token != 2)
 	{
 		// printf("what the hack III\n");
-		if (token->token == 3) //heredoc
-		{
-			comm_info->in_heredoc = true;
-			curr_lexx = curr_lexx->next;
-			token = curr_lexx->content;
-			comm_info->infile = ft_strdup(token->value);
-		}
-		else if (token->token == 4) //redirect in
-		{
-			// printf("test1\n");
-			curr_lexx = curr_lexx->next;
-			// printf("test2\n");
-			token = curr_lexx->content;
-			// printf("test3\n");
-			comm_info->infile = ft_strdup(token->value);
-			// printf("test4\n");
-		}
-		else if (token->token == 5) //redirect out
-		{
-			curr_lexx = curr_lexx->next;
-			token = curr_lexx->content;
-			comm_info->outfile = ft_strdup(token->value);
-		}
-		else if (token->token == 6) //redirect out append
-		{
-			comm_info->out_append = true;
-			curr_lexx = curr_lexx->next;
-			token = curr_lexx->content;
-			comm_info->outfile = ft_strdup(token->value);
-		}
+		if (token->token == 3 || token->token == 4) //heredoc or redirect in
+			curr_lexx = ft_set_r_in(token, &comm_info, curr_lexx);
+		else if (token->token == 5 || token->token == 6) //redirect out or redirect out append
+			curr_lexx = ft_set_r_out(token, &comm_info, curr_lexx);
 		else //strings become part of command_array
 		{
 			ft_add_arr_back(token->value, &comm_info);

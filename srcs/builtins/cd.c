@@ -17,5 +17,7 @@
 void	ft_cd(t_big *big)
 {
 	(void) big;
+	//use of chdir
+	//maybe use also getcwd to check if it was set correctly?
 }
 
