@@ -22,13 +22,17 @@
  * @param input_string string as part of input_arr with cleaned input of 
  * command line input
  * @param token
+ * @param returner a bool variable which sets input_string to its original value
+ * if value is set on true
  */
-char	*ft_get_quotendpointer(char *input_string, t_tokentype token)
+char	*ft_get_quotendpointer(char *input_string, t_tokentype token, bool returner)
 {
 	int		i;
 	char	countsign;
+	char	*input_string_copy;
 
 	i = 0;
+	input_string_copy = input_string;
 	if (token == 25)
 		countsign = '\"';
 	else if (token == 26)
@@ -45,12 +49,14 @@ char	*ft_get_quotendpointer(char *input_string, t_tokentype token)
 	}
 	if (i <= 1)
 	{
-		printf("quotepointer: %s\n", input_string);
+		printf("run quotepointer: %s\n", input_string);
+		if (returner == true)
+			input_string = input_string_copy;
 		return (NULL);
 	}
 	else
 	{
-		printf("quotepointer: %s\n", input_string);
+		printf("run quotepointer: %s\n", input_string);
 		return (input_string);
 	}
 }
@@ -81,9 +87,10 @@ void	ft_qword_special(char *input_string, t_tokentype *token_old)
 	count_dquote = 0;
 	input_string_copy = input_string;
 	//test
-	while (*input_string_copy && (ft_get_quotendpointer(input_string_copy, *token_old) != NULL))
-		input_string_copy = ft_get_quotendpointer(input_string_copy, 0);
+	while (*input_string_copy && (ft_get_quotendpointer(input_string_copy, 0, true) != NULL))
+		input_string_copy = ft_get_quotendpointer(input_string_copy, 0, 0);
 	//testend
+	printf("quotepointer final: %s\n", input_string_copy);
 	while (*input_string_copy)
 	{
 		if (*input_string_copy == '\'')
@@ -93,7 +100,7 @@ void	ft_qword_special(char *input_string, t_tokentype *token_old)
 		input_string_copy += 1;
 	}
 	printf("test count_squote: %i\ntest count_dquote: %i\n", count_squote, count_dquote);
-	if (count_squote != 0 && (count_squote % 2 != 0) 
+	if (count_squote != 0 && (count_squote % 2 != 0) && (!ft_check_fstquote(input_string_copy, '\''))
 		//get pointer to part of string after second "\'" if token == 26 or
 		//get pointer to part of string after second "\"" if token == 25
 		// && !ft_check_fstquote(ft_get_quotendpointer(input_string_copy, *token_old), '\'')
@@ -137,7 +144,7 @@ static t_tokentype	ft_creat_tokens(char *input_string)
 		token = ft_creat_redir_token(input_string);
 	else
 		token = ft_creat_str_token(input_string);
-	printf("token_defiexitned: %i\n", token);
+	printf("token_defined: %i\n", token);
 	if (token == 25 || token == 26)
 		ft_qword_special(input_string, &token);
 	return (token);
