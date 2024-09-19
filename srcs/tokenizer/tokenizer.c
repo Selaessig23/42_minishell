@@ -61,7 +61,7 @@ char	*ft_get_quotendpointer(char *input_string, t_tokentype token)
  * D_Q_WORD = 25, e. g. "argument1"withoutspaceafter"quotes''""
  * S_Q_WORD = 26, // e. g. argument1'withoutspace'afterquotes'"'"...
  * if any of this tokens end up with an unequal number of quotes
- * (whether single or double) the have to be handled as 
+ * (whether single or double) they have to be handled as 
  * cases with unclosed qoutation marks
  * 
  * function ft_creat_str_token in tokenizer_strings.c
