@@ -56,7 +56,13 @@ void	ft_add_arr_back(char *token_value, t_data **p_comm_info)
 }
 
 /**
+ * @brief function to set values of command struct in case of
+ * redirection out (> or >>)
  * 
+ * @param token the specific token (node) of the command line input
+ * which stands for the redirection symbol
+ * @param comminfo pointer to the struct that holds the command infos
+ * @param lexx the expanded linked list with command line input 
  */
 static t_list	*ft_set_r_out(t_lexer *token, t_data **cominfo, t_list *lexx)
 {
@@ -72,7 +78,13 @@ static t_list	*ft_set_r_out(t_lexer *token, t_data **cominfo, t_list *lexx)
 }
 
 /**
+ * @brief function to set values of command struct in case of
+ * redirection in (<) or heredoc-signal (<<)
  * 
+ * @param token the specific token (node) of the command line input
+ * which stands for the redirection symbol
+ * @param comminfo pointer to the struct that holds the command infos
+ * @param lexx the expanded linked list with command line input 
  */
 static t_list	*ft_set_r_in(t_lexer *token, t_data **cominfo, t_list *lexx)
 {
