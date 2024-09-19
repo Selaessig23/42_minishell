@@ -136,10 +136,10 @@ static void	ft_init_clist(t_list **lexx, t_list **comm)
 	t_data	*comm_info;
 	t_list	*curr_lexx;
 	t_lexer	*token;
-	// char	**test_arr;
+	char	**test_arr;
 
-	// comm_info = NULL;
-	// test_arr = NULL;
+	comm_info = NULL;
+	test_arr = NULL;
 	curr_lexx = *lexx;
 	token = curr_lexx->content;
 	comm_info = ft_calloc(1, sizeof(t_data));
