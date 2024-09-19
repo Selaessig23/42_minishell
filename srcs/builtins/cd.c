@@ -10,6 +10,8 @@
  * @brief function to get current working directory
  * if there is no variable for it in env
  * 
+ * @param p_pwd pointer to new_pwd to write the input in
+ * 
  */
 static void	ft_get_cwd(char **p_pwd)
 {
@@ -19,23 +21,24 @@ static void	ft_get_cwd(char **p_pwd)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		error_handling(2);
-	// return (pwd);
 }
 
 /**
  * @brief function to update the env in big
  * 
- * @param p_oldpwd pointer to OLDPWD in env
+ * @param p_env_oldpwd pointer to OLDPWD in env 
+ * which has to be updated
+ * @param oldpwd_new string with value of last pwd to update
  */
-void	ft_update_oldpwd(char **p_env_oldpwd, char *new_pwd)
+void	ft_update_oldpwd(char **p_env_oldpwd, char *oldpwd_new)
 {
 	char	*env_oldpwd;
 
 	env_oldpwd = *p_env_oldpwd;
-	if (!ft_strncmp("PWD=", new_pwd, 4))
-		*p_env_oldpwd = ft_strjoin("OLDPWD=", (new_pwd + 4));
+	if (!ft_strncmp("PWD=", oldpwd_new, 4))
+		*p_env_oldpwd = ft_strjoin("OLDPWD=", (oldpwd_new + 4));
 	else
-		*p_env_oldpwd = ft_strjoin("OLDPWD=", (new_pwd));
+		*p_env_oldpwd = ft_strjoin("OLDPWD=", (oldpwd_new));
 	free(env_oldpwd);
 }
 /**
@@ -48,7 +51,6 @@ static void	ft_update_env(t_big *big)
 {
 	char	**envp;
 	char	*temp1;
-	// char	*temp2;
 	char	*new_pwd;
 
 	new_pwd = NULL;
@@ -71,9 +73,7 @@ static void	ft_update_env(t_big *big)
 		envp++;
 	if (*envp && !ft_strncmp("OLDPWD=", *envp, 7))
 		ft_update_oldpwd(&(*envp), (temp1));
-	// printf("temp before freeing: %s\n", temp);
 	free(temp1);
-	// fre(temp2);
 }
 
 /**
@@ -87,7 +87,6 @@ static void	ft_update_env(t_big *big)
 void	ft_cd(t_big *big, char **argv)
 {
 	char	**envp;
-	// char	*temp;
 	char	*new_pwd;
 	int		i;
 
@@ -103,18 +102,5 @@ void	ft_cd(t_big *big, char **argv)
 			error_handling(0);
 		ft_update_env(big);
 	}
-	// //maybe use also getcwd to check if it was set correctly?
-	// while (*envp && ft_strncmp("PWD=", *envp, 4))
-	// 	envp++;
-	// temp = *envp;
-	// new_pwd = getcwd(NULL, 0);
-	// *envp = ft_strjoin("PWD=", new_pwd);
-	// free(new_pwd);
-	// envp = big->env;
-	// while (*envp && ft_strncmp("OLDPWD=", *envp, 4))
-	// 	envp++;
-	// *envp = ft_strjoin("OLDPWD=", (temp + 4));
-	// // printf("temp before freeing: %s\n", temp);
-	// free(temp);
 }
 
