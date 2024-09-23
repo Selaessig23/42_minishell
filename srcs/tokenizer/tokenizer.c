@@ -82,23 +82,27 @@ void	ft_qword_special(char *input_string, t_tokentype *token_old)
 	int		count_squote;
 	int		count_dquote;
 	char	*input_string_copy;
+	int		i;
 
 	count_squote = 0;
 	count_dquote = 0;
+	i = 0;
 	input_string_copy = input_string;
 	//test
 	while (*input_string_copy && (ft_get_quotendpointer(input_string_copy, 0, true) != NULL))
 		input_string_copy = ft_get_quotendpointer(input_string_copy, 0, 0);
 	//testend
 	printf("quotepointer final: %s\n", input_string_copy);
-	while (*input_string_copy)
+	while (input_string_copy[i])
 	{
-		if (*input_string_copy == '\'')
+		if (input_string_copy[i] == '\'')
 			count_squote += 1; 
-		else if (*input_string_copy == '\"')
+		else if (input_string_copy[i] == '\"')
 			count_dquote += 1;
-		input_string_copy += 1;
+		i += 1;
 	}
+	//'hello'washeht"""'
+	//'hello'washeht"dsds""hyuhu
 	printf("test count_squote: %i\ntest count_dquote: %i\n", count_squote, count_dquote);
 	if (count_squote != 0 && (count_squote % 2 != 0) && (!ft_check_fstquote(input_string_copy, '\''))
 		//get pointer to part of string after second "\'" if token == 26 or
