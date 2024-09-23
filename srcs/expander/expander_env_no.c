@@ -18,10 +18,10 @@ char	*delete_varname_from_value(char *value_old, char *wrongenvp)
 {
 	int		i;
 	char	*value_new;
-	char	*temp;
+	//char	*temp;
 
 	i = 0;
-	temp = value_old;
+	//temp = value_old;
 	// printf("test 3A: value_old: %s\nwrongenvp: %s\n", value_old, wrongenvp);
 	i = (ft_strlen(value_old) - ft_strlen(wrongenvp));
 	value_new = ft_calloc((i + 1), sizeof(char));

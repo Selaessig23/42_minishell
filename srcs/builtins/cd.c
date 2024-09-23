@@ -81,18 +81,20 @@ static void	ft_update_env(t_big *big)
  * and update the env-variable, give error message in case of
  * error
  * 
+ * TODO: set exit status in struct big after execution
+ * 
  * @param big the struct which holds all information for 
  * execution part incl. cmdlist and env
  */
 void	ft_cd(t_big *big, char **argv)
 {
-	char	**envp;
-	char	*new_pwd;
+	//char	**envp;
+	//char	*new_pwd;
 	int		i;
 
 	i = 0;
-	envp = big->env;
-	new_pwd = NULL;
+	//envp = big->env;
+	//new_pwd = NULL;
 	if (ft_arrlen(argv) < 2)
 		ft_putstr_fd("Please specifiy the path you want to change to\n", 1);
 	else

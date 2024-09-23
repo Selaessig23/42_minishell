@@ -10,6 +10,8 @@
 /**
  * @brief function to print all env-variables
  * 
+ * TODO: set exit status in struct big after execution
+ * 
  * @param big big struct with all command infos 
  * that are required for executing builtins or 
  * that have to be freed in case of builtin exit

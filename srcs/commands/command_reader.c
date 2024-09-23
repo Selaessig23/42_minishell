@@ -24,13 +24,12 @@ static void	ft_builtin_executer(t_data *comm_info, t_big *big, char *prompt)
 	argv = comm_info->cmd;
 	if (argv[0] && !ft_strncmp(argv[0], "echo", ft_strlen(argv[0])))
 	{
-		printf("builtin function for %s not yet created\n", argv[0]);
-		//integrate link to echo-function here
+		printf("builtin function %s in testing mode\n", argv[0]);
+		ft_echo(comm_info, big);
 	}
 	else if (argv[0] && !ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
 	{
 		printf("builtin function %s in testing mode\n", argv[0]);
-		//integrate link to cd-function here
 		ft_cd(big, argv);
 	}
 	else if (argv[0] && !ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))

@@ -1,29 +1,11 @@
 #include "minishell.h"
 
 /**
- * DESCRIPTION: 
- * in this file the inbuilt-function "pwd"
+ * DESCRIPTION:
+ * in this file the inbuilt-function "echo"
  * which should work similar to the bash-function
  * of same name is created
  */
-
-/**
- * @brief function to get and print current working directory
- * if there is no variable for it in env
- * 
- * @param fd the file descriptor to write in
- */
-static void	ft_get_env_pwd(int fd)
-{
-	char	*pwd;
-
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		error_handling(2);
-	ft_putstr_fd(pwd, fd);
-	ft_putchar_fd('\n', fd);
-	free(pwd);
-}
 
 /**
  * @brief function to get the fd of the outfile
@@ -61,25 +43,27 @@ static int	ft_get_fd(t_data *comm_info)
 	return (0);
 }
 
+
 /**
- * @brief function to print content of env-variable 'pwd'
- * to outfile or STDOUT if outfile = NULL
+ * function to print a string
  * 
  * TODO: set exit status in struct big after execution
  * TODO: CONSIDER >> append
- * 
+ *
+ * @param comm_info struct with all necessary infos to 
+ * execute a single command 
  * @param big the struct which holds all information for 
  * execution part incl. cmdlist and env
- * @param comm_info struct with all necessary infos to 
- * execute a single command
  */
-void	ft_print_pwd(t_big *big, t_data *comm_info)
+void    ft_echo(t_data *comm_info, t_big *big)
 {
-	char	**envp;
+    char	**argv;
 	int		fd;
+    bool    no_nl;
 
-	envp = big->env;
-	fd = 0;
+	argv = comm_info->cmd;
+    no_nl = 0;
+    fd = 0;
 	if (comm_info->outfile)
 	{
 		fd = ft_get_fd(comm_info);
@@ -89,14 +73,21 @@ void	ft_print_pwd(t_big *big, t_data *comm_info)
 			// return (1);
 		}
 	}
-	while (*envp && ft_strncmp("PWD=", *envp, 4))
-		envp++;
-	if (*envp == NULL || ft_strncmp("PWD=", *envp, 4))
-		ft_get_env_pwd(fd);
-	else
-	{
-		ft_putstr_fd(*envp + 4, fd);
-		ft_putchar_fd('\n', fd);
-	}
-	// return (0);
+    while (*argv)
+    {
+        if (!ft_strncmp(*argv, "echo", ft_strlen(*argv)))
+            argv += 1;
+        else if (!ft_strncmp(*argv, "-n", ft_strlen(*argv)))
+        {
+            no_nl = true;
+            argv += 1;
+        }
+        else
+        {
+            ft_putstr_fd(*argv, fd);
+            argv += 1;
+        }
+    }
+    if (no_nl == true)
+        ft_putchar_fd('\n', fd);
 }

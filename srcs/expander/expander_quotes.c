@@ -82,9 +82,9 @@ void	ft_quote_checker(void **token)
 	char	*value_new;
 	t_lexer	*temp;
 	char	*value_old;
-	int		i;
+	//int		i;
 
-	i = 0;
+	//i = 0;
 	temp = *token;
 	value_old = temp->value;
 	value_new = ft_calloc(((ft_strlen(value_old) - 
@@ -92,9 +92,11 @@ void	ft_quote_checker(void **token)
 			sizeof(char));
 	// printf("\ncalloc: %lu\n", (ft_strlen(value_old) - ft_quotes_counter(temp->token, value_old)));
 	if (temp->token == 21 || temp->token == 25)
-		i = ft_quote_remover(&value_new, value_old, '\"');
+		//i = ft_quote_remover(&value_new, value_old, '\"');
+		ft_quote_remover(&value_new, value_old, '\"');
 	else if (temp->token == 22 || temp->token == 26)
-		i = ft_quote_remover(&value_new, value_old, '\'');
+		//i = ft_quote_remover(&value_new, value_old, '\'');
+		ft_quote_remover(&value_new, value_old, '\'');
 	temp->value = value_new;
 	// printf ("Calloc: %lu, real: %zu\n, i: %i\n",
 		// ((ft_strlen(value_old) - 2)), ft_strlen(value_new), i);
