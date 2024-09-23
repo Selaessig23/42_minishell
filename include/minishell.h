@@ -62,8 +62,8 @@ typedef struct s_data {
 	// int	outfile;// Output file descriptor (defaults to stdout)
 	bool	in_heredoc;
 	bool	out_append;
-	char	*infile;
-	char	*outfile;
+	int		fd_infile;
+	int		fd_outfile;
 	char	**cmd;// Command and arguments
 	size_t	commands_no;// if helpful
 }				t_data;
@@ -158,6 +158,9 @@ void	ft_print_pwd(t_big *big, t_data *comm_info);
 //builtins/cd.c
 void	ft_cd(t_big *big, char **argv);
 //builtins/echo.c
-void    ft_echo(t_data *comm_info, t_big *big);
+void    ft_echo(t_data *comm_info);
+//file_creator.c
+int		fd_in_checker(bool heredoc_old, int fd_old, bool heredoc, char *infile);
+int		fd_out_creator(int fd_old, bool appender, char *filename);
 
 #endif

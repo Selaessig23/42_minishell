@@ -25,11 +25,13 @@ static void	ft_builtin_executer(t_data *comm_info, t_big *big, char *prompt)
 	if (argv[0] && !ft_strncmp(argv[0], "echo", ft_strlen(argv[0])))
 	{
 		printf("builtin function %s in testing mode\n", argv[0]);
-		ft_echo(comm_info, big);
+		printf("---------------------------------------------\n");
+		ft_echo(comm_info);
 	}
 	else if (argv[0] && !ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
 	{
 		printf("builtin function %s in testing mode\n", argv[0]);
+		printf("---------------------------------------------\n");
 		ft_cd(big, argv);
 	}
 	else if (argv[0] && !ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
@@ -100,7 +102,9 @@ int	ft_executer(t_big *big, char *prompt)
 	while (curr != NULL)
 	{
 		comm_info = curr->content;
-		if (ft_builtin_checker(comm_info))
+		if (comm_info->fd_infile < 0)
+			printf("EXIT WITH ERROR\n");
+		else if (ft_builtin_checker(comm_info))
 		{
 			ft_builtin_executer(comm_info, big, prompt);
 			printf("---------------------------------------------\n");

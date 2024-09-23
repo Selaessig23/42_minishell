@@ -24,8 +24,8 @@ void	ft_free_cl(t_list **ll)
 		temp = curr;
 		comm_info = temp->content;
 		curr = curr->next;
-		free(comm_info->infile);
-		free(comm_info->outfile);
+		// free(comm_info->infile);
+		// free(comm_info->outfile);
 		ft_free(comm_info->cmd);
 		free(comm_info);
 		free(temp);

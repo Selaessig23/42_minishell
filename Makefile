@@ -34,6 +34,7 @@ SRCS =	main.c \
 		commands/command_list.c \
 		commands/command_utils.c \
 		commands/command_reader.c \
+		commands/file_creator.c \
 		builtins/exit.c \
 		builtins/env.c \
 		builtins/pwd.c \

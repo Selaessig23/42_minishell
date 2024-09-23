@@ -199,8 +199,8 @@ void	ft_test_command_print(char *prompt, t_data *comm_info)
 			printf("no builtin command was found\n");
 			ft_printf("in_heredoc: %i\n", comm_info->in_heredoc);
 			ft_printf("out_append: %i\n", comm_info->out_append);
-			ft_printf("infile: %s\n", comm_info->infile);
-			ft_printf("outfile: %s\n", comm_info->outfile);
+			ft_printf("fd_infile: %i\n", comm_info->fd_infile);
+			ft_printf("fd_outfile: %i\n", comm_info->fd_outfile);
 			ft_printf("command no: %i\n", comm_info->commands_no);
 			if (!comm_info->cmd || !comm_info->cmd[0])
 				ft_printf("command_array (%i): empty\n", i);

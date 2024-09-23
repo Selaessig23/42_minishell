@@ -83,16 +83,24 @@ void	ft_add_arr_back(char *token_value, t_data **p_comm_info)
  * @param comminfo pointer to the struct that holds the command infos
  * @param lexx the expanded linked list with command line input 
  */
-static t_list	*ft_set_r_out(t_lexer *token, t_data **cominfo, t_list *lexx)
+static t_list	*ft_set_r_out(t_lexer *token, t_data **cominfo, t_list *lexx, t_big **p_big)
 {
 	t_data	*comm_info;
+	t_big	*big;
 
 	comm_info = *cominfo;
+	big = *p_big;
 	if (token->token == 6)
 		comm_info->out_append = true;
 	lexx = lexx->next;
 	token = lexx->content;
-	comm_info->outfile = ft_strdup(token->value);
+	comm_info->fd_outfile = 
+		fd_out_creator(comm_info->fd_outfile, comm_info->out_append, token->value);
+	if (comm_info->fd_outfile == -1)
+	{
+		big->exit_code = 1;
+		return (NULL);
+	}
 	return (lexx);
 }
 
@@ -105,17 +113,26 @@ static t_list	*ft_set_r_out(t_lexer *token, t_data **cominfo, t_list *lexx)
  * @param comminfo pointer to the struct that holds the command infos
  * @param lexx the expanded linked list with command line input 
  */
-static t_list	*ft_set_r_in(t_lexer *token, t_data **cominfo, t_list *lexx)
+static t_list	*ft_set_r_in(t_lexer *token, t_data **cominfo, t_list *lexx, t_big **p_big)
 {
 	t_data	*comm_info;
+	bool	heredoc_old;
+	t_big	*big;
 
 	comm_info = *cominfo;
+	big = *p_big;
+	heredoc_old = comm_info->in_heredoc;
 	if (token->token == 3)
 		comm_info->in_heredoc = true;
 	lexx = lexx->next;
 	token = lexx->content;
-	comm_info->infile = ft_strdup(token->value);
-
+	comm_info->fd_infile = 
+		fd_in_checker(heredoc_old, comm_info->fd_infile, comm_info->in_heredoc, token->value);
+	if (comm_info->fd_infile == -1)
+	{
+		big->exit_code = 1;
+		return (ft_lstlast(lexx));
+	}
 	return (lexx);
 }
 
@@ -134,9 +151,9 @@ static void	init_comm_zero(t_data **p_comm_info)
 	comm_info->cmd = ft_calloc(1, sizeof(char *));
 	comm_info->commands_no = 1;
 	comm_info->in_heredoc = false;
-	comm_info->infile = NULL;
+	comm_info->fd_infile = 0;
 	comm_info->out_append = false;
-	comm_info->outfile = NULL;
+	comm_info->fd_outfile = 0;
 }
 
 /**
@@ -150,7 +167,7 @@ static void	init_comm_zero(t_data **p_comm_info)
  * @param comm linked list of commands which should be filled
  * with command information for each command (=node)
  */
-static void	ft_init_clist(t_list **lexx, t_list **comm)
+static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 {
 	t_data	*comm_info;
 	t_list	*curr_lexx;
@@ -170,9 +187,9 @@ static void	ft_init_clist(t_list **lexx, t_list **comm)
 	{
 		// printf("what the hack III\n");
 		if (token->token == 3 || token->token == 4) //heredoc or redirect in
-			curr_lexx = ft_set_r_in(token, &comm_info, curr_lexx);
+			curr_lexx = ft_set_r_in(token, &comm_info, curr_lexx, p_big);
 		else if (token->token == 5 || token->token == 6) //redirect out or redirect out append
-			curr_lexx = ft_set_r_out(token, &comm_info, curr_lexx);
+			curr_lexx = ft_set_r_out(token, &comm_info, curr_lexx, p_big);
 		else //strings become part of command_array
 		{
 			ft_add_arr_back(token->value, &comm_info);
@@ -190,7 +207,7 @@ static void	ft_init_clist(t_list **lexx, t_list **comm)
 	if (token->token == 1 || token->token == 2)
 	{
 		// printf("recursive\n");
-		ft_init_clist(&curr_lexx->next, comm);
+		ft_init_clist(&curr_lexx->next, comm, p_big);
 	}
 	// printf("what the hack VI\n");
 }
@@ -213,6 +230,6 @@ void	ft_commands(t_list *lexx, t_big **p_big)
 	big = *p_big;
 	comm = NULL;
 	// printf("what the hack I\n");
-	ft_init_clist(&lexx, &comm);
+	ft_init_clist(&lexx, &comm, p_big);
 	big->cmdlist = comm;
 }
