@@ -8,51 +8,94 @@
  */
 
 /**
- * @brief function to insert a string into the given array
- * of strings.
- * 
- * @param 
- * @param 
- */
-/*void	ft_add_arr_back_cpy(char *str_to_add, t_big *big)
+ * This function counts a number of characters in a given string
+ * up to the given character 'up_to'
+*/
+static size_t  count_till_char(char *str, char up_to)
 {
-	//t_data	*comm_info;
-	char	**array_old;
-	char	**array_new;
-	size_t	count;
-	size_t	i;
+    size_t  count;
+    size_t     i;
 
-	i = 0;
-	//comm_info = *p_comm_info;
-	array_old = big->env;
-	count = ft_arrlen(array_old);
-	// printf("what the hack A, count:: %zu\n", count);
-	array_new = (char **)malloc(sizeof(char *) * (count + 2));
-	if (!array_new)
-		error_handling(2);
-	if (count > 0)
-	{
-		// printf("what the hack A-a, count\n");
-		while (array_old[i] != NULL)
-		{
-			// printf("what the hack A-b, count\n");
-			array_new[i] = ft_strdup(array_old[i]);
+    count = 0;
+    i = 0;
+    while (str[i] && str[i] != up_to)
+    {
+        i++;
+        count = i;
+    }
+    return (count);
+}
+
+/**
+ * The function compares characters in two strings up
+ * to first occurence '=' character in 'org_env'.
+ * If the VALUE in ENV and ARGUMENT VALUE are identical
+ * it returns 1, otherwise - 0.
+*/
+static int same_var(char *org_env, char *arg_rmv, char c)
+{
+    size_t  env_sz;
+    size_t  arg_sz;
+
+    env_sz = count_till_char(org_env, c);
+    arg_sz = ft_strlen(arg_rmv);
+    if (env_sz == arg_sz)
+    {
+        if (!ft_strncmp(org_env, arg_rmv, arg_sz))
+            return (1);
+    }
+    return (0);
+}
+
+/**
+ * This function is a part of biuilt-in UNSET.
+ * It creates a new array of strings 'array_new',
+ * it copies each string from old array of strings
+ * that represents ENV (environmental variable), except
+ * the one string that identical with 'str_to_rmv' up to '='
+ * character.
+*/
+static void ft_rmv_arr_str(t_big *big, char *str_to_rmv)
+{
+    char    **array_new;
+    char    **array_old;
+    size_t  count;
+    size_t  i;
+    size_t  j;
+
+    i = 0;
+    j = 0;
+    array_old = big->env;
+    count = ft_arrlen(array_old);
+    printf("count array_old: %ld\n", count);
+    // HERE or outside the scope I must check if there is
+    // such value to remove it from ENVP.
+
+    // Down some valgrind error.
+    array_new = (char **)malloc(sizeof(char *) * (count));
+    if (!array_new)
+        error_handling(2);
+    if (count > 0)
+    {
+        while (array_old[i] != NULL)
+        {   
+            if (!same_var(array_old[i], str_to_rmv, '='))
+            {
+                array_new[j] = ft_strdup(array_old[i]);
+                j++;
+                printf("j is %ld\n", j);
+            }
 			i++;
-		}
-	}
-	// printf("what the hack A-c, count\n");
-	array_new[i] = ft_strdup(str_to_add);
-	// printf("what the hack A-d, count\n");
-	if (!array_new[i])
-		error_handling(2);
-	i += 1;
-	array_new[i] = NULL;
-	big->env = array_new;
-	// printf("what the hack B: %s\n", *p_command_array[0]);;
-	// printf("what the hack B: %s\n", comm_info->cmd[0]);;
-	if ((array_old))
-		ft_free(array_old);
-}*/
+        }
+    }
+    j++;
+    printf("j LAST NULL is %ld\n", j);
+    array_new[j] = NULL;
+    big->env = array_new;
+    if (array_old)
+        ft_free(array_old);
+}
+
 
 /**
  * The function inserts a string 'str_to_add' into a array of strings.
@@ -96,30 +139,10 @@ static void exp_create(t_big *big, char *str_to_add)
 
     new = NULL;
     old = big->env;
-    //ft_add_arr_back_cpy(str_to_add, big);
     new = ft_add_arr_back(str_to_add, old, new);
     big->env = new;
     if ((old))
 		ft_free(old);
-}
-
-/**
- * This function counts a number of characters in a given string
- * up to the given character 'up_to'
-*/
-size_t  count_till_char(char *str, char up_to)
-{
-    size_t  count;
-    size_t     i;
-
-    count = 0;
-    i = 0;
-    while (str[i] && str[i] != up_to)
-    {
-        i++;
-        count = i;
-    }
-    return (count);
 }
 
 /**
@@ -173,8 +196,6 @@ int ft_export(t_big *big, t_data *comm_info)
         printf("cmd_arg[%li]: %s\n", i, cmd_arg[i]);
         i++;
     }
-    
-    // check all strings after 1st string "export"
     while(cmd_arg[a] != NULL)
     {
         if (ft_strchr(cmd_arg[a], '='))
@@ -203,20 +224,15 @@ int ft_export(t_big *big, t_data *comm_info)
             // value to the new one.
             else if (exp_check_var(big->env ,cmd_arg[a]))
             {
-                // LIBRARY ARRAY OF ARRAYS
-                // - a function to edit any string in an array of arrays.
+                printf("Such variable is already in ENVP.\n");
                 // exp_replace_val();
-                printf("Such variable is already in ENVP\n");
             }
-            // 3.B. if any 2 or further string has any character and '='
-            // in the middle. It check if its variable is in array,
-            // creates a varible and each character after
-            // the first occurence of '=' sign becomes a value for this variable.
         }
         // 2. if string string 2+ == "anything with no '=' at all"
         else if (!ft_strchr(cmd_arg[a], '='))
         {
-            printf("I don't see = sign\n");
+            printf("I don't see = sign. I treat it as unset command.\n");
+            ft_rmv_arr_str(big, cmd_arg[a]);
             big->exit_code = 0;
         }
         a++;
@@ -233,8 +249,6 @@ int ft_export(t_big *big, t_data *comm_info)
                 big->exit_code = 1;
                 printf("exit code: %i\n", big->exit_code);
     */
-
-    //
     // LIBRARY ARRAY OF ARRAYS
     // - a function to insert a string in the end of arraz of arrays
     // - a function to edit any string in an array of arrays.
