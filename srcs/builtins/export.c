@@ -14,7 +14,7 @@
  * @param 
  * @param 
  */
-void	ft_add_arr_back_cpy(char *str_to_add, t_big *big)
+/*void	ft_add_arr_back_cpy(char *str_to_add, t_big *big)
 {
 	//t_data	*comm_info;
 	char	**array_old;
@@ -52,6 +52,38 @@ void	ft_add_arr_back_cpy(char *str_to_add, t_big *big)
 	// printf("what the hack B: %s\n", comm_info->cmd[0]);;
 	if ((array_old))
 		ft_free(array_old);
+}*/
+
+/**
+ * The function inserts a string 'str_to_add' into a array of strings.
+ * It copies all strings from 'array_old' into 'array_new' and inserts
+ * the new string. It doesn't free anything. It doesn't re-assign any pointers.
+ * All pointers reassigning or freeing must be done outside of its scope.
+*/
+static char	**ft_add_arr_back(char *str_to_add, char **array_old, char **array_new)
+{
+	size_t	count;
+	size_t	i;
+
+	i = 0;
+	count = ft_arrlen(array_old);
+	array_new = (char **)malloc(sizeof(char *) * (count + 2));
+	if (!array_new)
+		error_handling(2);
+	if (count > 0)
+	{
+		while (array_old[i] != NULL)
+		{
+			array_new[i] = ft_strdup(array_old[i]);
+			i++;
+		}
+	}
+	array_new[i] = ft_strdup(str_to_add);
+	if (!array_new[i])
+		error_handling(2);
+	i += 1;
+	array_new[i] = NULL;
+    return(array_new);
 }
 
 /**
@@ -59,7 +91,16 @@ void	ft_add_arr_back_cpy(char *str_to_add, t_big *big)
 */
 static void exp_create(t_big *big, char *str_to_add)
 {
-    ft_add_arr_back_cpy(str_to_add, big);
+    char **old;
+    char **new;
+
+    new = NULL;
+    old = big->env;
+    //ft_add_arr_back_cpy(str_to_add, big);
+    new = ft_add_arr_back(str_to_add, old, new);
+    big->env = new;
+    if ((old))
+		ft_free(old);
 }
 
 /**
@@ -153,7 +194,8 @@ int ft_export(t_big *big, t_data *comm_info)
             else if (!exp_check_var(big->env ,cmd_arg[a]))
             {
                 // LIBRARY ARRAY OF ARRAYS
-                // - a function to insert a string in the end of array of arrays
+                // to make a generalized function to insert a string
+                // in the end of array of arrays
                 printf("There is no such variable. I run exp_create\n");
                 exp_create(big, cmd_arg[a]);
             }
