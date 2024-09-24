@@ -76,62 +76,80 @@ void	ft_add_arr_back(char *token_value, t_data **p_comm_info)
 
 /**
  * @brief function to set values of command struct in case of
- * redirection out (> or >>)
+ * redirection out (> or >>). If there was set a redirect out before,
+ * old fd will be closed and command data will be overwritten.
+ * 
  * 
  * @param token the specific token (node) of the command line input
  * which stands for the redirection symbol
  * @param comminfo pointer to the struct that holds the command infos
- * @param lexx the expanded linked list with command line input 
+ * @param lexx the expanded linked list with command line input
+ * @param p_big pointer to the struct big to integrate the exit code in
+ * case of an error when opening redirect out or in
  */
-static t_list	*ft_set_r_out(t_lexer *token, t_data **cominfo, t_list *lexx, t_big **p_big)
+static t_list	*ft_set_r_out(t_lexer *token, 
+	t_data **cominfo, t_list *lexx, t_big **p_big)
 {
 	t_data	*comm_info;
 	t_big	*big;
 
 	comm_info = *cominfo;
 	big = *p_big;
+	if (comm_info->fd_outfile)
+		close(comm_info->fd_outfile);
 	if (token->token == 6)
 		comm_info->out_append = true;
 	lexx = lexx->next;
 	token = lexx->content;
 	comm_info->fd_outfile = 
-		fd_out_creator(comm_info->fd_outfile, comm_info->out_append, token->value);
+		fd_out_creator(comm_info->out_append, token->value);
 	if (comm_info->fd_outfile == -1)
 	{
 		big->exit_code = 1;
-		return (NULL);
+		// return (NULL);
 	}
 	return (lexx);
 }
 
 /**
  * @brief function to set values of command struct in case of
- * redirection in (<) or heredoc-signal (<<)
+ * redirection in (<) or heredoc-signal (<<). If there was set 
+ * a redirect in / heredoc before, old fd will be closed 
+ * (and heredoc file will be deleted) and 
+ * command data will be overwritten. 
  * 
  * @param token the specific token (node) of the command line input
  * which stands for the redirection symbol
  * @param comminfo pointer to the struct that holds the command infos
  * @param lexx the expanded linked list with command line input 
+ * @param p_big pointer to the struct big to integrate the exit code in
+ * case of an error when opening redirect out or in
  */
-static t_list	*ft_set_r_in(t_lexer *token, t_data **cominfo, t_list *lexx, t_big **p_big)
+static t_list	*ft_set_r_in(t_lexer *token, 
+	t_data **cominfo, t_list *lexx, t_big **p_big)
 {
 	t_data	*comm_info;
-	bool	heredoc_old;
 	t_big	*big;
 
 	comm_info = *cominfo;
 	big = *p_big;
-	heredoc_old = comm_info->in_heredoc;
+	if (comm_info->fd_infile)
+		close(comm_info->fd_infile);
+	if (comm_info->in_heredoc == true)
+	{
+		//delete old temp file of heredoc here?
+		printf("heredoc temp file has to be deleted\n");
+	}
 	if (token->token == 3)
 		comm_info->in_heredoc = true;
 	lexx = lexx->next;
 	token = lexx->content;
 	comm_info->fd_infile = 
-		fd_in_checker(heredoc_old, comm_info->fd_infile, comm_info->in_heredoc, token->value);
+		fd_in_checker(comm_info->in_heredoc, token->value);
 	if (comm_info->fd_infile == -1)
 	{
 		big->exit_code = 1;
-		return (ft_lstlast(lexx));
+		// return (ft_lstlast(lexx));
 	}
 	return (lexx);
 }
@@ -166,6 +184,8 @@ static void	init_comm_zero(t_data **p_comm_info)
  * @param lexx the expanded linked list with command line input 
  * @param comm linked list of commands which should be filled
  * with command information for each command (=node)
+ * @param p_big pointer to the struct big to integrate the exit code in
+ * case of an error when opening redirect out or in
  */
 static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 {
@@ -200,6 +220,13 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 		curr_lexx = curr_lexx->next;
 		if (curr_lexx != NULL)
 			token = curr_lexx->content;
+		while (curr_lexx != NULL
+			&& (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
+			&& token->token != 1 && token->token != 2)
+		{
+			curr_lexx = curr_lexx->next;
+			token = curr_lexx->content;
+		}
 	}
 	// printf("test6\n");
 	ft_lstadd_back(comm, ft_lstnew(comm_info));

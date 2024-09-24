@@ -102,7 +102,7 @@ int	ft_executer(t_big *big, char *prompt)
 	while (curr != NULL)
 	{
 		comm_info = curr->content;
-		if (comm_info->fd_infile < 0)
+		if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
 			printf("EXIT WITH ERROR\n");
 		else if (ft_builtin_checker(comm_info))
 		{

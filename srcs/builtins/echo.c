@@ -52,8 +52,8 @@
  *
  * @param comm_info struct with all necessary infos to 
  * execute a single command 
- * @param big the struct which holds all information for 
- * execution part incl. cmdlist and env
+//  * @param big the struct which holds all information for 
+//  * execution part incl. cmdlist and env
  */
 void    ft_echo(t_data *comm_info)
 {

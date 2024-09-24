@@ -2,31 +2,23 @@
 
 /**
  * DESRIPTION: 
- * file to check and in case of output redirect
- * also create the files that are asked for in 
+ * file to check accessibility if files, creates heredocs if asked for and 
+ * and in case of output redirect also create the files that are asked for in 
  * command line input
  */
 
 
 /**
- * checks if infile is accessible and initiate heredoc if required,
- * closes old file if exist
+ * checks if infile is accessible and opens it. Initiate heredoc if required.
  * 
- * @param infos the struct with all required variables
- * @param infile the infile path or document
-*/
-int	fd_in_checker(bool heredoc_old, int fd_old, bool heredoc, char *infile)
+ * @param heredoc to check if a new heredoc file has to be created
+ * @param infile the infile name to read from
+ */
+int	fd_in_checker(bool heredoc, char *infile)
 {
 	int		fd_in;
 
 	fd_in = 0;
-	if (fd_old)
-		close(fd_old);
-	if (heredoc_old == true)
-	{
-		//delete old temp file of heredoc here?
-		printf("heredoc temp file has to be deleted\n");
-	}
 	if (heredoc == true)
 	{
 		//integrate heredoc here?
@@ -50,13 +42,12 @@ int	fd_in_checker(bool heredoc_old, int fd_old, bool heredoc, char *infile)
 }
 
 /**
- * @brief function to get the fd of the outfile
+ * @brief function to get the fd of the outfile and check 
+ * accessibility
  * 
- * MAYBE REWRITE FOR GENERAL USAGE OF EXECUTION PART
- * IMPROVE AND CHECKE !!! (WAS JUST COPIED FROM PIPEX)
- * 
- * @param comm_info struct with all necessary infos to 
- * execute a single command
+ * @param appender information if filename should be opened with trunc-mode
+ * or append-mode (true)
+ * @param filename filename (outfile) to write in 
  */
 static int	ft_get_fd(bool appender, char *filename)
 {
@@ -85,15 +76,18 @@ static int	ft_get_fd(bool appender, char *filename)
 }
 
 /**
+ * function to check if outfile exists. If not it will be created. 
+ * If yes, function ft_get_fd will check accessibility
  * 
+ * @param appender information if filename should be opened with trunc-mode
+ * or append-mode (true)
+ * @param filename filename (outfile) to write in 
  */
-int	fd_out_creator(int fd_old, bool appender, char *filename)
+int	fd_out_creator(bool appender, char *filename)
 {
 	int		fd_out;
 
 	fd_out = 0;
-	if (fd_old)
-		close(fd_old);
 	if (access(filename, F_OK))
 	{
 		fd_out = open(filename, O_CREAT, 0644);

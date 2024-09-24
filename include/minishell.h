@@ -160,7 +160,7 @@ void	ft_cd(t_big *big, char **argv);
 //builtins/echo.c
 void    ft_echo(t_data *comm_info);
 //file_creator.c
-int		fd_in_checker(bool heredoc_old, int fd_old, bool heredoc, char *infile);
-int		fd_out_creator(int fd_old, bool appender, char *filename);
+int		fd_in_checker(bool heredoc, char *infile);
+int		fd_out_creator(bool appender, char *filename);
 
 #endif
