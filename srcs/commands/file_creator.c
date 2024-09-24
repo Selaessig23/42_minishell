@@ -45,7 +45,7 @@ int	fd_in_checker(bool heredoc_old, int fd_old, bool heredoc, char *infile)
 		fd_in = -1;
 	}
 	else
-		fd_in = open(infile, R_OK);
+		fd_in = open(infile, O_RDONLY);
 	return (fd_in);
 }
 
@@ -65,13 +65,13 @@ static int	ft_get_fd(bool appender, char *filename)
 	fd_out = 0;
 	if (!access(filename, W_OK) && appender == true)
 	{
-		fd_out = open(filename, O_APPEND);
+		fd_out = open(filename, O_WRONLY | O_APPEND);
 		if (fd_out == -1)
 			error_handling(1);
 	}
 	else if (!access(filename, W_OK))
 	{
-		fd_out = open(filename, O_TRUNC);
+		fd_out = open(filename, O_WRONLY | O_TRUNC);
 		if (fd_out == -1)
 			error_handling(1);
 	}
@@ -81,8 +81,7 @@ static int	ft_get_fd(bool appender, char *filename)
 		ft_printf("%s: Permission denied\n", filename);
 		return (-1);
 	}
-	close(fd_out);
-	return (0);
+	return (fd_out);
 }
 
 /**
@@ -102,6 +101,6 @@ int	fd_out_creator(int fd_old, bool appender, char *filename)
 			error_handling(1);
 	}
 	else
-		fd_out = ft_get_fd (appender, filename);
+		fd_out = ft_get_fd(appender, filename);
 	return (fd_out);
 }

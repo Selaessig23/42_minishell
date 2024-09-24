@@ -98,5 +98,7 @@ void	ft_print_pwd(t_big *big, t_data *comm_info)
 		ft_putstr_fd(*envp + 4, fd);
 		ft_putchar_fd('\n', fd);
 	}
+	if (fd > 2)
+		close(fd);
 	// return (0);
 }
