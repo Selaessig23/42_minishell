@@ -8,6 +8,61 @@
  */
 
 /**
+ * @brief function to insert a string into the given array
+ * of strings.
+ * 
+ * @param 
+ * @param 
+ */
+void	ft_add_arr_back_cpy(char *str_to_add, t_big *big)
+{
+	//t_data	*comm_info;
+	char	**array_old;
+	char	**array_new;
+	size_t	count;
+	size_t	i;
+
+	i = 0;
+	//comm_info = *p_comm_info;
+	array_old = big->env;
+	count = ft_arrlen(array_old);
+	// printf("what the hack A, count:: %zu\n", count);
+	array_new = (char **)malloc(sizeof(char *) * (count + 2));
+	if (!array_new)
+		error_handling(2);
+	if (count > 0)
+	{
+		// printf("what the hack A-a, count\n");
+		while (array_old[i] != NULL)
+		{
+			// printf("what the hack A-b, count\n");
+			array_new[i] = ft_strdup(array_old[i]);
+			i++;
+		}
+	}
+	// printf("what the hack A-c, count\n");
+	array_new[i] = ft_strdup(str_to_add);
+	// printf("what the hack A-d, count\n");
+	if (!array_new[i])
+		error_handling(2);
+	i += 1;
+	array_new[i] = NULL;
+	big->env = array_new;
+	// printf("what the hack B: %s\n", *p_command_array[0]);;
+	// printf("what the hack B: %s\n", comm_info->cmd[0]);;
+	if ((array_old))
+		ft_free(array_old);
+}
+
+/**
+ * This function insert a new variable to array of strings 'ENV'.
+*/
+static void exp_create(t_big *big, char *str_to_add)
+{
+    ft_add_arr_back_cpy(str_to_add, big);
+}
+
+/**
  * This function counts a number of characters in a given string
  * up to the given character 'up_to'
 */
@@ -43,9 +98,10 @@ int   exp_check_var(char **env, char *arg)
     while (env[i])
     {
         env_str = count_till_char(env[i], '=');
+
         if (arg_str == env_str)
         {
-            if (!ft_strncmp(env[i], arg, ft_strlen(arg)))
+            if (!ft_strncmp(env[i], arg, arg_str))
                 return(1);
         }
         i++;
@@ -89,21 +145,20 @@ int ft_export(t_big *big, t_data *comm_info)
             if (*cmd_arg[a] == '=')
                 ft_printf("-bash: export: `%s': not a valid identifier\n", cmd_arg[a]);
             
-            // Чи варто об'єднати 3.A і 3.B. Алгоритми дій доволі схожі.
-
             // 3.A. if any 2 or further string has any character and '=' in the end, 
             // and '=' is only one occurence and it's in the end of the string.
             
             // It check if its variable is in array, if yes - do nothing,
-            // if not - it creates a variable with no values. Then check
-            // next string(s)...
+            // if not - it creates a variable with no values.
             else if (!exp_check_var(big->env ,cmd_arg[a]))
             {
                 // LIBRARY ARRAY OF ARRAYS
-                // - a function to insert a string in the end of arraz of arrays
-                //exp_create();
-                printf("There is no such variable\n");
+                // - a function to insert a string in the end of array of arrays
+                printf("There is no such variable. I run exp_create\n");
+                exp_create(big, cmd_arg[a]);
             }
+            // 3.C. if 3.B a variable exists and has a value, it replaces an old
+            // value to the new one.
             else if (exp_check_var(big->env ,cmd_arg[a]))
             {
                 // LIBRARY ARRAY OF ARRAYS
@@ -111,18 +166,12 @@ int ft_export(t_big *big, t_data *comm_info)
                 // exp_replace_val();
                 printf("Such variable is already in ENVP\n");
             }
-           
             // 3.B. if any 2 or further string has any character and '='
             // in the middle. It check if its variable is in array,
             // creates a varible and each character after
             // the first occurence of '=' sign becomes a value for this variable.
-
-            // 3.C. if 3.B a variable exists and has a value, it replaces an old
-            // value to the new one.
-  
         }
         // 2. if string string 2+ == "anything with no '=' at all"
-        // 3. if string 1 == export and string 2 == "anything with no '=' and
         else if (!ft_strchr(cmd_arg[a], '='))
         {
             printf("I don't see = sign\n");
