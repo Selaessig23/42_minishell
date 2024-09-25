@@ -190,6 +190,24 @@ static int   exp_check_var(char **env, char *arg)
     return(0);
 }
 
+// EXIT_STATUS checker. if ANY of the arguments starts with '='
+// exit_status is 1.
+static void export_exit_status(t_big *big, char **cmd_arg)
+{
+    int i;
+
+    i = 0;
+    while (cmd_arg[i])
+    {
+        if (*cmd_arg[i] == '=')
+        {
+            big->exit_code = 1;
+            return ;
+        }
+        i++;
+    }
+}
+
 /**
  * @brief function to execute the builtin function "export"
  * 
@@ -208,22 +226,12 @@ int ft_export(t_big *big, t_data *comm_info)
 	cmd_arg = comm_info->cmd;
     i = 0;
     a = 1;
-    while (cmd_arg[i] != NULL)
-    {
-        printf("cmd_arg[%li]: %s\n", i, cmd_arg[i]);
-        i++;
-    }
     while(cmd_arg[a] != NULL)
     {
         if (ft_strchr(cmd_arg[a], '='))
         {
-            // do something
-            // 2.A. If string 1 == export and string 2 == the first character is '='
-            // then display  message -bash: export: `==': not a valid identifier
-            // and exit_code is - one (checker functon after the loop)
             if (*cmd_arg[a] == '=')
                 ft_printf("-bash: export: `%s': not a valid identifier\n", cmd_arg[a]);
-            
             // 3.A. if any 2 or further string has any character and '=' in the end, 
             // and '=' is only one occurence and it's in the end of the string.
             
@@ -252,21 +260,6 @@ int ft_export(t_big *big, t_data *comm_info)
             big->exit_code = 0;
         }
         a++;
-        
     }
-    // EXIT_STATUS checker. if ANY of the arguments starts with '='
-    // exit_status is 1.
-    /*
-    while
-    if (*cmd_arg[a] == '=')
-            {
-                printf("exit code: %i\n", big->exit_code);
-                ft_printf("-bash: export: `%s': not a valid identifier\n", cmd_arg[a]);
-                big->exit_code = 1;
-                printf("exit code: %i\n", big->exit_code);
-    */
-    // LIBRARY ARRAY OF ARRAYS
-    // - a function to insert a string in the end of arraz of arrays
-    // - a function to edit any string in an array of arrays.
-    return (0);
+    export_exit_status(big, cmd_arg);
 }
