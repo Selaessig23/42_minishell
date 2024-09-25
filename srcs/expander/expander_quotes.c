@@ -71,7 +71,7 @@ int	ft_quotes_counter(t_tokentype token, char *value_old)
 
 /**
  * @brief this functions deletes quotation marks at the beginning and end of
- * the value of token 21 / 22 / 25 / 26
+ * the value of token 21 / 22
  * 
  * DO I HAVE TO ENSURE THAT value_old has enough characters to remove quotes?
  * 
@@ -91,9 +91,9 @@ void	ft_quote_checker(void **token)
 					ft_quotes_counter(temp->token, value_old)) + 1), 
 			sizeof(char));
 	// printf("\ncalloc: %lu\n", (ft_strlen(value_old) - ft_quotes_counter(temp->token, value_old)));
-	if (temp->token == 21 || temp->token == 25)
+	if (temp->token == 21)
 		i = ft_quote_remover(&value_new, value_old, '\"');
-	else if (temp->token == 22 || temp->token == 26)
+	else if (temp->token == 22)
 		i = ft_quote_remover(&value_new, value_old, '\'');
 	temp->value = value_new;
 	// printf ("Calloc: %lu, real: %zu\n, i: %i\n",

@@ -65,10 +65,11 @@ void	ft_expa_precond(t_list *lexx, t_big *big)
 	while (curr != NULL)
 	{
 		if ((((t_lexer *)curr->content)->token == 21)
-			|| (((t_lexer *)curr->content)->token == 22)
-			|| (((t_lexer *)curr->content)->token == 25)
-			|| (((t_lexer *)curr->content)->token == 26))
+			|| (((t_lexer *)curr->content)->token == 22))
 			ft_quote_checker(&curr->content);
+		else if ((((t_lexer *)curr->content)->token == 25)
+			|| (((t_lexer *)curr->content)->token == 26))
+			ft_q_word_handling(&curr->content, big);
 		if ((((t_lexer *)curr->content)->token == 20)
 			|| (((t_lexer *)curr->content)->token == 21)
 			|| (((t_lexer *)curr->content)->token == 25))
