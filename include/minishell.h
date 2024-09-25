@@ -152,13 +152,13 @@ int    ft_executer(t_big *big, char *prompt);
 //builtins/exit.c
 void    ft_exit_minishell(t_big *big, char *prompt);
 //builtins/env.c
-void	ft_print_env(t_big *big);
+void	ft_print_env(t_data *comm_info, t_big *big);
 //builtins/pwd.c
 void	ft_print_pwd(t_big *big, t_data *comm_info);
 //builtins/cd.c
 void	ft_cd(t_big *big, char **argv);
 //builtins/echo.c
-void    ft_echo(t_data *comm_info);
+void    ft_echo(t_data *comm_info, t_big *big);
 //file_creator.c
 int		fd_in_checker(bool heredoc, char *infile);
 int		fd_out_creator(bool appender, char *filename);

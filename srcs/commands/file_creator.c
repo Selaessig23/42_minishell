@@ -90,7 +90,7 @@ int	fd_out_creator(bool appender, char *filename)
 	fd_out = 0;
 	if (access(filename, F_OK))
 	{
-		fd_out = open(filename, O_CREAT, 0644);
+		fd_out = open(filename, O_WRONLY | O_CREAT, 0644);
 		if (fd_out == -1)
 			error_handling(1);
 	}
