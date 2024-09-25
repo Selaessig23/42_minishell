@@ -47,7 +47,8 @@ typedef enum e_tokentype
 	D_Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes or argument1"withoutspace"afterquotes...
 	S_Q_WORD = 26, // to define cases like 'argument1'withoutspaceafterquotes or argument1'withoutspace'afterquotes...
 	D_Q_WORD_F = 27, //to define cases with a single double quotation mark like argument1"withoutspaceafterquotes
-	S_Q_WORD_F = 28 // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
+	S_Q_WORD_F = 28, // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
+	WORD_CLEANED = 29 // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
 }	t_tokentype;
 
 // struct for lexer analysis

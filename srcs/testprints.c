@@ -88,6 +88,8 @@ static char	*print_tokens(int i)
 		return (ft_strdup("D_Q_WORD_F"));
 	else if (i == 28)
 		return (ft_strdup("S_Q_WORD_F"));
+	else if (i == 29)
+		return (ft_strdup("Q_WORD_CLEANED"));
 	else
 		return (NULL);
 }
