@@ -48,14 +48,14 @@ static int same_var(char *org_env, char *arg_rmv, char c)
 }
 
 /**
- * This function is a part of biuilt-in UNSET.
+ * This function is a part of biuilt-in UNSET and EXPORT.
  * It creates a new array of strings 'array_new',
  * it copies each string from old array of strings
- * that represents ENV (environmental variable), except
+ * that represents ENV (environmental variable), except of
  * the one string that identical with 'str_to_rmv' up to '='
  * character.
 */
-static void ft_rmv_arr_str(t_big *big, char *str_to_rmv)
+void ft_rmv_arr_str(t_big *big, char *str_to_rmv)
 {
     char    **array_new;
     char    **array_old;
@@ -67,7 +67,6 @@ static void ft_rmv_arr_str(t_big *big, char *str_to_rmv)
     j = 0;
     array_old = big->env;
     count = ft_arrlen(array_old);
-    printf("count array_old: %ld\n", count);
     // HERE or outside the scope I must check if there is
     // such value to remove it from ENVP.
 
@@ -83,19 +82,15 @@ static void ft_rmv_arr_str(t_big *big, char *str_to_rmv)
             {
                 array_new[j] = ft_strdup(array_old[i]);
                 j++;
-                printf("j is %ld\n", j);
             }
 			i++;
         }
     }
-    j++;
-    printf("j LAST NULL is %ld\n", j);
     array_new[j] = NULL;
     big->env = array_new;
     if (array_old)
         ft_free(array_old);
 }
-
 
 /**
  * The function inserts a string 'str_to_add' into a array of strings.
@@ -127,6 +122,28 @@ static char	**ft_add_arr_back(char *str_to_add, char **array_old, char **array_n
 	i += 1;
 	array_new[i] = NULL;
     return(array_new);
+}
+
+/**
+ * The function replace the old value of the environmental
+ * variable to the new one.
+ */
+static void exp_replace_val(t_big *big, char *str_new_val)
+{
+    char    **old;
+    char    **new;
+    char    **var_to_rmv;
+    
+    new = NULL;
+    old = NULL;
+    var_to_rmv = ft_split(str_new_val, '=');
+    ft_rmv_arr_str(big, var_to_rmv[0]);
+    ft_free(var_to_rmv);
+    old = big->env;
+    new = ft_add_arr_back(str_new_val, old, new);
+    big->env = new;
+    if ((old))
+		ft_free(old);
 }
 
 /**
@@ -212,7 +229,7 @@ int ft_export(t_big *big, t_data *comm_info)
             
             // It check if its variable is in array, if yes - do nothing,
             // if not - it creates a variable with no values.
-            else if (!exp_check_var(big->env ,cmd_arg[a]))
+            else if (!exp_check_var(big->env, cmd_arg[a]))
             {
                 // LIBRARY ARRAY OF ARRAYS
                 // to make a generalized function to insert a string
@@ -222,11 +239,10 @@ int ft_export(t_big *big, t_data *comm_info)
             }
             // 3.C. if 3.B a variable exists and has a value, it replaces an old
             // value to the new one.
-            else if (exp_check_var(big->env ,cmd_arg[a]))
+            else if (exp_check_var(big->env, cmd_arg[a]))
             {
-                printf("Such variable is already in ENVP. There is no function to replace variable\n");
-                // CONSIDER empty value! "export NAME= OR export NAME="" "
-                // exp_replace_val();
+                printf("Such variable is already in ENVP. exp_replace_val\n");
+                exp_replace_val(big, cmd_arg[a]);
             }
         }
         // 2. if string string 2+ == "anything with no '=' at all"

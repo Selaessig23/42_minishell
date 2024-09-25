@@ -159,6 +159,7 @@ void	ft_print_pwd(t_big *big, t_data *comm_info);
 void	ft_cd(t_big *big);
 //builtins/export.c
 int		ft_export(t_big *big, t_data *comm_info);
+void	ft_rmv_arr_str(t_big *big, char *str_to_rmv);
 //builtins/unset.c
 int		ft_unset(t_big *big, t_data *comm_info);
 

@@ -48,52 +48,6 @@ static int same_var(char *org_env, char *arg_rmv, char c)
 }
 
 /**
- * This function is a part of biuilt-in UNSET.
- * It creates a new array of strings 'array_new',
- * it copies each string from old array of strings
- * that represents ENV (environmental variable), except
- * the one string that identical with 'str_to_rmv' up to '='
- * character.
-*/
-static void ft_rmv_arr_str(t_big *big, char *str_to_rmv)
-{
-    char    **array_new;
-    char    **array_old;
-    size_t  count;
-    size_t  i;
-    size_t  j;
-
-    i = 0;
-    j = 0;
-    array_old = big->env;
-    count = ft_arrlen(array_old);
-    printf("count array_old: %ld\n", count);
-    // HERE or outside the scope I must check if there is
-    // such value to remove it from ENVP.
-
-    // Down some valgrind error.
-    array_new = (char **)malloc(sizeof(char *) * (count));
-    if (!array_new)
-        error_handling(2);
-    if (count > 0)
-    {
-        while (array_old[i] != NULL)
-        {   
-            if (!same_var(array_old[i], str_to_rmv, '='))
-            {
-                array_new[j] = ft_strdup(array_old[i]);
-                j++;
-            }
-			i++;
-        }
-    }
-    array_new[j] = NULL;
-    big->env = array_new;
-    if (array_old)
-        ft_free(array_old);
-}
-
-/**
  * Function check if the variable given by argument is in t_big in envp.
 */
 static int   uns_check_var(char **env, char *arg)
