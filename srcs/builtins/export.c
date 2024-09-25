@@ -151,7 +151,7 @@ static void exp_create(t_big *big, char *str_to_add)
  * considering characters till '=' sign. In case of succes return 1,
  * other way it returns 0.
 */
-int   exp_check_var(char **env, char *arg)
+static int   exp_check_var(char **env, char *arg)
 {
     size_t  env_str;
     size_t  arg_str;
@@ -224,15 +224,15 @@ int ft_export(t_big *big, t_data *comm_info)
             // value to the new one.
             else if (exp_check_var(big->env ,cmd_arg[a]))
             {
-                printf("Such variable is already in ENVP.\n");
+                printf("Such variable is already in ENVP. There is no function to replace variable\n");
+                // CONSIDER empty value! "export NAME= OR export NAME="" "
                 // exp_replace_val();
             }
         }
         // 2. if string string 2+ == "anything with no '=' at all"
         else if (!ft_strchr(cmd_arg[a], '='))
         {
-            printf("I don't see = sign. I treat it as unset command.\n");
-            ft_rmv_arr_str(big, cmd_arg[a]);
+            printf("I don't see = sign.\n");
             big->exit_code = 0;
         }
         a++;

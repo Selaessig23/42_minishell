@@ -38,7 +38,7 @@ static void	ft_builtin_executer(t_data *comm_info, t_big *big, char *prompt)
 		ft_export(big, comm_info);
 	else if (argv[0] && !ft_strncmp(argv[0], "unset", ft_strlen(argv[0])))
 	{
-		printf("builtin function for %s not yet created\n", argv[0]);
+		ft_unset(big, comm_info);
 		//integrate link to unset-function here
 	}
 	else if (argv[0] && !ft_strncmp(argv[0], "env", ft_strlen(argv[0])))

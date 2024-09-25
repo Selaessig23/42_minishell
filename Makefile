@@ -38,7 +38,8 @@ SRCS =	main.c \
 		builtins/env.c \
 		builtins/pwd.c \
 		builtins/cd.c \
-		builtins/export.c
+		builtins/export.c \
+		builtins/unset.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c
