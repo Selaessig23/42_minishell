@@ -58,6 +58,39 @@ char	*ft_listtostr(t_list *q_word_list)
 }
 
 /**
+ * @brief helper function for ft_q_arr_creator
+ * 
+ * @param p_counter pointer to the counter
+ * @param p_i pointer to iterator of value_old
+ * @param value_old the char to itorate over
+ * @param sign the sign to check for (' / " / 9 -->
+ * 9 stands for not ' or ")
+*/ 
+static void	ft_q_arrcreat_helper(int *j, int *i,
+	char *value_old, char sign)
+{
+	// int	j;
+	// int	i;
+
+	// j = *p_j;
+	// i = *p_i;
+	*j = *i;
+	*i += 1;
+	if (sign == '\'' || sign == '\"')
+	{
+		while (value_old[*(i)] && value_old[*(i)] != sign)
+			*(i) += 1;
+	}
+	else
+	{
+		while (value_old[*(i)] && value_old[*(i) + 1] 
+			&& !(value_old[*(i) + 1] == '\'' || value_old[*(i) + 1] == '\"'))
+			*(i) += 1;
+	}
+}
+
+
+/**
  * @brief function that creates and array of strings
  * out of the q_word to better handle the q_word-tokens
  * 
@@ -78,27 +111,30 @@ void	ft_q_arr_creator(char *value_old, char ***p_value_new)
 	while (value_old[i])
 	{
 		if (value_old[i] == '\'')
-		{
-			j = i;
-			i += 1;
-			while (value_old[i] && value_old[i] != '\'')
-				i += 1;
-		}
+			ft_q_arrcreat_helper(&j, &i, value_old, '\'');
+		// {
+		// 	j = i;
+		// 	i += 1;
+		// 	while (value_old[i] && value_old[i] != '\'')
+		// 		i += 1;
+		// }
 		else if (value_old[i] == '\"')
-		{
-			j = i;
-			i += 1;
-			while (value_old[i] && value_old[i] != '\"')
-				i += 1;
-		}
+			ft_q_arrcreat_helper(&j, &i, value_old, '\"');
+		// {
+		// 	j = i;
+		// 	i += 1;
+		// 	while (value_old[i] && value_old[i] != '\"')
+		// 		i += 1;
+		// }
 		else
-		{
-			j = i;
-			i += 1;
-			while (value_old[i] && value_old[i + 1] 
-				&& !(value_old[i + 1] == '\'' || value_old[i + 1] == '\"'))
-				i += 1;
-		}
+			ft_q_arrcreat_helper(&j, &i, value_old, 'X');
+		// {
+		// 	j = i;
+		// 	i += 1;
+		// 	while (value_old[i] && value_old[i + 1] 
+		// 		&& !(value_old[i + 1] == '\'' || value_old[i + 1] == '\"'))
+		// 		i += 1;
+		// }
 		*value_new = ft_substr(value_old, j, ((i + 1) - j));
 		printf("value_new = %s\n", *value_new);
 		value_new += 1;
@@ -115,23 +151,23 @@ void	ft_q_arr_creator(char *value_old, char ***p_value_new)
  * @param p_i pointer to iterator of value_old
  * @param value_old the char to itorate over
  * @param sign the sign to check for
- */
-static void	ft_q_count_helper(int *p_counter, int *p_i,
+*/ 
+static void	ft_q_count_helper(int *counter, int *i,
 	char *value_old, char sign)
 {
-	int	counter;
-	int	i;
+	// int	counter;
+	// int	i;
 
-	counter = *p_counter;
-	i = *p_i;
-	if (i == sign)
-	{
-		counter += 1;
-		i += 1;
-		while (value_old[i] && value_old[i] != sign)
-			i += 1;
-	}
+	// counter = *p_counter;
+	// i = *p_i;
+	*(counter) += 1;
+	*i += 1;
+	while (value_old[*(i)] && value_old[*(i)] != sign)
+		*(i) += 1;
+	// p_i = &i;
+	// p_counter = &counter;
 }
+
 
 /**
  * @brief function to count the size of new array of strings
@@ -149,27 +185,38 @@ int	ft_q_counter(char *value_old)
 	i = 0;
 	while (value_old[i])
 	{
+		printf("string: %s\n", &value_old[i]);
 		if (value_old[i] == '\'')
+		{
+			printf("case A\n");
 			ft_q_count_helper(&counter, &i, value_old, '\'');
+		}
 		// {
+		// 	printf("case A\n");
 		// 	counter += 1;
-		// 	value_old += 1;
-		// 	while (*value_old && *value_old != '\'')
-		// 		value_old += 1;
+		// 	i += 1;
+		// 	while (value_old[i] && value_old[i] != '\'')
+		// 		i += 1;
 		// }
 		else if (value_old[i] == '\"')
+		{
+			printf("case B\n");
 			ft_q_count_helper(&counter, &i, value_old, '\"');
+		}
 		// {
+		// 	printf("case B\n");
 		// 	counter += 1;
-		// 	value_old += 1;
-		// 	while (*value_old && *value_old != '\"')
-		// 		value_old += 1;
+		// 	i += 1;
+		// 	while (value_old[i] && value_old[i] != '\"')
+		// 		i += 1;
 		// }
 		else
 		{
+			printf("case C\n");
 			counter += 1;
 			i += 1;
-			while (value_old[i] && value_old[i] != '\'' && value_old[i] != '\"')
+			while (value_old[i] && value_old[i + 1] 
+				&& !(value_old[i + 1] == '\'' || value_old[i + 1] == '\"'))
 				i += 1;
 		}
 		if (value_old[i])
