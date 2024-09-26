@@ -165,7 +165,7 @@ void	ft_free_cl(t_list **ll);
 //commands/command_reader.c
 int    ft_executer(t_big *big, char *prompt);
 //builtins/exit.c
-void    ft_exit_minishell(t_big *big, char *prompt);
+void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
 //builtins/env.c
 void	ft_print_env(t_data *comm_info, t_big *big);
 //builtins/pwd.c

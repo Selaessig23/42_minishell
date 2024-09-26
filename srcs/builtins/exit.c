@@ -17,11 +17,58 @@
  * that have to be freed
  * @param prompt string that has to be freed before exit the program
  */
-void	ft_exit_minishell(t_big *big, char *prompt)
+void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 {
-	free(prompt);
-	prompt = NULL;
-	free_t_big(big);
-	rl_clear_history();
-	exit(EXIT_SUCCESS);
+	char	**argv;
+	char	*argv2;
+	bool	is_nondigit;
+	int		exit_code;
+
+	argv = comm_info->cmd;
+	argv2 = NULL;
+	is_nondigit = 0;
+	exit_code = 0;
+	if (ft_arrlen(argv) >= 2)
+	{
+		argv2 = argv[1];
+		if (*argv2 == '-')
+			argv2 += 1;
+		while (*argv2 && ft_isdigit(*argv2))
+			argv2 += 1;
+		if (*argv2 && (*argv2 - 1) != '-')
+			is_nondigit = true;
+	}
+	argv = comm_info->cmd;
+	if (is_nondigit == false)
+		exit_code = ft_atoi(argv[1]);
+	exit_code = (exit_code % 256 + 256) % 256;
+	// if (exit_code < 0)
+	// 	exit_code += 256;
+	// else if (exit_code > 255)
+		
+	if (ft_arrlen(argv) > 2 && is_nondigit == false)
+	{
+		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
+		big->exit_code = 1;
+	}
+	else
+	{
+		free(prompt);
+		prompt = NULL;
+		rl_clear_history();
+		if (is_nondigit == true)
+		{
+			ft_putstr_fd("exit\nminishell: exit: ", 2);
+			ft_putstr_fd((argv[1]), 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+			free_t_big(big);
+			exit(2);
+		}
+		else
+		{
+			ft_putstr_fd("exit\n", 1);
+			free_t_big(big);
+			exit(exit_code);
+		}
+	}
 }

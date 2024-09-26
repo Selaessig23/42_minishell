@@ -54,7 +54,7 @@ static void	ft_builtin_executer(t_data *comm_info, t_big *big, char *prompt)
 	}
 	else if (argv[0] && !ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))
 	{
-		ft_exit_minishell(big, prompt);
+		ft_exit_minishell(comm_info, big, prompt);
 	}
 }
 
