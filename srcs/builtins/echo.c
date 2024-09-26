@@ -26,9 +26,8 @@ void    ft_echo(t_data *comm_info, t_big *big)
 	argv = comm_info->cmd;
 	no_nl = 0;
 	fd = comm_info->fd_outfile;
-	if (argv + 1 && *(argv + 1))
-		argv += 1;
-	if (!ft_strncmp(*argv, "-n", ft_strlen(*argv)))
+	argv += 1;
+	if (*argv && !(ft_strncmp(*argv, "-n", ft_strlen(*argv))))
 	{
 		no_nl = true;
 		argv += 1;
@@ -36,7 +35,7 @@ void    ft_echo(t_data *comm_info, t_big *big)
 	// printf("fd-check: %i\n", fd);
 	while (*argv)
 	{
-		// ft_putstr_fd(*argv, fd);
+		ft_putstr_fd(*argv, fd);
 		// printf("to print -check: %s\n",*argv);
 		// dprintf(fd, "print: %s", *argv);
 		argv += 1;
