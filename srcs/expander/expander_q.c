@@ -14,6 +14,49 @@
  */
 
 /**
+ * @brief function to copy from src to dest
+ * 
+ * @param dest
+ * @param src
+ */
+char	*ft_strcpy(char *dest, const char *src)
+{
+	if (!src)
+		return (NULL);
+	while (*src)
+	{
+		*dest = *src;
+		dest += 1;
+		src += 1;
+	}
+	return (dest);
+}
+
+/**
+ * @brief helper function for ft_listtostr to count the
+ * size of each string of the linked list
+ * 
+ * @param q_word_list the linked list in wich the strings of 
+ * (void) content have to be counted
+ */
+size_t	ft_count_str_in_ll(t_list *q_word_list)
+{
+	t_list	*curr;
+	char	*str_to_count;
+	size_t	count_str;
+
+	curr = q_word_list;
+	count_str = 0;
+	while (curr != NULL)
+	{
+		str_to_count = ((t_lexer *)curr->content)->value;
+		count_str += ft_strlen(str_to_count);
+		curr = curr->next;
+	}
+	return (count_str);
+}
+
+/**
  * @brief function that transforms an array of strings to a 
  * single string
  * 
@@ -26,7 +69,7 @@ char	*ft_listtostr(t_list *q_word_list)
 	t_list	*curr;
 	char	*curr_str;
 	char	*str;
-	int		count_list;
+	// int		count_list;
 	int		count_str;
 	// int		i;
 	int		j;
@@ -34,15 +77,15 @@ char	*ft_listtostr(t_list *q_word_list)
 	printf("testA\n");
 	curr = q_word_list;
 	curr_str = ((t_lexer *)curr->content)->value;
-	count_list = 0;
-	count_str = 0;
+	// count_list = 0;
+	count_str = ft_count_str_in_ll(q_word_list);
 	j = 0;
-	while (curr != NULL)
-	{
-		curr_str = ((t_lexer *)curr->content)->value;
-		count_str += ft_strlen(curr_str);
-		curr = curr->next;
-	}
+	// while (curr != NULL)
+	// {
+	// 	curr_str = ((t_lexer *)curr->content)->value;
+	// 	count_str += ft_strlen(curr_str);
+	// 	curr = curr->next;
+	// }
 	printf("count_str: %i\n", count_str);
 	str = ft_calloc(((count_str) + 1), sizeof(char));
 	curr = q_word_list;
@@ -50,7 +93,7 @@ char	*ft_listtostr(t_list *q_word_list)
 	{
 		curr_str = ((t_lexer *)curr->content)->value;
 		j = ft_strlen(str);
-		strcpy(&str[j], curr_str);
+		ft_strcpy(&str[j], curr_str);
 		curr = curr->next;
 	}
 	str[count_str] = '\0';
@@ -75,14 +118,18 @@ static void	ft_q_arrcreat_helper(int *j, int *i,
 	// j = *p_j;
 	// i = *p_i;
 	*j = *i;
-	*i += 1;
+	
 	if (sign == '\'' || sign == '\"')
 	{
+		*i += 1;
 		while (value_old[*(i)] && value_old[*(i)] != sign)
 			*(i) += 1;
 	}
 	else
 	{
+		if (value_old[*(i) + 1]
+			&& !(value_old[*(i) + 1] == '\'' || value_old[*(i) + 1] == '\"'))
+			*i += 1;
 		while (value_old[*(i)] && value_old[*(i) + 1] 
 			&& !(value_old[*(i) + 1] == '\'' || value_old[*(i) + 1] == '\"'))
 			*(i) += 1;
@@ -214,7 +261,9 @@ int	ft_q_counter(char *value_old)
 		{
 			printf("case C\n");
 			counter += 1;
-			i += 1;
+			if (value_old[i + 1] 
+				&& !(value_old[i + 1] == '\'' || value_old[i + 1] == '\"'))
+				i += 1;
 			while (value_old[i] && value_old[i + 1] 
 				&& !(value_old[i + 1] == '\'' || value_old[i + 1] == '\"'))
 				i += 1;
