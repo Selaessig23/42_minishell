@@ -82,9 +82,9 @@ void	ft_quote_checker(void **token)
 	char	*value_new;
 	t_lexer	*temp;
 	char	*value_old;
-	int		i;
+	//int		i;
 
-	i = 0;
+	//i = 0;
 	temp = *token;
 	value_old = temp->value;
 	value_new = ft_calloc(((ft_strlen(value_old) - 

@@ -6,8 +6,9 @@
 void	free_t_big(t_big *big)
 {
 	ft_free(big->env);
-	free(big->list);
-	big->list = NULL;
+	ft_free_cl(&(big->cmdlist));
+	// free(big->cmdlist);
+	// big->cmdlist = NULL;
 	free(big);
 	big = NULL;
 }
@@ -91,7 +92,7 @@ t_big	*init_t_big(char **envp)
 	big = ft_calloc(1, sizeof(t_big));
 	if (big == NULL)
 		error_handling(2);
-	big->list = NULL;
+	big->cmdlist = NULL;
 	env = copy_envp(envp);
 	big->env = env;
 	big->exit_code = -127;

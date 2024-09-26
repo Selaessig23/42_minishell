@@ -33,7 +33,16 @@ SRCS =	main.c \
 		expander/expander_exit.c \
 		expander/expander_pid.c \
 		expander/expander_utils.c \
-		expander/expander_q.c
+		expander/expander_q.c \
+		commands/command_list.c \
+		commands/command_utils.c \
+		commands/command_reader.c \
+		commands/file_creator.c \
+		builtins/exit.c \
+		builtins/env.c \
+		builtins/pwd.c \
+		builtins/cd.c \
+		builtins/echo.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c

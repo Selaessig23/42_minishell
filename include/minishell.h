@@ -59,30 +59,24 @@ typedef struct s_lexer
 }				t_lexer;
 
 typedef struct s_data {
-    int  infile;  // Input file descriptor (defaults to stdin)
-    int  outfile; // Output file descriptor (defaults to stdout)
-    char **cmd;   // Command and arguments
-	size_t commands_no; // if helpful
+	// int	infile;// Input file descriptor (defaults to stdin)
+	// int	outfile;// Output file descriptor (defaults to stdout)
+	bool	in_heredoc;
+	bool	out_append;
+	int		fd_infile;
+	int		fd_outfile;
+	char	**cmd;// Command and arguments
+	size_t	commands_no;// if helpful
 }				t_data;
 
 // Main struct containing the list of commands and
 // a copy of the environment
 typedef struct s_big
 {
-	t_list	*list; // Linked list t_data
+	t_list	*cmdlist; // Linked list t_data
 	char	**env; // Copy of environment variables
 	int		exit_code;
 }					t_big;
-
-// maybe rename to bin_path for binary path
-typedef struct s_envp
-{
-	char	**bin_paths;
-	char	***commands;
-	char	*outfile;
-	char	*infile;
-	size_t	commands_no;
-}	t_envp;
 
 // main.c
 //
@@ -134,6 +128,7 @@ t_tokentype			ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
+void	ft_test_command_print(char *prompt, t_data *comm_info);
 //syntax.c
 int		ft_syntax(t_list *lexx);
 //syntaxerrors.c
@@ -156,5 +151,24 @@ char	*ft_givenbr(int nbr);
 int		ft_is_env_var(char c);
 //expander/expander_q.c
 void	ft_q_word_handling(void **token, t_big *big);
+//commands/command_list.c
+void	ft_commands(t_list *lexx, t_big **big);
+//commands/command_utils.c
+void	ft_free_cl(t_list **ll);
+//commands/command_reader.c
+int    ft_executer(t_big *big, char *prompt);
+//builtins/exit.c
+void    ft_exit_minishell(t_big *big, char *prompt);
+//builtins/env.c
+void	ft_print_env(t_data *comm_info, t_big *big);
+//builtins/pwd.c
+void	ft_print_pwd(t_big *big, t_data *comm_info);
+//builtins/cd.c
+void	ft_cd(t_big *big, char **argv);
+//builtins/echo.c
+void    ft_echo(t_data *comm_info, t_big *big);
+//file_creator.c
+int		fd_in_checker(bool heredoc, char *infile);
+int		fd_out_creator(bool appender, char *filename);
 
 #endif
