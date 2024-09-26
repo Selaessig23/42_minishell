@@ -171,7 +171,7 @@ static void	init_comm_zero(t_data **p_comm_info)
 	comm_info->in_heredoc = false;
 	comm_info->fd_infile = 0;
 	comm_info->out_append = false;
-	comm_info->fd_outfile = 0;
+	comm_info->fd_outfile = 1;
 }
 
 /**
