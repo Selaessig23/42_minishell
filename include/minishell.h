@@ -42,12 +42,20 @@ typedef enum e_tokentype
 	WORD = 20,
 	D_QUOTED = 21, //double quoted word
 	S_QUOTED = 22, //single quoted word
-	D_QUOTED_F = 23, //to define cases without closing quotation mark like "argument1withoutquotend
-	S_QUOTED_F = 24, //to define cases without closing quotation mark like 'argument1withoutquotend
-	D_Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes or argument1"withoutspace"afterquotes...
-	S_Q_WORD = 26, // to define cases like 'argument1'withoutspaceafterquotes or argument1'withoutspace'afterquotes...
-	D_Q_WORD_F = 27, //to define cases with a single double quotation mark like argument1"withoutspaceafterquotes
-	S_Q_WORD_F = 28 // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
+	D_QUOTED_F = 23, //to define cases without closing quotation mark
+		// like "argument1withoutquotend
+	S_QUOTED_F = 24, //to define cases without closing quotation mark
+		// like 'argument1withoutquotend
+	D_Q_WORD = 25, //to define cases like
+		//"argument1"withoutspaceafterquotes or
+		// argument1"withoutspace"afterquotes...
+	S_Q_WORD = 26, // to define cases like
+		//'argument1'withoutspaceafterquotes or
+		// argument1'withoutspace'afterquotes...
+	D_Q_WORD_F = 27, //to define cases with a single double quotation mark
+		// like argument1"withoutspaceafterquotes
+	S_Q_WORD_F = 28 // to define cases a single single quotation mark
+		//like argument1'withoutspaceafterquotes
 }	t_tokentype;
 
 // struct for lexer analysis
@@ -57,6 +65,7 @@ typedef struct s_lexer
 	t_tokentype		token;
 }				t_lexer;
 
+// cmd - Command and arguments
 typedef struct s_data {
 	// int	infile;// Input file descriptor (defaults to stdin)
 	// int	outfile;// Output file descriptor (defaults to stdout)
@@ -64,16 +73,18 @@ typedef struct s_data {
 	bool	out_append;
 	char	*infile;
 	char	*outfile;
-	char	**cmd;// Command and arguments
-	size_t	commands_no;// if helpful
+	char	**cmd;
+	size_t	commands_no;
 }				t_data;
 
 // Main struct containing the list of commands and
 // a copy of the environment
+// cmdlist - Linked list t_data
+// env - Copy of environment variables
 typedef struct s_big
 {
-	t_list	*cmdlist; // Linked list t_data
-	char	**env; // Copy of environment variables
+	t_list	*cmdlist;
+	char	**env;
 	int		exit_code;
 }					t_big;
 
@@ -148,9 +159,9 @@ void	ft_commands(t_list *lexx, t_big **big);
 //commands/command_utils.c
 void	ft_free_cl(t_list **ll);
 //commands/command_reader.c
-int    ft_executer(t_big *big, char *prompt);
+int		ft_executer(t_big *big, char *prompt);
 //builtins/exit.c
-void    ft_exit_minishell(t_big *big, char *prompt);
+void	ft_exit_minishell(t_big *big, char *prompt);
 //builtins/env.c
 void	ft_print_env(t_big *big);
 //builtins/pwd.c
@@ -159,8 +170,10 @@ void	ft_print_pwd(t_big *big, t_data *comm_info);
 void	ft_cd(t_big *big);
 //builtins/export.c
 int		ft_export(t_big *big, t_data *comm_info);
-void	ft_rmv_arr_str(t_big *big, char *str_to_rmv);
+void	ft_rmv_var_array(t_big *big, char *str_to_rmv);
+void	export_exit_status(t_big *big, char **cmd_arg);
 //builtins/unset.c
 int		ft_unset(t_big *big, t_data *comm_info);
+size_t	count_till_char(char *str, char up_to);
 
 #endif

@@ -11,64 +11,43 @@
  * This function counts a number of characters in a given string
  * up to the given character 'up_to'
 */
-static size_t  count_till_char(char *str, char up_to)
+size_t	count_till_char(char *str, char up_to)
 {
-    size_t  count;
-    size_t     i;
+	size_t	count;
+	size_t	i;
 
-    count = 0;
-    i = 0;
-    while (str[i] && str[i] != up_to)
-    {
-        i++;
-        count = i;
-    }
-    return (count);
-}
-
-/**
- * The function compares characters in two strings up
- * to first occurence '=' character in 'org_env'.
- * If the VALUE in ENV and ARGUMENT VALUE are identical
- * it returns 1, otherwise - 0.
-*/
-static int same_var(char *org_env, char *arg_rmv, char c)
-{
-    size_t  env_sz;
-    size_t  arg_sz;
-
-    env_sz = count_till_char(org_env, c);
-    arg_sz = ft_strlen(arg_rmv);
-    if (env_sz == arg_sz)
-    {
-        if (!ft_strncmp(org_env, arg_rmv, arg_sz))
-            return (1);
-    }
-    return (0);
+	count = 0;
+	i = 0;
+	while (str[i] && str[i] != up_to)
+	{
+		i++;
+		count = i;
+	}
+	return (count);
 }
 
 /**
  * Function check if the variable given by argument is in t_big in envp.
 */
-static int   uns_check_var(char **env, char *arg)
+static int	uns_check_var(char **env, char *arg)
 {
-    size_t  env_str;
-    size_t  arg_str;
-    int     i;
+	size_t	env_str;
+	size_t	arg_str;
+	int		i;
 
-    i = 0;
-    arg_str = ft_strlen(arg);
-    while (env[i])
-    {
-        env_str = count_till_char(env[i], '=');
-        if (arg_str == env_str)
-        {
-            if (!ft_strncmp(env[i], arg, arg_str))
-                return(1);
-        }
-        i++;
-    }
-    return(0);
+	i = 0;
+	arg_str = ft_strlen(arg);
+	while (env[i])
+	{
+		env_str = count_till_char(env[i], '=');
+		if (arg_str == env_str)
+		{
+			if (!ft_strncmp(env[i], arg, arg_str))
+				return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 /**
@@ -80,27 +59,20 @@ static int   uns_check_var(char **env, char *arg)
  * @param comm_info struct with all necessary infos to 
  * execute a single command
  */
-int ft_unset(t_big *big, t_data *comm_info)
+int	ft_unset(t_big *big, t_data *comm_info)
 {
-    char	**cmd_arg;
-    size_t  i;
-    size_t  a;
+	char	**cmd_arg;
+	size_t	i;
+	size_t	a;
 
 	cmd_arg = comm_info->cmd;
-    i = 0;
-    a = 1;
-    while (cmd_arg[a] != NULL)
-    {
-        if (uns_check_var(big->env, cmd_arg[a]))
-        {
-            printf("Such variable is already in ENVP. I remove it.\n");
-            ft_rmv_arr_str(big, cmd_arg[a]);
-        }
-        printf("No %s variable in ENVP.\n", cmd_arg[a]);
-        a++;
-    }
-    return (0);
+	i = 0;
+	a = 1;
+	while (cmd_arg[a] != NULL)
+	{
+		if (uns_check_var(big->env, cmd_arg[a]))
+			ft_rmv_var_array(big, cmd_arg[a]);
+		a++;
+	}
+	return (0);
 }
-
- // EXIT_STATUS checker. if ANY of the arguments starts with '='
-// exit_status is 1.
