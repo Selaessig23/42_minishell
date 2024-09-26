@@ -24,14 +24,14 @@ static void	ft_builtin_executer(t_data *comm_info, t_big *big, char *prompt)
 	argv = comm_info->cmd;
 	if (argv[0] && !ft_strncmp(argv[0], "echo", ft_strlen(argv[0])))
 	{
-		printf("builtin function %s in testing mode\n", argv[0]);
-		printf("---------------------------------------------\n");
+		//printf("builtin function %s in testing mode\n", argv[0]);
+		//printf("---------------------------------------------\n");
 		ft_echo(comm_info, big);
 	}
 	else if (argv[0] && !ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
 	{
-		printf("builtin function %s in testing mode\n", argv[0]);
-		printf("---------------------------------------------\n");
+		//printf("builtin function %s in testing mode\n", argv[0]);
+		//printf("---------------------------------------------\n");
 		ft_cd(big, argv);
 	}
 	else if (argv[0] && !ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
@@ -39,14 +39,9 @@ static void	ft_builtin_executer(t_data *comm_info, t_big *big, char *prompt)
 	else if (argv[0] && !ft_strncmp(argv[0], "export", ft_strlen(argv[0])))
 		ft_export(big, comm_info);
 	else if (argv[0] && !ft_strncmp(argv[0], "unset", ft_strlen(argv[0])))
-	{
 		ft_unset(big, comm_info);
-		//integrate link to unset-function here
-	}
 	else if (argv[0] && !ft_strncmp(argv[0], "env", ft_strlen(argv[0])))
-	{
 		ft_print_env(comm_info, big);
-	}
 	else if (argv[0] && !ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))
 	{
 		ft_exit_minishell(big, prompt);
@@ -102,7 +97,7 @@ int	ft_executer(t_big *big, char *prompt)
 		else if (ft_builtin_checker(comm_info))
 		{
 			ft_builtin_executer(comm_info, big, prompt);
-			printf("---------------------------------------------\n");
+			//printf("---------------------------------------------\n");
 			// return (1);
 		}
 		else

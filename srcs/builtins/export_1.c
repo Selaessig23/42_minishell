@@ -146,9 +146,15 @@ int	ft_export(t_big *big, t_data *comm_info)
 				exp_create(big, cmd_arg[a]);
 			else if (exp_check_var(big->env, cmd_arg[a]))
 				exp_replace_val(big, cmd_arg[a]);
+			big->exit_code = 0;
 		}
 		else if (!ft_strchr(cmd_arg[a], '='))
-			big->exit_code = 0;
+		{
+			if (ft_isdigit(*cmd_arg[a]))
+				big->exit_code = 1;
+			else
+				big->exit_code = 0;
+		}
 		a++;
 	}
 	export_exit_status(big, cmd_arg);

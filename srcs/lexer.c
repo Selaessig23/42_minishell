@@ -210,20 +210,18 @@ static char	*ft_clean_input(char *src)
 
 	dest = NULL;
 	len = ft_count(src);
-	ft_printf("malloced len for cleaned input: %i\n", len);
+	//ft_printf("malloced len for cleaned input: %i\n", len);
 	if (len == (ft_strlen(src)))
 	{
-		ft_printf("No modification of input required. Delete this message\n");
+		//ft_printf("No modification of input required. Delete this message\n");
 		return (ft_strdup(src));
 	}
 	// better to use calloc
 	dest = (char *)malloc(sizeof(char) * (len + 1));
 	ft_create_clean_input(dest, src);
-
 	// free(src);
 	// src = NULL;
-
-	ft_printf("real len of cleaned input: %i\n", ft_strlen(dest));
+	//ft_printf("real len of cleaned input: %i\n", ft_strlen(dest));
 	trim_out_spaces(&dest);
 	return (dest);
 }

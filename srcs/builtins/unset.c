@@ -74,5 +74,6 @@ int	ft_unset(t_big *big, t_data *comm_info)
 			ft_rmv_var_array(big, cmd_arg[a]);
 		a++;
 	}
+	big->exit_code = 0;
 	return (0);
 }

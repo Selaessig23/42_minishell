@@ -24,7 +24,6 @@ void	export_exit_status(t_big *big, char **cmd_arg)
 		}
 		i++;
 	}
-	big->exit_code = 0;
 }
 
 /**

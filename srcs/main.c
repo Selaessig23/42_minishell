@@ -54,7 +54,7 @@ int main(int argc, char **argv, char **envp)
 			else if (*input)
 			{
 				add_history(input);
-				ft_printf("input length: %i\n", ft_strlen(input));
+				//ft_printf("input length: %i\n", ft_strlen(input));
 				input_arr = create_nodes(&input);
 				free(input);
 				input = NULL;
@@ -69,7 +69,7 @@ int main(int argc, char **argv, char **envp)
 				// ft_printf("test1\n");
 				ft_free(input_arr);
 				// to seperate debug-infos of lexer from bash-output
-				ft_printf("\n");
+				//ft_printf("\n");
 				if (!ft_syntax(lexx))
 				{
 					//printf_env(big);
