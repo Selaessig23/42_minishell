@@ -16,8 +16,8 @@
 /**
  * @brief function to copy from src to dest
  * 
- * @param dest
- * @param src
+ * @param dest the string to copy in
+ * @param src the string to copy from
  */
 char	*ft_strcpy(char *dest, const char *src)
 {
@@ -59,41 +59,28 @@ size_t	ft_count_str_in_ll(t_list *q_word_list)
 /**
  * @brief function that transforms an array of strings to a 
  * single string
- * 
- * !!!CHANGE strcpy TO ft_strcpy!!!
- * 
+ *  
  * @param arr the array of strings to read from
  */
 char	*ft_listtostr(t_list *q_word_list)
 {
 	t_list	*curr;
-	char	*curr_str;
 	char	*str;
-	// int		count_list;
 	int		count_str;
-	// int		i;
 	int		j;
 
-	printf("testA\n");
+	// printf("testA\n");
 	curr = q_word_list;
-	curr_str = ((t_lexer *)curr->content)->value;
-	// count_list = 0;
 	count_str = ft_count_str_in_ll(q_word_list);
 	j = 0;
-	// while (curr != NULL)
-	// {
-	// 	curr_str = ((t_lexer *)curr->content)->value;
-	// 	count_str += ft_strlen(curr_str);
-	// 	curr = curr->next;
-	// }
-	printf("count_str: %i\n", count_str);
+	// printf("count_str: %i\n", count_str);
 	str = ft_calloc(((count_str) + 1), sizeof(char));
 	curr = q_word_list;
 	while (curr != NULL)
 	{
-		curr_str = ((t_lexer *)curr->content)->value;
 		j = ft_strlen(str);
-		ft_strcpy(&str[j], curr_str);
+		ft_strcpy(&str[j], ((t_lexer *)curr->content)->value);
+		// str = ft_strcpy(str, ((t_lexer *)curr->content)->value);
 		curr = curr->next;
 	}
 	str[count_str] = '\0';
@@ -101,7 +88,9 @@ char	*ft_listtostr(t_list *q_word_list)
 }
 
 /**
- * @brief helper function for ft_q_arr_creator
+ * @brief helper function for ft_q_arr_creator, it iteraters 
+ * through the value_old string until next " / ' is found and
+ * sets values of j (start of string-part) and i (end of string-part)
  * 
  * @param p_counter pointer to the counter
  * @param p_i pointer to iterator of value_old
@@ -112,13 +101,7 @@ char	*ft_listtostr(t_list *q_word_list)
 static void	ft_q_arrcreat_helper(int *j, int *i,
 	char *value_old, char sign)
 {
-	// int	j;
-	// int	i;
-
-	// j = *p_j;
-	// i = *p_i;
 	*j = *i;
-	
 	if (sign == '\'' || sign == '\"')
 	{
 		*i += 1;
@@ -144,7 +127,7 @@ static void	ft_q_arrcreat_helper(int *j, int *i,
  * @param value_old the char to count 
  * cut and transferred to array of strings 
  * (in parts of single quotes | double quotes | no quotes)
- * @param p_value_new the malloced array of strings to copy in
+ * @param p_value_new pointer to the malloced array of strings to copy in
  */
 void	ft_q_arr_creator(char *value_old, char ***p_value_new)
 {
@@ -159,31 +142,12 @@ void	ft_q_arr_creator(char *value_old, char ***p_value_new)
 	{
 		if (value_old[i] == '\'')
 			ft_q_arrcreat_helper(&j, &i, value_old, '\'');
-		// {
-		// 	j = i;
-		// 	i += 1;
-		// 	while (value_old[i] && value_old[i] != '\'')
-		// 		i += 1;
-		// }
 		else if (value_old[i] == '\"')
 			ft_q_arrcreat_helper(&j, &i, value_old, '\"');
-		// {
-		// 	j = i;
-		// 	i += 1;
-		// 	while (value_old[i] && value_old[i] != '\"')
-		// 		i += 1;
-		// }
 		else
 			ft_q_arrcreat_helper(&j, &i, value_old, 'X');
-		// {
-		// 	j = i;
-		// 	i += 1;
-		// 	while (value_old[i] && value_old[i + 1] 
-		// 		&& !(value_old[i + 1] == '\'' || value_old[i + 1] == '\"'))
-		// 		i += 1;
-		// }
 		*value_new = ft_substr(value_old, j, ((i + 1) - j));
-		printf("value_new = %s\n", *value_new);
+		// printf("value_new = %s\n", *value_new);
 		value_new += 1;
 		if (value_old[i])
 			i += 1;
@@ -192,7 +156,8 @@ void	ft_q_arr_creator(char *value_old, char ***p_value_new)
 }
 
 /**
- * @brief helper function for ft_q_counter
+ * @brief helper function for ft_q_counter, it iterates
+ * through the string until next " or ' is found * 
  * 
  * @param p_counter pointer to the counter
  * @param p_i pointer to iterator of value_old
@@ -202,17 +167,10 @@ void	ft_q_arr_creator(char *value_old, char ***p_value_new)
 static void	ft_q_count_helper(int *counter, int *i,
 	char *value_old, char sign)
 {
-	// int	counter;
-	// int	i;
-
-	// counter = *p_counter;
-	// i = *p_i;
 	*(counter) += 1;
 	*i += 1;
 	while (value_old[*(i)] && value_old[*(i)] != sign)
 		*(i) += 1;
-	// p_i = &i;
-	// p_counter = &counter;
 }
 
 
@@ -232,34 +190,20 @@ int	ft_q_counter(char *value_old)
 	i = 0;
 	while (value_old[i])
 	{
-		printf("string: %s\n", &value_old[i]);
+		// printf("string: %s\n", &value_old[i]);
 		if (value_old[i] == '\'')
 		{
-			printf("case A\n");
+			// printf("case A\n");
 			ft_q_count_helper(&counter, &i, value_old, '\'');
 		}
-		// {
-		// 	printf("case A\n");
-		// 	counter += 1;
-		// 	i += 1;
-		// 	while (value_old[i] && value_old[i] != '\'')
-		// 		i += 1;
-		// }
 		else if (value_old[i] == '\"')
 		{
-			printf("case B\n");
+			// printf("case B\n");
 			ft_q_count_helper(&counter, &i, value_old, '\"');
 		}
-		// {
-		// 	printf("case B\n");
-		// 	counter += 1;
-		// 	i += 1;
-		// 	while (value_old[i] && value_old[i] != '\"')
-		// 		i += 1;
-		// }
 		else
 		{
-			printf("case C\n");
+			// printf("case C\n");
 			counter += 1;
 			if (value_old[i + 1] 
 				&& !(value_old[i + 1] == '\'' || value_old[i + 1] == '\"'))
@@ -271,7 +215,7 @@ int	ft_q_counter(char *value_old)
 		if (value_old[i])
 			i += 1;
 	}
-	printf("counter says: %i\n", counter);
+	// printf("counter says: %i\n", counter);
 	return (counter);
 }
 
@@ -296,7 +240,6 @@ void	ft_q_word_handling(void **token, t_big *big)
 	char	*value_old;
 	char 	*value_new;
 	char	**help_arr;
-	// int		counter;
 	t_list	*q_word_list;
 
 	// printf("test1\n");
