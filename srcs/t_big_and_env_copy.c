@@ -95,6 +95,6 @@ t_big	*init_t_big(char **envp)
 	big->cmdlist = NULL;
 	env = copy_envp(envp);
 	big->env = env;
-	big->exit_code = -127;
+	big->exit_code = 0;
 	return (big);
 }

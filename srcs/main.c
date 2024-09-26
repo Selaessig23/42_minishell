@@ -73,15 +73,6 @@ int main(int argc, char **argv, char **envp)
 				ft_free(input_arr);
 				// to seperate debug-infos of lexer from bash-output
 				ft_printf("\n");
-<<<<<<< HEAD
-				// if (!ft_syntax(lexx))
-				// {
-					// ft_printf("test\n");
-					ft_test_ll_print(lexx, prompt);
-				// }
-				// else
-					// ft_free_ll(&lexx);
-=======
 				if (!ft_syntax(lexx))
 				{
 					//printf_env(big);
@@ -97,7 +88,6 @@ int main(int argc, char **argv, char **envp)
 				{
 					ft_free_ll(&lexx);
 				}
->>>>>>> main
 			}
 		}
 		ft_free_ll(&lexx);
