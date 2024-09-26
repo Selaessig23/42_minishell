@@ -24,9 +24,10 @@
 # define INPUT_ERROR "Not correct number of input arguments\
 to execute minishell\n"
 
-//it is "a good practice" to use a global variable for environment 
-//instead of picking it in the main
-extern char	**environ;
+// it is "a good practice" to use a global variable for environment 
+// instead of picking it in the main
+// but it is not allowd to use global variables
+// extern char	**environ;
 
 // to define all different tokens
 // see libft_bonus
@@ -48,10 +49,13 @@ typedef enum e_tokentype
 	WORD = 20,
 	D_QUOTED = 21, //double quoted word
 	S_QUOTED = 22, //single quoted word
-	D_QUOTED_F = 23, //to define cases like 'argument1withoutquotend
-	S_QUOTED_F = 24, //to define cases like "argument1withoutquotend
-	Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes
-	// and 'argument1'withoutspaceafterquotes
+	D_QUOTED_F = 23, //to define cases without closing quotation mark like "argument1withoutquotend
+	S_QUOTED_F = 24, //to define cases without closing quotation mark like 'argument1withoutquotend
+	D_Q_WORD = 25, //to define cases like "argument1"withoutspaceafterquotes or argument1"withoutspace"afterquotes...
+	S_Q_WORD = 26, // to define cases like 'argument1'withoutspaceafterquotes or argument1'withoutspace'afterquotes...
+	D_Q_WORD_F = 27, //to define cases with a single double quotation mark like argument1"withoutspaceafterquotes
+	S_Q_WORD_F = 28, // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
+	WORD_CLEANED = 29 // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
 }	t_tokentype;
 
 // struct for lexer analysis
@@ -61,40 +65,25 @@ typedef struct s_lexer
 	t_tokentype		token;
 }				t_lexer;
 
-// Struct representing command data
-typedef struct s_data
-{
-	int		infile; // Input file descriptor (defaults to stdin)
-	int		outfile; // Output file descriptor (defaults to stdout)
-	char	**cmd; // Command and arguments
-}					t_data;
-
-// Linked list containing a s_data nodes with
-// all commands separated by pipes
-// typedef struct s_list
-// {
-// 	t_data			*cmds; // Command data
-// 	struct t_list	*next; // Pointer to the next list node
-// }					t_list;
+typedef struct s_data {
+	// int	infile;// Input file descriptor (defaults to stdin)
+	// int	outfile;// Output file descriptor (defaults to stdout)
+	bool	in_heredoc;
+	bool	out_append;
+	int		fd_infile;
+	int		fd_outfile;
+	char	**cmd;// Command and arguments
+	size_t	commands_no;// if helpful
+}				t_data;
 
 // Main struct containing the list of commands and
 // a copy of the environment
 typedef struct s_big
 {
-	t_list	*list; // Linked list of commands
+	t_list	*cmdlist; // Linked list t_data
 	char	**env; // Copy of environment variables
+	int		exit_code;
 }					t_big;
-
-////////////////////////////
-// maybe rename to bin_path for binary path
-typedef struct s_envp
-{
-	char	**bin_paths;
-	char	***commands;
-	char	*outfile;
-	char	*infile;
-	size_t	commands_no;
-}	t_envp;
 
 // main.c
 //
@@ -133,15 +122,60 @@ void	free_t_big(t_big *big); // temp cleanup function
 char	**create_nodes(char **readline_input);
 //ft_split_quotes.c
 char	**ft_split_quotes(char const *s, char c);
-//tokenizer.c
+//tokenizer/tokenizer.c
 t_list	*ft_tokenizer(char **input_arr);
+//tokenizer/tokenizer_utils.c
 void	ft_free_ll(t_list **ll);
+int		ft_check_fstquote(char *content, char checker);
+//tokenizer/tokenizer_operators.c
+t_tokentype	ft_creat_redir_token(char *input_string);
+t_tokentype	ft_creat_operators_token(char *input_string);
+//tokenizer/tokenizer_strings.c
+t_tokentype			ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions
-void	ft_test_arr_print(char **input_arr, char *prompt);
-void	ft_test_ll_print(t_list *lexx, char *prompt);
+void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
+void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
+void	ft_test_command_print(char *prompt, t_data *comm_info);
 //syntax.c
 int		ft_syntax(t_list *lexx);
 //syntaxerrors.c
 void	ft_syntax_errors(t_list *lexx, int errorno);
+//expander/expander.c
+void	ft_expa_precond(t_list *lexx, t_big *big);
+//expander/expander_quotes.c
+void	ft_quote_checker(void **token);
+//expander/expander_env.c
+char	*ft_var_creator(char *value_old, char **env);
+//expander/expander_env_no.c
+char	*delete_varname_from_value(char *value_old, char *wrongenvp);
+//expander/expander_env_yes.c
+char	*add_env_to_value(char *value_old, char *env, char *env_name);
+//expander/expander_pid.c
+//expander/expander_exit.c
+char	*ft_exit_expander(char *value_old, int exit_code);
+//expander/expander_utils.c
+char	*ft_givenbr(int nbr);
+int		ft_is_env_var(char c);
+//expander/expander_q.c
+void	ft_q_word_handling(void **token, t_big *big);
+//commands/command_list.c
+void	ft_commands(t_list *lexx, t_big **big);
+//commands/command_utils.c
+void	ft_free_cl(t_list **ll);
+//commands/command_reader.c
+int    ft_executer(t_big *big, char *prompt);
+//builtins/exit.c
+void    ft_exit_minishell(t_big *big, char *prompt);
+//builtins/env.c
+void	ft_print_env(t_data *comm_info, t_big *big);
+//builtins/pwd.c
+void	ft_print_pwd(t_big *big, t_data *comm_info);
+//builtins/cd.c
+void	ft_cd(t_big *big, char **argv);
+//builtins/echo.c
+void    ft_echo(t_data *comm_info, t_big *big);
+//file_creator.c
+int		fd_in_checker(bool heredoc, char *infile);
+int		fd_out_creator(bool appender, char *filename);
 
 #endif

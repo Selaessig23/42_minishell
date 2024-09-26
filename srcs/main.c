@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 // **Note for Markus. 12 Aug** I moved it up "if (argc != 1) error_handling(1);"
@@ -24,21 +23,21 @@ int main(int argc, char **argv, char **envp)
 	char	*prompt;
 	char	**input_arr;
 	t_list	*lexx;
+	// t_list	*comm;
 	t_big	*big;
 
 	(void)argv;
 	lexx = NULL;
+	// comm = NULL;
 	exitcode = 0;
-	big = init_t_big(envp);
-	//printf_env(big);
-	free_t_big(big);
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)
 	{
-		if (!*__environ)
-			error_handling(4);
+		// if (!*__environ)
+			// error_handling(4);
 		prompt = ft_strdup("Marina's and Markus' minishell>");
+		big = init_t_big(envp);
 		while (1)
 		{
 			input = readline(prompt);
@@ -74,6 +73,7 @@ int main(int argc, char **argv, char **envp)
 				ft_free(input_arr);
 				// to seperate debug-infos of lexer from bash-output
 				ft_printf("\n");
+<<<<<<< HEAD
 				// if (!ft_syntax(lexx))
 				// {
 					// ft_printf("test\n");
@@ -81,12 +81,30 @@ int main(int argc, char **argv, char **envp)
 				// }
 				// else
 					// ft_free_ll(&lexx);
+=======
+				if (!ft_syntax(lexx))
+				{
+					//printf_env(big);
+					ft_expa_precond(lexx, big);
+					// ft_printf("test\n");
+					// ft_test_ll_print(lexx, prompt, big);
+					ft_commands(lexx, &big);
+					ft_free_ll(&lexx);
+					// printf("test8\n");
+					ft_executer(big, prompt);
+				}
+				else
+				{
+					ft_free_ll(&lexx);
+				}
+>>>>>>> main
 			}
 		}
 		ft_free_ll(&lexx);
 		rl_clear_history();
 		free(prompt);
 		prompt = NULL;
+		free_t_big(big);
 	}
 	exit(exitcode);
 	// return (exitcode);

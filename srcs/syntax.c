@@ -135,7 +135,9 @@ static int	ft_quotes_check(t_list *lexx)
 	while (curr != NULL)
 	{
 		if (((t_lexer *)curr->content)->token == 23
-			|| ((t_lexer *)curr->content)->token == 24)
+			|| ((t_lexer *)curr->content)->token == 24
+			|| ((t_lexer *)curr->content)->token == 27
+			|| ((t_lexer *)curr->content)->token == 28)
 		{
 			ft_syntax_errors(curr, 3);
 			return (1);

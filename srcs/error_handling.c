@@ -34,6 +34,7 @@ void	error_handling(int err)
 	{
 		errno = 12;
 		ft_putstr_fd("Problems with malloc", 1);
+		exit (1);
 	}
 	else if (err == 3)
 	{

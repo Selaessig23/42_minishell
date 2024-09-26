@@ -6,8 +6,11 @@
 void	free_t_big(t_big *big)
 {
 	ft_free(big->env);
-	free(big->list);
+	ft_free_cl(&(big->cmdlist));
+	// free(big->cmdlist);
+	// big->cmdlist = NULL;
 	free(big);
+	big = NULL;
 }
 
 // Temporary function to display what t_big holds.
@@ -68,7 +71,7 @@ static char	**copy_envp(char **envp)
 		copy[j] = ft_memcpy(copy[j], envp[j], str_size);
 		j++;
 	}
-	envp[j] = NULL;
+	copy[j] = NULL;
 	return (copy);
 }
 
@@ -89,8 +92,9 @@ t_big	*init_t_big(char **envp)
 	big = ft_calloc(1, sizeof(t_big));
 	if (big == NULL)
 		error_handling(2);
-	big->list = NULL;
+	big->cmdlist = NULL;
 	env = copy_envp(envp);
 	big->env = env;
+	big->exit_code = -127;
 	return (big);
 }
