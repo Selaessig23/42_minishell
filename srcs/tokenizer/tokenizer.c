@@ -148,7 +148,7 @@ static t_tokentype	ft_creat_tokens(char *input_string)
 		token = ft_creat_redir_token(input_string);
 	else
 		token = ft_creat_str_token(input_string);
-	printf("token_defined: %i\nvalue: %s\n", token, input_string);
+	// printf("token_defined: %i\nvalue: %s\n", token, input_string);
 	if (token == 25 || token == 26)
 		ft_qword_special(input_string, &token);
 	return (token);
