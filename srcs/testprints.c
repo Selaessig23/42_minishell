@@ -4,7 +4,7 @@
 /**
  * function to print and work with cleaned array of strings
  */
-void ft_test_arr_print(char **input_arr, char *prompt, t_big *big)
+/*void ft_test_arr_print(char **input_arr, char *prompt, t_big *big)
 {
 	char	**env_list;
 	int		i;
@@ -51,7 +51,7 @@ void ft_test_arr_print(char **input_arr, char *prompt, t_big *big)
 	}
 	ft_free(input_arr);
 	// 	ft_printf("%s\n", testinput);
-}
+}*/
 
 /**
  * test function to print the tokens in string (not ids)
@@ -103,12 +103,12 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 	t_list	*curr;
 	char	*token_print;
 	int		i;
-	char	**env_list;
+	//char	**env_list;
 
 	i = 0;
 	token_print = NULL;
 	curr = lexx;
-	env_list = big->env;
+	//env_list = big->env;
 	while (curr != NULL)
 	{
 		if (!ft_strncmp(((t_lexer *)curr->content)->value, "exit", 4) 
@@ -122,7 +122,7 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 			rl_clear_history();
 			exit(EXIT_SUCCESS);
 		}
-		else if (!ft_strncmp(((t_lexer *)curr->content)->value, "env", 3) 
+		/*else if (!ft_strncmp(((t_lexer *)curr->content)->value, "env", 3) 
 			&& ft_strlen(((t_lexer *)curr->content)->value) == 3)
 		{
 			while (env_list && *env_list)
@@ -130,12 +130,11 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 				ft_printf("%s\n", *env_list);
 				env_list += 1;
 			}
-		}
+		}*/
 		else
 		{
 			token_print = print_tokens(((t_lexer *)curr->content)->token);
 			ft_printf("node (%i): %s\n", i, ((t_lexer *)curr->content)->value);
-			// ft_printf("token (%i): %d\n", i, (int)curr->token);
 			ft_printf("token (%i): %s\n", i, token_print);
 			ft_printf("length token (%i): %i\n", i, ft_strlen(((t_lexer *)curr->content)->value));
 			ft_printf("-------------------------------------\n");

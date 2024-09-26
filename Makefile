@@ -5,7 +5,7 @@ CUR_DIR = $(shell pwd)
 LIBFT_PATH = $(CUR_DIR)/libft
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g -Iinclude -Isrcs -Ireadline
+CFLAGS = -Wall -Wextra -g -Iinclude -Isrcs -Ireadline
 RLFLAG = -lreadline
 
 #sources
@@ -42,7 +42,9 @@ SRCS =	main.c \
 		builtins/env.c \
 		builtins/pwd.c \
 		builtins/cd.c \
-		builtins/echo.c
+		builtins/export_1.c \
+		builtins/export_2.c \
+		builtins/unset.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c
