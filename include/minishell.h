@@ -164,6 +164,7 @@ void	ft_q_word_handling(void **token, t_big *big);
 //commands/command_list.c
 void	ft_commands(t_list *lexx, t_big **big);
 int		fd_out_creator(bool appender, char *filename);
+int		fd_in_checker(bool heredoc, char *infile);
 //commands/command_utils.c
 void	ft_free_cl(t_list **ll);
 //commands/command_reader.c
