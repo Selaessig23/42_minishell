@@ -71,8 +71,8 @@ typedef struct s_data {
 	// int	outfile;// Output file descriptor (defaults to stdout)
 	bool	in_heredoc;
 	bool	out_append;
-	char	*infile;
-	char	*outfile;
+	int		fd_infile;
+	int		fd_outfile;
 	char	**cmd;
 	size_t	commands_no;
 }				t_data;
@@ -171,10 +171,12 @@ int		ft_executer(t_big *big, char *prompt);
 void	ft_exit_minishell(t_big *big, char *prompt);
 //builtins/env.c
 void	ft_print_env(t_data *comm_info, t_big *big);
+//builtins/echo.c
+void	ft_echo(t_data *comm_info, t_big *big);
 //builtins/pwd.c
 void	ft_print_pwd(t_big *big, t_data *comm_info);
 //builtins/cd.c
-void	ft_cd(t_big *big);
+void	ft_cd(t_big *big, char **argv);
 //builtins/export.c
 int		ft_export(t_big *big, t_data *comm_info);
 void	ft_rmv_var_array(t_big *big, char *str_to_rmv);
