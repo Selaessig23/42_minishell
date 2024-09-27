@@ -30,6 +30,22 @@ static int	ft_bonus_check(t_list *lexx)
 	return (0);
 }
 
+// /**
+//  * @brief helper function for ft_pipe_check to search in 
+//  * value of tokentype 21 (double quoted) for solid value "|"
+//  * 
+//  * @param token single node of the command line input
+//  */
+// static int	ft_pipe_special_check(t_lexer *token)
+// {
+// 	printf("token: %i, value: %s\n", token->token, token->value);
+// 	if (token->token == 21 && ft_strncmp(token->value, "\"|\"", ft_strlen(token->value)))
+// 		return (1);
+// 	else
+// 		return (0);
+
+// }
+
 /**
  * @brief function that checks if there is a further token pipe 
  * after token pipe
@@ -44,10 +60,13 @@ static int	ft_pipe_check(t_list *lexx)
 	while (curr != NULL)
 	{
 		if ((((t_lexer *)curr->content)->token == 1
-				|| ((t_lexer *)curr->content)->token == 12)
+				// || ((t_lexer *)curr->content)->token == 12
+				)
 			&& (curr->next != NULL
-				&& (((t_lexer *)curr->content)->token == 1
-				|| ((t_lexer *)curr->content)->token == 12)))
+				&& ((((t_lexer *)curr->next->content)->token == 1)
+					// || ft_pipe_special_check((t_lexer *)curr->next->content)
+				// || ((t_lexer *)curr->next->content)->token == 12))
+				)))
 		{
 			ft_syntax_errors(curr->next, 1);
 			return (1);
@@ -156,14 +175,29 @@ int	ft_syntax(t_list *lexx)
 {
 	// ft_printf("test0\n");
 	if (ft_quotes_check(lexx))
+	{
+		// ft_printf("test quotes\n");
 		return (1);
+	}
 	else if (ft_start_check(lexx))
+	{
+		// ft_printf("test start\n");
 		return (1);
+	}
 	else if (ft_redirect_check(lexx))
+	{
+		// ft_printf("test redirect\n");
 		return (1);
+	}
 	else if (ft_pipe_check(lexx))
+	{	
+		// ft_printf("test pipe\n");
 		return (1);
+	}
 	else if (ft_bonus_check(lexx))
+	{
+		// ft_printf("test bonus\n");
 		return (1);
+	}
 	return (0);
 }
