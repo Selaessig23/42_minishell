@@ -39,7 +39,7 @@ void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 			is_nondigit = true;
 	}
 	argv = comm_info->cmd;
-	if (is_nondigit == false)
+	if (ft_arrlen(argv) >= 2 && is_nondigit == false)
 		exit_code = ft_atoi(argv[1]);
 	exit_code = (exit_code % 256 + 256) % 256;
 	// if (exit_code < 0)
