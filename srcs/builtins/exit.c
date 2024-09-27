@@ -31,7 +31,7 @@ void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 	if (ft_arrlen(argv) >= 2)
 	{
 		argv2 = argv[1];
-		if (*argv2 == '-')
+		if (*argv2 == '-' || *argv2 == '+')
 			argv2 += 1;
 		while (*argv2 && ft_isdigit(*argv2))
 			argv2 += 1;
