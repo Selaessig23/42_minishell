@@ -26,6 +26,18 @@ Before a command is executed, its input and output may be redirected using a spe
 
 > A command that is implemented internally by the shell itself, rather than by an executable program somewhere in the file system. 
 
+1. **env, export, unset**
+
+`env` - shows the current environmental variables.
+`export` - environment variables, create new ones and replace old ones.
+`unset` - use unset to remove some of environment variables.
+
 ### exit status
 
 > The value returned by a command to its caller. The value is restricted to eight bits, so the maximum value is 255. 
+
+### extra input
+
+> Out program has a feature to open additional prompt in case of unclosed pipe.
+> For instance, `echo hello |` waits for further user unput until the pipe is not in the end.
+> There no additional prompt in invalid case. For instance, `||` or `echo hello ||`. Our program > does not handle `||` so far (Date 02.09.2024). 
