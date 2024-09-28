@@ -183,6 +183,7 @@ void	ft_cd(t_big *big, char **argv);
 int		ft_export(t_big *big, t_data *comm_info);
 void	ft_rmv_var_array(t_big *big, char *str_to_rmv);
 void	export_exit_status(t_big *big, char **cmd_arg);
+int		check_dash_in_var_name(char *argument);
 //builtins/unset.c
 int		ft_unset(t_big *big, t_data *comm_info);
 size_t	count_till_char(char *str, char up_to);

@@ -8,6 +8,24 @@
  */
 
 /**
+ * The function check the argument for invalid case
+ * with a '-' in the name of the variable.
+ * For instance, "export HELLO-=123".
+*/
+int	check_dash_in_var_name(char *argument)
+{
+	char	**checker;
+	int		i;
+
+	i = 0;
+	checker = ft_split(argument, '=');
+	if (ft_strchr(checker[0], '-'))
+		i = 1;
+	ft_free(checker);
+	return (i);
+}
+
+/**
  * The function is a helper fuction for 'exp_create' function.
  * It inserts a string 'str_to_add' into a array of strings.
  * It copies all strings from 'array_old' into 'array_new' and inserts
@@ -129,34 +147,36 @@ static int	exp_check_var(char **env, char *arg)
 int	ft_export(t_big *big, t_data *comm_info)
 {
 	char	**cmd_arg;
-	size_t	i;
+	//size_t	i;
 	size_t	a;
 
 	cmd_arg = comm_info->cmd;
-	i = 0;
+	//i = 0;
 	a = 1;
 	while (cmd_arg[a] != NULL)
 	{
 		if (ft_strchr(cmd_arg[a], '='))
 		{
-			if (*cmd_arg[a] == '=')
-				ft_printf("-bash: export: `%s': not a valid identifier\n",
+			if (*cmd_arg[a] == '=' || ft_isdigit(*cmd_arg[a]))
+				ft_printf("bash: export: `%s': not a valid identifier\n",
+					cmd_arg[a]);
+			else if (check_dash_in_var_name(cmd_arg[a]))
+				ft_printf("bash: export: `%s': not a valid identifier\n",
 					cmd_arg[a]);
 			else if (!exp_check_var(big->env, cmd_arg[a]))
 				exp_create(big, cmd_arg[a]);
 			else if (exp_check_var(big->env, cmd_arg[a]))
 				exp_replace_val(big, cmd_arg[a]);
-			big->exit_code = 0;
 		}
 		else if (!ft_strchr(cmd_arg[a], '='))
 		{
 			if (ft_isdigit(*cmd_arg[a]))
-				big->exit_code = 1;
-			else
-				big->exit_code = 0;
+				ft_printf("bash: export: `%s': not a valid identifier\n",
+					cmd_arg[a]);
 		}
 		a++;
 	}
+	big->exit_code = 0;
 	export_exit_status(big, cmd_arg);
 	return (0);
 }
