@@ -8,6 +8,48 @@
  */
 
 /**
+ * @brief this function iterates through the whole linked list
+ * of commands and checks if there is an exit-command
+ * if yes: return the pointer to the node of exit
+ * if no: return NULL
+ * 
+ * @param comm the linked list of commands
+ * 
+
+t_list	*ft_exit_checker(t_list *comm)
+{
+	t_list	*curr;
+	char	**argv;
+	size_t	exit_counter1;
+	size_t	exit_counter2;
+
+	curr = comm;
+	exit_counter1 = 0;
+	exit_counter2 = 0;
+	argv = ((t_data *)curr->content)->cmd;
+	while (curr != NULL)
+	{
+		argv = ((t_data *)curr->content)->cmd;
+		if (argv[0] && !(ft_strncmp(argv[0], "exit", ft_strlen(argv[0]))))
+			exit_counter1 += 1;
+		curr = curr->next;
+	}
+	curr = comm;
+	while (curr != NULL)
+	{
+		argv = ((t_data *)curr->content)->cmd;
+		if (argv[0] && !(ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))
+			&& exit_counter1 == exit_counter2)
+			return (curr);
+		else if (argv[0] && !(ft_strncmp(argv[0], "exit", ft_strlen(argv[0]))))
+			exit_counter2 += 1;
+		curr = curr->next;
+	}
+	return (NULL);
+}
+*/
+
+/**
  * @brief function to organise execution of built-in-commands
  * 
  * @param comm_info struct with all necessary infos to 
@@ -44,7 +86,8 @@ static void	ft_builtin_executer(t_data *comm_info, t_big *big, char *prompt)
 		ft_print_env(comm_info, big);
 	else if (argv[0] && !ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))
 	{
-		ft_exit_minishell(comm_info, big, prompt);
+		if (big->count_commds == comm_info->commands_no)
+			ft_exit_minishell(comm_info, big, prompt);
 	}
 }
 
@@ -86,9 +129,16 @@ int	ft_executer(t_big *big, char *prompt)
 {
 	t_list	*curr;
 	t_data	*comm_info;
+	char	**argv;
 
 	curr = big->cmdlist;
 	comm_info = curr->content;
+	// if (ft_exit_checker(curr))
+	// 	curr = ft_exit_checker(curr);
+	argv = ((t_data *)ft_lstlast(curr)->content)->cmd;
+	//to not execute any commands if exit is at the end of the pipe
+	if (argv[0] && !(ft_strncmp(argv[0], "exit", ft_strlen(argv[0]))))
+		curr = ft_lstlast(curr);
 	while (curr != NULL)
 	{
 		comm_info = curr->content;
@@ -101,9 +151,10 @@ int	ft_executer(t_big *big, char *prompt)
 			// return (1);
 		}
 		else
-			ft_test_command_print(prompt, comm_info);
+			ft_test_command_print(prompt, comm_info, big);
 		curr = curr->next;
 	}
 	ft_free_cl(&(big->cmdlist));
+	big->count_commds = 0;
 	return (0);
 }

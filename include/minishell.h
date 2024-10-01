@@ -94,6 +94,7 @@ typedef struct s_big
 	t_list	*cmdlist;
 	char	**env;
 	int		exit_code;
+	size_t	count_commds;
 }					t_big;
 
 // main.c
@@ -146,7 +147,7 @@ t_tokentype			ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
-void	ft_test_command_print(char *prompt, t_data *comm_info);
+void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big);
 //syntax.c
 int		ft_syntax(t_list *lexx);
 //syntaxerrors.c

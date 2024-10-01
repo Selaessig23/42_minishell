@@ -166,7 +166,7 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
  * test function to print the content of the linked list
  * comm (command struct)
  */
-void	ft_test_command_print(char *prompt, t_data *comm_info)
+void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big)
 {
 	// t_list	*curr;
 	// char	*token_print;
@@ -214,7 +214,7 @@ void	ft_test_command_print(char *prompt, t_data *comm_info)
 			ft_printf("out_append: %i\n", comm_info->out_append);
 			ft_printf("fd_infile: %i\n", comm_info->fd_infile);
 			ft_printf("fd_outfile: %i\n", comm_info->fd_outfile);
-			ft_printf("command no: %i\n", comm_info->commands_no);
+			ft_printf("command no: %i (total: %i)\n", comm_info->commands_no, big->count_commds);
 			if (!comm_info->cmd || !comm_info->cmd[0])
 				ft_printf("command_array (%i): empty\n", i);
 			while (comm_info->cmd && comm_info->cmd[i])

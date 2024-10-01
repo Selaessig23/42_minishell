@@ -9,10 +9,10 @@
 
 
 /**
- * @brief function to execute the builtin function "exit"
- * exit closes the programm and frees all allocated memory
+ * @brief function to execute the builtin function "exit", 
+ * it closes the programm and frees all allocated memory
  * 
- * @param big big big struct with all command infos 
+ * @param big struct with all command infos 
  * that are required for executing builtins or 
  * that have to be freed
  * @param prompt string that has to be freed before exit the program
