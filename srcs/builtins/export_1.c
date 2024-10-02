@@ -173,6 +173,9 @@ int	ft_export(t_big *big, t_data *comm_info)
 			if (ft_isdigit(*cmd_arg[a]))
 				ft_printf("bash: export: `%s': not a valid identifier\n",
 					cmd_arg[a]);
+			else if (check_dash_in_var_name(cmd_arg[a]))
+				ft_printf("bash: export: `%s': not a valid identifier\n",
+					cmd_arg[a]);
 		}
 		a++;
 	}
