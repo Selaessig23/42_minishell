@@ -147,21 +147,19 @@ static int	exp_check_var(char **env, char *arg)
 int	ft_export(t_big *big, t_data *comm_info)
 {
 	char	**cmd_arg;
-	//size_t	i;
 	size_t	a;
 
 	cmd_arg = comm_info->cmd;
-	//i = 0;
 	a = 1;
 	while (cmd_arg[a] != NULL)
 	{
 		if (ft_strchr(cmd_arg[a], '='))
 		{
 			if (*cmd_arg[a] == '=' || ft_isdigit(*cmd_arg[a]))
-				ft_printf("bash: export: `%s': not a valid identifier\n",
+				ft_dprintf("bash: export: `%s': not a valid identifier\n",
 					cmd_arg[a]);
 			else if (check_dash_in_var_name(cmd_arg[a]))
-				ft_printf("bash: export: `%s': not a valid identifier\n",
+				ft_dprintf("bash: export: `%s': not a valid identifier\n",
 					cmd_arg[a]);
 			else if (!exp_check_var(big->env, cmd_arg[a]))
 				exp_create(big, cmd_arg[a]);
@@ -171,11 +169,10 @@ int	ft_export(t_big *big, t_data *comm_info)
 		else if (!ft_strchr(cmd_arg[a], '='))
 		{
 			if (ft_isdigit(*cmd_arg[a]))
-				ft_printf("bash: export: `%s': not a valid identifier\n",
+				ft_dprintf("bash: export: `%s': not a valid identifier\n",
 					cmd_arg[a]);
 			else if (check_dash_in_var_name(cmd_arg[a]))
-				ft_printf("bash: export: `%s': not a valid identifier\n",
-					cmd_arg[a]);
+				ft_dprintf("bash: export: `%s': not a valid identifier\n", cmd_arg[a]);
 		}
 		a++;
 	}

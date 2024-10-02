@@ -13,7 +13,7 @@
 CUR_DIR = $(shell pwd)
 NAME = libft.a
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g -Iinclude -Isrcs -Isrcs_bonus -Isrcs_printf -Isrcs_gnl -Isrcs_add
+CFLAGS = -Wall -Werror -Wextra -g -Iinclude -Isrcs -Isrcs_bonus -Isrcs_printf -Isrcs_dprintf -Isrcs_gnl -Isrcs_add
 
 #to create a program for testing reasons
 #PROGRAM = test
@@ -72,6 +72,14 @@ SRCS_PRINTF = ft_printf.c \
 		ft_printchar.c \
 		ft_printstr.c
 
+SRCS_DPRINTF = ft_dprintf.c \
+		ft_dprintint.c \
+		ft_dprintui_recursive.c \
+		ft_dprinthexa_recursive.c \
+		ft_dprintp_recursive.c \
+		ft_dprintchar.c \
+		ft_dprintstr.c
+
 SRCS_GNL = get_next_line_bonus.c \
 		get_next_line_utils_bonus.c
 
@@ -84,6 +92,7 @@ SRCS_ADD = ft_free.c \
 OBJS = $(SRCS:%.c=objs/%.o)
 OBJS_BONUS = $(SRCS_BONUS:%.c=objs_bonus/%.o)
 OBJS_PRINTF = $(SRCS_PRINTF:%.c=objs_printf/%.o)
+OBJS_DPRINTF = $(SRCS_DPRINTF:%.c=objs_dprintf/%.o)
 OBJS_GNL = $(SRCS_GNL:%.c=objs_gnl/%.o)
 OBJS_ADD = $(SRCS_ADD:%.c=objs_add/%.o)
 
@@ -110,8 +119,8 @@ all: $(NAME)
 #use of ar -rc or ar -rcs?
 # compiles each source into an object file (c-flag); the The -I./ flag ensures that the compiler looks for header files in the current directory when compiling the source files specified in $(SRCS) (The -I. is included so that gcc will look in the current directory (.) for the include file .h ). -r  updates archive (replace or add files) or (c) create if it doesn't exist. -s could be useful for including an index
 #ranlib creates and index which improves the efficiency of certain operations, such as quickly looking up symbols within the library.The index is stored in the archive itself.
-$(NAME): $(OBJS) $(OBJS_BONUS) $(OBJS_PRINTF) $(OBJS_GNL) $(OBJS_ADD)
-	ar -rcs $(NAME) $(OBJS) $(OBJS_BONUS) $(OBJS_PRINTF) $(OBJS_GNL) $(OBJS_ADD)
+$(NAME): $(OBJS) $(OBJS_BONUS) $(OBJS_PRINTF) $(OBJS_DPRINTF) $(OBJS_GNL) $(OBJS_ADD)
+	ar -rcs $(NAME) $(OBJS) $(OBJS_BONUS) $(OBJS_PRINTF) $(OBJS_DPRINTF) $(OBJS_GNL) $(OBJS_ADD)
 	ranlib $(NAME)
 	@echo -- Libft compiled, lib created / updated
 
@@ -125,6 +134,10 @@ $(OBJS_BONUS): objs_bonus/%.o : srcs_bonus/%.c
 
 $(OBJS_PRINTF): objs_printf/%.o : srcs_printf/%.c 
 	@mkdir -p objs_printf
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJS_DPRINTF): objs_dprintf/%.o : srcs_dprintf/%.c 
+	@mkdir -p objs_dprintf
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJS_GNL): objs_gnl/%.o : srcs_gnl/%.c 
@@ -141,7 +154,7 @@ $(OBJS_ADD): objs_add/%.o : srcs_add/%.c
 #f: "force" -->prevents the command from prompting for confirmation
 clean: 
 #	rm -f $(OBJS) $(OBJS_PRINTF) $(OBJS_GNL)
-	@rm -rf objs objs_bonus objs_printf objs_gnl objs_add
+	@rm -rf objs objs_bonus objs_printf objs_dprintf objs_gnl objs_add
 	@echo -- Deleting all .o-files
 	
 # fclean: this target depends on clean. Once all object files are deleted, this rule will delete the created executable / the compiled binary ('$(NAME)') 

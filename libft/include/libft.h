@@ -21,6 +21,7 @@
 # include <strings.h>
 # include <ctype.h>
 # include "ft_printf.h"
+# include "ft_dprintf.h"
 # include "get_next_line_bonus.h"
 # include "libft_bonus.h"
 
