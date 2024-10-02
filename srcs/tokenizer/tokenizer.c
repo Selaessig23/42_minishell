@@ -118,7 +118,7 @@ void	ft_qword_special(char *input_string, t_tokentype *token_old)
 	)
 	{
 		*token_old = 27;
-		printf("test2\n");
+		// printf("test2\n");
 	}	
 	// else
 	// 	token_new = *token_old;

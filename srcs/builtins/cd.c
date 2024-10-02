@@ -90,19 +90,26 @@ void	ft_cd(t_big *big, char **argv)
 {
 	//char	**envp;
 	//char	*new_pwd;
+	// char	*pathname;
 	int		i;
 
 	i = 0;
 	//envp = big->env;
 	//new_pwd = NULL;
-	if (ft_arrlen(argv) < 2)
-		ft_putstr_fd("Please specifiy the path you want to change to\n", 1);
+	if (ft_arrlen(argv) > 2)
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		big->exit_code = 1;
+	}
+	else if (ft_arrlen(argv) < 2)
+		ft_putstr_fd("minishell: cd: Please specifiy the path you want to change to\n", 2);
 	else
 	{
 		i = chdir(argv[1]);
 		if (i < 0)
 			error_handling(0);
 		ft_update_env(big);
+		big->exit_code = 0;
 	}
 }
 

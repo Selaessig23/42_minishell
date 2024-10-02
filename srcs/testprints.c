@@ -67,9 +67,21 @@ static char	*print_tokens(int i)
 	else if (i == 4)
 		return (ft_strdup("REDIRECT_IN"));
 	else if (i == 5)
-		return (ft_strdup("REDIRECT_OUT"));
+		return (ft_strdup("REDIRECT_STDOUT"));
 	else if (i == 6)
-		return (ft_strdup("REDIRECT_OUT_ADD"));
+		return (ft_strdup("REDIRECT_STDOUT_ADD"));
+	else if (i == 7)
+		return (ft_strdup("REDIRECT_ERROUT"));
+	else if (i == 8)
+		return (ft_strdup("REDIRECT_STDERROUT"));
+	else if (i == 9)
+		return (ft_strdup("REDIRECT_STDERROUT_MERGE"));
+	else if (i == 10)
+		return (ft_strdup("AMPERSAND"));
+	else if (i == 11)
+		return (ft_strdup("DOUBLE_AMPERSAND"));
+	else if (i == 12)
+		return (ft_strdup("DOUBLE_PIPE"));
 	else if (i == 20)
 		return (ft_strdup("WORD"));
 	else if (i == 21)

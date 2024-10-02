@@ -45,7 +45,7 @@ void	ft_print_pwd(t_big *big, t_data *comm_info)
 	// while (*envp && ft_strncmp("PWD=", *envp, 4))
 	// 	envp++;
 	// if (*envp == NULL || ft_strncmp("PWD=", *envp, 4))
-		ft_get_env_pwd(fd);
+	ft_get_env_pwd(fd);
 	// else
 	// {
 	// 	ft_putstr_fd(*envp + 4, fd);

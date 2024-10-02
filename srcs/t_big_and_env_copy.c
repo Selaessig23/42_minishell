@@ -45,7 +45,7 @@ static int	count_strings(char **envp)
 }
 
 /**
- * The function copies array of strings from enironmental
+ * The function copies array of strings from enironmental 
  * variables into array of strings that is a part of
  * struct t_big.
 */
@@ -78,16 +78,16 @@ static char	**copy_envp(char **envp)
 /**
  * Function initialize t_big struct and copies the environmental
  * varibles into array of strings char **env.
- *
+ * 
  * @param t_big	*big
  * @param char **envp
  * @param char	**env
- */
+*/
 
-t_big *init_t_big(char **envp)
+t_big	*init_t_big(char **envp)
 {
-	t_big *big;
-	char **env;
+	t_big	*big;
+	char	**env;
 
 	big = ft_calloc(1, sizeof(t_big));
 	if (big == NULL)
@@ -95,6 +95,6 @@ t_big *init_t_big(char **envp)
 	big->cmdlist = NULL;
 	env = copy_envp(envp);
 	big->env = env;
-	big->exit_code = -127;
+	big->exit_code = 0;
 	return (big);
 }

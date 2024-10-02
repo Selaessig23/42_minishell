@@ -37,8 +37,15 @@ typedef enum e_tokentype
 	SEMI = 2,
 	HEREDOC = 3,
 	REDIRECT_IN = 4,
-	REDIRECT_OUT = 5,
-	REDIRECT_OUT_APP = 6,
+	REDIRECT_STDOUT = 5,
+	REDIRECT_STDOUT_APP = 6,
+	REDIRECT_ERROUT = 7, //2>: Redirects standard error to a file.
+	REDIRECT_STDERROUT = 8, //&>: Redirects both standard output and standard error to a file.
+	REDIRECT_STDERROUT_MERGE = 9, //2>&1: Merges standard error with standard output.
+	AMPERSAND = 10, // &
+	DOUBLE_AMPERSAND = 11, // &&
+	DOUBLE_PIPE = 12, // ||
+	LOG_NEG = 13, //Logical Negation (!)
 	WORD = 20,
 	D_QUOTED = 21, //double quoted word
 	S_QUOTED = 22, //single quoted word
@@ -54,8 +61,9 @@ typedef enum e_tokentype
 		// argument1'withoutspace'afterquotes...
 	D_Q_WORD_F = 27, //to define cases with a single double quotation mark
 		// like argument1"withoutspaceafterquotes
-	S_Q_WORD_F = 28 // to define cases a single single quotation mark
+	S_Q_WORD_F = 28, // to define cases a single single quotation mark
 		//like argument1'withoutspaceafterquotes
+	WORD_CLEANED = 29 // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
 }	t_tokentype;
 
 // struct for lexer analysis
@@ -170,7 +178,7 @@ void	ft_free_cl(t_list **ll);
 //commands/command_reader.c
 int		ft_executer(t_big *big, char *prompt);
 //builtins/exit.c
-void	ft_exit_minishell(t_big *big, char *prompt);
+void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
 //builtins/env.c
 void	ft_print_env(t_data *comm_info, t_big *big);
 //builtins/echo.c

@@ -83,6 +83,7 @@ int main(int argc, char **argv, char **envp)
 				}
 				else
 				{
+					big->exit_code = 2;
 					ft_free_ll(&lexx);
 				}
 			}
