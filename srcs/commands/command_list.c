@@ -95,7 +95,7 @@ static t_list	*ft_set_r_out(t_lexer *token,
 
 	comm_info = *cominfo;
 	big = *p_big;
-	if (comm_info->fd_outfile)
+	if (comm_info->fd_outfile > 2)
 		close(comm_info->fd_outfile);
 	if (token->token == 6)
 		comm_info->out_append = true;
@@ -133,7 +133,7 @@ static t_list	*ft_set_r_in(t_lexer *token,
 
 	comm_info = *cominfo;
 	big = *p_big;
-	if (comm_info->fd_infile)
+	if (comm_info->fd_infile > 2)
 		close(comm_info->fd_infile);
 	if (comm_info->in_heredoc == true)
 	{

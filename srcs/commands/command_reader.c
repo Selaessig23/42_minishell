@@ -102,6 +102,11 @@ int	ft_executer(t_big *big, char *prompt)
 		}
 		else
 			ft_test_command_print(prompt, comm_info);
+		// printf("fd infile: %i, fd outfile: %i\n", comm_info->fd_infile, comm_info->fd_outfile);
+		if (comm_info->fd_infile > 2)
+			close(comm_info->fd_infile);
+		if (comm_info->fd_outfile > 2)
+			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
 	ft_free_cl(&(big->cmdlist));
