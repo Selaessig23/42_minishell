@@ -41,3 +41,6 @@ Before a command is executed, its input and output may be redirected using a spe
 > Out program has a feature to open additional prompt in case of unclosed pipe.
 > For instance, `echo hello |` waits for further user unput until the pipe is not in the end.
 > There no additional prompt in invalid case. For instance, `||` or `echo hello ||`. Our program > does not handle `||` so far (Date 02.09.2024). 
+
+### ft_dprintf
+> Feature to display a message on standard error output.
