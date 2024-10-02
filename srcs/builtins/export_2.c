@@ -17,7 +17,8 @@ void	export_exit_status(t_big *big, char **cmd_arg)
 	i = 0;
 	while (cmd_arg[i])
 	{
-		if (*cmd_arg[i] == '=')
+		if (*cmd_arg[i] == '=' || ft_isdigit(*cmd_arg[i])
+			|| check_dash_in_var_name(cmd_arg[i]))
 		{
 			big->exit_code = 1;
 			return ;
