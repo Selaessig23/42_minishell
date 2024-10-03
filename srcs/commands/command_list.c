@@ -8,8 +8,9 @@
  */
 
 /**
- * @brief this function counts the number of commands and writes 
- * it to t_big
+ * @brief this function counts 
+ * 1) the total number of commands and writes it to t_big
+ * 2) the position (number) of each command
  * 
  * @param comm the list where each node stands for a command that has to be counted
  * @param p_big a pointer to the big struct that holds all information to execute the 
