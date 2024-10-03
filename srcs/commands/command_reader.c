@@ -22,30 +22,30 @@ static void	ft_builtin_executer(t_data *comm_info, t_big *big, char *prompt)
 	char	**argv;
 
 	argv = comm_info->cmd;
-	if (argv[0] && !ft_strncmp(argv[0], "echo", ft_strlen(argv[0])))
-	{
-		//printf("builtin function %s in testing mode\n", argv[0]);
-		//printf("---------------------------------------------\n");
+	if (argv[0] && !ft_strncmp(argv[0], "echo", ft_strlen(argv[0]))
+		&& ft_strlen(argv[0]) == ft_strlen("echo"))
 		ft_echo(comm_info, big);
-	}
-	else if (argv[0] && !ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
-	{
-		//printf("builtin function %s in testing mode\n", argv[0]);
-		//printf("---------------------------------------------\n");
+	else if (argv[0] && !ft_strncmp(argv[0], "cd", ft_strlen(argv[0]))
+		&& ft_strlen(argv[0]) == ft_strlen("cd"))
 		ft_cd(big, argv);
-	}
-	else if (argv[0] && !ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
+	else if (argv[0] && !ft_strncmp(argv[0], "pwd", ft_strlen(argv[0]))
+		&& ft_strlen(argv[0]) == ft_strlen("pwd"))
 		ft_print_pwd(big, comm_info);
-	else if (argv[0] && !ft_strncmp(argv[0], "export", ft_strlen(argv[0])))
+	else if (argv[0] && !ft_strncmp(argv[0], "export", ft_strlen(argv[0]))
+		&& ft_strlen(argv[0]) == ft_strlen("export"))
 		ft_export(big, comm_info);
-	else if (argv[0] && !ft_strncmp(argv[0], "unset", ft_strlen(argv[0])))
+	else if (argv[0] && !ft_strncmp(argv[0], "unset", ft_strlen(argv[0]))
+		&& ft_strlen(argv[0]) == ft_strlen("unset"))
 		ft_unset(big, comm_info);
-	else if (argv[0] && !ft_strncmp(argv[0], "env", ft_strlen(argv[0])))
+	else if (argv[0] && !ft_strncmp(argv[0], "env", ft_strlen(argv[0]))
+		&& ft_strlen(argv[0]) == ft_strlen("env"))
 		ft_print_env(comm_info, big);
-	else if (argv[0] && !ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))
-	{
+	else if (argv[0] && !ft_strncmp(argv[0], "exit", ft_strlen(argv[0]))
+		&& ft_strlen(argv[0]) == ft_strlen("exit"))
 		ft_exit_minishell(comm_info, big, prompt);
-	}
+	else if (argv[0] && !ft_strncmp(argv[0], "help", ft_strlen(argv[0]))
+		&& ft_strlen(argv[0]) == ft_strlen("help"))
+		ft_minishell_help(comm_info, big, prompt);
 }
 
 /**
@@ -60,13 +60,22 @@ static int	ft_builtin_checker(t_data *comm_info)
 
 	argv = comm_info->cmd;
 	if (argv[0] 
-		&& ((!ft_strncmp(argv[0], "echo", ft_strlen(argv[0])))
-			|| (!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
-			|| (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
-			|| (!ft_strncmp(argv[0], "export", ft_strlen(argv[0])))
-			|| (!ft_strncmp(argv[0], "unset", ft_strlen(argv[0])))
-			|| (!ft_strncmp(argv[0], "env", ft_strlen(argv[0])))
-			|| (!ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))))
+		&& ((!ft_strncmp(argv[0], "echo", ft_strlen(argv[0])) 
+				&& ft_strlen(argv[0]) == ft_strlen("echo"))
+			|| (!ft_strncmp(argv[0], "cd", ft_strlen(argv[0]))
+				&& ft_strlen(argv[0]) == ft_strlen("cd"))
+			|| (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0]))
+				&& ft_strlen(argv[0]) == ft_strlen("pwd"))
+			|| (!ft_strncmp(argv[0], "export", ft_strlen(argv[0]))
+				&& ft_strlen(argv[0]) == ft_strlen("export"))
+			|| (!ft_strncmp(argv[0], "unset", ft_strlen(argv[0]))
+				&& ft_strlen(argv[0]) == ft_strlen("unset"))
+			|| (!ft_strncmp(argv[0], "env", ft_strlen(argv[0]))
+				&& ft_strlen(argv[0]) == ft_strlen("env"))
+			|| (!ft_strncmp(argv[0], "exit", ft_strlen(argv[0]))
+				&& ft_strlen(argv[0]) == ft_strlen("exit"))
+			|| (!ft_strncmp(argv[0], "help", ft_strlen(argv[0]))
+				&& ft_strlen(argv[0]) == ft_strlen("help"))))
 		return (1);
 	else
 		return (0);
