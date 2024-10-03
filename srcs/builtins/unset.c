@@ -62,11 +62,9 @@ static int	uns_check_var(char **env, char *arg)
 int	ft_unset(t_big *big, t_data *comm_info)
 {
 	char	**cmd_arg;
-	size_t	i;
 	size_t	a;
 
 	cmd_arg = comm_info->cmd;
-	i = 0;
 	a = 1;
 	while (cmd_arg[a] != NULL)
 	{
