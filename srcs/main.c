@@ -58,7 +58,6 @@ int main(int argc, char **argv, char **envp)
 				input_arr = create_nodes(&input);
 				free(input);
 				input = NULL;
-
 				// ft_test_arr_print(input_arr, prompt);
 				// attempt to use both ways, to not destroy the work
 				// with input_arr on extra input of marina

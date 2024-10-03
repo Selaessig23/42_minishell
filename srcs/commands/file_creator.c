@@ -2,8 +2,8 @@
 
 /**
  * DESRIPTION: 
- * file to check accessibility if files, creates heredocs if asked for and 
- * and in case of output redirect also create the files that are asked for in 
+ * file to check accessibility of files, creates heredocs if asked for and 
+ * in case of output redirect also creates the files that are asked for in 
  * command line input
  */
 
@@ -14,15 +14,16 @@
  * @param heredoc to check if a new heredoc file has to be created
  * @param infile the infile name to read from
  */
-int	fd_in_checker(bool heredoc, char *infile)
+int	fd_in_checker(t_data *comm_info, char *infile)
 {
 	int		fd_in;
 
 	fd_in = 0;
-	if (heredoc == true)
+	if (comm_info->in_heredoc == true)
 	{
-		//integrate heredoc here?
-		printf("function to call heredoc\n");
+		printf("commands_no: %zu\n", comm_info->commands_no);
+		fd_in = heredoc_start(comm_info, infile);
+		printf("file descriptor of the heredoc: %d\n", fd_in);
 	}
 	else if (access(infile, F_OK))
 	{

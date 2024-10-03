@@ -20,25 +20,23 @@
 --show-leak-kinds=all --track-origins=yes */
 
 #include "get_next_line_bonus.h"
+// size_t	ft_strlen(const char *s)
+// {
+// 	int	i;
 
-size_t	ft_strlen(const char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	while (*s && *s != (char)c)
-		s++;
-	if (*s == (char)c)
-		return ((char *)s);
-	return (0);
-}
+// 	i = 0;
+// 	while (s[i])
+// 		i++;
+// 	return (i);
+// }
+// char	*ft_strchr(const char *s, int c)
+// {
+// 	while (*s && *s != (char)c)
+// 		s++;
+// 	if (*s == (char)c)
+// 		return ((char *)s);
+// 	return (0);
+// }
 
 static char	*gnl_lbuf(char *line)
 {

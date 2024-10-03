@@ -172,7 +172,8 @@ void	ft_q_word_handling(void **token, t_big *big);
 //commands/command_list.c
 void	ft_commands(t_list *lexx, t_big **big);
 int		fd_out_creator(bool appender, char *filename);
-int		fd_in_checker(bool heredoc, char *infile);
+//int		fd_in_checker(bool heredoc, char *infile);
+int		fd_in_checker(t_data *comm_info, char *infile);
 //commands/command_utils.c
 void	ft_free_cl(t_list **ll);
 //commands/command_reader.c
@@ -195,5 +196,7 @@ int		check_dash_in_var_name(char *argument);
 //builtins/unset.c
 int		ft_unset(t_big *big, t_data *comm_info);
 size_t	count_till_char(char *str, char up_to);
+//heredoc.c
+int heredoc_start(t_data *comm_info, char *limiter);
 
 #endif
