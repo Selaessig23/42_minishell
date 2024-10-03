@@ -96,5 +96,6 @@ t_big	*init_t_big(char **envp)
 	env = copy_envp(envp);
 	big->env = env;
 	big->exit_code = 0;
+	big->count_commds = 0;
 	return (big);
 }

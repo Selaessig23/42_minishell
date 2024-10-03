@@ -8,6 +8,33 @@
  */
 
 /**
+ * @brief this function counts 
+ * 1) the total number of commands and writes it to t_big
+ * 2) the position (number) of each command
+ * 
+ * @param comm the list where each node stands for a command that has to be counted
+ * @param p_big a pointer to the big struct that holds all information to execute the 
+ * commands, here the total amount of commands has to be written in
+ */
+static void	ft_count_commands(t_list *comm, t_big **p_big)
+{
+	t_list	*curr;
+	t_big	*big;
+	size_t	i;
+
+	curr = comm;
+	big = *p_big;
+	i = 0;
+	while (curr != NULL)
+	{
+		big->count_commds += 1;
+		i += 1;
+		((t_data *)curr->content)->commands_no = i;
+		curr = curr->next;
+	}
+}
+
+/**
  * @brief (helper) function (for to ft_add_arr_back) to add existing 
  * strings from command_array_old to command_array_new
  * 
@@ -167,7 +194,7 @@ static void	init_comm_zero(t_data **p_comm_info)
 
 	comm_info = *p_comm_info;
 	comm_info->cmd = ft_calloc(1, sizeof(char *));
-	comm_info->commands_no = 1;
+	comm_info->commands_no = 0;
 	comm_info->in_heredoc = false;
 	comm_info->fd_infile = 0;
 	comm_info->out_append = false;
@@ -258,5 +285,6 @@ void	ft_commands(t_list *lexx, t_big **p_big)
 	comm = NULL;
 	// printf("what the hack I\n");
 	ft_init_clist(&lexx, &comm, p_big);
+	ft_count_commands(comm, p_big);
 	big->cmdlist = comm;
 }

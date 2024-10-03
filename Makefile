@@ -12,6 +12,7 @@ RLFLAG = -lreadline
 #VPATH = sources:include
 #INCLUDES = minishell.h
 SRCS =	main.c \
+		ascii_graphic.c \
 		error_handling.c \
 		ft_split_quotes.c \
 		lexer.c \
@@ -46,7 +47,8 @@ SRCS =	main.c \
 		builtins/export_1.c \
 		builtins/export_2.c \
 		builtins/unset.c \
-		heredoc.c
+		heredoc.c \
+		builtins/help.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c

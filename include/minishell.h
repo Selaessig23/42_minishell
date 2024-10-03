@@ -94,6 +94,7 @@ typedef struct s_big
 	t_list	*cmdlist;
 	char	**env;
 	int		exit_code;
+	size_t	count_commds;
 }					t_big;
 
 // main.c
@@ -113,6 +114,8 @@ typedef struct s_big
 // size_t	ft_arrlen(char **arr_str);
 // void	ft_free(char **arr);
 // void	free_struct(t_envp *infos);
+//ascii_graohic.c
+void  ft_welcome(void);
 // void	error_handling(int err, t_envp *i, int com_no);
 void	error_handling(int err);
 char	**ft_split_quotes(char const *s, char c);
@@ -146,7 +149,7 @@ t_tokentype			ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
-void	ft_test_command_print(char *prompt, t_data *comm_info);
+void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big);
 //syntax.c
 int		ft_syntax(t_list *lexx);
 //syntaxerrors.c
@@ -198,5 +201,7 @@ int		ft_unset(t_big *big, t_data *comm_info);
 size_t	count_till_char(char *str, char up_to);
 //heredoc.c
 int heredoc_start(t_data *comm_info, char *limiter);
+//builtins/help.c
+void	ft_minishell_help(int fd);
 
 #endif
