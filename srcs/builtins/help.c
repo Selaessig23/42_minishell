@@ -29,5 +29,4 @@ void	ft_minishell_help(int fd)
 	ft_putstr_fd("The shell will not use wildcards.\n", fd);
 	ft_putstr_fd("It only considers the following redirctions: <, >, <<, >>\n", fd);
 	ft_putstr_fd("-------------------------------------------\n", fd);
-	ft_putstr_fd("HAVE FUN USING IT!!!\n\n", fd);
 }
