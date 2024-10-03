@@ -45,7 +45,7 @@ static void	ft_builtin_executer(t_data *comm_info, t_big *big, char *prompt)
 		ft_exit_minishell(comm_info, big, prompt);
 	else if (argv[0] && !ft_strncmp(argv[0], "help", ft_strlen(argv[0]))
 		&& ft_strlen(argv[0]) == ft_strlen("help"))
-		ft_minishell_help(comm_info, big, prompt);
+		ft_minishell_help(comm_info->fd_outfile);
 }
 
 /**
@@ -110,7 +110,7 @@ int	ft_executer(t_big *big, char *prompt)
 			// return (1);
 		}
 		else
-			ft_test_command_print(prompt, comm_info);
+			ft_test_command_print(prompt, comm_info, big);
 		// printf("fd infile: %i, fd outfile: %i\n", comm_info->fd_infile, comm_info->fd_outfile);
 		if (comm_info->fd_infile > 2)
 			close(comm_info->fd_infile);

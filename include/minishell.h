@@ -114,6 +114,8 @@ typedef struct s_big
 // size_t	ft_arrlen(char **arr_str);
 // void	ft_free(char **arr);
 // void	free_struct(t_envp *infos);
+//ascii_graohic.c
+void  ft_welcome(void);
 // void	error_handling(int err, t_envp *i, int com_no);
 void	error_handling(int err);
 char	**ft_split_quotes(char const *s, char c);
@@ -196,5 +198,7 @@ int		check_dash_in_var_name(char *argument);
 //builtins/unset.c
 int		ft_unset(t_big *big, t_data *comm_info);
 size_t	count_till_char(char *str, char up_to);
+//builtins/help.c
+void	ft_minishell_help(int fd);
 
 #endif
