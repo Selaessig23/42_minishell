@@ -139,6 +139,24 @@ static t_list	*ft_set_r_out(t_lexer *token,
 }
 
 /**
+ * The function delete a tmp file for heredoc
+ * in case there are two or more heredocs in
+ * one command.
+ * For instance, "<< LIM << LIM << LIM"
+*/
+static void	delete_heredoc(t_data *comm_info)
+{
+		char    pathname[100] = ".heredoc_0";
+		int     code;
+		char    c;
+
+		code = (int)((comm_info->commands_no));
+		c = (char)(code + '@');
+		pathname[9] = c;
+		unlink(pathname);
+}	
+
+/**
  * @brief function to set values of command struct in case of
  * redirection in (<) or heredoc-signal (<<). If there was set 
  * a redirect in / heredoc before, old fd will be closed 
@@ -165,8 +183,7 @@ static t_list	*ft_set_r_in(t_lexer *token,
 		close(comm_info->fd_infile);
 	if (comm_info->in_heredoc == true)
 	{
-		//delete old temp file of heredoc here?
-		printf("heredoc temp file has to be deleted\n");
+		delete_heredoc(*cominfo);
 	}
 	if (token->token == 3)
 		comm_info->in_heredoc = true;
