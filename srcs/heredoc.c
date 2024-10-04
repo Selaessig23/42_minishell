@@ -47,12 +47,13 @@ static void	here_read_helper(int write_end, char *lim)
 
 	while (1)
 	{
+		write(1, ">", 1);
+		write(1, " ", 1);
 		str = get_next_line(0);
 		if (ft_strncmp(str, lim, ft_strlen(lim)) == 0
 			&& str[ft_strlen(lim)] == 10)
 		{
 			free(str);
-			//exit(EXIT_SUCCESS);
             return ;
 		}
 		write(write_end, str, ft_strlen(str));
@@ -62,23 +63,10 @@ static void	here_read_helper(int write_end, char *lim)
 
 static int	here_read(char *name, char *lim)
 {
-	//int		pip;
-	//int		id;
-	//int		fd[2];
-    int     fd;
+	int     fd;
 
     fd = open_outfile(name);
-	//pip = pipe(fd);
-	//id = fork();
-	//if (id == 0)
-	//{
-		//close(fd[0]);
-		//here_read_helper(fd[1], lim);
-		//here_read_helper(fd, lim);
-	//}
 	here_read_helper(fd, lim);
-	//close(fd[1]);
-	//waitpid(id, NULL, 0);
 	return (fd);
 }
 
