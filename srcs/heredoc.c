@@ -95,7 +95,6 @@ int heredoc_start(t_data *comm_info, char *limiter)
     code = (int)((comm_info->commands_no));
     c = (char)(code + '@');
     name[9] = c;
-    printf("name string: %s\n", name);
     fd = here_read(name, limiter);
     return (fd);
 }

@@ -182,18 +182,11 @@ static t_list	*ft_set_r_in(t_lexer *token,
 	if (comm_info->fd_infile > 2)
 		close(comm_info->fd_infile);
 	if (comm_info->in_heredoc == true)
-	{
 		delete_heredoc(*cominfo);
-	}
 	if (token->token == 3)
 		comm_info->in_heredoc = true;
-	printf("\nft_set_r_in\n");
-	printf("comm_info->commands_no: %zu\n", comm_info->commands_no);
-
 	lexx = lexx->next;
 	token = lexx->content;
-
-	printf("comm_info->commands_no: %zu\n", comm_info->commands_no);
 	comm_info->fd_infile = 
 		fd_in_checker(comm_info, token->value);
 	if (comm_info->fd_infile == -1)

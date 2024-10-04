@@ -20,10 +20,7 @@ int	fd_in_checker(t_data *comm_info, char *infile)
 
 	fd_in = 0;
 	if (comm_info->in_heredoc == true)
-	{
-		printf("fd_in_checker\ncommands_no: %zu\n", comm_info->commands_no);
 		fd_in = heredoc_start(comm_info, infile);
-	}
 	else if (access(infile, F_OK))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
