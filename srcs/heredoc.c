@@ -83,8 +83,8 @@ static int	here_read(char *name, char *lim)
 }
 
 // The function reads from the standart input with get_next_line
-// and writes to the pipe to fd[1]. When the child process reads the LIMITER
-// it exits and gives a signal to parent process that it finished successfully.
+// and writes to the ...... 
+// TO DESCRIBE
 int heredoc_start(t_data *comm_info, char *limiter)
 {
     int     fd;
@@ -93,7 +93,7 @@ int heredoc_start(t_data *comm_info, char *limiter)
     char    c;
 
     code = (int)((comm_info->commands_no));
-    c = (char)(code + 64);
+    c = (char)(code + '@');
     name[9] = c;
     printf("name string: %s\n", name);
     fd = here_read(name, limiter);

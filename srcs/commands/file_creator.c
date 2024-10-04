@@ -21,9 +21,8 @@ int	fd_in_checker(t_data *comm_info, char *infile)
 	fd_in = 0;
 	if (comm_info->in_heredoc == true)
 	{
-		printf("commands_no: %zu\n", comm_info->commands_no);
+		printf("fd_in_checker\ncommands_no: %zu\n", comm_info->commands_no);
 		fd_in = heredoc_start(comm_info, infile);
-		printf("file descriptor of the heredoc: %d\n", fd_in);
 	}
 	else if (access(infile, F_OK))
 	{

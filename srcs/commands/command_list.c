@@ -152,6 +152,7 @@ static t_list	*ft_set_r_out(t_lexer *token,
  * @param p_big pointer to the struct big to integrate the exit code in
  * case of an error when opening redirect out or in
  */
+////// lexx = t_lexer list contains number of command
 static t_list	*ft_set_r_in(t_lexer *token, 
 	t_data **cominfo, t_list *lexx, t_big **p_big)
 {
@@ -169,8 +170,13 @@ static t_list	*ft_set_r_in(t_lexer *token,
 	}
 	if (token->token == 3)
 		comm_info->in_heredoc = true;
+	printf("\nft_set_r_in\n");
+	printf("comm_info->commands_no: %zu\n", comm_info->commands_no);
+
 	lexx = lexx->next;
 	token = lexx->content;
+
+	printf("comm_info->commands_no: %zu\n", comm_info->commands_no);
 	comm_info->fd_infile = 
 		fd_in_checker(comm_info, token->value);
 	if (comm_info->fd_infile == -1)
@@ -182,23 +188,50 @@ static t_list	*ft_set_r_in(t_lexer *token,
 }
 
 /**
- * @brief function to set all values 
+ * @brief function to set commands_no to
+ * the current number and the rest of values 
  * of the command info struct to 0
  * 
  * @param p_comm_info pointer to the struct that 
  * should be set to zero
+ * @param lexx to set a commands_no, by default it is
+ * set to 1, if there is a pipe it previously increased
+ * in function "ft_init_clist"
  */
-static void	init_comm_zero(t_data **p_comm_info)
+static void	init_comm(t_data **p_comm_info, t_list *lexx)
 {
 	t_data	*comm_info;
+	t_lexer	*lexx_deref;
 
+	lexx_deref = lexx->content;
 	comm_info = *p_comm_info;
 	comm_info->cmd = ft_calloc(1, sizeof(char *));
-	comm_info->commands_no = 0;
+	comm_info->commands_no = (size_t)lexx_deref->number_helper;
 	comm_info->in_heredoc = false;
 	comm_info->fd_infile = 0;
 	comm_info->out_append = false;
 	comm_info->fd_outfile = 1;
+}
+
+/**
+ * @brief function increase a number of "number_helper"
+ * it serves for creation of many heredocs files
+ * 
+ * @param curr_lexx is a linked list for "t_lexer" type of
+ * struct. it containts "number_helper" integer that is used
+ * for set a "commands_no" to t_data in each call of "ft_init_clist"
+ * function
+ * @param comm_info is a structure with a current number of
+ * command. it is 1, if it was only 1 command before the fisrt
+ * occurence of the pipe.
+*/
+static void set_number_helper(t_data *comm_info, t_list *curr_lexx)
+{
+	int	i;
+	
+	i = (int)comm_info->commands_no;
+	i++;
+	((t_lexer *)(curr_lexx->content))->number_helper = i;
 }
 
 /**
@@ -228,11 +261,9 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 	comm_info = ft_calloc(1, sizeof(t_data));
 	if (!comm_info)
 		error_handling(2);
-	// printf("what the hack II\n");
-	init_comm_zero(&comm_info); //set all values to zero
+	init_comm(&comm_info, *lexx);
 	while (curr_lexx != NULL && token->token != 1 && token->token != 2)
 	{
-		// printf("what the hack III\n");
 		if (token->token == 3 || token->token == 4) //heredoc or redirect in
 			curr_lexx = ft_set_r_in(token, &comm_info, curr_lexx, p_big);
 		else if (token->token == 5 || token->token == 6) //redirect out or redirect out append
@@ -243,7 +274,6 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 			// test_arr = comm_info->cmd;
 			// printf("what the hack IV: %s\n", test_arr[0]);
 		}
-		// printf("test5\n");
 		curr_lexx = curr_lexx->next;
 		if (curr_lexx != NULL)
 			token = curr_lexx->content;
@@ -255,13 +285,16 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 			token = curr_lexx->content;
 		}
 	}
-	// printf("test6\n");
 	ft_lstadd_back(comm, ft_lstnew(comm_info));
 	// printf("what the hack V\n");
+
 	if (token->token == 1 || token->token == 2)
 	{
 		// printf("recursive\n");
-		ft_init_clist(&curr_lexx->next, comm, p_big);
+		//ft_init_clist(&curr_lexx->next, comm, p_big);
+		curr_lexx = curr_lexx->next;
+		set_number_helper(comm_info, curr_lexx);
+		ft_init_clist(&curr_lexx, comm, p_big);
 	}
 	// printf("what the hack VI\n");
 }
@@ -283,7 +316,8 @@ void	ft_commands(t_list *lexx, t_big **p_big)
 		error_handling(0);
 	big = *p_big;
 	comm = NULL;
-	// printf("what the hack I\n");
+	// it helps to create many heredocs
+	((t_lexer *)(lexx->content))->number_helper = 1;
 	ft_init_clist(&lexx, &comm, p_big);
 	ft_count_commands(comm, p_big);
 	big->cmdlist = comm;

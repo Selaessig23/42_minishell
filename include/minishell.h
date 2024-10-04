@@ -71,6 +71,7 @@ typedef struct s_lexer
 {
 	char			*value;
 	t_tokentype		token;
+	int				number_helper; // it helps to create many heredocs
 }				t_lexer;
 
 // cmd - Command and arguments
