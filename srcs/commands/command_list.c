@@ -6,7 +6,6 @@
  * in this file the list of commands will be created as part of 
  * t_big big (cmdlist) which will be used in execution part later on
  */
-
 /**
  * @brief this function counts 
  * 1) the total number of commands and writes it to t_big
@@ -139,24 +138,6 @@ static t_list	*ft_set_r_out(t_lexer *token,
 }
 
 /**
- * The function deletes a tmp file of heredoc
- * in case there are two or more heredocs in
- * one command.
- * For instance, "<< LIM << LIM << LIM"
-*/
-static void	delete_heredoc(t_data *comm_info)
-{
-		char    *pathname;
-		char    *cmd_no_str;
-
-		cmd_no_str = ft_itoa(comm_info->commands_no);
-    	pathname = ft_strjoin(".heredoc_", cmd_no_str);
-    	free(cmd_no_str);
-		unlink(pathname);
-    	free(pathname);
-}
-
-/**
  * @brief function to set values of command struct in case of
  * redirection in (<) or heredoc-signal (<<). If there was set 
  * a redirect in / heredoc before, old fd will be closed 
@@ -170,7 +151,6 @@ static void	delete_heredoc(t_data *comm_info)
  * @param p_big pointer to the struct big to integrate the exit code in
  * case of an error when opening redirect out or in
  */
-////// lexx = t_lexer list contains number of command
 static t_list	*ft_set_r_in(t_lexer *token, 
 	t_data **cominfo, t_list *lexx, t_big **p_big)
 {
@@ -297,11 +277,9 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 	}
 	ft_lstadd_back(comm, ft_lstnew(comm_info));
 	// printf("what the hack V\n");
-
 	if (token->token == 1 || token->token == 2)
 	{
 		// printf("recursive\n");
-		//ft_init_clist(&curr_lexx->next, comm, p_big);
 		curr_lexx = curr_lexx->next;
 		set_number_helper(comm_info, curr_lexx);
 		ft_init_clist(&curr_lexx, comm, p_big);

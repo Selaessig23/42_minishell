@@ -33,24 +33,46 @@ static void	error_permission(char *name_file)
  * @brief This function attempts to open the specified output file
  * for writing. If the file cannot be opened due to permission issues
  * or other errors, it displays appropriate error messages.
+ * 
+ * !!! It is very similar to "fd_out_creator" function.
+ * It might be better to combine them.
  */
-static int	open_outfile(char *name_file)
+static int	fd_heredoc_creator(char *filename)
 {
-	int	file_out;
+	int	fd_out;
 
-	file_out = 0;
-	file_out = open(name_file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (access(name_file, W_OK) != 0)
+	fd_out = 0;
+	if (access(filename, F_OK))
+		fd_out = open(filename, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	else if (access(filename, W_OK) != 0)
 	{
-		error_permission(name_file);
+		error_permission(filename);
 		return(-1);
 	}
-	if (file_out == -1)
+	if (fd_out == -1)
 	{
-		error_file(name_file);
+		error_file(filename);
 		return(-1);
 	}
-	return (file_out);
+	return (fd_out);
+}
+
+/**
+ * The function deletes a tmp file of heredoc
+ * in case there are two or more heredocs in
+ * one command.
+ * For instance, "<< LIM << LIM << LIM"
+*/
+void	delete_heredoc(t_data *comm_info)
+{
+		char    *pathname;
+		char    *cmd_no_str;
+
+		cmd_no_str = ft_itoa(comm_info->commands_no);
+    	pathname = ft_strjoin(".heredoc_", cmd_no_str);
+    	free(cmd_no_str);
+		unlink(pathname);
+    	free(pathname);
 }
 
 /**
@@ -99,7 +121,7 @@ static int	here_read(char *name, char *lim)
 {
 	int     fd;
 
-    fd = open_outfile(name);
+    fd = fd_heredoc_creator(name);
 	here_read_helper(fd, lim);
 	return (fd);
 }

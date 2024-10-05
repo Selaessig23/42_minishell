@@ -201,7 +201,8 @@ int		check_dash_in_var_name(char *argument);
 int		ft_unset(t_big *big, t_data *comm_info);
 size_t	count_till_char(char *str, char up_to);
 //heredoc.c
-int heredoc_start(t_data *comm_info, char *limiter);
+int		heredoc_start(t_data *comm_info, char *limiter);
+void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
 void	ft_minishell_help(int fd);
 
