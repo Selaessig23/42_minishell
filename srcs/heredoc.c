@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+/**
+ * @brief This function displays an error message when the specified
+ * output file cannot be found or opened.
+ * 
+ * @param outfile: The name of the output file that could not be found.
+ */
 static void	error_file(char *outfile)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -8,6 +14,13 @@ static void	error_file(char *outfile)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
+/**
+ * @brief This function displays an error message when there is a permission
+ * issue while trying to access or open a file.
+ * 
+ * @param name_file: The name of the file that lacks the necessary
+ * permissions.
+ */
 static void	error_permission(char *name_file)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -16,6 +29,11 @@ static void	error_permission(char *name_file)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
+/**
+ * @brief This function attempts to open the specified output file
+ * for writing. If the file cannot be opened due to permission issues
+ * or other errors, it displays appropriate error messages.
+ */
 static int	open_outfile(char *name_file)
 {
 	int	file_out;
@@ -104,7 +122,6 @@ int heredoc_start(t_data *comm_info, char *limiter)
 	char    *cmd_no_str;
     
     cmd_no_str = ft_itoa(comm_info->commands_no);
-	printf("cmd_no_str:\n%s\n\n", cmd_no_str);
     name = ft_strjoin(".heredoc_", cmd_no_str);
     free(cmd_no_str);
     fd = here_read(name, limiter);

@@ -139,22 +139,22 @@ static t_list	*ft_set_r_out(t_lexer *token,
 }
 
 /**
- * The function delete a tmp file for heredoc
+ * The function deletes a tmp file of heredoc
  * in case there are two or more heredocs in
  * one command.
  * For instance, "<< LIM << LIM << LIM"
 */
 static void	delete_heredoc(t_data *comm_info)
 {
-		char    pathname[100] = ".heredoc_0";
-		int     code;
-		char    c;
+		char    *pathname;
+		char    *cmd_no_str;
 
-		code = (int)((comm_info->commands_no));
-		c = (char)(code + '@');
-		pathname[9] = c;
+		cmd_no_str = ft_itoa(comm_info->commands_no);
+    	pathname = ft_strjoin(".heredoc_", cmd_no_str);
+    	free(cmd_no_str);
 		unlink(pathname);
-}	
+    	free(pathname);
+}
 
 /**
  * @brief function to set values of command struct in case of
