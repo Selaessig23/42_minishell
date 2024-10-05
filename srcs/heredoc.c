@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void	error_file(char *outfile)
+static void	error_file(char *outfile)
 {
-	ft_putstr_fd("pipex: ", STDERR_FILENO);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(outfile, STDERR_FILENO);
 	ft_putstr_fd(": No such file or directory", STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
@@ -10,7 +10,7 @@ void	error_file(char *outfile)
 
 static void	error_permission(char *name_file)
 {
-	ft_putstr_fd("pipex: ", STDERR_FILENO);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(name_file, STDERR_FILENO);
 	ft_putstr_fd(": Permission denied", STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
@@ -21,7 +21,7 @@ static int	open_outfile(char *name_file)
 	int	file_out;
 
 	file_out = 0;
-	file_out = open(name_file, O_WRONLY | O_TRUNC | O_CREAT, 0644); // O_APPEND
+	file_out = open(name_file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (access(name_file, W_OK) != 0)
 	{
 		error_permission(name_file);
@@ -36,10 +36,17 @@ static int	open_outfile(char *name_file)
 }
 
 /**
- * The function to read from STANDARD INPUT for heredoc.
+ * @brief Reads user input from the terminal and writes it to the file
+ * until the limiter string is entered.
  * 
+ * This function enters an infinite loop, prompting the user with "> "
+ * to enter input. It reads lines using get_next_line(0)
+ * (from standard input), and checks if the line matches the limiter.
  * The condition 'str[ft_strlen(lim)] == 10' checks whether the next
  * character after the word LIMITER is '\n' which is 10 in ASCII.
+ * 
+ * @param write_end: File descriptor for the file being written to.
+ * @param lim: The delimiter string that marks the end of the input.
  */
 static void	here_read_helper(int write_end, char *lim)
 {
@@ -61,6 +68,15 @@ static void	here_read_helper(int write_end, char *lim)
 	}
 }
 
+/**
+ * @brief Opens a file and reads from standard input until
+ * a limiter is encountered. It passes the file descriptor "fd"
+ * and the limiter to "here_read_helper(), which performs the
+ * actual reading of input and writes it to the file.
+ * 
+ * @param name: Name of the file to open for writing.
+ * @param lim: The delimiter string that marks the end of the input.
+ */
 static int	here_read(char *name, char *lim)
 {
 	int     fd;
@@ -70,19 +86,28 @@ static int	here_read(char *name, char *lim)
 	return (fd);
 }
 
-// The function reads from the standart input with get_next_line
-// and writes to the ...... 
-// TO DESCRIBE
+/**
+ * @brief This function starts the "heredoc" process, which takes input
+ * from the terminal until a specific limiter string is encountered.
+ * This function generates a filename based on the number of commands
+ * (from comm_info->commands_no), represented as .heredoc_X, where X
+ * is a unique identifier.
+ * 
+ * @param comm_info: The pointer to a structure containing command
+ * information (stores the number of commands, "commands_no").
+ * @param limiter: The string that serves as the stopping point for input.
+ */
 int heredoc_start(t_data *comm_info, char *limiter)
 {
     int     fd;
-    char    name[100] = ".heredoc_0";
-    int     code;
-    char    c;
-
-    code = (int)((comm_info->commands_no));
-    c = (char)(code + '@');
-    name[9] = c;
+    char    *name;
+	char    *cmd_no_str;
+    
+    cmd_no_str = ft_itoa(comm_info->commands_no);
+	printf("cmd_no_str:\n%s\n\n", cmd_no_str);
+    name = ft_strjoin(".heredoc_", cmd_no_str);
+    free(cmd_no_str);
     fd = here_read(name, limiter);
+    free(name);
     return (fd);
 }
