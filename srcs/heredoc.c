@@ -1,63 +1,6 @@
 #include "minishell.h"
 
 /**
- * @brief This function displays an error message when the specified
- * output file cannot be found or opened.
- * 
- * @param outfile: The name of the output file that could not be found.
- */
-static void	error_file(char *outfile)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(outfile, STDERR_FILENO);
-	ft_putstr_fd(": No such file or directory", STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-}
-
-/**
- * @brief This function displays an error message when there is a permission
- * issue while trying to access or open a file.
- * 
- * @param name_file: The name of the file that lacks the necessary
- * permissions.
- */
-static void	error_permission(char *name_file)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(name_file, STDERR_FILENO);
-	ft_putstr_fd(": Permission denied", STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-}
-
-/**
- * @brief This function attempts to open the specified output file
- * for writing. If the file cannot be opened due to permission issues
- * or other errors, it displays appropriate error messages.
- * 
- * !!! It is very similar to "fd_out_creator" function.
- * It might be better to combine them.
- */
-static int	fd_heredoc_creator(char *filename)
-{
-	int	fd_out;
-
-	fd_out = 0;
-	if (access(filename, F_OK))
-		fd_out = open(filename, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	else if (access(filename, W_OK) != 0)
-	{
-		error_permission(filename);
-		return(-1);
-	}
-	if (fd_out == -1)
-	{
-		error_file(filename);
-		return(-1);
-	}
-	return (fd_out);
-}
-
-/**
  * The function deletes a tmp file of heredoc
  * in case there are two or more heredocs in
  * one command.
@@ -65,14 +8,14 @@ static int	fd_heredoc_creator(char *filename)
 */
 void	delete_heredoc(t_data *comm_info)
 {
-		char    *pathname;
-		char    *cmd_no_str;
-
-		cmd_no_str = ft_itoa(comm_info->commands_no);
-    	pathname = ft_strjoin(".heredoc_", cmd_no_str);
-    	free(cmd_no_str);
-		unlink(pathname);
-    	free(pathname);
+	char    *pathname;
+	char    *cmd_no_str;
+	
+	cmd_no_str = ft_itoa(comm_info->commands_no);
+	pathname = ft_strjoin(".heredoc_", cmd_no_str);
+	free(cmd_no_str);
+	unlink(pathname);
+	free(pathname);
 }
 
 /**
@@ -121,7 +64,8 @@ static int	here_read(char *name, char *lim)
 {
 	int     fd;
 
-    fd = fd_heredoc_creator(name);
+    //fd = fd_heredoc_creator(name);
+	fd = fd_out_creator(false, name);
 	here_read_helper(fd, lim);
 	return (fd);
 }
