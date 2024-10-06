@@ -8,9 +8,9 @@
 */
 void	delete_heredoc(t_data *comm_info)
 {
-	char    *pathname;
-	char    *cmd_no_str;
-	
+	char	*pathname;
+	char	*cmd_no_str;
+
 	cmd_no_str = ft_itoa(comm_info->commands_no);
 	pathname = ft_strjoin(".heredoc_", cmd_no_str);
 	free(cmd_no_str);
@@ -44,7 +44,7 @@ static void	here_read_helper(int write_end, char *lim)
 			&& str[ft_strlen(lim)] == 10)
 		{
 			free(str);
-            return ;
+			return ;
 		}
 		write(write_end, str, ft_strlen(str));
 		free(str);
@@ -62,9 +62,8 @@ static void	here_read_helper(int write_end, char *lim)
  */
 static int	here_read(char *name, char *lim)
 {
-	int     fd;
+	int	fd;
 
-    //fd = fd_heredoc_creator(name);
 	fd = fd_out_creator(false, name);
 	here_read_helper(fd, lim);
 	return (fd);
@@ -81,16 +80,16 @@ static int	here_read(char *name, char *lim)
  * information (stores the number of commands, "commands_no").
  * @param limiter: The string that serves as the stopping point for input.
  */
-int heredoc_start(t_data *comm_info, char *limiter)
+int	heredoc_start(t_data *comm_info, char *limiter)
 {
-    int     fd;
-    char    *name;
-	char    *cmd_no_str;
-    
-    cmd_no_str = ft_itoa(comm_info->commands_no);
-    name = ft_strjoin(".heredoc_", cmd_no_str);
-    free(cmd_no_str);
-    fd = here_read(name, limiter);
-    free(name);
-    return (fd);
+	int		fd;
+	char	*name;
+	char	*cmd_no_str;
+
+	cmd_no_str = ft_itoa(comm_info->commands_no);
+	name = ft_strjoin(".heredoc_", cmd_no_str);
+	free(cmd_no_str);
+	fd = here_read(name, limiter);
+	free(name);
+	return (fd);
 }
