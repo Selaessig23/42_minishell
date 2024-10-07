@@ -15,7 +15,7 @@
  * @param comm the list where each node stands for a command that has to be counted
  * @param p_big a pointer to the big struct that holds all information to execute the 
  * commands, here the total amount of commands has to be written in
- */
+ 
 static void	ft_count_commands(t_list *comm, t_big **p_big)
 {
 	t_list	*curr;
@@ -33,6 +33,7 @@ static void	ft_count_commands(t_list *comm, t_big **p_big)
 		curr = curr->next;
 	}
 }
+*/
 
 /**
  * @brief (helper) function (for to ft_add_arr_back) to add existing 
@@ -188,13 +189,13 @@ static t_list	*ft_set_r_in(t_lexer *token,
  * @param p_comm_info pointer to the struct that 
  * should be set to zero
  */
-static void	init_comm_zero(t_data **p_comm_info)
+static void	init_comm_zero(t_data **p_comm_info, int counter)
 {
 	t_data	*comm_info;
 
 	comm_info = *p_comm_info;
 	comm_info->cmd = ft_calloc(1, sizeof(char *));
-	comm_info->commands_no = 0;
+	comm_info->commands_no = counter;
 	comm_info->in_heredoc = false;
 	comm_info->fd_infile = 0;
 	comm_info->out_append = false;
@@ -214,22 +215,22 @@ static void	init_comm_zero(t_data **p_comm_info)
  * @param p_big pointer to the struct big to integrate the exit code in
  * case of an error when opening redirect out or in
  */
-static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
+static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big, int counter)
 {
 	t_data	*comm_info;
 	t_list	*curr_lexx;
 	t_lexer	*token;
-	char	**test_arr;
+	//char	**test_arr;
 
 	comm_info = NULL;
-	test_arr = NULL;
+	//test_arr = NULL;
 	curr_lexx = *lexx;
 	token = curr_lexx->content;
 	comm_info = ft_calloc(1, sizeof(t_data));
 	if (!comm_info)
 		error_handling(2);
 	// printf("what the hack II\n");
-	init_comm_zero(&comm_info); //set all values to zero
+	init_comm_zero(&comm_info, counter); //set all values to zero
 	while (curr_lexx != NULL && token->token != 1 && token->token != 2)
 	{
 		// printf("what the hack III\n");
@@ -261,9 +262,35 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 	if (token->token == 1 || token->token == 2)
 	{
 		// printf("recursive\n");
-		ft_init_clist(&curr_lexx->next, comm, p_big);
+		ft_init_clist(&curr_lexx->next, comm, p_big, (counter + 1));
 	}
 	// printf("what the hack VI\n");
+}
+
+/**
+ * @function to count total amount of commands
+ * by searching for pipes in the linked list lexx
+ * 
+ * @param lexx the linked list with cleaned and expanded
+ * command line input
+ */
+static size_t	ft_count_total_commands(t_list *lexx)
+{
+	t_list	*curr;
+	t_lexer	*token;
+	size_t	i;
+
+	curr = lexx;
+	token = curr->content;
+	i = 1;
+	while (curr != NULL)
+	{
+		token = curr->content;
+		if (token->token == 1)
+			i += 1;
+		curr = curr->next;
+	}
+	return (i);
 }
 
 /**
@@ -284,7 +311,8 @@ void	ft_commands(t_list *lexx, t_big **p_big)
 	big = *p_big;
 	comm = NULL;
 	// printf("what the hack I\n");
-	ft_init_clist(&lexx, &comm, p_big);
-	ft_count_commands(comm, p_big);
+	big->count_commds = ft_count_total_commands(lexx);
+	ft_init_clist(&lexx, &comm, p_big, 1);
+	//ft_count_commands(comm, p_big);
 	big->cmdlist = comm;
 }
