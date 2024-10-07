@@ -48,9 +48,11 @@ int main(int argc, char **argv, char **envp)
 			ft_handle_signals();
 			if (signalnum == 1)
 			{
-				rl_replace_line("\n", 0); //clear the input line
+				ft_putchar_fd('\n', 2);
+				rl_replace_line("", 0); //clear the input line
 				rl_on_new_line(); //Go to a new line
 				rl_redisplay(); //Redisplay the prompt
+				big->exit_code = 1;
 			}
 			if (!input)
 			{

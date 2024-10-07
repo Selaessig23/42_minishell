@@ -30,10 +30,12 @@ static void	handle_sigint(int sig)
 	}
 	else
 	{
+		write(2, "\n", 1);
 		rl_replace_line("", 0); //clear the input line
 		rl_on_new_line(); //Go to a new line
 		rl_redisplay(); //Redisplay the prompt
 		signalnum = 2;
+		// big->
 		// ft_putstr_fd("do nothing\n", 1);
 	}
 }
