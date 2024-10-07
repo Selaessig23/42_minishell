@@ -19,10 +19,14 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
+# include <signal.h>
 
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments\
 to execute minishell\n"
+
+//define a global variable for signal-handling
+extern int	signalnum;
 
 // it is "a good practice" to use a global variable for environment 
 // instead of picking it in the main
@@ -30,7 +34,6 @@ to execute minishell\n"
 // extern char	**environ;
 
 // to define all different tokens
-// see libft_bonus
 typedef enum e_tokentype
 {
 	PIPE = 1,
@@ -205,5 +208,7 @@ int		heredoc_start(t_data *comm_info, char *limiter);
 void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
 void	ft_minishell_help(int fd);
+//signals.c
+int		ft_handle_signals(void);
 
 #endif

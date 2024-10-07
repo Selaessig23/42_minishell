@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+int	signalnum;
+
 // **Note for Markus. 12 Aug** I moved it up "if (argc != 1) error_handling(1);"
 // The reason is that is generally common to start by checking for invalid input
 // or error conditions first. In the context of command-line arguments, this
@@ -30,6 +32,7 @@ int main(int argc, char **argv, char **envp)
 	lexx = NULL;
 	// comm = NULL;
 	exitcode = 0;
+	signalnum = 0;
 	ft_welcome();
 	if (argc != 1)
 		error_handling(1);
@@ -42,9 +45,17 @@ int main(int argc, char **argv, char **envp)
 		while (1)
 		{
 			input = readline(prompt);
+			ft_handle_signals();
+			if (signalnum == 1)
+			{
+				rl_replace_line("\n", 0); //clear the input line
+				rl_on_new_line(); //Go to a new line
+				rl_redisplay(); //Redisplay the prompt
+			}
 			if (!input)
 			{
-				// free session
+				ft_putstr_fd("exit\n", 1);
+				free(prompt);
 				exit(EXIT_FAILURE);
 			}
 			else if (!*input)
@@ -55,6 +66,11 @@ int main(int argc, char **argv, char **envp)
 			else if (*input)
 			{
 				add_history(input);
+				// if (signalnum == 1 || signalnum == 2)
+				// {
+				// 	signalnum = 0;
+				// 	continue;
+				// }
 				//ft_printf("input length: %i\n", ft_strlen(input));
 				input_arr = create_nodes(&input);
 				free(input);
@@ -86,6 +102,7 @@ int main(int argc, char **argv, char **envp)
 					big->exit_code = 2;
 					ft_free_ll(&lexx);
 				}
+				// signalnum = 0;
 			}
 		}
 		ft_free_ll(&lexx);
