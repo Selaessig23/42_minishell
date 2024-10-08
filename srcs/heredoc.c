@@ -34,17 +34,19 @@ void	delete_heredoc(t_data *comm_info)
 static void	here_read_helper(int write_end, char *lim)
 {
 	char	*str;
+	char	*lim_newline = NULL;
 	char	*tmp = NULL;
 	char	*str_history = NULL;
 
+	lim_newline  = ft_strjoin(lim, "\n");
+	str_history = ft_strjoin("<< ", lim_newline);
+	free(lim_newline);
 	while (1)
 	{
 		write(1, ">", 1);
 		write(1, " ", 1);
 		str = get_next_line(0);
-		if (!str_history)
-			// str_history = ft_strdup("");
-			str_history = ft_strjoin("<< ", lim);
+		
 		tmp = str_history;
 		str_history = ft_strjoin(tmp, str);
 		free(tmp);
