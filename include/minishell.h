@@ -19,7 +19,10 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
+//to handle signals
 # include <signal.h>
+//to change behaviour of the terminal (not-printing all control squences)
+# include <termios.h>
 
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments\
