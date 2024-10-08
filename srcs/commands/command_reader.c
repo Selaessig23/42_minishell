@@ -114,6 +114,8 @@ int	ft_executer(t_big *big, char *prompt)
 		// printf("fd infile: %i, fd outfile: %i\n", comm_info->fd_infile, comm_info->fd_outfile);
 		if (comm_info->fd_infile > 2)
 			close(comm_info->fd_infile);
+		if (comm_info->in_heredoc == true)
+			delete_heredoc(comm_info);
 		if (comm_info->fd_outfile > 2)
 			close(comm_info->fd_outfile);
 		curr = curr->next;
