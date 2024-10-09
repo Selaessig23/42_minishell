@@ -201,6 +201,7 @@ static void	init_comm(t_data **p_comm_info, t_list *lexx)
 	comm_info->fd_infile = 0;
 	comm_info->out_append = false;
 	comm_info->fd_outfile = 1;
+	comm_info->id = 0;
 }
 
 /**

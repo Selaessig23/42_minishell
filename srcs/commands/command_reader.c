@@ -95,9 +95,11 @@ int	ft_executer(t_big *big, char *prompt)
 {
 	t_list	*curr;
 	t_data	*comm_info;
+	t_data	*comm_info_next;
 
 	curr = big->cmdlist;
 	comm_info = curr->content;
+	comm_info_next = curr->next;
 	while (curr != NULL)
 	{
 		comm_info = curr->content;
@@ -110,7 +112,16 @@ int	ft_executer(t_big *big, char *prompt)
 			// return (1);
 		}
 		else
+		{
 			ft_test_command_print(prompt, comm_info, big);
+			// if the command invalid - displays an error
+			// if it is the last command - exit status
+			// if it is not the last command and the next pipe
+			// doesn't have input redirection - dev_null function
+			// for comm_info_next - fd_input
+			// else
+			ft_binar_exe(comm_info, comm_info_next, big);
+		}
 		// printf("fd infile: %i, fd outfile: %i\n", comm_info->fd_infile, comm_info->fd_outfile);
 		if (comm_info->fd_infile > 2)
 			close(comm_info->fd_infile);
@@ -120,6 +131,7 @@ int	ft_executer(t_big *big, char *prompt)
 			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
+	/// wait pid function.
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
 	return (0);

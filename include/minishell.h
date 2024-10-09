@@ -84,6 +84,7 @@ typedef struct s_data {
 	int		fd_outfile;
 	char	**cmd;
 	size_t	commands_no;
+	pid_t	id;
 }				t_data;
 
 // Main struct containing the list of commands and
@@ -205,5 +206,7 @@ int		heredoc_start(t_data *comm_info, char *limiter);
 void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
 void	ft_minishell_help(int fd);
+//exe_binar/exe_binar.c
+void    ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big);
 
 #endif

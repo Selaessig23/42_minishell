@@ -48,7 +48,8 @@ SRCS =	main.c \
 		builtins/export_2.c \
 		builtins/unset.c \
 		heredoc.c \
-		builtins/help.c
+		builtins/help.c \
+		exe_binar/exe_binar.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c
