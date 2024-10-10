@@ -1,0 +1,26 @@
+total 208
+-rw-r--r--  1 mpeshko 2023_berlin      8 Sep 26 16:13 1outfile
+-rw-r--r--  1 mpeshko 2023_berlin     29 Sep 26 16:13 1outfile2
+-rw-r--r--  1 mpeshko 2023_berlin      0 Oct 10 17:44 file
+-rw-r--r--  1 mpeshko 2023_berlin      0 Sep 26 16:13 har
+-rw-r--r--  1 mpeshko 2023_berlin      7 Sep 26 16:13 hello
+-rw-r--r--  1 mpeshko 2023_berlin   3593 Oct  8 18:09 helpfile
+-rw-r--r--  1 mpeshko 2023_berlin     35 Oct  8 18:10 heredoc
+drwxr-xr-x  2 mpeshko 2023_berlin     25 Oct 10 15:51 include
+-rw-r--r--  1 mpeshko 2023_berlin      9 Oct 10 15:51 infile
+drwxr-xr-x 15 mpeshko 2023_berlin   4096 Oct 10 15:54 libft
+-rw-r--r--  1 mpeshko 2023_berlin     96 Sep 26 16:13 limit
+-rw-r--r--  1 mpeshko 2023_berlin   3888 Oct 10 17:25 Makefile
+-rwxr-xr-x  1 mpeshko 2023_berlin 150048 Oct 10 17:46 minishell
+----r--r--  1 mpeshko 2023_berlin      0 Oct 10 16:12 no_perm_file
+drwxr-xr-x  7 mpeshko 2023_berlin   4096 Oct 10 15:54 obj
+-rw-r--r--  1 mpeshko 2023_berlin      0 Oct 10 17:48 outfile
+-rw-r--r--  1 mpeshko 2023_berlin      0 Oct 10 15:51 outfile2
+-rw-r--r--  1 mpeshko 2023_berlin      0 Sep 25 12:06 outline
+-rw-r--r--  1 mpeshko 2023_berlin    570 Oct  2 12:16 output.txt
+-rw-r--r--  1 mpeshko 2023_berlin   1591 Oct  8 18:10 README.md
+drwxr-xr-x  7 mpeshko 2023_berlin   4096 Oct 10 15:51 srcs
+-rw-r--r--  1 mpeshko 2023_berlin      0 Oct 10 17:39 test
+-rw-r--r--  1 mpeshko 2023_berlin     33 Aug 30 17:30 test_file2.txt
+drwxr-xr-x  2 mpeshko 2023_berlin     32 Sep 26 16:13 testfiles
+-rw-r--r--  1 mpeshko 2023_berlin     91 Aug 30 17:30 test_file.txt

@@ -102,40 +102,47 @@ void	w_errfork_close(int open_fd, int *pipe_fd)
  * @param big struct with environmental variables, exit_code integer,
  * and count_commds size_t.
  */
-void	ft_binar_exe(t_data *comm_info, t_data *c_i_next) //t_big *big
+void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 {
 	pid_t		pid;
     int			fd[2];
     
-    //w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
+    w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
     if (pipe(fd) == -1)
 		w_errpipe_close(comm_info->fd_infile);
+	printf("exe_01\n");
     pid = fork();
     if (pid == -1)
 		w_errfork_close(comm_info->fd_infile, fd);
     if (pid == 0)
 	{
+		printf("child\n");
         close(fd[0]);
-        dup2(fd[1], STDOUT_FILENO);
-        //call_cmd(///);
+        dup2(comm_info->fd_outfile, STDOUT_FILENO);
+        //dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+        call_cmd(comm_info->cmd, big->env);
     }
     else if (pid != 0)
     {
+		printf("exe_02\n");
         close(fd[1]);
         w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
-        //dup2((*ch)->fd_to_read, STDIN_FILENO);
         close(comm_info->fd_infile);
         if (c_i_next != NULL)
         {
             // output to pipe and input from prev pipe.
             if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
-            c_i_next->fd_infile = fd[0];
+            	c_i_next->fd_infile = fd[0];
+			else
+				close(fd[0]);
         }
-        else if (c_i_next != NULL)
-        {
-            // If it is the last pipe and there is no output redirection
-            // send a write enf of the pipe to STDOUT - to display on Terminal.
-        }  
+        // else if (c_i_next == NULL)
+        // {
+        //     // If it is the last pipe and there is no output redirection
+        //     // send a write enf of the pipe to STDOUT - to display on Terminal.
+        // }
+		waitpid(pid, NULL, 0);
     }
     comm_info->id = pid;
 }

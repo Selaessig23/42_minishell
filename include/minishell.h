@@ -207,6 +207,11 @@ void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
 void	ft_minishell_help(int fd);
 //exe_binar/exe_binar.c
-void    ft_binar_exe(t_data *comm_info, t_data *c_i_next); //t_big *big
+void    ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big);
+void	print_stderr(char *what_error);
+void	perror_and_exit(char *what_error, int *pipe_fd);
+
+//exe_binar/exe_binar_2.c
+void	call_cmd(char **cmd_plus_args, char *env[]);
 
 #endif

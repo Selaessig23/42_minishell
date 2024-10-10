@@ -273,7 +273,8 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 			&& token->token != 1 && token->token != 2)
 		{
 			curr_lexx = curr_lexx->next;
-			token = curr_lexx->content;
+			if (curr_lexx != NULL)
+				token = curr_lexx->content;
 		}
 	}
 	ft_lstadd_back(comm, ft_lstnew(comm_info));

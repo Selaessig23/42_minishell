@@ -8,6 +8,27 @@
  */
 
 /**
+ * @brief Used to discard input when no valid command is provided, 
+ * preventing unnecessary input processing from the original file descriptor.
+ * 
+ * The "dev_null" function is used when the command in "acces_cmd" function
+ * is invalid.
+ * 
+ * In case of an issue with the command, the program redirects the 
+ * input source (fd_to_read) to /dev/null. So there's no input to process, 
+ * and it discards anything that might have been read from the original 
+ * file descriptor.
+ */
+static int	dev_null(int read_from)
+{
+	int	new_read_from;
+
+	close(read_from);
+	new_read_from = open("/dev/null", O_RDONLY);
+	return (new_read_from);
+}
+
+/**
  * @brief function to organise execution of built-in-commands
  * 
  * @param comm_info struct with all necessary infos to 
@@ -99,12 +120,33 @@ int	ft_executer(t_big *big, char *prompt)
 
 	curr = big->cmdlist;
 	comm_info = curr->content;
-	comm_info_next = curr->next;
+	comm_info_next = (t_data *)curr->next;
+	// set_pipes(t_big *big);
+	// t_list	*curr;
+	// t_data	*comm_info;
+	// curr = big->cmdlist;
+	// comm_info = curr->content;
+	// int			fd[2];
+	// a bunch of if statements
+	// if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
+	// {
+	// 	printf("fd_infile OR fd_outfile is /dev/null\n");
+	// 	comm_info->fd_infile = dev_null(comm_info->fd_infile);
+	// 	printf("fd_infile: %d\n", comm_info->fd_infile);
+	// }
+	// How to not close pipes....
 	while (curr != NULL)
 	{
 		comm_info = curr->content;
+		printf("\ncommand number: %zu\n", comm_info->commands_no);
+		printf("fd_infile: %d\n", comm_info->fd_infile);
 		if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
+		{
+			//printf("fd_infile OR fd_outfile is /dev/null\n");
+			//comm_info->fd_infile = dev_null(comm_info->fd_infile);
+			//printf("fd_infile: %d\n", comm_info->fd_infile);
 			printf("EXIT WITH ERROR\n");
+		}
 		else if (ft_builtin_checker(comm_info))
 		{
 			ft_builtin_executer(comm_info, big, prompt);
@@ -113,12 +155,11 @@ int	ft_executer(t_big *big, char *prompt)
 		}
 		else
 		{
-			ft_test_command_print(prompt, comm_info, big);
+			//ft_test_command_print(prompt, comm_info, big);
+			
 			// if the command invalid - displays an error
 			// if it is the last command - exit status
 			// if it is not the last command and the next pipe
-			// doesn't have input redirection - dev_null function
-			// for comm_info_next - fd_input
 			// else
 			ft_binar_exe(comm_info, comm_info_next, big);
 		}
@@ -132,6 +173,7 @@ int	ft_executer(t_big *big, char *prompt)
 		curr = curr->next;
 	}
 	/// wait pid function.
+	/// extract exit status
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
 	return (0);
