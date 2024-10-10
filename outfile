@@ -8,13 +8,12 @@ total 208
 -rw-r--r--  1 mpeshko 2023_berlin     35 Oct  8 18:10 heredoc
 drwxr-xr-x  2 mpeshko 2023_berlin     25 Oct 10 15:51 include
 -rw-r--r--  1 mpeshko 2023_berlin      9 Oct 10 15:51 infile
-drwxr-xr-x 15 mpeshko 2023_berlin   4096 Oct 10 15:54 libft
+drwxr-xr-x 15 mpeshko 2023_berlin   4096 Oct 10 18:18 libft
 -rw-r--r--  1 mpeshko 2023_berlin     96 Sep 26 16:13 limit
 -rw-r--r--  1 mpeshko 2023_berlin   3888 Oct 10 17:25 Makefile
--rwxr-xr-x  1 mpeshko 2023_berlin 150048 Oct 10 17:46 minishell
-----r--r--  1 mpeshko 2023_berlin      0 Oct 10 16:12 no_perm_file
-drwxr-xr-x  7 mpeshko 2023_berlin   4096 Oct 10 15:54 obj
--rw-r--r--  1 mpeshko 2023_berlin      0 Oct 10 17:48 outfile
+-rwxr-xr-x  1 mpeshko 2023_berlin 149952 Oct 10 19:09 minishell
+drwxr-xr-x  7 mpeshko 2023_berlin   4096 Oct 10 18:34 obj
+-rw-r--r--  1 mpeshko 2023_berlin      0 Oct 10 19:09 outfile
 -rw-r--r--  1 mpeshko 2023_berlin      0 Oct 10 15:51 outfile2
 -rw-r--r--  1 mpeshko 2023_berlin      0 Sep 25 12:06 outline
 -rw-r--r--  1 mpeshko 2023_berlin    570 Oct  2 12:16 output.txt

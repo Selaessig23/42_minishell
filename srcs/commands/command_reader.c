@@ -121,6 +121,10 @@ int	ft_executer(t_big *big, char *prompt)
 	curr = big->cmdlist;
 	comm_info = curr->content;
 	comm_info_next = (t_data *)curr->next;
+	if (comm_info_next != NULL)
+		printf("next t_data: %zu\n", comm_info_next->commands_no);
+	else
+		printf("next t_data == NULL\n");
 	// set_pipes(t_big *big);
 	// t_list	*curr;
 	// t_data	*comm_info;
@@ -138,13 +142,8 @@ int	ft_executer(t_big *big, char *prompt)
 	while (curr != NULL)
 	{
 		comm_info = curr->content;
-		printf("\ncommand number: %zu\n", comm_info->commands_no);
-		printf("fd_infile: %d\n", comm_info->fd_infile);
 		if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
 		{
-			//printf("fd_infile OR fd_outfile is /dev/null\n");
-			//comm_info->fd_infile = dev_null(comm_info->fd_infile);
-			//printf("fd_infile: %d\n", comm_info->fd_infile);
 			printf("EXIT WITH ERROR\n");
 		}
 		else if (ft_builtin_checker(comm_info))
@@ -156,7 +155,6 @@ int	ft_executer(t_big *big, char *prompt)
 		else
 		{
 			//ft_test_command_print(prompt, comm_info, big);
-			
 			// if the command invalid - displays an error
 			// if it is the last command - exit status
 			// if it is not the last command and the next pipe
@@ -172,6 +170,11 @@ int	ft_executer(t_big *big, char *prompt)
 			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
+	// Restore STDIN if it was changed before
+    // If you redirected STDIN, reset it back to original terminal
+    int terminal_fd = open("/dev/tty", O_RDONLY); // Open terminal for reading
+    dup2(terminal_fd, STDIN_FILENO); // Restore STDIN
+	
 	/// wait pid function.
 	/// extract exit status
 	ft_free_cl(&(big->cmdlist));

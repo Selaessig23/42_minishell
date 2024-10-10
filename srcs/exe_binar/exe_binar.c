@@ -107,42 +107,40 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 	pid_t		pid;
     int			fd[2];
     
-    w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
     if (pipe(fd) == -1)
 		w_errpipe_close(comm_info->fd_infile);
-	printf("exe_01\n");
     pid = fork();
     if (pid == -1)
 		w_errfork_close(comm_info->fd_infile, fd);
     if (pid == 0)
 	{
-		printf("child\n");
         close(fd[0]);
         dup2(comm_info->fd_outfile, STDOUT_FILENO);
-        //dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
+		//close(comm_info->fd_outfile);
         call_cmd(comm_info->cmd, big->env);
     }
     else if (pid != 0)
     {
-		printf("exe_02\n");
         close(fd[1]);
-        w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
-        close(comm_info->fd_infile);
-        if (c_i_next != NULL)
+		//w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
+		//w_dup2(fd[0], STDIN_FILENO, -2);
+		printf("id_infile: %d\n", comm_info->fd_infile);
+		if (comm_info->fd_infile != 0)
+		{
+			w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
+			close(comm_info->fd_infile);
+		}
+		if (c_i_next != NULL)
         {
-            // output to pipe and input from prev pipe.
             if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
             	c_i_next->fd_infile = fd[0];
-			else
-				close(fd[0]);
         }
-        // else if (c_i_next == NULL)
-        // {
-        //     // If it is the last pipe and there is no output redirection
-        //     // send a write enf of the pipe to STDOUT - to display on Terminal.
-        // }
+        else if (c_i_next == NULL)
+			printf("ft_binar_exe. c_i_next == NULL\n");
+		close(fd[0]);
 		waitpid(pid, NULL, 0);
+		
     }
     comm_info->id = pid;
 }
