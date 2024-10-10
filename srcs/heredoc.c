@@ -41,9 +41,10 @@ static int	here_read_helper(int write_end, char *lim)
 	{
 		// printf("signalnum A: %i\n", signalnum);
 		// printf("signalnum B: %i\n", signalnum);
+		ft_putstr_fd("> ", 1);
 		ft_handle_signals(false);
-		str = readline("> ");
-		if (!str)
+		str = get_next_line(0);
+		if (!str && signalnum != 3)
 		{
 			ft_putstr_fd("bash: warning: here-document at line 1 ", 2);
 			ft_putstr_fd("delimited by \"end-of-file (wanted `", 2);
@@ -52,10 +53,10 @@ static int	here_read_helper(int write_end, char *lim)
 			signalnum = 3;
 		}
 		// dprintf(2, "print str: $%s$, count str: %zu\n", str, ft_strlen(str));
-		// if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
-		// 	&& str[ft_strlen(lim)] == 10)
 		if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
-			&& ft_strlen(lim) == ft_strlen(str))
+			&& str[ft_strlen(lim)] == 10)
+		// if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
+		// 	&& ft_strlen(lim) == ft_strlen(str))
 		{
 			free(str);
 			return (0);
