@@ -207,6 +207,6 @@ void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
 void	ft_minishell_help(int fd);
 //exe_binar/exe_binar.c
-void    ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big);
+void    ft_binar_exe(t_data *comm_info, t_data *c_i_next); //t_big *big
 
 #endif

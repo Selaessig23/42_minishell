@@ -6,6 +6,65 @@
 // 			exitcode = WEXITSTATUS(status);
 
 /**
+ * Prints a message to standard error describing the error associated 
+ * with the given argument, based on the current value of errno.
+ * 
+ * The perror() function prints a message to stderr that describes 
+ * the last error that occurred based on the global variable errno.
+ */
+void	print_stderr(char *what_error)
+{
+	perror(what_error);
+}
+
+/**
+ * Prints an error message based on errno and then exits the program 
+ * with failure, closing the pipe file descriptors if provided.
+ * 
+ * Uses perror to print a system error message related to the 
+ * last error (stored in errno), along with the custom message.
+ */
+void	perror_and_exit(char *what_error, int *pipe_fd)
+{
+	perror(what_error);
+	if (pipe_fd)
+	{
+		if (close(pipe_fd[0]) == -1)
+			perror("Error closing pipe [0]");
+		if (close(pipe_fd[1]) == -1)
+			perror("Error closing pipe [1]");
+	}
+	exit (EXIT_FAILURE);
+}
+
+/**
+ * @brief This function is a wrapper around the dup2 system call.
+ * It attempts to duplicate dupfd onto newfd. If dup2 fails, it handles
+ * the error by closing the fd_open file descriptor (if it's not -2), 
+ * printing an error message, and terminating the program.
+ * The function ensures that the original file descriptor (dupfd) is
+ * closed whether the operation succeeds or fails.
+ * 
+ * @param dupfd: The file descriptor to duplicate.
+ * @param newfd: The target file descriptor where dupfd will be duplicated.
+ * @param fd_open: An additional file descriptor that will be closed on error,
+ * unless its value is -2, which means it will be skipped.
+*/
+void	w_dup2(int dupfd, int newfd, int fd_open)
+{
+	if (dup2(dupfd, newfd) == -1)
+	{
+		if (fd_open != -2)
+			close(fd_open);
+		print_stderr("dup2");
+		close(dupfd);
+		exit(EXIT_FAILURE);
+	}
+	else
+		close(dupfd);
+}
+
+/**
  * @brief This function handles errors related to pipe creation.
  * It closes the provided file descriptor open_fd, prints an error message
  * related to pipe, and exits the program.
@@ -43,9 +102,9 @@ void	w_errfork_close(int open_fd, int *pipe_fd)
  * @param big struct with environmental variables, exit_code integer,
  * and count_commds size_t.
  */
-void    ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
+void	ft_binar_exe(t_data *comm_info, t_data *c_i_next) //t_big *big
 {
-    pid_t		pid;
+	pid_t		pid;
     int			fd[2];
     
     //w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
@@ -53,7 +112,7 @@ void    ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 		w_errpipe_close(comm_info->fd_infile);
     pid = fork();
     if (pid == -1)
-		w_errfork_close(comm_info->fd_infile, comm_info->fd_outfile);
+		w_errfork_close(comm_info->fd_infile, fd);
     if (pid == 0)
 	{
         close(fd[0]);
@@ -70,7 +129,7 @@ void    ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
         {
             // output to pipe and input from prev pipe.
             if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
-            c_i_next->fd_infile == fd[0];
+            c_i_next->fd_infile = fd[0];
         }
         else if (c_i_next != NULL)
         {
