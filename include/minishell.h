@@ -212,6 +212,6 @@ void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
 void	ft_minishell_help(int fd);
 //signals.c
-int		ft_handle_signals(void);
+int	ft_handle_signals(bool rl_antes);
 
 #endif

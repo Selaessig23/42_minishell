@@ -44,7 +44,7 @@ int main(int argc, char **argv, char **envp)
 		big = init_t_big(envp);
 		while (1)
 		{
-			ft_handle_signals();
+			ft_handle_signals(true);
 			input = readline(prompt);
 			// if (signalnum == 1)
 			// {
@@ -105,7 +105,7 @@ int main(int argc, char **argv, char **envp)
 					big->exit_code = 2;
 					ft_free_ll(&lexx);
 				}
-				// signalnum = 0;
+				signalnum = 0;
 			}
 		}
 		ft_free_ll(&lexx);

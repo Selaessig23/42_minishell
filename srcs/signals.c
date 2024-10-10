@@ -1,39 +1,97 @@
 #include "minishell.h"
+#include <sys/ioctl.h>
+
 
 /**
  * DESRIPTION: 
  * in this file the the following behaviour for signals will be
  * integrated:
- * >ctrl-C (=sigint) displays "^C" followd by a new prompt on a new line, same on heredoc (here it closes heredoc)!
- * >ctrl-D exits the shell (use built-in exit), within heredoc
- * on empty line: stops heredoc and returns error message: 
- * "bash: warning: here-document at line 1 delimited by end-of-file (wanted `$limiter')"
+ * >ctrl-C (=sigint) displays "^C" followd by a new prompt on a new line, 
+ * same on heredoc (here it closes heredoc)!
+ * >ctrl-D exits the shell, on heredoc (only on on empty line:)
+ * stops heredoc and returns error message: 
+ * "bash: warning: here-document at line 1 delimited by end-of-file 
+ * (wanted `$limiter')"
  * on non empty line nothing happens
  * >ctrl-\ (=sigquit) does nothing (do not quit!).
 */
 
-// static void	handle_sigquit(int sig)
-// {
-// 	sigaction(SIGQUIT, )
-// }
+static void	handle_sigint_non(int sig)
+{
+	(void) sig;
+	struct termios	termios_p;
 
-static void	handle_sigint(int sig)
+	// if (sig == SIGINT)
+	// {
+		//when using get_next_line
+		// exit (0);
+		// ft_putstr_fd("^C\n", 1);
+		// ft_putstr_fd("test", 1);
+		//when using readline
+		// ft_putstr_fd("\n", 1);
+		// rl_replace_line("", 0); //clear the input line
+		// rl_on_new_line(); //Go to a new line
+		// rl_redisplay(); //Redisplay the prompt
+
+
+		signalnum = 3;
+		if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
+			perror("tcgetattr");
+	 	// termios_p.c_lflag |= ICANON;
+		termios_p.c_lflag &= ~ECHOCTL;
+		if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
+		{
+			perror("tcsetattr");
+		}
+		// rl_done = 1;
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
+			perror("tcgetattr");
+		termios_p.c_lflag |= ECHOCTL;
+		termios_p.c_lflag |= ICANON;
+		// termios_p.c_lflag &= ~ICANON;
+		if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
+		{
+			perror("tcsetattr");
+		}
+
+		// rl_replace_line("  ^C  ", 0); //clear the input line
+		// rl_on_new_line(); //Go to a new line
+		// rl_redisplay(); //Redisplay the prompt
+
+	// }
+	// else
+	// {
+	// 	// write(2, "\n", 1);
+	// 	rl_replace_line("", 0); //clear the input line
+	// 	rl_on_new_line(); //Go to a new line
+	// 	rl_redisplay(); //Redisplay the prompt
+	// 	signalnum = 2;
+	// 	// big->
+	// 	// ft_putstr_fd("do nothing\n", 1);
+	// }
+}
+
+static void	handle_sigint_inter(int sig)
 {
 	// (void) sig;
 	if (sig == SIGINT)
 	{
-		ft_putstr_fd("^C\n", 2);
-		rl_replace_line("  hi", 0); //clear the input line
+		// rl_redisplay(); //Redisplay the prompt
+		// write(1, "^C", 2);
+		ft_putstr_fd("\n", 1);
+		rl_replace_line("", 0); //clear the input line
 		rl_on_new_line(); //Go to a new line
 		rl_redisplay(); //Redisplay the prompt
+		// rl_done = 1;
 		signalnum = 1;
 	}
 	else
 	{
 		// write(2, "\n", 1);
 		rl_replace_line("", 0); //clear the input line
-		// rl_on_new_line(); //Go to a new line
-		// rl_redisplay(); //Redisplay the prompt
+		rl_on_new_line(); //Go to a new line
+		rl_redisplay(); //Redisplay the prompt
 		signalnum = 2;
 		// big->
 		// ft_putstr_fd("do nothing\n", 1);
@@ -42,23 +100,34 @@ static void	handle_sigint(int sig)
 
 /**
  * @brief function that changes the standard behaviour of terminal
- * to not print control sequences like ^\
+ * to not print control sequences like ^\ or ^C if false
  * 
  * 1st the current set has to be catched
  * 2nd the new config (~ECHOCTL) has to be implemented
  * 3rd the new config has to be set
  * 
- * @param 
+ * @param rl_antes a booelean value that determines 
+ * wether to enable (true) printing control sequences or not (false)
 */
-int	ft_terminal_config(void)
+int	ft_terminal_config(bool rl_antes)
 {
 	struct termios	termios_p;
 	
+	(void) rl_antes;
 	// termios_p = NULL;
 	// ft_memset(termios_p, 0, sizeof(termios_p));
 	if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
 		return (-1);
-	termios_p.c_lflag &= ~ECHOCTL;
+	// if (rl_antes == true)
+	// {
+	termios_p.c_lflag |= ECHOCTL;
+	termios_p.c_lflag &= ~ICANON;
+	// }
+	// else
+	// {
+	// 	termios_p.c_lflag |= ICANON;
+	// 	termios_p.c_lflag &= ~ECHOCTL;
+	// }
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
 	{
 		perror("tcsetattr");
@@ -69,25 +138,43 @@ int	ft_terminal_config(void)
 
 /**
  * @brief in this function signal actions are coordinated
- * 1st all signal are set to zero
- * 2nd signalsets are only set to those signals required
+ * 1st signalset is set to zero
+ * 2nd signalsets are only set to those signals required (NECESSARY???)
  * 3rd signals sigquit and sigint are defined
+ * 
+ * @param heredoc a boolean value that determines if incoming signals should be
+ * handled in commandline-input mode(false) or in heredoc-mode(true) 
+ * as readline behaviour in heredoc needs special treatment 
+ * (it also has to exit heredoc)
+ * 
  */
-int	ft_handle_signals(void)
+int	ft_handle_signals(bool heredoc)
 {
 	sigset_t set;
 	struct sigaction sa;
 
 	// int signum;
-
+	// (void) rl_antes;
 	ft_memset(&sa, 0, sizeof(sa));
-	sa.sa_handler = &handle_sigint;
-	sa.sa_flags = 0;
-	if (ft_terminal_config() == -1)
+	if (heredoc == true)
 	{
-		perror("tcgetattr faulty\n");
-		return (-1);
+		sa.sa_handler = &handle_sigint_inter;
+		if (ft_terminal_config(true) == -1)
+		{
+			perror("tcgetattr faulty\n");
+			return (-1);
+		}
 	}
+	else
+	{
+		sa.sa_handler = &handle_sigint_non;
+		if (ft_terminal_config(false) == -1)
+		{
+			perror("tcgetattr faulty\n");
+			return (-1);
+		}
+	}
+	sa.sa_flags = 0;
 	if (sigemptyset(&set) == -1)
 	{
 		perror("sigemtyset\n");
@@ -95,8 +182,9 @@ int	ft_handle_signals(void)
 	}
 	sa.sa_mask = set;
 	sigaddset(&set, SIGINT);
-	// sigaddset(&set, SIGQUIT);
+	sigaddset(&set, SIGQUIT);
 	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
 	// handle_sigquit();
 	return (0);

@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <sys/ioctl.h>
 
 /**
  * The function deletes a tmp file of heredoc
@@ -31,24 +32,46 @@ void	delete_heredoc(t_data *comm_info)
  * @param write_end: File descriptor for the file being written to.
  * @param lim: The delimiter string that marks the end of the input.
  */
-static void	here_read_helper(int write_end, char *lim)
+static int	here_read_helper(int write_end, char *lim)
 {
 	char	*str;
 
-	while (1)
+	str = NULL;
+	while (signalnum != 3)
 	{
-		write(1, ">", 1);
-		write(1, " ", 1);
-		str = get_next_line(0);
-		if (ft_strncmp(str, lim, ft_strlen(lim)) == 0
-			&& str[ft_strlen(lim)] == 10)
+		// printf("signalnum A: %i\n", signalnum);
+		// printf("signalnum B: %i\n", signalnum);
+		ft_handle_signals(false);
+		str = readline("> ");
+		if (!str)
+		{
+			ft_putstr_fd("bash: warning: here-document at line 1 ", 2);
+			ft_putstr_fd("delimited by \"end-of-file (wanted `", 2);
+			ft_putstr_fd(lim, 2);
+			ft_putstr_fd("\')\n", 2);
+			signalnum = 3;
+		}
+		// dprintf(2, "print str: $%s$, count str: %zu\n", str, ft_strlen(str));
+		// if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
+		// 	&& str[ft_strlen(lim)] == 10)
+		if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
+			&& ft_strlen(lim) == ft_strlen(str))
 		{
 			free(str);
-			return ;
+			return (0);
 		}
-		write(write_end, str, ft_strlen(str));
-		free(str);
+		if (str)
+		{
+			write(write_end, str, ft_strlen(str));
+			free(str);
+		}
 	}
+	if (signalnum == 3)
+	{
+		signalnum = 0;
+		return (1);
+	}
+	return (0);
 }
 
 /**
@@ -64,8 +87,8 @@ static int	here_read(char *name, char *lim)
 {
 	int	fd;
 
+	(void) lim;
 	fd = fd_out_creator(false, name);
-	here_read_helper(fd, lim);
 	return (fd);
 }
 
@@ -91,5 +114,7 @@ int	heredoc_start(t_data *comm_info, char *limiter)
 	free(cmd_no_str);
 	fd = here_read(name, limiter);
 	free(name);
+	if (here_read_helper(fd, limiter))
+		fd = -1;
 	return (fd);
 }
