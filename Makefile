@@ -6,7 +6,7 @@ LIBFT_PATH = $(CUR_DIR)/libft
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -g -Iinclude -Isrcs -Ireadline
-RLFLAG = -lreadline
+RLFLAG = -lreadline -lncurses -ltinfo
 
 #sources
 #VPATH = sources:include

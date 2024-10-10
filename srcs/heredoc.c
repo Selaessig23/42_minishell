@@ -1,5 +1,7 @@
 #include "minishell.h"
 #include <sys/ioctl.h>
+#include <termios.h>
+
 
 /**
  * The function deletes a tmp file of heredoc
@@ -46,7 +48,7 @@ static int	here_read_helper(int write_end, char *lim)
 		str = get_next_line(0);
 		if (!str && signalnum != 3)
 		{
-			ft_putstr_fd("bash: warning: here-document at line 1 ", 2);
+			ft_putstr_fd("\nbash: warning: here-document at line 1 ", 2);
 			ft_putstr_fd("delimited by \"end-of-file (wanted `", 2);
 			ft_putstr_fd(lim, 2);
 			ft_putstr_fd("\')\n", 2);

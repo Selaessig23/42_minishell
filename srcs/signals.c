@@ -25,7 +25,7 @@ static void	handle_sigint_non(int sig)
 	// {
 		//when using get_next_line
 		// exit (0);
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("^C\n", 1);
 		// ft_putstr_fd("test", 1);
 		//when using readline
 		// ft_putstr_fd("\n", 1);
