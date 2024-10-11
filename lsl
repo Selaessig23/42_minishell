@@ -12,8 +12,6 @@ infile
 libft
 limit
 lsl
-lslslslslslslslsls
-lsm
 minishell
 obj
 outfile

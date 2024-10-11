@@ -115,32 +115,80 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
     if (pid == 0)
 	{
         close(fd[0]);
-        dup2(comm_info->fd_outfile, STDOUT_FILENO);
-		close(fd[1]);
-		//close(comm_info->fd_outfile);
+		if (c_i_next == NULL)
+		{
+			fprintf(stderr, "child. it's the last command\n");
+			if (comm_info->fd_infile == 0 && comm_info->fd_outfile == 1)
+			{
+				fprintf(stderr, "no < or << and > or >>\n");
+				call_cmd(comm_info->cmd, big->env);
+			}
+			if (comm_info->fd_outfile == 1 )
+			{
+				fprintf(stderr, "output to terminal\n");
+			}
+			if (comm_info->fd_infile == 0)
+			{
+				fprintf(stderr, "input from terminal (if needed)\n");
+			}
+			if (comm_info->fd_outfile > 1)
+			{
+				fprintf(stderr, "output to file\n");
+				dup2(comm_info->fd_outfile, STDOUT_FILENO);
+				close(comm_info->fd_outfile);
+			}
+			if (comm_info->fd_infile > 0)
+			{
+				fprintf(stderr, "input from file or prev. pipe\n");
+				dup2(comm_info->fd_infile, STDIN_FILENO);
+				close(comm_info->fd_infile);
+			}
+		}
+		else if (c_i_next != NULL && comm_info->fd_outfile == 1)
+		{
+			fprintf(stderr, "child. it's not the last command\n");
+			dup2(comm_info->fd_infile, STDIN_FILENO);
+			close(comm_info->fd_infile);
+			dup2(fd[1], STDOUT_FILENO);
+		}
         call_cmd(comm_info->cmd, big->env);
     }
     else if (pid != 0)
     {
         close(fd[1]);
-		//w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
-		//w_dup2(fd[0], STDIN_FILENO, -2);
+		printf("\nparent. %s\n", comm_info->cmd[0]);
 		printf("id_infile: %d\n", comm_info->fd_infile);
-		if (comm_info->fd_infile != 0)
-		{
-			w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
-			close(comm_info->fd_infile);
-		}
+		printf("fd_outfile: %d\n", comm_info->fd_outfile);
+		// if (comm_info->fd_infile > 1 && comm_info->fd_infile == 0)
+		// {
+		// 	w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
+		// 	//close(comm_info->fd_infile);
+		// }
+		// else
+		// {
+		// 	w_dup2(fd[0], STDIN_FILENO, -2);
+		// 	close(fd[0]);
+		// }
+		waitpid(pid, NULL, 0);
 		if (c_i_next != NULL)
         {
+			printf("fd_outfile: %d\n", comm_info->fd_outfile);
+			printf("c_i_next->fd_infile: %d\n", c_i_next->fd_infile);
             if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
-            	c_i_next->fd_infile = fd[0];
+            {
+				printf("fd[0]: %d\n", fd[0]);
+				printf("sending fd[0] to next fd_infile...\n");
+				//close(c_i_next->fd_infile);
+				c_i_next->fd_infile = fd[0];
+			}
         }
         else if (c_i_next == NULL)
+		{
+			close(fd[0]);
 			printf("ft_binar_exe. c_i_next == NULL\n");
-		close(fd[0]);
-		waitpid(pid, NULL, 0);
-		
+		}
+		// якщо статус дитячого процесу - еррор, а є наступна пайпа
+		// то у неї передаємо dev/null
     }
     comm_info->id = pid;
 }
