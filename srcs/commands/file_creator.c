@@ -20,7 +20,9 @@ int	fd_in_checker(t_data *comm_info, char *infile)
 
 	fd_in = 0;
 	if (comm_info->in_heredoc == true)
+	{
 		fd_in = heredoc_start(comm_info, infile);
+	}
 	else if (access(infile, F_OK))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -87,11 +89,15 @@ int	fd_out_creator(bool appender, char *filename)
 	fd_out = 0;
 	if (access(filename, F_OK))
 	{
-		fd_out = open(filename, O_WRONLY | O_CREAT, 0644);
+		printf("fd_out_creator. file does not exist. I open a file\n");
+		fd_out = open(filename, O_WRONLY | O_RDONLY | O_CREAT, 0644);
 		if (fd_out == -1)
 			error_handling(1);
+		printf("fd of heredoc is: %i\n", fd_out);
 	}
 	else
+	{
 		fd_out = ft_get_fd(appender, filename);
+	}
 	return (fd_out);
 }

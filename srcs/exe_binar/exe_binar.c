@@ -121,6 +121,7 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 			if (comm_info->fd_infile == 0 && comm_info->fd_outfile == 1)
 			{
 				fprintf(stderr, "no < or << and > or >>\n");
+				fprintf(stderr, "_ _ _ _ _ _ _ _ _ _\n");
 				call_cmd(comm_info->cmd, big->env);
 			}
 			if (comm_info->fd_outfile == 1 )
@@ -140,6 +141,7 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 			if (comm_info->fd_infile > 0)
 			{
 				fprintf(stderr, "input from file or prev. pipe\n");
+				printf("fd_infile: %i\n", comm_info->fd_infile);
 				dup2(comm_info->fd_infile, STDIN_FILENO);
 				close(comm_info->fd_infile);
 			}
@@ -151,6 +153,7 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 			close(comm_info->fd_infile);
 			dup2(fd[1], STDOUT_FILENO);
 		}
+		fprintf(stderr, "_ _ _ _ _ _ _ _ _ _\n");
         call_cmd(comm_info->cmd, big->env);
     }
     else if (pid != 0)
@@ -159,16 +162,6 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 		printf("\nparent. %s\n", comm_info->cmd[0]);
 		printf("id_infile: %d\n", comm_info->fd_infile);
 		printf("fd_outfile: %d\n", comm_info->fd_outfile);
-		// if (comm_info->fd_infile > 1 && comm_info->fd_infile == 0)
-		// {
-		// 	w_dup2(comm_info->fd_infile, STDIN_FILENO, -2);
-		// 	//close(comm_info->fd_infile);
-		// }
-		// else
-		// {
-		// 	w_dup2(fd[0], STDIN_FILENO, -2);
-		// 	close(fd[0]);
-		// }
 		waitpid(pid, NULL, 0);
 		if (c_i_next != NULL)
         {
@@ -180,6 +173,9 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 				printf("sending fd[0] to next fd_infile...\n");
 				//close(c_i_next->fd_infile);
 				c_i_next->fd_infile = fd[0];
+
+				// dup2(fd[0], c_i_next->fd_infile);
+				// close(fd[0]);
 			}
         }
         else if (c_i_next == NULL)

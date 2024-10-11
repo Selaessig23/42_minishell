@@ -124,19 +124,20 @@ int ft_executer(t_big *big, char *prompt)
 				ft_binar_exe(comm_info, comm_info_next, big);
 			}
 			// printf("fd infile: %i, fd outfile: %i\n", comm_info->fd_infile, comm_info->fd_outfile);
-			if (comm_info->fd_infile > 2)
-				close(comm_info->fd_infile);
-			if (comm_info->in_heredoc == true)
-				delete_heredoc(comm_info);
-			if (comm_info->fd_outfile > 2)
-				close(comm_info->fd_outfile);
 		}
+		if (comm_info->fd_infile > 2)
+			close(comm_info->fd_infile);
+		if (comm_info->in_heredoc == true)
+			delete_heredoc(comm_info);
+		if (comm_info->fd_outfile > 2)
+			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
 	// Restore STDIN if it was changed before
 	// If you redirected STDIN, reset it back to original terminal
 	int terminal_fd = open("/dev/tty", O_RDONLY); // Open terminal for reading
 	dup2(terminal_fd, STDIN_FILENO);			  // Restore STDIN
+	close(terminal_fd);
 
 	/// wait pid function.
 	/// extract exit status
