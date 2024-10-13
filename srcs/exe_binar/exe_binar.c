@@ -181,10 +181,10 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
         else if (c_i_next == NULL)
 		{
 			close(fd[0]);
-			printf("ft_binar_exe. c_i_next == NULL\n");
 		}
-		// якщо статус дитячого процесу - еррор, а є наступна пайпа
-		// то у неї передаємо dev/null
+		// if the status of the child process is error, 
+		//and there is another pipe, then we transfer 
+		// dev/null to it, and displays error message
     }
     comm_info->id = pid;
 }

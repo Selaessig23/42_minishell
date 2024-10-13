@@ -8,6 +8,44 @@
  */
 
 /**
+ * Prints an error message to standard error when a command is not found 
+ * in the system's executable paths.
+ * 
+ * @param cmd_plus_args[0] The first element of **cmd_plus_args 
+ * is the command.
+ */
+void	no_cmd_path(char **cmd_plus_args)
+{
+	ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
+	ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+}
+
+/**
+ * Used at the early stage of program in functions - "check_args_hdoc" 
+ * and "check_args_multi". It explicitly prints an error message 
+ * (via "no_cmd_path") if the command cannot be found.
+ */
+static int	check_cmd(char **cmd_plus_args, char *env[])
+{
+	char	*cmd_path;
+
+	if (access(cmd_plus_args[0], F_OK | X_OK) == 0)
+		return (0);
+	cmd_path = get_path(cmd_plus_args[0], env);
+	if (!cmd_path)
+	{
+		no_cmd_path(cmd_plus_args);
+		return (1);
+	}
+	else
+	{
+		free(cmd_path);
+		return (0);
+	}
+}
+
+/**
  * @brief Used to discard input when no valid command is provided,
  * preventing unnecessary input processing from the original file descriptor.
  *
@@ -119,6 +157,7 @@ int ft_executer(t_big *big, char *prompt)
 			}
 			else
 			{
+				check_cmd(comm_info->cmd, big->env);
 				// ft_test_command_print(prompt, comm_info, big);
 				//  if the command invalid - displays an error
 				ft_binar_exe(comm_info, comm_info_next, big);

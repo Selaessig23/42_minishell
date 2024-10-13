@@ -213,5 +213,6 @@ void	perror_and_exit(char *what_error, int *pipe_fd);
 
 //exe_binar/exe_binar_2.c
 void	call_cmd(char **cmd_plus_args, char *env[]);
+char	*get_path(char *cmd_name, char **env);
 
 #endif
