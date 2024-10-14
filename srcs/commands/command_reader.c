@@ -107,6 +107,15 @@ static void	restore_stdin()
 	close(terminal_fd);
 }
 
+static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
+{
+	t_data *data;
+
+	data = (ft_lstlast(cmdlist))->content;
+	if (!ft_builtin_checker(data))
+		big->exit_code = exit_status_binar;
+}
+
 /**
  * @brief function to organises the execution part
  * 1st it checks for builtin-functions
@@ -122,7 +131,9 @@ int ft_executer(t_big *big, char *prompt)
 	t_list *curr;
 	t_data *comm_info;
 	t_data *comm_info_next;
+	int		exit_status_binary;
 
+	exit_status_binary = -100;
 	curr = big->cmdlist;
 	comm_info = curr->content;
 	while (curr != NULL)
@@ -145,10 +156,8 @@ int ft_executer(t_big *big, char *prompt)
 			else
 			{
 				check_cmd(comm_info->cmd, big->env);
-				// ft_test_command_print(prompt, comm_info, big);
 				ft_binar_exe(comm_info, comm_info_next, big);
 			}
-			// printf("fd infile: %i, fd outfile: %i\n", comm_info->fd_infile, comm_info->fd_outfile);
 		}
 		if (comm_info->fd_infile > 2)
 			close(comm_info->fd_infile);
@@ -158,16 +167,11 @@ int ft_executer(t_big *big, char *prompt)
 			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
-	w_waitpid(big);
 	restore_stdin();
-	// if !ft_builtin_checker(ft_lastlst(big->cmdlist));
-	// the last command is binary
-	// then exitcode is a return of w_waitpid;
-	// 
-	// else do nothing
-	// 
-	/// extract exit status
+	exit_status_binary = w_waitpid(big);
+	assign_exit_code(big->cmdlist, exit_status_binary, big);
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
+	ft_dprintf("FINAL EXIT CODE: %d\n", big->exit_code);
 	return (0);
 }

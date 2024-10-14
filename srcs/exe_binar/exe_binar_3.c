@@ -29,14 +29,10 @@ int w_waitpid(t_big *big)
     {
         comm_info = curr->content;
         waitpid(comm_info->id, &status, 0);
-		ft_dprintf("status after waitpid: %d\n", status);
         curr = curr->next;
     }
 	if (WIFEXITED(status))
 		exitcode = WEXITSTATUS(status);
-	//ft_dprintf("status: %d\n", status);
-	ft_dprintf("exitcode: %d\n", exitcode);
-	
     return(exitcode);
 }
 	

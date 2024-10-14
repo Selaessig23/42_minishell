@@ -182,20 +182,14 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
     {
         close(fd[1]);
 		printf("\nparent. %s\n", comm_info->cmd[0]);
-		printf("fd_infile: %d\n", comm_info->fd_infile);
-		printf("fd_outfile: %d\n", comm_info->fd_outfile);
+		// printf("fd_infile: %d\n", comm_info->fd_infile);
+		// printf("fd_outfile: %d\n", comm_info->fd_outfile);
 		if (c_i_next != NULL)
         {
-			printf("fd_outfile: %d\n", comm_info->fd_outfile);
-			printf("c_i_next->fd_infile: %d\n", c_i_next->fd_infile);
             if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
             {
-				printf("fd[0]: %d\n", fd[0]);
 				printf("sending fd[0] to next fd_infile...\n");
-				//close(c_i_next->fd_infile);
 				c_i_next->fd_infile = fd[0];
-				// dup2(fd[0], c_i_next->fd_infile);
-				// close(fd[0]);
 			}
 			else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
 			{
@@ -204,12 +198,7 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 			}
         }
         else if (c_i_next == NULL)
-		{
 			close(fd[0]);
-		}
-		// if the status of the child process is error, 
-		//and there is another pipe, then we transfer 
-		// dev/null to it, and displays error message
     }
 	comm_info->id = pid;
 }
