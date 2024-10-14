@@ -34,8 +34,9 @@ int w_waitpid(t_big *big)
     }
 	if (WIFEXITED(status))
 		exitcode = WEXITSTATUS(status);
-	ft_dprintf("status: %d\n", status);
+	//ft_dprintf("status: %d\n", status);
 	ft_dprintf("exitcode: %d\n", exitcode);
+	
     return(exitcode);
 }
 	

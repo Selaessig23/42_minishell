@@ -2,6 +2,26 @@
 #include "minishell.h"
 
 /**
+ * @brief Used to discard input when no valid command is provided,
+ * preventing unnecessary input processing from the original file descriptor.
+ *
+ * The "dev_null" function is used when the command in "acces_cmd" function
+ * is invalid.
+ *
+ * In case of an issue with the command, the program redirects the
+ * input source (fd_to_read) to /dev/null. So there's no input to process,
+ * and it discards anything that might have been read from the original
+ * file descriptor.
+ */
+int dev_null(int read_from)
+{
+	if (read_from > 0)
+		close(read_from);
+	read_from = open("/dev/null", O_RDONLY);
+	return (read_from);
+}
+
+/**
  * Prints a message to standard error describing the error associated 
  * with the given argument, based on the current value of errno.
  * 
@@ -191,5 +211,5 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 		//and there is another pipe, then we transfer 
 		// dev/null to it, and displays error message
     }
-    comm_info->id = pid;
+	comm_info->id = pid;
 }

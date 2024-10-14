@@ -45,26 +45,6 @@ static int	check_cmd(char **cmd_plus_args, char *env[])
 }
 
 /**
- * @brief Used to discard input when no valid command is provided,
- * preventing unnecessary input processing from the original file descriptor.
- *
- * The "dev_null" function is used when the command in "acces_cmd" function
- * is invalid.
- *
- * In case of an issue with the command, the program redirects the
- * input source (fd_to_read) to /dev/null. So there's no input to process,
- * and it discards anything that might have been read from the original
- * file descriptor.
- */
-static int dev_null(int read_from)
-{
-	if (read_from > 0)
-		close(read_from);
-	read_from = open("/dev/null", O_RDONLY);
-	return (read_from);
-}
-
-/**
  * @brief function to organise execution of built-in-commands
  *
  * @param comm_info struct with all necessary infos to
@@ -162,15 +142,9 @@ int ft_executer(t_big *big, char *prompt)
 			}
 			else if (ft_builtin_checker(comm_info))
 				ft_builtin_executer(comm_info, big, prompt);
-			else if (check_cmd(comm_info->cmd, big->env))
-			{
-				// command does not exist. what exit status?
-				big->exit_code = 127;
-				// if(comm_info_next && comm_info_next->fd_infile == 0)
-				// 	comm_info_next->fd_infile = dev_null_for_zero(comm_info_next->fd_infile);
-			}
 			else
 			{
+				check_cmd(comm_info->cmd, big->env);
 				// ft_test_command_print(prompt, comm_info, big);
 				ft_binar_exe(comm_info, comm_info_next, big);
 			}
@@ -186,6 +160,12 @@ int ft_executer(t_big *big, char *prompt)
 	}
 	w_waitpid(big);
 	restore_stdin();
+	// if !ft_builtin_checker(ft_lastlst(big->cmdlist));
+	// the last command is binary
+	// then exitcode is a return of w_waitpid;
+	// 
+	// else do nothing
+	// 
 	/// extract exit status
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
