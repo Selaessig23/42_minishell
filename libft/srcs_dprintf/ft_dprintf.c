@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 /* DESCRIPTION: */
-/* Print ARGUMENT(s) according to FORMAT to STANDART ERROR */
+/* Prints ARGUMENT(s) according to FORMAT to STANDART ERROR */
 /* Instruction of subject file: */
 /* You have to implement the following conversions:
 • %c Prints a single character.
@@ -51,6 +51,9 @@ static int	ft_switch(char c, va_list args)
 		return (0);
 }
 
+/**
+ * @brief Prints ARGUMENT(s) according to FORMAT to STANDART ERROR
+ */
 int	ft_dprintf(const char *format, ...)
 {
 	size_t	i;

@@ -215,4 +215,7 @@ void	perror_and_exit(char *what_error, int *pipe_fd);
 void	call_cmd(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
 
+//exe_binar/exe_binar_3.c
+int		w_waitpid(t_big *big);
+
 #endif

@@ -22,8 +22,7 @@ void	no_cmd_path(char **cmd_plus_args)
 }
 
 /**
- * Used at the early stage of program in functions - "check_args_hdoc" 
- * and "check_args_multi". It explicitly prints an error message 
+ * It explicitly prints an error message 
  * (via "no_cmd_path") if the command cannot be found.
  */
 static int	check_cmd(char **cmd_plus_args, char *env[])
@@ -168,11 +167,15 @@ int ft_executer(t_big *big, char *prompt)
 				// printf("---------------------------------------------\n");
 				//  return (1);
 			}
+			else if (check_cmd(comm_info->cmd, big->env))
+			{
+				// command does not exist. what exit status?
+				if(comm_info_next && comm_info_next->fd_infile == 0)
+					comm_info_next->fd_infile = dev_null(comm_info_next->fd_infile);
+			}
 			else
 			{
-				check_cmd(comm_info->cmd, big->env);
 				// ft_test_command_print(prompt, comm_info, big);
-				//  if the command invalid - displays an error
 				ft_binar_exe(comm_info, comm_info_next, big);
 			}
 			// printf("fd infile: %i, fd outfile: %i\n", comm_info->fd_infile, comm_info->fd_outfile);
@@ -185,8 +188,8 @@ int ft_executer(t_big *big, char *prompt)
 			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
+	w_waitpid(big);
 	restore_stdin();
-	/// wait pid function.
 	/// extract exit status
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;

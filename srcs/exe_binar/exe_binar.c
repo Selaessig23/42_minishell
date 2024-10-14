@@ -1,10 +1,6 @@
 
 #include "minishell.h"
 
-// waitpid(pid2, &status, 0);
-// 		if (WIFEXITED(status))
-// 			exitcode = WEXITSTATUS(status);
-
 /**
  * Prints a message to standard error describing the error associated 
  * with the given argument, based on the current value of errno.
@@ -162,7 +158,6 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 		printf("\nparent. %s\n", comm_info->cmd[0]);
 		printf("id_infile: %d\n", comm_info->fd_infile);
 		printf("fd_outfile: %d\n", comm_info->fd_outfile);
-		waitpid(pid, NULL, 0);
 		if (c_i_next != NULL)
         {
 			printf("fd_outfile: %d\n", comm_info->fd_outfile);
