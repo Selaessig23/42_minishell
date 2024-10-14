@@ -18,7 +18,7 @@
  * @param token node of token-list that has to be cleaned from quotes
  * @param big structure which contains the environmental variable array
  */
-static void	ft_var_checker(void	**token, t_big *big)
+void	ft_var_checker(void	**token, t_big *big)
 {
 	t_lexer	*temp;
 	char	*value_new;
@@ -51,6 +51,10 @@ static void	ft_var_checker(void	**token, t_big *big)
 /**
  * @brief function that organises the expansion and reduction
  * of command line input by checking for specific string tokens
+ * What is more: If there is a redirect heredoc it checks for
+ * the following token, if word it overwrites the token to 
+ * HEREDOC_LIMITER = 30, as heredoc input has to be expanded while 
+ * heredoc handling
  * 
  * MISSING, if we want to handle UNCLOSED QUOTES: delete them
  * 

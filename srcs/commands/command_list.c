@@ -167,8 +167,12 @@ static t_list	*ft_set_r_in(t_lexer *token,
 		comm_info->in_heredoc = true;
 	lexx = lexx->next;
 	token = lexx->content;
+	if (token->token == 30)
+		comm_info->heredoc_expander = true;
+	else
+		comm_info->heredoc_expander = false;
 	comm_info->fd_infile = 
-		fd_in_checker(comm_info, token->value);
+		fd_in_checker(comm_info, token->value, p_big);
 	if (comm_info->fd_infile == -1)
 		big->exit_code = 1;
 	return (lexx);

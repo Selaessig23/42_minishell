@@ -69,7 +69,8 @@ typedef enum e_tokentype
 		// like argument1"withoutspaceafterquotes
 	S_Q_WORD_F = 28, // to define cases a single single quotation mark
 		//like argument1'withoutspaceafterquotes
-	WORD_CLEANED = 29 // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
+	WORD_CLEANED = 29, // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
+	HEREDOC_LIMITER = 30 //
 }	t_tokentype;
 
 // struct for lexer analysis
@@ -85,6 +86,7 @@ typedef struct s_data {
 	// int	infile;// Input file descriptor (defaults to stdin)
 	// int	outfile;// Output file descriptor (defaults to stdout)
 	bool	in_heredoc;
+	bool	heredoc_expander;
 	bool	out_append;
 	int		fd_infile;
 	int		fd_outfile;
@@ -163,6 +165,7 @@ int		ft_syntax(t_list *lexx);
 void	ft_syntax_errors(t_list *lexx, int errorno);
 //expander/expander.c
 void	ft_expa_precond(t_list *lexx, t_big *big);
+void	ft_var_checker(void	**token, t_big *big);
 //expander/expander_quotes.c
 void	ft_quote_checker(void **token);
 //expander/expander_env.c
@@ -182,8 +185,8 @@ void	ft_q_word_handling(void **token, t_big *big);
 //commands/command_list.c
 void	ft_commands(t_list *lexx, t_big **big);
 int		fd_out_creator(bool appender, char *filename);
-//int		fd_in_checker(bool heredoc, char *infile);
-int		fd_in_checker(t_data *comm_info, char *infile);
+//commands/file_creator.
+int		fd_in_checker(t_data *comm_info, char *infile, t_big **p_big);
 //commands/command_utils.c
 void	ft_free_cl(t_list **ll);
 //commands/command_reader.c
@@ -207,7 +210,7 @@ int		check_dash_in_var_name(char *argument);
 int		ft_unset(t_big *big, t_data *comm_info);
 size_t	count_till_char(char *str, char up_to);
 //heredoc.c
-int		heredoc_start(t_data *comm_info, char *limiter);
+int		heredoc_start(t_data *comm_info, char *limiter, t_big **p_big);
 void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
 void	ft_minishell_help(int fd);
