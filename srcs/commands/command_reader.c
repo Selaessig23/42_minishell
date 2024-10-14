@@ -58,11 +58,10 @@ static int	check_cmd(char **cmd_plus_args, char *env[])
  */
 static int dev_null(int read_from)
 {
-	int new_read_from;
-
-	close(read_from);
-	new_read_from = open("/dev/null", O_RDONLY);
-	return (new_read_from);
+	if (read_from > 0)
+		close(read_from);
+	read_from = open("/dev/null", O_RDONLY);
+	return (read_from);
 }
 
 /**
@@ -162,16 +161,13 @@ int ft_executer(t_big *big, char *prompt)
 				printf("EXIT WITH ERROR\n");
 			}
 			else if (ft_builtin_checker(comm_info))
-			{
 				ft_builtin_executer(comm_info, big, prompt);
-				// printf("---------------------------------------------\n");
-				//  return (1);
-			}
 			else if (check_cmd(comm_info->cmd, big->env))
 			{
 				// command does not exist. what exit status?
-				if(comm_info_next && comm_info_next->fd_infile == 0)
-					comm_info_next->fd_infile = dev_null(comm_info_next->fd_infile);
+				big->exit_code = 127;
+				// if(comm_info_next && comm_info_next->fd_infile == 0)
+				// 	comm_info_next->fd_infile = dev_null_for_zero(comm_info_next->fd_infile);
 			}
 			else
 			{

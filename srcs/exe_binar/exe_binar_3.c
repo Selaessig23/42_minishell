@@ -13,7 +13,7 @@
  * @param big->cmdlist: A pointer to a "comm_info" structure containing
  * the list of process IDs to wait for.
 */
-//This macro WIFEXITED returns true if the child process 
+// This macro WIFEXITED returns true if the child process 
 // exited normally.
 int w_waitpid(t_big *big)
 {
@@ -29,10 +29,13 @@ int w_waitpid(t_big *big)
     {
         comm_info = curr->content;
         waitpid(comm_info->id, &status, 0);
+		ft_dprintf("status after waitpid: %d\n", status);
         curr = curr->next;
     }
 	if (WIFEXITED(status))
 		exitcode = WEXITSTATUS(status);
+	ft_dprintf("status: %d\n", status);
+	ft_dprintf("exitcode: %d\n", exitcode);
     return(exitcode);
 }
 	

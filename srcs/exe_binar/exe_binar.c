@@ -110,7 +110,7 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 		w_errfork_close(comm_info->fd_infile, fd);
     if (pid == 0)
 	{
-        close(fd[0]);
+       close(fd[0]);
 		if (c_i_next == NULL)
 		{
 			fprintf(stderr, "child. it's the last command\n");
@@ -142,12 +142,18 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 				close(comm_info->fd_infile);
 			}
 		}
-		else if (c_i_next != NULL && comm_info->fd_outfile == 1)
+		else if (c_i_next != NULL) 
 		{
 			fprintf(stderr, "child. it's not the last command\n");
-			dup2(comm_info->fd_infile, STDIN_FILENO);
-			close(comm_info->fd_infile);
-			dup2(fd[1], STDOUT_FILENO);
+			if (comm_info->fd_infile > 0)
+			{
+				dup2(comm_info->fd_infile, STDIN_FILENO);
+				close(comm_info->fd_infile);
+			}
+			if (comm_info->fd_outfile == 1)
+				dup2(fd[1], STDOUT_FILENO);
+			else
+				dup2(comm_info->fd_outfile, STDOUT_FILENO);
 		}
 		fprintf(stderr, "_ _ _ _ _ _ _ _ _ _\n");
         call_cmd(comm_info->cmd, big->env);
@@ -156,7 +162,7 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
     {
         close(fd[1]);
 		printf("\nparent. %s\n", comm_info->cmd[0]);
-		printf("id_infile: %d\n", comm_info->fd_infile);
+		printf("fd_infile: %d\n", comm_info->fd_infile);
 		printf("fd_outfile: %d\n", comm_info->fd_outfile);
 		if (c_i_next != NULL)
         {
@@ -168,9 +174,13 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 				printf("sending fd[0] to next fd_infile...\n");
 				//close(c_i_next->fd_infile);
 				c_i_next->fd_infile = fd[0];
-
 				// dup2(fd[0], c_i_next->fd_infile);
 				// close(fd[0]);
+			}
+			else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
+			{
+				close(fd[0]);
+				c_i_next->fd_infile = open("/dev/null", O_RDONLY);
 			}
         }
         else if (c_i_next == NULL)

@@ -81,7 +81,6 @@ int main(int argc, char **argv, char **envp)
 					ft_free_ll(&lexx);
 					// printf("test8\n");
 					ft_executer(big, prompt);
-					printf("AFTER FT_EXECUTER\n");
 				}
 				else
 				{
