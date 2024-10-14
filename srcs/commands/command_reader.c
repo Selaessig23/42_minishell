@@ -116,6 +116,19 @@ static int ft_builtin_checker(t_data *comm_info)
 		return (0);
 }
 
+// Restore STDIN if it was changed before
+// If you redirected STDIN, reset it back to original terminal
+static void	restore_stdin()
+{
+	int	terminal_fd;
+
+	terminal_fd = open("/dev/tty", O_RDONLY);
+	if (terminal_fd == -1)
+			error_handling(1);
+	dup2(terminal_fd, STDIN_FILENO);
+	close(terminal_fd);
+}
+
 /**
  * @brief function to organises the execution part
  * 1st it checks for builtin-functions
@@ -172,12 +185,7 @@ int ft_executer(t_big *big, char *prompt)
 			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
-	// Restore STDIN if it was changed before
-	// If you redirected STDIN, reset it back to original terminal
-	int terminal_fd = open("/dev/tty", O_RDONLY); // Open terminal for reading
-	dup2(terminal_fd, STDIN_FILENO);			  // Restore STDIN
-	close(terminal_fd);
-
+	restore_stdin();
 	/// wait pid function.
 	/// extract exit status
 	ft_free_cl(&(big->cmdlist));
