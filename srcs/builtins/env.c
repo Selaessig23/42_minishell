@@ -28,6 +28,7 @@ void	ft_print_env(t_data *comm_info, t_big *big)
 		big->exit_code = 0;
 		return ;
 	}
+
 	env_list = big->env;
 	while (env_list && *env_list)
 	{

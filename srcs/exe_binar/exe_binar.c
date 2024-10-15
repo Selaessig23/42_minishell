@@ -133,38 +133,34 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
        close(fd[0]);
 		if (c_i_next == NULL)
 		{
-			fprintf(stderr, "child. it's the last command\n");
+			//fprintf(stderr, "child. it's the last command\n");
 			if (comm_info->fd_infile == 0 && comm_info->fd_outfile == 1)
 			{
-				fprintf(stderr, "no < or << and > or >>\n");
-				fprintf(stderr, "_ _ _ _ _ _ _ _ _ _\n");
+				//fprintf(stderr, "no < or << and > or >>\n");
+				//fprintf(stderr, "_ _ _ _ _ _ _ _ _ _\n");
 				call_cmd(comm_info->cmd, big->env);
 			}
-			if (comm_info->fd_outfile == 1 )
-			{
-				fprintf(stderr, "output to terminal\n");
-			}
-			if (comm_info->fd_infile == 0)
-			{
-				fprintf(stderr, "input from terminal (if needed)\n");
-			}
+			// if (comm_info->fd_outfile == 1 )
+			// 	fprintf(stderr, "output to terminal\n");
+			// if (comm_info->fd_infile == 0)
+			// 	fprintf(stderr, "input from terminal (if needed)\n");
 			if (comm_info->fd_outfile > 1)
 			{
-				fprintf(stderr, "output to file\n");
+				//fprintf(stderr, "output to file\n");
 				dup2(comm_info->fd_outfile, STDOUT_FILENO);
 				close(comm_info->fd_outfile);
 			}
 			if (comm_info->fd_infile > 0)
 			{
-				fprintf(stderr, "input from file or prev. pipe\n");
-				printf("fd_infile: %i\n", comm_info->fd_infile);
+				//fprintf(stderr, "input from file or prev. pipe\n");
+				//printf("fd_infile: %i\n", comm_info->fd_infile);
 				dup2(comm_info->fd_infile, STDIN_FILENO);
 				close(comm_info->fd_infile);
 			}
 		}
 		else if (c_i_next != NULL) 
 		{
-			fprintf(stderr, "child. it's not the last command\n");
+			//fprintf(stderr, "child. it's not the last command\n");
 			if (comm_info->fd_infile > 0)
 			{
 				dup2(comm_info->fd_infile, STDIN_FILENO);
@@ -175,22 +171,19 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 			else
 				dup2(comm_info->fd_outfile, STDOUT_FILENO);
 		}
-		fprintf(stderr, "_ _ _ _ _ _ _ _ _ _\n");
+		
         call_cmd(comm_info->cmd, big->env);
     }
     else if (pid != 0)
     {
         close(fd[1]);
-		printf("\nparent. %s\n", comm_info->cmd[0]);
+		//printf("\nparent. %s\n", comm_info->cmd[0]);
 		// printf("fd_infile: %d\n", comm_info->fd_infile);
 		// printf("fd_outfile: %d\n", comm_info->fd_outfile);
 		if (c_i_next != NULL)
         {
             if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
-            {
-				printf("sending fd[0] to next fd_infile...\n");
 				c_i_next->fd_infile = fd[0];
-			}
 			else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
 			{
 				close(fd[0]);

@@ -30,7 +30,7 @@ int main(int argc, char **argv, char **envp)
 	lexx = NULL;
 	// comm = NULL;
 	exitcode = 0;
-	ft_welcome();
+	//ft_welcome();
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)

@@ -96,16 +96,16 @@ static int ft_builtin_checker(t_data *comm_info)
 
 // Restore STDIN if it was changed before
 // If you redirected STDIN, reset it back to original terminal
-static void	restore_stdin()
-{
-	int	terminal_fd;
+// static void	restore_stdin()
+// {
+// 	int	terminal_fd;
 
-	terminal_fd = open("/dev/tty", O_RDONLY);
-	if (terminal_fd == -1)
-			error_handling(1);
-	dup2(terminal_fd, STDIN_FILENO);
-	close(terminal_fd);
-}
+// 	terminal_fd = open("/dev/tty", O_RDONLY);
+// 	if (terminal_fd == -1)
+// 			error_handling(1);
+// 	dup2(terminal_fd, STDIN_FILENO);
+// 	close(terminal_fd);
+// }
 
 static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 {
@@ -143,14 +143,14 @@ int ft_executer(t_big *big, char *prompt)
 			comm_info_next = curr->next->content;
 		else
 			comm_info_next = NULL;
-		if (comm_info->cmd[0] == NULL)
-			printf("Pipe #%zu has NO command\n", comm_info->commands_no);
-		else if (comm_info->cmd[0] != NULL)
+		if (comm_info->cmd[0] != NULL)
 		{
 			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
 			{
 				printf("EXIT WITH ERROR\n");
 			}
+			// else if (big->count_commds == comm_info->commands_no)
+			// export, unset, cd, exit
 			else if (ft_builtin_checker(comm_info))
 				ft_builtin_executer(comm_info, big, prompt);
 			else
@@ -167,11 +167,11 @@ int ft_executer(t_big *big, char *prompt)
 			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
-	restore_stdin();
+	//restore_stdin();
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
-	ft_dprintf("FINAL EXIT CODE: %d\n", big->exit_code);
+	//ft_dprintf("FINAL EXIT CODE: %d\n", big->exit_code);
 	return (0);
 }
