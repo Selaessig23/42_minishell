@@ -41,6 +41,7 @@ int main(int argc, char **argv, char **envp)
 		// if (!*__environ)
 			// error_handling(4);
 		prompt = ft_strdup("Marina's and Markus' minishell>");
+		input = NULL;
 		big = init_t_big(envp);
 		while (1)
 		{

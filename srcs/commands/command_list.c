@@ -170,7 +170,10 @@ static t_list	*ft_set_r_in(t_lexer *token,
 	comm_info->fd_infile = 
 		fd_in_checker(comm_info, token->value);
 	if (comm_info->fd_infile == -1)
+	{
 		big->exit_code = 1;
+		// return (ft_lstlast(lexx));
+	}
 	return (lexx);
 }
 
@@ -198,6 +201,7 @@ static void	init_comm(t_data **p_comm_info, t_list *lexx)
 	comm_info->fd_infile = 0;
 	comm_info->out_append = false;
 	comm_info->fd_outfile = 1;
+	comm_info->id = 0;
 }
 
 /**
@@ -256,7 +260,11 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 		else if (token->token == 5 || token->token == 6) //redirect out or redirect out append
 			curr_lexx = ft_set_r_out(token, &comm_info, curr_lexx, p_big);
 		else //strings become part of command_array
+		{
 			ft_add_arr_back(token->value, &comm_info);
+			// test_arr = comm_info->cmd;
+			// printf("what the hack IV: %s\n", test_arr[0]);
+		}
 		if (curr_lexx != NULL)
 			curr_lexx = curr_lexx->next;
 		if (curr_lexx != NULL)
@@ -271,12 +279,15 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 		}
 	}
 	ft_lstadd_back(comm, ft_lstnew(comm_info));
+	// printf("what the hack V\n");
 	if (token->token == 1 || token->token == 2)
 	{
+		// printf("recursive\n");
 		curr_lexx = curr_lexx->next;
 		set_number_helper(comm_info, curr_lexx);
 		ft_init_clist(&curr_lexx, comm, p_big);
 	}
+	// printf("what the hack VI\n");
 }
 
 /**

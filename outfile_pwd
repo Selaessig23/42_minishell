@@ -1,0 +1,26 @@
+total 236
+-rw-r--r--  1 mari_unix mari_unix      8 Sep 18 14:15 1outfile
+-rw-r--r--  1 mari_unix mari_unix     29 Sep 18 14:15 1outfile2
+-rw-r--r--  1 mari_unix mari_unix   3888 Oct 10 20:50 Makefile
+-rw-r--r--  1 mari_unix mari_unix   1591 Oct  3 19:11 README.md
+-rw-r--r--  1 mari_unix mari_unix      0 Oct 10 20:50 file
+-rw-r--r--  1 mari_unix mari_unix      0 Sep 28 19:09 har
+-rw-r--r--  1 mari_unix mari_unix      7 Sep 28 19:09 hello
+-rw-r--r--  1 mari_unix mari_unix   3593 Oct  3 19:11 helpfile
+-rw-r--r--  1 mari_unix mari_unix     35 Oct  3 19:11 heredoc
+drwxr-xr-x  2 mari_unix mari_unix   4096 Oct 10 20:50 include
+-rw-r--r--  1 mari_unix mari_unix     12 Oct 10 20:50 infile
+drwxr-xr-x 15 mari_unix mari_unix   4096 Oct 11 10:48 libft
+-rw-r--r--  1 mari_unix mari_unix     96 Sep 28 19:09 limit
+-rw-r--r--  1 mari_unix mari_unix   1560 Oct 11 13:17 lsl
+-rwxr-xr-x  1 mari_unix mari_unix 162432 Oct 11 13:23 minishell
+drwxr-xr-x  7 mari_unix mari_unix   4096 Oct 11 10:48 obj
+-rw-r--r--  1 mari_unix mari_unix   1563 Oct 11 13:25 outfile
+-rw-r--r--  1 mari_unix mari_unix      0 Oct 11 13:26 outfile_pwd
+-rw-r--r--  1 mari_unix mari_unix      0 Sep 18 14:15 outline
+-rw-r--r--  1 mari_unix mari_unix    570 Oct  3 18:49 output.txt
+drwxr-xr-x  7 mari_unix mari_unix   4096 Oct 10 20:50 srcs
+-rw-r--r--  1 mari_unix mari_unix      0 Oct 10 20:50 test
+-rw-r--r--  1 mari_unix mari_unix     91 Aug 10 17:53 test_file.txt
+-rw-r--r--  1 mari_unix mari_unix     33 Aug 10 17:53 test_file2.txt
+drwxr-xr-x  2 mari_unix mari_unix   4096 Sep 28 19:09 testfiles
