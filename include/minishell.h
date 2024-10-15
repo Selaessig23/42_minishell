@@ -183,6 +183,8 @@ int		fd_in_checker(t_data *comm_info, char *infile);
 void	ft_free_cl(t_list **ll);
 //commands/command_reader.c
 int		ft_executer(t_big *big, char *prompt);
+void	ft_builtin_executer(t_data *comm_info, t_big *big);
+int		ft_builtin_checker(t_data *comm_info);
 //builtins/exit.c
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
 //builtins/env.c

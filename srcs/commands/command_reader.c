@@ -72,7 +72,7 @@ static void ft_builtin_exe_lstcmd(t_data *comm_info, t_big *big, char *prompt)
  * that have to be freed in case of builtin exit
  * @param prompt string that has to be freed in case of builtin exit
  */
-static void ft_builtin_executer(t_data *comm_info, t_big *big) // char *prompt
+void ft_builtin_executer(t_data *comm_info, t_big *big) // char *prompt
 {
 	char **argv;
 
@@ -95,13 +95,28 @@ static void ft_builtin_executer(t_data *comm_info, t_big *big) // char *prompt
 		ft_minishell_help(comm_info->fd_outfile);
 }
 
+static int ft_builtin_lstcmd_checker(t_data *comm_info)
+{
+	char **argv;
+
+	argv = comm_info->cmd;
+	if ((!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("cd")) 
+		|| (!ft_strncmp(argv[0], "export", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("export")) 
+		|| (!ft_strncmp(argv[0], "unset", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("unset")) 
+		|| (!ft_strncmp(argv[0], "exit", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("exit")) 
+		|| (!ft_strncmp(argv[0], "help", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("help")))
+		return (1);
+	else
+		return (0);
+}
+
 /**
  * @brief function to check for built-in-commands
  *
  * @param comm_info struct with all necessary infos to
  * execute a single command
  */
-static int ft_builtin_checker(t_data *comm_info)
+int	ft_builtin_checker(t_data *comm_info)
 {
 	char **argv;
 
@@ -177,15 +192,16 @@ int ft_executer(t_big *big, char *prompt)
 		if (comm_info->cmd[0] != NULL)
 		{
 			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
-			{
 				printf("EXIT WITH ERROR\n");
-			}
-			else if (ft_builtin_checker(comm_info))
+			else if (ft_builtin_lstcmd_checker(comm_info))
 			{
 				if (big->count_commds == comm_info->commands_no)
 					ft_builtin_exe_lstcmd(comm_info, big, prompt);
-				ft_builtin_executer(comm_info, big);
+				else if (comm_info_next && comm_info_next->fd_infile == 0)
+					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
 			}
+			else if (big->count_commds == comm_info->commands_no && ft_builtin_checker(comm_info))
+				ft_builtin_executer(comm_info, big);
 			else
 			{
 				check_cmd(comm_info->cmd, big->env);
