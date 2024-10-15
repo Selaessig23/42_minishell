@@ -80,6 +80,8 @@ int main(int argc, char **argv, char **envp)
 					ft_commands(lexx, &big);
 					ft_free_ll(&lexx);
 					// printf("test8\n");
+					ft_dprintf("commands: %d\n", big->count_commds);
+					ft_dprintf("cmdlist[0]: %s\n", ((t_data *)(big->cmdlist)->content)->cmd[0]);
 					ft_executer(big, prompt);
 				}
 				else

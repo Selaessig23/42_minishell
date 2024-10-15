@@ -147,7 +147,6 @@ char	*ft_var_creator(char *value_old, char **env)
 				error_handling(2);
 			value_new = ft_var_envchecker(value_old, temp, env);
 			free(temp);
-			// printf("test 5\n");
 			return (value_new);
 		}
 		i++;
