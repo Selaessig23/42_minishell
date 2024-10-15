@@ -261,7 +261,11 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 			curr_lexx = ft_set_r_out(token, &comm_info, curr_lexx, p_big);
 		else //strings become part of command_array
 		{
-			ft_add_arr_back(token->value, &comm_info);
+			// if (!*token->value)
+			// 	ft_dprintf("token->value \"%s\" is empty\n", token->value);
+			// else
+			if (*token->value)
+				ft_add_arr_back(token->value, &comm_info);
 			// test_arr = comm_info->cmd;
 			// printf("what the hack IV: %s\n", test_arr[0]);
 		}

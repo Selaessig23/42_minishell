@@ -194,7 +194,7 @@ int ft_executer(t_big *big, char *prompt)
 			comm_info_next = curr->next->content;
 		else
 			comm_info_next = NULL;
-		if (comm_info->cmd[0] != NULL)
+		if (comm_info->cmd[0] != NULL && *(comm_info->cmd[0])) // new condition
 		{
 			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
 			{
