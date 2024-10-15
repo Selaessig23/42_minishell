@@ -41,7 +41,7 @@ static void	ft_writep(size_t help, char *hex)
 		ft_putchar_fd(hex[help], 2);
 }
 
-int	ft_printpointer(va_list args, char *hex)
+int	ft_dprintpointer(va_list args, char *hex)
 {
 	size_t			help;
 

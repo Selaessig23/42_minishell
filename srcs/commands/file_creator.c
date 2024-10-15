@@ -26,13 +26,16 @@ int	fd_in_checker(t_data *comm_info, char *infile)
 	else if (access(infile, F_OK))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_printf("%s: no such file or directory\n", infile);
+		// ft_putstr_fd(infile, STDERR_FILENO);
+		// ft_dprintf(": No such file or directory\n");
+		ft_dprintf("infile: No such file or directory\n", infile);
 		fd_in = -1;
 	}
 	else if (access(infile, R_OK))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_printf("%s: Permission denied\n", infile);
+		ft_putstr_fd(infile, STDERR_FILENO);
+		ft_dprintf(": Permission denied\n");
 		fd_in = -1;
 	}
 	else
@@ -67,8 +70,8 @@ static int	ft_get_fd(bool appender, char *filename)
 	}
 	else
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_printf("%s: Permission denied\n", filename);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_dprintf("%s: Permission denied\n", filename);
 		return (-1);
 	}
 	return (fd_out);
@@ -89,11 +92,9 @@ int	fd_out_creator(bool appender, char *filename)
 	fd_out = 0;
 	if (access(filename, F_OK))
 	{
-		printf("fd_out_creator. file does not exist. I open a file\n");
 		fd_out = open(filename, O_WRONLY | O_RDONLY | O_CREAT, 0644);
 		if (fd_out == -1)
 			error_handling(1);
-		printf("fd of heredoc is: %i\n", fd_out);
 	}
 	else
 	{

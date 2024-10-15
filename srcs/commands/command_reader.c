@@ -158,8 +158,13 @@ static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 	t_data *data;
 
 	data = (ft_lstlast(cmdlist))->content;
-	if (!ft_builtin_checker(data))
-		big->exit_code = exit_status_binar;
+	if (data->fd_infile < 0 || data->fd_outfile < 0)
+		return ;
+	else 
+	{
+		if (!ft_builtin_lstcmd_checker(data))
+			big->exit_code = exit_status_binar;
+	}
 }
 
 /**
@@ -192,7 +197,11 @@ int ft_executer(t_big *big, char *prompt)
 		if (comm_info->cmd[0] != NULL)
 		{
 			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
-				printf("EXIT WITH ERROR\n");
+			{
+				big->exit_code = 1;
+				if (comm_info_next && comm_info_next->fd_infile == 0)
+					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
+			}
 			else if (ft_builtin_lstcmd_checker(comm_info))
 			{
 				if (big->count_commds == comm_info->commands_no)
