@@ -19,7 +19,7 @@
 static void	handle_sigint_non(int sig)
 {
 	(void) sig;
-	struct termios	termios_p;
+	// struct termios	termios_p;
 
 	// if (sig == SIGINT)
 	// {
@@ -35,25 +35,25 @@ static void	handle_sigint_non(int sig)
 
 
 		signalnum = 3;
-		if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
-			perror("tcgetattr");
+		// if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
+		// 	perror("tcgetattr");
 	 	// termios_p.c_lflag |= ICANON;
-		termios_p.c_lflag &= ~ECHOCTL;
-		if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
-		{
-			perror("tcsetattr");
-		}
-		// rl_done = 1;
+		// // termios_p.c_lflag &= ~ECHOCTL;
+		// if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
+		// {
+		// 	perror("tcsetattr");
+		// }
+		// // rl_done = 1;
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
-			perror("tcgetattr");
-		termios_p.c_lflag |= ECHOCTL;
-		termios_p.c_lflag |= ICANON;
-		// termios_p.c_lflag &= ~ICANON;
-		if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
-		{
-			perror("tcsetattr");
-		}
+		// if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
+		// 	perror("tcgetattr");
+		// // termios_p.c_lflag |= ECHOCTL;
+		// termios_p.c_lflag |= ICANON;
+		// // termios_p.c_lflag &= ~ICANON;
+		// if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
+		// {
+		// 	perror("tcsetattr");
+		// }
 
 		// rl_replace_line("  ^C  ", 0); //clear the input line
 		// rl_on_new_line(); //Go to a new line
@@ -121,7 +121,7 @@ int	ft_terminal_config(bool rl_antes)
 	// if (rl_antes == true)
 	// {
 	termios_p.c_lflag |= ECHOCTL;
-	termios_p.c_lflag &= ~ICANON;
+	// termios_p.c_lflag &= ~ICANON;
 	// }
 	// else
 	// {

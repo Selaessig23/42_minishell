@@ -60,7 +60,7 @@ static int	here_read_helper(int write_end, char *lim)
 			free(str);
 			return (0);
 		}
-		if (str)
+		if (str && signalnum != 3)
 		{
 			write(write_end, str, ft_strlen(str));
 			free(str);
