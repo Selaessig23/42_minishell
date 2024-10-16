@@ -263,7 +263,6 @@ int ft_executer(t_big *big, char *prompt)
 			comm_info_next = NULL;
 		if (comm_info->cmd[0] != NULL)
 		{
-			printf("test 9\n");
 			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
 			{
 				big->exit_code = 1;
@@ -295,7 +294,6 @@ int ft_executer(t_big *big, char *prompt)
 			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
-	printf("test 10\n");
 	//restore_stdin();
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);

@@ -91,11 +91,9 @@ int	main(int argc, char **argv, char **envp)
 					// 	ft_dprintf("There is NO any command to execute\nI EXIT!\n");
 					// // else
 					// if (((t_data *)big->cmdlist->content)->cmd[0])
-						printf("test8\n");
 						// printf("first command: %s\n",((t_data *)big->cmdlist->content)->cmd[0]);
 						//printf("second command: %s\n",((t_data *)big->cmdlist->content)->cmd[1]);
-					
-						ft_executer(big, prompt);
+					ft_executer(big, prompt);
 					
 				}
 				else
