@@ -1,5 +1,6 @@
 
 #include "minishell.h"
+#include <sys/stat.h>
 
 /**
  * DESCRIPTION:
@@ -8,17 +9,57 @@
  */
 
 /**
- * Prints an error message to standard error when a command is not found 
- * in the system's executable paths.
+ * @brief helper functin of no_cmd_path
+ * st.st_mode & S_IFMT = 
+ * This extracts the file type from the st_mode field by masking the mode bits 
+ * with S_IFMT, which is the bitmask for the file type
+*/
+static int	ft_check_executable(char *executable)
+{
+	if (access(executable, F_OK))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(executable, STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		return (0);
+	}
+	else if (access(executable, R_OK))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(executable, STDERR_FILENO);
+		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+		return (1);
+	}
+	return (0);
+}
+
+/**
+ * Prints a specific error message to standard error 
+ * when a command is not found in the system's executable paths.
  * 
  * @param cmd_plus_args[0] The first element of **cmd_plus_args 
  * is the command.
  */
-void	no_cmd_path(char **cmd_plus_args)
+static int	no_cmd_path(char **cmd_plus_args)
 {
-	ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
-	ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
+	if (!ft_strncmp(cmd_plus_args[0], "./", 2))
+		return (ft_check_executable(cmd_plus_args[0]));
+	else if (!ft_strncmp(cmd_plus_args[0], "/", 1))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory", STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+		return (0);
+	}
+	else
+	{
+		ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
+		ft_putstr_fd(": command not found", STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+		return (0);
+	}
+
 }
 
 /**
@@ -28,14 +69,37 @@ void	no_cmd_path(char **cmd_plus_args)
 static int	check_cmd(char **cmd_plus_args, char *env[])
 {
 	char	*cmd_path;
-
+	struct stat check_dir;
+    
+	// Check if it's a directory
+	if (stat((cmd_plus_args[0]), &check_dir) == 0)
+	{
+		// printf ("mhhh: %s\n", cmd_plus_args[0]);
+		if ((!ft_strncmp(cmd_plus_args[0], "./", 2) || !ft_strncmp(cmd_plus_args[0], "/", 1))
+			&& S_ISDIR(check_dir.st_mode))
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
+			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+			return (1);
+		}
+		else if (S_ISDIR(check_dir.st_mode))
+		{
+			ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
+			ft_putstr_fd(": command not found", STDERR_FILENO);
+			ft_putstr_fd("\n", STDERR_FILENO);
+		return (0);
+		}
+	}
 	if (access(cmd_plus_args[0], F_OK | X_OK) == 0)
 		return (0);
 	cmd_path = get_path(cmd_plus_args[0], env);
 	if (!cmd_path)
 	{
-		no_cmd_path(cmd_plus_args);
-		return (1);
+		if (no_cmd_path(cmd_plus_args))
+			return (1);
+		else
+			return (0);
 	}
 	else
 	{
@@ -100,11 +164,12 @@ static int ft_builtin_lstcmd_checker(t_data *comm_info)
 	char **argv;
 
 	argv = comm_info->cmd;
-	if ((!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("cd")) 
+	if (argv[0] != NULL &&
+		((!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("cd")) 
 		|| (!ft_strncmp(argv[0], "export", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("export")) 
 		|| (!ft_strncmp(argv[0], "unset", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("unset")) 
 		|| (!ft_strncmp(argv[0], "exit", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("exit")) 
-		|| (!ft_strncmp(argv[0], "help", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("help")))
+		|| (!ft_strncmp(argv[0], "help", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("help"))))
 		return (1);
 	else
 		return (0);
@@ -158,9 +223,11 @@ static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 	t_data *data;
 
 	data = (ft_lstlast(cmdlist))->content;
-	if (data->fd_infile < 0 || data->fd_outfile < 0)
+	if (big->exit_code == 999)
+		big->exit_code = 126;
+	else if (data->fd_infile < 0 || data->fd_outfile < 0)
 		return ;
-	else 
+	else
 	{
 		if (!ft_builtin_lstcmd_checker(data))
 			big->exit_code = exit_status_binar;
@@ -194,8 +261,9 @@ int ft_executer(t_big *big, char *prompt)
 			comm_info_next = curr->next->content;
 		else
 			comm_info_next = NULL;
-		if (comm_info->cmd[0] != NULL && *(comm_info->cmd[0])) // new condition
+		if (comm_info->cmd[0] != NULL)
 		{
+			printf("test 9\n");
 			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
 			{
 				big->exit_code = 1;
@@ -213,8 +281,10 @@ int ft_executer(t_big *big, char *prompt)
 				ft_builtin_executer(comm_info, big);
 			else
 			{
-				check_cmd(comm_info->cmd, big->env);
-				ft_binar_exe(comm_info, comm_info_next, big);
+				if (!check_cmd(comm_info->cmd, big->env))
+					ft_binar_exe(comm_info, comm_info_next, big);
+				else
+					big->exit_code = 999;
 			}
 		}
 		if (comm_info->fd_infile > 2)
@@ -225,6 +295,7 @@ int ft_executer(t_big *big, char *prompt)
 			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
+	printf("test 10\n");
 	//restore_stdin();
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
