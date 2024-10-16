@@ -24,16 +24,16 @@
 void	error_handling(int err)
 {
 	if (err == 4)
-		ft_putstr_fd("PATH not readable from ENVP", 1);
+		ft_putstr_fd("PATH not readable from ENVP", 2);
 	else if (err == 1)
 	{
 		errno = 5;
-		ft_putstr_fd(INPUT_ERROR, 1);
+		ft_putstr_fd(INPUT_ERROR, 2);
 	}
 	else if (err == 2)
 	{
 		errno = 12;
-		ft_putstr_fd("Problems with malloc", 1);
+		ft_putstr_fd("Problems with malloc", 2);
 		exit (1);
 	}
 	else if (err == 3)

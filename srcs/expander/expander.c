@@ -37,7 +37,11 @@ static void	ft_var_checker(void	**token, t_big *big)
 			if (value_old[i + 1] == '?')
 				value_new = ft_exit_expander(value_old, big->exit_code);
 			else
+			{
 				value_new = ft_var_creator(value_old, big->env);
+				if (!*value_new)
+					big->exit_code = 0;
+			}
 			temp->value = value_new;
 			free (value_old);
 			value_old = NULL;

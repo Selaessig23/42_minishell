@@ -12,7 +12,7 @@
 
 #include "ft_dprintf.h"
 
-int	ft_printint(va_list args)
+int	ft_dprintint(va_list args)
 {
 	int	help;
 	int	count;

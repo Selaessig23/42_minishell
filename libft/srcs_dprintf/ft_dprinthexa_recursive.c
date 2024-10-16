@@ -41,7 +41,7 @@ static void	ft_writehexa(unsigned int help, char *hex)
 		ft_putchar_fd(hex[help], 2);
 }
 
-int	ft_printhexa(va_list args, char *hex)
+int	ft_dprinthexa(va_list args, char *hex)
 {
 	unsigned int	help;
 

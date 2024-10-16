@@ -29,19 +29,19 @@
 static int	ft_switch(char c, va_list args)
 {
 	if (c == 'c')
-		return (ft_printchar(args));
+		return (ft_dprintchar(args));
 	else if (c == 's')
-		return (ft_printstring(args));
+		return (ft_dprintstring(args));
 	else if (c == 'p')
-		return (ft_printpointer(args, "0123456789abcdef"));
+		return (ft_dprintpointer(args, "0123456789abcdef"));
 	else if (c == 'd' || c == 'i')
-		return (ft_printint(args));
+		return (ft_dprintint(args));
 	else if (c == 'u')
-		return (ft_printui(args));
+		return (ft_dprintui(args));
 	else if (c == 'x')
-		return (ft_printhexa(args, "0123456789abcdef"));
+		return (ft_dprinthexa(args, "0123456789abcdef"));
 	else if (c == 'X')
-		return (ft_printhexa(args, "0123456789ABCDEF"));
+		return (ft_dprinthexa(args, "0123456789ABCDEF"));
 	else if (c == '%')
 	{
 		ft_putchar_fd('%', 2);

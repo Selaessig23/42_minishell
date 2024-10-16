@@ -12,7 +12,7 @@
 
 #include "ft_dprintf.h"
 
-int	ft_printchar(va_list args)
+int	ft_dprintchar(va_list args)
 {
 	char	help;
 
