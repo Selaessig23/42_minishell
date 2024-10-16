@@ -40,6 +40,7 @@ int	fd_in_checker(t_data *comm_info, char *infile)
 	}
 	else
 		fd_in = open(infile, O_RDONLY);
+	// printf("fd heredoc: %i\n", fd_in);
 	return (fd_in);
 }
 

@@ -1,9 +1,6 @@
 #include "minishell.h"
 
-<<<<<<< HEAD
 int	signalnum;
-=======
->>>>>>> mar_heredoc
 
 // **Note for Markus. 12 Aug** I moved it up "if (argc != 1) error_handling(1);"
 // The reason is that is generally common to start by checking for invalid input
@@ -38,12 +35,8 @@ int	main(int argc, char **argv, char **envp)
 	lexx = NULL;
 	// comm = NULL;
 	exitcode = 0;
-<<<<<<< HEAD
 	signalnum = 0;
-	ft_welcome();
-=======
 	// ft_welcome();
->>>>>>> mar_heredoc
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)

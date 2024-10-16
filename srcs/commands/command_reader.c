@@ -256,7 +256,7 @@ int ft_executer(t_big *big, char *prompt)
 	comm_info = curr->content;
 	while (curr != NULL)
 	{
-		
+		// printf("fd heredoc5: %i\n", comm_info->fd_infile);
 		comm_info = curr->content;
 		if (curr->next != NULL)
 			comm_info_next = curr->next->content;
@@ -272,7 +272,7 @@ int ft_executer(t_big *big, char *prompt)
 			}
 			else if (ft_builtin_lstcmd_checker(comm_info))
 			{
-				printf("test 1\n");
+				// printf("test 1\n");
 				if (big->count_commds == comm_info->commands_no)
 					ft_builtin_exe_lstcmd(comm_info, big, prompt);
 				else if (comm_info_next && comm_info_next->fd_infile == 0)

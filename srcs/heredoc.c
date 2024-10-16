@@ -1,23 +1,29 @@
 #include "minishell.h"
 #include <sys/ioctl.h>
 
-static int fd_here_creator(char *filename)
+static int	fd_here_creator(char *filename, bool wr)
 {
-	int fd;
+	int		fd;
 
-	// fd = 0;
-	// if (access(filename, F_OK))
-	// {
-		fd = open(filename, O_TRUNC | O_CREAT | O_RDWR, 0777); // 0644
+	fd = 0;
+	if (access(filename, F_OK) && wr == true)
+	{
+		fd = open(filename, O_WRONLY | O_CREAT, 0644);
 		if (fd == -1)
 			error_handling(1);
-// 	}
-// 	else if (!access(filename, F_OK))
-// 	{
-// 		fd = open(filename, O_TRUNC | O_CREAT | O_RDWR, 0666); // 0644
-// 		if (fd == -1)
-// 			error_handling(1);
-// 	}
+	}
+	else if (!access(filename, F_OK) && wr == true)
+	{
+		fd = open(filename, O_WRONLY | O_TRUNC);
+		if (fd == -1)
+			error_handling(1);
+	}
+	else if (!access(filename, F_OK))
+	{
+		fd = open(filename, O_RDONLY);
+		if (fd == -1)
+			error_handling(1);
+	}
 	return (fd);
 }
 
@@ -27,10 +33,10 @@ static int fd_here_creator(char *filename)
  * one command.
  * For instance, "<< LIM << LIM << LIM"
  */
-void delete_heredoc(t_data *comm_info)
+void	delete_heredoc(t_data *comm_info)
 {
-	char *pathname;
-	char *cmd_no_str;
+	char	*pathname;
+	char	*cmd_no_str;
 
 	cmd_no_str = ft_itoa(comm_info->commands_no);
 	pathname = ft_strjoin(".heredoc_", cmd_no_str);
@@ -55,7 +61,7 @@ void delete_heredoc(t_data *comm_info)
 static int	here_read_helper(int write_end, char *lim)
 {
 	char *str;
-	char	*buf = NULL;
+	// char	*buf = NULL;
 
 	str = NULL;
 	while (signalnum != 3)
@@ -79,13 +85,15 @@ static int	here_read_helper(int write_end, char *lim)
 			&& ft_strlen(lim) == ft_strlen(str))
 		{
 			free(str);
-			read(write_end, buf, BUFFER_SIZE);
-			printf("heredoc: %s\n", buf);
+			// printf("test\n");
+			// read(write_end, buf, BUFFER_SIZE);
+			// printf("heredoc: %s\n", buf);
 			return (0);
 		}
 		if (str)
 		{
 			write(write_end, str, ft_strlen(str));
+			ft_putchar_fd('\n', write_end);
 			free(str);
 		}
 	}
@@ -112,7 +120,7 @@ static int here_read(char *name, char *lim)
 
 	(void) lim;
 	
-	fd = fd_here_creator(name);
+	fd = fd_here_creator(name, true);
 	return (fd);
 }
 
@@ -134,18 +142,18 @@ int heredoc_start(t_data *comm_info, char *limiter)
 	char *cmd_no_str;
 
 	cmd_no_str = ft_itoa(comm_info->commands_no);
-	name = ft_strjoin("heredoc___", cmd_no_str);
+	name = ft_strjoin(".heredoc", cmd_no_str);
 	free(cmd_no_str);
 	fd = here_read(name, limiter);
-	
 	if (here_read_helper(fd, limiter))
 		return (-1);
-	printf("fd heredoc: %i\n", fd);
-	// close(fd);
+	// printf("fd heredoc write: %i\n", fd);
+	close(fd);
+	fd = fd_here_creator(name, false);
 	// fd = open(name, O_RDONLY);
 	// if (fd == -1)
 	// 	perror("faulty");
 	// free(name);
-	printf("fd heredoc: %i\n", fd);
+	// printf("fd heredoc read: %i\n", fd);
 	return (fd);
 }

@@ -282,16 +282,18 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 				token = curr_lexx->content;
 		}
 	}
+	// printf("fd heredoc: %i\n", comm_info->fd_infile);
 	ft_lstadd_back(comm, ft_lstnew(comm_info));
 	// printf("what the hack V\n");
 	if (token->token == 1 || token->token == 2)
 	{
-		// printf("recursive\n");
+		printf("recursive\n");
 		curr_lexx = curr_lexx->next;
 		set_number_helper(comm_info, curr_lexx);
 		ft_init_clist(&curr_lexx, comm, p_big);
 	}
 	// printf("what the hack VI\n");
+	// printf("fd heredoc: %i\n", comm_info->fd_infile);
 }
 
 /**
