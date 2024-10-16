@@ -1,16 +1,16 @@
 #include "minishell.h"
 #include <sys/ioctl.h>
 
-// static int fd_here_creator(char *filename)
-// {
-// 	int fd;
+static int fd_here_creator(char *filename)
+{
+	int fd;
 
-// 	fd = 0;
-// 	if (access(filename, F_OK))
-// 	{
-// 		fd = open(filename, O_TRUNC | O_CREAT | O_RDWR, 0666); // 0644
-// 		if (fd == -1)
-// 			error_handling(1);
+	// fd = 0;
+	// if (access(filename, F_OK))
+	// {
+		fd = open(filename, O_TRUNC | O_CREAT | O_RDWR, 0777); // 0644
+		if (fd == -1)
+			error_handling(1);
 // 	}
 // 	else if (!access(filename, F_OK))
 // 	{
@@ -18,8 +18,8 @@
 // 		if (fd == -1)
 // 			error_handling(1);
 // 	}
-// 	return (fd);
-// }
+	return (fd);
+}
 
 /**
  * The function deletes a tmp file of heredoc
@@ -55,6 +55,7 @@ void delete_heredoc(t_data *comm_info)
 static int	here_read_helper(int write_end, char *lim)
 {
 	char *str;
+	char	*buf = NULL;
 
 	str = NULL;
 	while (signalnum != 3)
@@ -78,9 +79,11 @@ static int	here_read_helper(int write_end, char *lim)
 			&& ft_strlen(lim) == ft_strlen(str))
 		{
 			free(str);
+			read(write_end, buf, BUFFER_SIZE);
+			printf("heredoc: %s\n", buf);
 			return (0);
 		}
-		if (str && signalnum != 3)
+		if (str)
 		{
 			write(write_end, str, ft_strlen(str));
 			free(str);
@@ -108,7 +111,8 @@ static int here_read(char *name, char *lim)
 	int fd;
 
 	(void) lim;
-	fd = fd_out_creator(false, name);
+	
+	fd = fd_here_creator(name);
 	return (fd);
 }
 
@@ -130,11 +134,18 @@ int heredoc_start(t_data *comm_info, char *limiter)
 	char *cmd_no_str;
 
 	cmd_no_str = ft_itoa(comm_info->commands_no);
-	name = ft_strjoin(".heredoc_", cmd_no_str);
+	name = ft_strjoin("heredoc___", cmd_no_str);
 	free(cmd_no_str);
 	fd = here_read(name, limiter);
-	free(name);
+	
 	if (here_read_helper(fd, limiter))
-		fd = -1;
+		return (-1);
+	printf("fd heredoc: %i\n", fd);
+	// close(fd);
+	// fd = open(name, O_RDONLY);
+	// if (fd == -1)
+	// 	perror("faulty");
+	// free(name);
+	printf("fd heredoc: %i\n", fd);
 	return (fd);
 }

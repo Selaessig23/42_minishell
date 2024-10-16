@@ -169,6 +169,7 @@ int ft_executer(t_big *big, char *prompt)
 	comm_info = curr->content;
 	while (curr != NULL)
 	{
+		
 		comm_info = curr->content;
 		if (curr->next != NULL)
 			comm_info_next = curr->next->content;
@@ -182,6 +183,7 @@ int ft_executer(t_big *big, char *prompt)
 			}
 			else if (ft_builtin_checker(comm_info))
 			{
+				printf("test 1\n");
 				if (big->count_commds == comm_info->commands_no)
 					ft_builtin_exe_lstcmd(comm_info, big, prompt);
 				ft_builtin_executer(comm_info, big);
@@ -189,13 +191,14 @@ int ft_executer(t_big *big, char *prompt)
 			else
 			{
 				check_cmd(comm_info->cmd, big->env);
+				printf("test 2\n");
 				ft_binar_exe(comm_info, comm_info_next, big);
 			}
 		}
 		if (comm_info->fd_infile > 2)
 			close(comm_info->fd_infile);
-		if (comm_info->in_heredoc == true)
-			delete_heredoc(comm_info);
+		// if (comm_info->in_heredoc == true)
+		// 	delete_heredoc(comm_info);
 		if (comm_info->fd_outfile > 2)
 			close(comm_info->fd_outfile);
 		curr = curr->next;

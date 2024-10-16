@@ -122,8 +122,11 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 {
 	pid_t		pid;
     int			fd[2];
+	char	*buf;
+	int		i = 0;
     
-    if (pipe(fd) == -1)
+    buf = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	if (pipe(fd) == -1)
 		w_errpipe_close(comm_info->fd_infile);
     pid = fork();
     if (pid == -1)
@@ -152,7 +155,11 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 			}
 			if (comm_info->fd_infile > 0)
 			{
-				//fprintf(stderr, "input from file or prev. pipe\n");
+				fprintf(stderr, "input from file or prev. pipe: %i\n", comm_info->fd_infile);
+				i = read(comm_info->fd_infile, buf, BUFFER_SIZE);
+				buf[i] = 0;
+				printf("length heredoc: %i, heredoc: %s\n", i, buf);
+
 				//printf("fd_infile: %i\n", comm_info->fd_infile);
 				dup2(comm_info->fd_infile, STDIN_FILENO);
 				close(comm_info->fd_infile);
@@ -177,9 +184,9 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
     else if (pid != 0)
     {
         close(fd[1]);
-		//printf("\nparent. %s\n", comm_info->cmd[0]);
-		// printf("fd_infile: %d\n", comm_info->fd_infile);
-		// printf("fd_outfile: %d\n", comm_info->fd_outfile);
+		printf("\nparent. %s\n", comm_info->cmd[0]);
+		printf("fd_infile: %d\n", comm_info->fd_infile);
+		printf("fd_outfile: %d\n", comm_info->fd_outfile);
 		if (c_i_next != NULL)
         {
             if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
