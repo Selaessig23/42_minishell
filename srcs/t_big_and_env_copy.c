@@ -88,6 +88,7 @@ t_big	*init_t_big(char **envp)
 {
 	t_big	*big;
 	char	**env;
+	char	*all_folders;
 
 	big = ft_calloc(1, sizeof(t_big));
 	if (big == NULL)
@@ -95,6 +96,13 @@ t_big	*init_t_big(char **envp)
 	big->cmdlist = NULL;
 	env = copy_envp(envp);
 	big->env = env;
+	all_folders = get_all_folders("PATH, env");
+	big->binarypaths = ft_split(all_folders, ':');
+	if (!big->binarypaths)
+	{
+		print_stderr("malloc");
+		return (NULL);
+	}
 	big->exit_code = 0;
 	big->count_commds = 0;
 	return (big);

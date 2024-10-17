@@ -9,6 +9,45 @@
  */
 
 /**
+ * @brief function that checks if the binary is found in the 
+ * default folders of variable path of env (if, for example,
+ * the env->path was changed by using export function)
+ * 
+ * @param binary the binary command to search for
+ * @param binarypaths a copy of default value of PATH (part of env)
+*/
+void	ft_check_defaultpath(char *binary, char **binarypaths)
+{
+	while (arr_binarypaths[0])
+	{
+		if (!ft_strncmp(binary, *arr_binarypaths, ft_strlen(binary))
+			&& ft_strlen(binary) == ft_strlen(*arr_binarypaths))
+		{
+			ft_printf("Command \'%s\' is available in the following places\n * %s\n", binary, binarypaths);
+			ft_putstr_fd(*arr_binarypaths, 2);
+			ft_putstr_fd("\n", 2);
+			// ft_check_defaultpath(binary, *arr_binarypaths)
+			while (*arr_binarypaths)
+			{
+				if (!ft_strncmp(binary, *arr_binarypaths, ft_strlen(binary))
+					&& ft_strlen(binary) == ft_strlen(*arr_binarypaths))
+				{
+					ft_putstr_fd(" * ", 2);
+					ft_putstr_fd(*arr_binarypaths, 2);
+				}
+				else
+					arr_binarypaths += 1;
+			}
+			ft_putstr_fd("\n", 2);
+			ft_putstr_fd("The command could not be located because '/usr/bin:/bin' is not included in the PATH environment variable.\n", 2);
+		}
+		else
+			arr_binarypaths += 1;
+	}
+	// Freud'scher Versprecher
+}
+
+/**
  * @brief helper functin of no_cmd_path
  * st.st_mode & S_IFMT = 
  * This extracts the file type from the st_mode field by masking the mode bits 
@@ -40,7 +79,7 @@ static int	ft_check_executable(char *executable)
  * @param cmd_plus_args[0] The first element of **cmd_plus_args 
  * is the command.
  */
-static int	no_cmd_path(char **cmd_plus_args)
+static int	no_cmd_path(char **cmd_plus_args, char **binarypaths)
 {
 	if (!ft_strncmp(cmd_plus_args[0], "./", 2))
 		return (ft_check_executable(cmd_plus_args[0]));
@@ -54,6 +93,7 @@ static int	no_cmd_path(char **cmd_plus_args)
 	}
 	else
 	{
+		if (ft_check_defaultpath(cmd_plus_args[0], binarypaths))
 		ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
 		ft_putstr_fd(": command not found", STDERR_FILENO);
 		ft_putstr_fd("\n", STDERR_FILENO);
@@ -66,7 +106,7 @@ static int	no_cmd_path(char **cmd_plus_args)
  * It explicitly prints an error message 
  * (via "no_cmd_path") if the command cannot be found.
  */
-static int	check_cmd(char **cmd_plus_args, char *env[])
+static int	check_cmd(char **cmd_plus_args, char *env[], char **binarypaths)
 {
 	char	*cmd_path;
 	struct stat check_dir;
@@ -96,7 +136,7 @@ static int	check_cmd(char **cmd_plus_args, char *env[])
 	cmd_path = get_path(cmd_plus_args[0], env);
 	if (!cmd_path)
 	{
-		if (no_cmd_path(cmd_plus_args))
+		if (no_cmd_path(cmd_plus_args, binarypaths))
 			return (1);
 		else
 			return (0);
@@ -280,7 +320,7 @@ int ft_executer(t_big *big, char *prompt)
 				ft_builtin_executer(comm_info, big);
 			else
 			{
-				if (!check_cmd(comm_info->cmd, big->env))
+				if (!check_cmd(comm_info->cmd, big->env, big->binarypaths))
 					ft_binar_exe(comm_info, comm_info_next, big);
 				else
 					big->exit_code = 999;

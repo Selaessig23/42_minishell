@@ -95,6 +95,7 @@ typedef struct s_big
 {
 	t_list	*cmdlist;
 	char	**env;
+	char	**binarypaths;
 	int		exit_code;
 	size_t	count_commds;
 }					t_big;
