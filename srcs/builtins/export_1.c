@@ -10,7 +10,8 @@
 /**
  * The function check the argument for invalid case
  * with a '-' in the name of the variable.
- * For instance, "export HELLO-=123".
+ * For instance, "export HELLO-=123" and
+ * "export "/HELLO=anything"
 */
 int	check_dash_in_var_name(char *argument)
 {
@@ -20,6 +21,8 @@ int	check_dash_in_var_name(char *argument)
 	i = 0;
 	checker = ft_split(argument, '=');
 	if (ft_strchr(checker[0], '-'))
+		i = 1;
+	if (ft_strchr(checker[0], '/'))
 		i = 1;
 	ft_free(checker);
 	return (i);
