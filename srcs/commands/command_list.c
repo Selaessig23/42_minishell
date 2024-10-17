@@ -202,6 +202,7 @@ static void	init_comm(t_data **p_comm_info, t_list *lexx)
 	comm_info->fd_infile = 0;
 	comm_info->out_append = false;
 	comm_info->fd_outfile = 1;
+	comm_info->id = 0;
 }
 
 /**
@@ -260,7 +261,8 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 		else if (token->token == 5 || token->token == 6) //redirect out or redirect out append
 			curr_lexx = ft_set_r_out(token, &comm_info, curr_lexx, p_big);
 		else //strings become part of command_array
-			ft_add_arr_back(token->value, &comm_info);
+			if (*token->value)
+				ft_add_arr_back(token->value, &comm_info);
 		if (curr_lexx != NULL)
 			curr_lexx = curr_lexx->next;
 		if (curr_lexx != NULL)

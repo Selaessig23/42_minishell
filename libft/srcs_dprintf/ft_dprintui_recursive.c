@@ -41,7 +41,7 @@ static void	ft_writeui(unsigned int help)
 		ft_putchar_fd(((help % 10) + '0'), 2);
 }
 
-int	ft_printui(va_list args)
+int	ft_dprintui(va_list args)
 {
 	unsigned int	help;
 

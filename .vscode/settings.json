@@ -4,6 +4,7 @@
         "libft.h": "c",
         "ft_printf.h": "c",
         "get_next_line_bonus.h": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "libft_bonus.h": "c"
     }
 }

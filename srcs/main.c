@@ -10,37 +10,41 @@ int	signalnum;
 /**
  * (To be continued...)
  * An INFINITE LOOP to continuously prompt for and process user input
- * using the 'readline' function. Inside a loop there are three 'if' statements.
+
+	* using the 'readline' function. Inside a loop there are three 'if' statements.
  * 1. Check if 'readline' failed to get input.
- * 2. Check if the input is an empty string (user pressed Enter without typing anything).
- * If the input is empty, free the memory allocated for 'input' and assign 0 to 'exitcode'.
+
+	* 2. Check if the input is an empty string (user pressed Enter without typing anything).
+ * If the input is empty,
+	free the memory allocated for 'input' and assign 0 to 'exitcode'.
  * 3. If input is not empty, proceed with the program logic.
  *
  * @param input a pointer to a character string that will hold user input
  */
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-	int		exitcode;
-	char	*input;
-	char	*prompt;
-	char	**input_arr;
-	t_list	*lexx;
+	int exitcode;
+	char *input;
+	char *prompt;
+	char **input_arr;
+	t_list *lexx;
 	// t_list	*comm;
-	t_big	*big;
+	t_big *big;
 
 	(void)argv;
 	lexx = NULL;
 	// comm = NULL;
 	exitcode = 0;
 	signalnum = 0;
-	ft_welcome();
+	// ft_welcome();
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)
 	{
 		// if (!*__environ)
-			// error_handling(4);
+		// error_handling(4);
 		prompt = ft_strdup("Marina's and Markus' minishell>");
+		input = NULL;
 		big = init_t_big(envp);
 		while (1)
 		{
@@ -88,17 +92,27 @@ int main(int argc, char **argv, char **envp)
 				// ft_printf("test1\n");
 				ft_free(input_arr);
 				// to seperate debug-infos of lexer from bash-output
-				//ft_printf("\n");
+				// ft_printf("\n");
 				if (!ft_syntax(lexx))
 				{
-					//printf_env(big);
+					// printf_env(big);
 					ft_expa_precond(lexx, big);
 					// ft_printf("test\n");
 					// ft_test_ll_print(lexx, prompt, big);
 					ft_commands(lexx, &big);
 					ft_free_ll(&lexx);
-					// printf("test8\n");
+					// if (!((t_data *)big->cmdlist->content)->cmd)
+					// 	ft_dprintf("cmd is NULL\n");
+					// if (((t_data *)big->cmdlist->content)->cmd)
+					// 	ft_dprintf("cmd is a pointer\n");
+					// if (!((t_data *)big->cmdlist->content)->cmd[0])
+					// 	ft_dprintf("There is NO any command to execute\nI EXIT!\n");
+					// // else
+					// if (((t_data *)big->cmdlist->content)->cmd[0])
+						// printf("first command: %s\n",((t_data *)big->cmdlist->content)->cmd[0]);
+						//printf("second command: %s\n",((t_data *)big->cmdlist->content)->cmd[1]);
 					ft_executer(big, prompt);
+					
 				}
 				else
 				{
