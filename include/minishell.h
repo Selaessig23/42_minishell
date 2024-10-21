@@ -21,8 +21,20 @@
 # include <stdio.h>
 //to handle signals
 # include <signal.h>
+// to use struct sigaction
+# include <bits/sigaction.h>
+// function ioctl, macros TIOCSTI
+# include <sys/ioctl.h>
 //to change behaviour of the terminal (not-printing all control squences)
 # include <termios.h>
+
+// for sigset_t data type
+//#include <asm-generic/signal.h>
+//#include <asm/signal.h>
+//#include <bits/types/sigset_t.h>
+// for ECHOCTL flag
+//#include <bits/termios-c_lflag.h>
+//#include <asm-generic/termbits.h>
 
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments\

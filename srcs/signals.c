@@ -1,6 +1,10 @@
 #include "minishell.h"
-#include <sys/ioctl.h>
 
+//#include <sys/ioctl.h>
+//#include <bits/sigaction.h>
+//#include <signal.h>
+
+//#include <sys/types.h>
 
 /**
  * DESRIPTION: 
@@ -147,11 +151,14 @@ int	ft_terminal_config(bool rl_antes)
  * as readline behaviour in heredoc needs special treatment 
  * (it also has to exit heredoc)
  * 
+ * @param set All of the signal blocking functions use a data structure 
+ * called a signal set to specify what signals are affected.
+ * 
  */
 int	ft_handle_signals(bool heredoc)
 {
-	sigset_t set;
-	struct sigaction sa;
+	sigset_t			set;
+	struct sigaction	sa;
 
 	// int signum;
 	// (void) rl_antes;
