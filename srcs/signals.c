@@ -151,21 +151,24 @@ int	ft_terminal_config(bool rl_antes)
  * as readline behaviour in heredoc needs special treatment 
  * (it also has to exit heredoc)
  * 
- * @param set All of the signal blocking functions use a data structure 
- * called a signal set to specify what signals are affected.
- * 
+ * @param sigset_t All of the signal blocking functions use a data structure 
+ * (an array of integers) called a signal set to specify what signals are affected.
+ * @param sigaction Structure describing the action to be taken when 
+ * a signal arrives.
+ * It consists of:
+ * @param __sighandler_t sa_handler;
+ * @param __sigset_t sa_mask - an array of integers.
+ * @param sa_flags - it is int
  */
-int	ft_handle_signals(bool heredoc)
+/*int	ft_handle_signals(bool heredoc)
 {
+	struct sigaction	action;
 	sigset_t			set;
-	struct sigaction	sa;
 
-	// int signum;
-	// (void) rl_antes;
-	ft_memset(&sa, 0, sizeof(sa));
+	ft_memset(&action, 0, sizeof(action));
 	if (heredoc == true)
 	{
-		sa.sa_handler = &handle_sigint_inter;
+		action.sa_handler = &handle_sigint_inter;
 		if (ft_terminal_config(true) == -1)
 		{
 			perror("tcgetattr faulty\n");
@@ -174,25 +177,64 @@ int	ft_handle_signals(bool heredoc)
 	}
 	else
 	{
-		sa.sa_handler = &handle_sigint_non;
+		action.sa_handler = &handle_sigint_non;
 		if (ft_terminal_config(false) == -1)
 		{
 			perror("tcgetattr faulty\n");
 			return (-1);
 		}
 	}
-	sa.sa_flags = 0;
+	action.sa_flags = 0;
 	if (sigemptyset(&set) == -1)
 	{
 		perror("sigemtyset\n");
 		return (1);
 	}
-	sa.sa_mask = set;
+	action.sa_mask = set;
 	sigaddset(&set, SIGINT);
 	sigaddset(&set, SIGQUIT);
-	sigaction(SIGINT, &sa, NULL);
-	sa.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGINT, &action, NULL);
+	action.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &action, NULL);
+	// handle_sigquit();
+	return (0);
+}*/
+
+int	ft_handle_signals(bool heredoc)
+{
+	struct sigaction	action;
+
+	ft_memset(&action, 0, sizeof(action));
+	if (heredoc == true)
+	{
+		action.sa_handler = &handle_sigint_inter;
+		if (ft_terminal_config(true) == -1)
+		{
+			perror("tcgetattr faulty\n");
+			return (-1);
+		}
+	}
+	else
+	{
+		action.sa_handler = &handle_sigint_non;
+		if (ft_terminal_config(false) == -1)
+		{
+			perror("tcgetattr faulty\n");
+			return (-1);
+		}
+	}
+	action.sa_flags = 0;
+	if (sigemptyset(&action.sa_mask) == -1)
+	{
+		perror("sigemtyset\n");
+		return (1);
+	}
+	sigaddset(&action.sa_mask, SIGINT);
+	sigaddset(&action.sa_mask, SIGQUIT);
+	sigaction(SIGINT, &action, NULL);
+	action.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &action, NULL);
 	// handle_sigquit();
 	return (0);
 }
+
