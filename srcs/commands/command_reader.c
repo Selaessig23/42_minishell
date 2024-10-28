@@ -9,45 +9,6 @@
  */
 
 /**
- * @brief function that checks if the binary is found in the 
- * default folders of variable path of env (if, for example,
- * the env->path was changed by using export function)
- * 
- * @param binary the binary command to search for
- * @param binarypaths a copy of default value of PATH (part of env)
-*/
-void	ft_check_defaultpath(char *binary, char **binarypaths)
-{
-	while (arr_binarypaths[0])
-	{
-		if (!ft_strncmp(binary, *arr_binarypaths, ft_strlen(binary))
-			&& ft_strlen(binary) == ft_strlen(*arr_binarypaths))
-		{
-			ft_printf("Command \'%s\' is available in the following places\n * %s\n", binary, binarypaths);
-			ft_putstr_fd(*arr_binarypaths, 2);
-			ft_putstr_fd("\n", 2);
-			// ft_check_defaultpath(binary, *arr_binarypaths)
-			while (*arr_binarypaths)
-			{
-				if (!ft_strncmp(binary, *arr_binarypaths, ft_strlen(binary))
-					&& ft_strlen(binary) == ft_strlen(*arr_binarypaths))
-				{
-					ft_putstr_fd(" * ", 2);
-					ft_putstr_fd(*arr_binarypaths, 2);
-				}
-				else
-					arr_binarypaths += 1;
-			}
-			ft_putstr_fd("\n", 2);
-			ft_putstr_fd("The command could not be located because '/usr/bin:/bin' is not included in the PATH environment variable.\n", 2);
-		}
-		else
-			arr_binarypaths += 1;
-	}
-	// Freud'scher Versprecher
-}
-
-/**
  * @brief helper functin of no_cmd_path
  * st.st_mode & S_IFMT = 
  * This extracts the file type from the st_mode field by masking the mode bits 
