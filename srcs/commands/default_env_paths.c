@@ -1,11 +1,9 @@
 #include "minishell.h"
-#include <sys/stat.h>
 
 /**
  * DESCRIPTION:
  * file to organise the check of the default env-paths-value
  */
-
 
 /**
  * @brief function to count the amount of paths in which the source file binary is part of
@@ -82,28 +80,34 @@ int	ft_check_defaultpath(char *binary, char **binarypaths)
     ft_printf("Command \'%s\' is available in the following places\n * %s\n", binary, binarypaths);
 	while (path_matches[i])
     {
-        ft_putstr_fd(path_matches[i], 2);
-	    ft_putstr_fd("\n", 2);
+        ft_putendl_fd(path_matches[i], 2);
         i += 1;
     }
-    
 	// ft_check_defaultpath(binary, *arr_binarypaths)
-	while (arr_binarypaths)
-	{
-		if (!ft_strncmp(binary, *arr_binarypaths, ft_strlen(binary))
-            && ft_strlen(binary) == ft_strlen(*arr_binarypaths))
-        {
-            ft_putstr_fd(" * ", 2);
-            ft_putstr_fd(*arr_binarypaths, 2);
-        }
-        else
-            arr_binarypaths += 1;
-    }
+	//while (arr_binarypaths)
+	//{
+	//	if (!ft_strncmp(binary, *arr_binarypaths, ft_strlen(binary))
+    //        && ft_strlen(binary) == ft_strlen(*arr_binarypaths))
+    //    {
+    //        ft_putstr_fd(" * ", 2);
+    //        ft_putstr_fd(*arr_binarypaths, 2);
+    //    }
+    //    else
+    //       arr_binarypaths += 1;
+    //}
+    i = 0;
     ft_putstr_fd("\n", 2);
-    ft_putstr_fd("The command could not be located because '/usr/bin:/bin' is not included in the PATH environment variable.\n", 2);
-}
-		else
-			arr_binarypaths += 1;
-	}
-	// Freud'scher Versprecher
+    ft_putstr_fd("The command could not be located because /'", 2);
+    while (path_matches[i])
+    {
+        ft_putstr_fd(path_matches[i], 2);
+        i += 1;
+        if (path_matches[i])
+            ft_putchar_fd(':', 2);
+    }
+    ft_putendl_fd("/' is not included in the PATH environment variable.", 2);
+//	else
+//			arr_binarypaths += 1;
+//	}
+    ft_free(path_matches);
 }

@@ -186,6 +186,8 @@ void	ft_free_cl(t_list **ll);
 int		ft_executer(t_big *big, char *prompt);
 void	ft_builtin_executer(t_data *comm_info, t_big *big);
 int		ft_builtin_checker(t_data *comm_info);
+//default_env_paths.c
+int	ft_check_defaultpath(char *binary, char **binarypaths);
 //builtins/exit.c
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
 //builtins/env.c
