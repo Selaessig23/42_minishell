@@ -19,10 +19,10 @@
  * on non empty line nothing happens
  * >ctrl-\ (=sigquit) does nothing (do not quit!).
 */
-
 static void	handle_sigint_non(int sig)
 {
 	(void) sig;
+
 	// struct termios	termios_p;
 
 	// if (sig == SIGINT)
@@ -76,13 +76,17 @@ static void	handle_sigint_non(int sig)
 	// }
 }
 
+// Is called in case of if (heredoc == true)
+// So it was set in main (ft_handle_signals(true);)
+// Why boolean heredoc true? I don't know, need to ask Markus.
 static void	handle_sigint_inter(int sig)
 {
-	// (void) sig;
+	//printf("Received signal %d\n", sig);
+
+	(void)sig;
 	if (sig == SIGINT)
 	{
-		// rl_redisplay(); //Redisplay the prompt
-		// write(1, "^C", 2);
+
 		ft_putstr_fd("\n", 1);
 		rl_replace_line("", 0); //clear the input line
 		rl_on_new_line(); //Go to a new line
@@ -97,7 +101,6 @@ static void	handle_sigint_inter(int sig)
 		rl_on_new_line(); //Go to a new line
 		rl_redisplay(); //Redisplay the prompt
 		signalnum = 2;
-		// big->
 		// ft_putstr_fd("do nothing\n", 1);
 	}
 }

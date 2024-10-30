@@ -38,8 +38,6 @@ void	delete_heredoc(t_data *comm_info)
 	char	*pathname;
 	char	*cmd_no_str;
 
-			ft_printf("debugging_fun_1\n");
-
 	cmd_no_str = ft_itoa(comm_info->commands_no);
 	pathname = ft_strjoin(".heredoc_", cmd_no_str);
 	free(cmd_no_str);
