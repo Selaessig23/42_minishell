@@ -38,6 +38,8 @@ void	delete_heredoc(t_data *comm_info)
 	char	*pathname;
 	char	*cmd_no_str;
 
+			ft_printf("debugging_fun_1\n");
+
 	cmd_no_str = ft_itoa(comm_info->commands_no);
 	pathname = ft_strjoin(".heredoc_", cmd_no_str);
 	free(cmd_no_str);
@@ -142,18 +144,12 @@ int heredoc_start(t_data *comm_info, char *limiter)
 	char *cmd_no_str;
 
 	cmd_no_str = ft_itoa(comm_info->commands_no);
-	name = ft_strjoin(".heredoc", cmd_no_str);
+	name = ft_strjoin(".heredoc_", cmd_no_str);
 	free(cmd_no_str);
 	fd = here_read(name, limiter);
 	if (here_read_helper(fd, limiter))
 		return (-1);
-	// printf("fd heredoc write: %i\n", fd);
 	close(fd);
 	fd = fd_here_creator(name, false);
-	// fd = open(name, O_RDONLY);
-	// if (fd == -1)
-	// 	perror("faulty");
-	// free(name);
-	// printf("fd heredoc read: %i\n", fd);
 	return (fd);
 }
