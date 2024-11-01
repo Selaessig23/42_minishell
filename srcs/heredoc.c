@@ -61,13 +61,10 @@ void	delete_heredoc(t_data *comm_info)
 static int	here_read_helper(int write_end, char *lim)
 {
 	char *str;
-	// char	*buf = NULL;
 
 	str = NULL;
 	while (signalnum != 3)
 	{
-		// printf("signalnum A: %i\n", signalnum);
-		// printf("signalnum B: %i\n", signalnum);
 		ft_handle_signals(false);
 		str = readline("> ");
 		if (!str)
@@ -78,16 +75,10 @@ static int	here_read_helper(int write_end, char *lim)
 			ft_putstr_fd("\')\n", 2);
 			signalnum = 3;
 		}
-		// dprintf(2, "print str: $%s$, count str: %zu\n", str, ft_strlen(str));
-		// if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
-		// 	&& str[ft_strlen(lim)] == 10)
 		if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
 			&& ft_strlen(lim) == ft_strlen(str))
 		{
 			free(str);
-			// printf("test\n");
-			// read(write_end, buf, BUFFER_SIZE);
-			// printf("heredoc: %s\n", buf);
 			return (0);
 		}
 		if (str)
@@ -119,7 +110,6 @@ static int here_read(char *name, char *lim)
 	int fd;
 
 	(void) lim;
-	
 	fd = fd_here_creator(name, true);
 	return (fd);
 }
