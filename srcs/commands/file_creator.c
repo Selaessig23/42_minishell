@@ -28,7 +28,7 @@ int	fd_in_checker(t_data *comm_info, char *infile)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		// ft_putstr_fd(infile, STDERR_FILENO);
 		// ft_dprintf(": No such file or directory\n");
-		ft_dprintf("infile: No such file or directory\n", infile);
+		ft_dprintf("%s: No such file or directory\n", infile);
 		fd_in = -1;
 	}
 	else if (access(infile, R_OK))

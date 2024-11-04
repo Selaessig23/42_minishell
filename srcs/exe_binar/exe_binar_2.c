@@ -171,7 +171,7 @@ char	*get_path(char *cmd_name, char **env)
 void	call_cmd(char **cmd_plus_args, char *env[])
 {
 	char	*cmd_path;
-	char	*temp;
+	// char	*temp;
     
     cmd_path = NULL;
 	// if (ft_strncmp(cmd_plus_args[0], "./minishell", ft_strlen(cmd_plus_args[0])

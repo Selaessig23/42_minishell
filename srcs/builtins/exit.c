@@ -48,15 +48,19 @@ void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 		
 	if (ft_arrlen(argv) > 2 && is_nondigit == false)
 	{
-		ft_putstr_fd("exit\n", 1);
+		if (big->count_commds == 1)
+			ft_putstr_fd("exit\n", 1);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		big->exit_code = 1;
 	}
 	else
 	{
-		free(prompt);
-		prompt = NULL;
-		rl_clear_history();
+		if (big->count_commds == 1)
+		{
+			free(prompt);
+			prompt = NULL;
+			rl_clear_history();
+		}
 		if (is_nondigit == true)
 		{
 			ft_putstr_fd("exit\n", 1);
@@ -66,7 +70,7 @@ void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 			free_t_big(big);
 			exit(2);
 		}
-		else
+		else if (big->count_commds == 1)
 		{
 			ft_putstr_fd("exit\n", 1);
 			free_t_big(big);
