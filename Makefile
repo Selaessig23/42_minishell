@@ -52,7 +52,8 @@ SRCS =	main.c \
 		builtins/help.c \
 		exe_binar/exe_binar.c \
 		exe_binar/exe_binar_2.c \
-		exe_binar/exe_binar_3.c
+		exe_binar/exe_binar_3.c \
+		exe_binar/minishell_executer.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c

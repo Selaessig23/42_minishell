@@ -176,13 +176,9 @@ void	call_cmd(char **cmd_plus_args, char *env[])
     cmd_path = NULL;
 	// if (ft_strncmp(cmd_plus_args[0], "./minishell", ft_strlen(cmd_plus_args[0])
 	// 	&& cmd_plus_args[0][ft_strlen("./minishell")] == '\0'))
+		// ft_ms_executer(env);
+	// else
 	// {
-	// 	while (*env && ft_strncmp("SHLVL", *env, 4))
-	// 		env++;
-	// 	{
-	// 		temp = *env;
-	// 	}
-	// }
 	if (access(cmd_plus_args[0], F_OK | X_OK) == 0)
 	{
 		if (execve(cmd_plus_args[0], cmd_plus_args, env) == -1)
@@ -196,4 +192,5 @@ void	call_cmd(char **cmd_plus_args, char *env[])
         free(cmd_path);
 		exit(127);
 	}
+	// }
 }
