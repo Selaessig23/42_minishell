@@ -186,8 +186,9 @@ void	ft_free_cl(t_list **ll);
 int		ft_executer(t_big *big, char *prompt);
 void	ft_builtin_executer(t_data *comm_info, t_big *big);
 int		ft_builtin_checker(t_data *comm_info);
-//default_env_paths.c
-int	ft_check_defaultpath(char *binary, char **binarypaths);
+//commands/default_env_paths.c
+void	ft_check_defaultpath(char *binary, char **binarypaths);
+
 //builtins/exit.c
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
 //builtins/env.c
@@ -219,6 +220,8 @@ void	perror_and_exit(char *what_error, int *pipe_fd);
 //exe_binar/exe_binar_2.c
 void	call_cmd(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
+char	*get_all_folders(const char *env_var_path, char **env);
+char	*build_cmd_path(const char *folder, const char *cmd_name);
 
 //exe_binar/exe_binar_3.c
 int		w_waitpid(t_big *big);

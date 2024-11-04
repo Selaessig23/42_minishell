@@ -54,8 +54,7 @@ static int	no_cmd_path(char **cmd_plus_args, char **binarypaths)
 	}
 	else
 	{
-		if (ft_check_defaultpath(cmd_plus_args[0], binarypaths))
-			ft_putstr_fd("\n", STDERR_FILENO);
+		ft_check_defaultpath(cmd_plus_args[0], binarypaths);
 		ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
 		ft_putstr_fd(": command not found", STDERR_FILENO);
 		ft_putstr_fd("\n", STDERR_FILENO);
