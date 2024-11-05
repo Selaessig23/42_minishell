@@ -302,6 +302,7 @@ int ft_executer(t_big *big, char *prompt)
 	}
 	//restore_stdin();
 	exit_status_binary = w_waitpid(big);
+
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;

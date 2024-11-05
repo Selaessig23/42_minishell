@@ -51,6 +51,7 @@ int	main(int argc, char **argv, char **envp)
 
 			// handler signals after readline
 			ft_handle_signals(true);
+			
 			// if (signalnum == 1)
 			// {
 			// 	ft_putchar_fd('\n', 1);

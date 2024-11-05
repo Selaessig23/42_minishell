@@ -126,11 +126,18 @@ void	execute(t_data *comm_info, t_data *c_i_next, t_big *big)
 
 	if (pipe(fd) == -1)
 		w_errpipe_close(comm_info->fd_infile);
+
+	signal(SIGINT, SIG_IGN);
+	
 	pid = fork();
 	if (pid == -1)
 		w_errfork_close(comm_info->fd_infile, fd);
 	if (pid == 0)
 	{
+		ft_dprintf("child process - created\n");
+		ft_handle_signals(false);
+		//ft_handle_signals_childs();
+
 		close(fd[0]);
 		if (c_i_next == NULL)
 		{

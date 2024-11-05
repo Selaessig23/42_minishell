@@ -2,7 +2,7 @@
 
 /**
  * DESRIPTION: 
- * in this file the the following behaviour for signals will be
+ * in this file the following behaviour for signals will be
  * integrated:
  * >ctrl-C (=sigint) displays "^C" followd by a new prompt on a new line, 
  * same on heredoc (here it closes heredoc)!
@@ -13,6 +13,7 @@
  * on non empty line nothing happens
  * >ctrl-\ (=sigquit) does nothing (do not quit!).
 */
+// !This is for heredoc readlin
 static void	handle_sigint_non(int sig)
 {
 	(void) sig;
@@ -22,15 +23,15 @@ static void	handle_sigint_non(int sig)
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
-// Is called in case of if (heredoc == true)
-// So it was set in main (ft_handle_signals(true);)
-// Why boolean heredoc true? I don't know, need to ask Markus.
+// this is for readline in main
 static void	handle_sigint_inter(int sig)
 {
 	(void)sig;
 	if (sig == SIGINT)
 	{
-
+		ft_dprintf("\nare we here?\n\n");
+		printf("Sandwich\n");
+		ft_putstr_fd("\n", 1);
 		ft_putstr_fd("\n", 1);
 		rl_replace_line("", 0); //clear the input line
 		rl_on_new_line(); //Go to a new line
@@ -44,6 +45,12 @@ static void	handle_sigint_inter(int sig)
 		rl_redisplay(); //Redisplay the prompt
 		signalnum = 2;
 	}
+}
+
+static void	handle_sigint_child(int sig)
+{
+	(void)sig;
+	printf("hi\n");
 }
 
 /**
@@ -116,6 +123,26 @@ int	ft_handle_signals(bool heredoc)
 			return (-1);
 		}
 	}
+	action.sa_flags = 0;
+	if (sigemptyset(&action.sa_mask) == -1)
+	{
+		perror("sigemtyset\n");
+		return (1);
+	}
+	sigaddset(&action.sa_mask, SIGINT);
+	sigaddset(&action.sa_mask, SIGQUIT);
+	sigaction(SIGINT, &action, NULL);
+	action.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &action, NULL);
+	return (0);
+}
+
+int	ft_handle_signals_childs(void)
+{
+	struct sigaction	action;
+
+	ft_memset(&action, 0, sizeof(action));
+	action.sa_handler = &handle_sigint_child;
 	action.sa_flags = 0;
 	if (sigemptyset(&action.sa_mask) == -1)
 	{

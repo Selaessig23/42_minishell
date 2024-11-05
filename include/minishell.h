@@ -232,6 +232,7 @@ void	delete_heredoc(t_data *comm_info);
 void	ft_minishell_help(int fd);
 //signals.c
 int	ft_handle_signals(bool rl_antes);
+int	ft_handle_signals_childs(void);
 //execution/execute_0.c
 void    execute(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	print_stderr(char *what_error);

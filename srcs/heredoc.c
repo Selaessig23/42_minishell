@@ -91,7 +91,7 @@ static int	here_read_helper(int write_end, char *lim)
 	if (signalnum == 3)
 	{
 		signalnum = 0;
-		return (0);
+		return (1);
 	}
 	return (0);
 }
@@ -137,17 +137,8 @@ int heredoc_start(t_data *comm_info, char *limiter)
 	name = ft_strjoin(".heredoc_", cmd_no_str);
 	free(cmd_no_str);
 	fd = here_read(name, limiter);
-	id = fork();
-	// fork error handling
-	if (id == 0)
-	{
-		//
-		here_read_helper(fd, limiter);
-		close(fd);
-		exit(EXIT_SUCCESS);
-	}
-	else
-		waitpid(id, NULL, 0);
+	here_read_helper(fd, limiter);
+	close(fd);
 	fd = fd_here_creator(name, false);
 	free(name);
 	return (fd);
