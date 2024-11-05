@@ -64,6 +64,7 @@ void    ft_ms_executer(char *env[])
 {
 	char	*temp;
 	char    *shlvl_new;
+	char    *count_new;
 	size_t  count;
 	
 	count = 0;
@@ -74,7 +75,13 @@ void    ft_ms_executer(char *env[])
 	count = ft_atoi(temp + 6);
 	printf("test 2b: count = %zu\n", count);
 	count += 1;
-	shlvl_new = ft_itoa(count);
+	count_new = ft_itoa(count);
+	if (!count_new)
+		error_handling(1);
+	shlvl_new = ft_strjoin("SHLVL=", count_new);
+	if (!shlvl_new)
+		error_handling(1);
+	free(count_new);
 	printf("test 2c: env new = %s\n", shlvl_new);
 	*env = shlvl_new;
 	free (temp);
