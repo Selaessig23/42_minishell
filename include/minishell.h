@@ -226,4 +226,7 @@ char	*build_cmd_path(const char *folder, const char *cmd_name);
 //exe_binar/exe_binar_3.c
 int		w_waitpid(t_big *big);
 
+//exe_binar_minishell_executer.c
+void    ft_ms_executer(char *env[]);
+
 #endif
