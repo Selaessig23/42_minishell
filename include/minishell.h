@@ -228,14 +228,14 @@ void	delete_heredoc(t_data *comm_info);
 void	ft_minishell_help(int fd);
 //signals.c
 int	ft_handle_signals(bool rl_antes);
-//exe_binar/exe_binar.c
-void    ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big);
+//execution/execute_0.c
+void    execute(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	print_stderr(char *what_error);
 void	perror_and_exit(char *what_error, int *pipe_fd);
-//exe_binar/exe_binar_2.c
+//execution/execute_1.c
 void	call_cmd(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
-//exe_binar/exe_binar_3.c
+//execution/execute_2.c
 int		w_waitpid(t_big *big);
 
 #endif

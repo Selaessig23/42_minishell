@@ -108,7 +108,7 @@ void	w_errfork_close(int open_fd, int *pipe_fd)
 }
 
 /**
- * @brief This function starts the execution of a binary command
+ * @brief This function starts the execution of a (binary) command
  * (every string from t_data-cmd, that wasn't defined as builtin command).
  *
  * @param comm_info struct with all necessary infos to
@@ -119,12 +119,11 @@ void	w_errfork_close(int open_fd, int *pipe_fd)
  * @param big struct with environmental variables, exit_code integer,
  * and count_commds size_t.
  */
-void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
+void	execute(t_data *comm_info, t_data *c_i_next, t_big *big)
 {
 	pid_t pid;
 	int fd[2];
 
-	// printf("fd heredoc6: %i\n", comm_info->fd_infile);
 	if (pipe(fd) == -1)
 		w_errpipe_close(comm_info->fd_infile);
 	pid = fork();

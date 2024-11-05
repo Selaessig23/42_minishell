@@ -257,7 +257,6 @@ int ft_executer(t_big *big, char *prompt)
 	comm_info = curr->content;
 	while (curr != NULL)
 	{
-		// printf("fd heredoc5: %i\n", comm_info->fd_infile);
 		comm_info = curr->content;
 		if (curr->next != NULL)
 			comm_info_next = curr->next->content;
@@ -288,7 +287,7 @@ int ft_executer(t_big *big, char *prompt)
 			else
 			{
 				if (!check_cmd(comm_info->cmd, big->env))
-					ft_binar_exe(comm_info, comm_info_next, big);
+					execute(comm_info, comm_info_next, big);
 				else
 					big->exit_code = 999;
 			}

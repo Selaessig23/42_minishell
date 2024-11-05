@@ -20,7 +20,7 @@ void	update_read_input(char **main, char *extra)
 	}
 	ft_strlcpy(new, *main, ft_strlen(*main) + 1);
 	ft_strlcat(new, extra, length);
-	ft_printf("updated readline input $%s$\n", new);
+	//ft_printf("updated readline input $%s$\n", new);
 	free(*main);
 	free(extra);
 	*main = new;
