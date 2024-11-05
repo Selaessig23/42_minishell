@@ -18,6 +18,7 @@ static void	handle_sigint_non(int sig)
 	(void) sig;
 	
 	signalnum = 3;
+	// ft_putstr_fd("\n", 1);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
@@ -97,7 +98,7 @@ int	ft_handle_signals(bool heredoc)
 	struct sigaction	action;
 
 	ft_memset(&action, 0, sizeof(action));
-	if (heredoc == true)
+	if (heredoc == false)
 	{
 		action.sa_handler = &handle_sigint_inter;
 		if (ft_terminal_config(true) == -1)

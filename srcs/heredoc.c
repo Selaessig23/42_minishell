@@ -65,7 +65,7 @@ static int	here_read_helper(int write_end, char *lim)
 	str = NULL;
 	while (signalnum != 3)
 	{
-		ft_handle_signals(false);
+		// ft_handle_signals(true);
 		str = readline("> ");
 		if (!str)
 		{
@@ -91,7 +91,7 @@ static int	here_read_helper(int write_end, char *lim)
 	if (signalnum == 3)
 	{
 		signalnum = 0;
-		return (1);
+		return (0);
 	}
 	return (0);
 }
@@ -127,17 +127,28 @@ static int here_read(char *name, char *lim)
  */
 int heredoc_start(t_data *comm_info, char *limiter)
 {
-	int fd;
-	char *name;
-	char *cmd_no_str;
+	int		fd;
+	char	*name;
+	char	*cmd_no_str;
+	pid_t	id;
 
+	id = 0;
 	cmd_no_str = ft_itoa(comm_info->commands_no);
 	name = ft_strjoin(".heredoc_", cmd_no_str);
 	free(cmd_no_str);
 	fd = here_read(name, limiter);
-	if (here_read_helper(fd, limiter))
-		return (-1);
-	close(fd);
+	id = fork();
+	// fork error handling
+	if (id == 0)
+	{
+		//
+		here_read_helper(fd, limiter);
+		close(fd);
+		exit(EXIT_SUCCESS);
+	}
+	else
+		waitpid(id, NULL, 0);
 	fd = fd_here_creator(name, false);
+	free(name);
 	return (fd);
 }

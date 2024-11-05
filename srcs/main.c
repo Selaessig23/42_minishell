@@ -46,8 +46,11 @@ int	main(int argc, char **argv, char **envp)
 		big = init_t_big(envp);
 		while (1)
 		{
-			ft_handle_signals(true);
+			ft_handle_signals(false);
 			input = readline(prompt);
+
+			// handler signals after readline
+			ft_handle_signals(true);
 			// if (signalnum == 1)
 			// {
 			// 	ft_putchar_fd('\n', 1);

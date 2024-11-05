@@ -227,7 +227,11 @@ static void set_number_helper(t_data *comm_info, t_list *curr_lexx)
 
 /**
  * @brief this function initiate the linked list of commands by
- * checking the tokens of the command line input
+ * checking the tokens of the command line input, opening all fds
+ * and creating heredoc.
+ * 
+ * ft_set_r_in - for input redirection
+ * ft_set_r_out - for out redirection
  * 
  * !would have been better to name the variable token in struct 
  * t_lexer tokentype instead of token!
@@ -295,6 +299,8 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
  * @brief function to create a linked list of commands 
  * which should be part of the struct big (cmdlist)
  * 
+ * variable "number_helper" helps to create many heredocs
+ * 
  * @param lexx the expanded linked list with command line input
  * @param p_big pointer to the struct big to integrate a linked list of
  * commands to (cmdlist)
@@ -308,7 +314,6 @@ void	ft_commands(t_list *lexx, t_big **p_big)
 		error_handling(0);
 	big = *p_big;
 	comm = NULL;
-	// it helps to create many heredocs
 	((t_lexer *)(lexx->content))->number_helper = 1;
 	ft_init_clist(&lexx, &comm, p_big);
 	ft_count_commands(comm, p_big);

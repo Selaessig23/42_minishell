@@ -84,12 +84,16 @@ typedef enum e_tokentype
 	WORD_CLEANED = 29 // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
 }	t_tokentype;
 
-// struct for lexer analysis
+/**
+ * struct for lexer analysis
+ * 
+ * @param number_helper helps to create many heredocs
+ */
 typedef struct s_lexer
 {
 	char			*value;
 	t_tokentype		token;
-	int				number_helper; // it helps to create many heredocs
+	int				number_helper;
 }				t_lexer;
 
 // cmd - Command and arguments
