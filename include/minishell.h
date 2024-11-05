@@ -19,10 +19,29 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
+//to handle signals
+# include <signal.h>
+// to use struct sigaction
+# include <bits/sigaction.h>
+// function ioctl, macros TIOCSTI
+# include <sys/ioctl.h>
+//to change behaviour of the terminal (not-printing all control squences)
+# include <termios.h>
+
+// for sigset_t data type
+//#include <asm-generic/signal.h>
+//#include <asm/signal.h>
+//#include <bits/types/sigset_t.h>
+// for ECHOCTL flag
+//#include <bits/termios-c_lflag.h>
+//#include <asm-generic/termbits.h>
 
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments\
 to execute minishell\n"
+
+//define a global variable for signal-handling
+extern int	signalnum;
 
 // it is "a good practice" to use a global variable for environment 
 // instead of picking it in the main
@@ -30,7 +49,6 @@ to execute minishell\n"
 // extern char	**environ;
 
 // to define all different tokens
-// see libft_bonus
 typedef enum e_tokentype
 {
 	PIPE = 1,
@@ -208,15 +226,15 @@ int		heredoc_start(t_data *comm_info, char *limiter);
 void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
 void	ft_minishell_help(int fd);
+//signals.c
+int	ft_handle_signals(bool rl_antes);
 //exe_binar/exe_binar.c
 void    ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	print_stderr(char *what_error);
 void	perror_and_exit(char *what_error, int *pipe_fd);
-
 //exe_binar/exe_binar_2.c
 void	call_cmd(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
-
 //exe_binar/exe_binar_3.c
 int		w_waitpid(t_big *big);
 

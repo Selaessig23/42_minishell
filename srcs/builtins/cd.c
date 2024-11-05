@@ -88,14 +88,9 @@ static void	ft_update_env(t_big *big)
  */
 void	ft_cd(t_big *big, char **argv)
 {
-	//char	**envp;
-	//char	*new_pwd;
-	// char	*pathname;
 	int		i;
 
 	i = 0;
-	//envp = big->env;
-	//new_pwd = NULL;
 	if (ft_arrlen(argv) > 2)
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
@@ -107,7 +102,9 @@ void	ft_cd(t_big *big, char **argv)
 	{
 		i = chdir(argv[1]);
 		if (i < 0)
-			error_handling(0);
+			ft_dprintf("minishell: cd: %s: No such file or directory\n", argv[1]);
+		// if (i < 0)
+		// 	error_handling(0);
 		ft_update_env(big);
 		big->exit_code = 0;
 	}

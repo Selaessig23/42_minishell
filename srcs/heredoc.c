@@ -1,19 +1,26 @@
 #include "minishell.h"
+#include <sys/ioctl.h>
 
-static int fd_here_creator(char *filename)
+static int	fd_here_creator(char *filename, bool wr)
 {
-	int fd;
+	int		fd;
 
 	fd = 0;
-	if (access(filename, F_OK))
+	if (access(filename, F_OK) && wr == true)
 	{
-		fd = open(filename, O_TRUNC | O_CREAT | O_RDWR, 0666); // 0644
+		fd = open(filename, O_WRONLY | O_CREAT, 0644);
+		if (fd == -1)
+			error_handling(1);
+	}
+	else if (!access(filename, F_OK) && wr == true)
+	{
+		fd = open(filename, O_WRONLY | O_TRUNC);
 		if (fd == -1)
 			error_handling(1);
 	}
 	else if (!access(filename, F_OK))
 	{
-		fd = open(filename, O_TRUNC | O_CREAT | O_RDWR, 0666); // 0644
+		fd = open(filename, O_RDONLY);
 		if (fd == -1)
 			error_handling(1);
 	}
@@ -26,10 +33,10 @@ static int fd_here_creator(char *filename)
  * one command.
  * For instance, "<< LIM << LIM << LIM"
  */
-void delete_heredoc(t_data *comm_info)
+void	delete_heredoc(t_data *comm_info)
 {
-	char *pathname;
-	char *cmd_no_str;
+	char	*pathname;
+	char	*cmd_no_str;
 
 	cmd_no_str = ft_itoa(comm_info->commands_no);
 	pathname = ft_strjoin(".heredoc_", cmd_no_str);
@@ -51,23 +58,42 @@ void delete_heredoc(t_data *comm_info)
  * @param write_end: File descriptor for the file being written to.
  * @param lim: The delimiter string that marks the end of the input.
  */
-static void here_read_helper(int write_end, char *lim)
+static int	here_read_helper(int write_end, char *lim)
 {
 	char *str;
 
-	while (1)
+	str = NULL;
+	while (signalnum != 3)
 	{
-		write(1, ">", 1);
-		write(1, " ", 1);
-		str = get_next_line(0);
-		if (ft_strncmp(str, lim, ft_strlen(lim)) == 0 && str[ft_strlen(lim)] == 10)
+		ft_handle_signals(false);
+		str = readline("> ");
+		if (!str)
+		{
+			ft_putstr_fd("bash: warning: here-document at line 1 ", 2);
+			ft_putstr_fd("delimited by \"end-of-file (wanted `", 2);
+			ft_putstr_fd(lim, 2);
+			ft_putstr_fd("\')\n", 2);
+			signalnum = 3;
+		}
+		if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
+			&& ft_strlen(lim) == ft_strlen(str))
 		{
 			free(str);
-			return;
+			return (0);
 		}
-		write(write_end, str, ft_strlen(str));
-		free(str);
+		if (str)
+		{
+			write(write_end, str, ft_strlen(str));
+			ft_putchar_fd('\n', write_end);
+			free(str);
+		}
 	}
+	if (signalnum == 3)
+	{
+		signalnum = 0;
+		return (1);
+	}
+	return (0);
 }
 
 /**
@@ -83,10 +109,8 @@ static int here_read(char *name, char *lim)
 {
 	int fd;
 
-	fd = fd_here_creator(name);
-	here_read_helper(fd, lim);
-	close(fd);
-	fd = open(name, O_RDONLY);
+	(void) lim;
+	fd = fd_here_creator(name, true);
 	return (fd);
 }
 
@@ -111,6 +135,9 @@ int heredoc_start(t_data *comm_info, char *limiter)
 	name = ft_strjoin(".heredoc_", cmd_no_str);
 	free(cmd_no_str);
 	fd = here_read(name, limiter);
-	free(name);
+	if (here_read_helper(fd, limiter))
+		return (-1);
+	close(fd);
+	fd = fd_here_creator(name, false);
 	return (fd);
 }

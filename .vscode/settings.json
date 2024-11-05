@@ -5,6 +5,12 @@
         "ft_printf.h": "c",
         "get_next_line_bonus.h": "c",
         "typeinfo": "c",
-        "libft_bonus.h": "c"
+        "libft_bonus.h": "c",
+        "sigaction.h": "c",
+        "signal.h": "c",
+        "termios.h": "c",
+        "termios-c_lflag.h": "c",
+        "sigset_t.h": "c",
+        "ioctl.h": "c"
     }
 }
