@@ -228,5 +228,6 @@ int		w_waitpid(t_big *big);
 
 //exe_binar_minishell_executer.c
 void    ft_ms_executer(char *env[]);
+void	ft_overwrite_shlvl(char ***p_env);
 
 #endif

@@ -54,19 +54,39 @@ void	ft_writenbr(int n)
 }
 */
 
+/*
+void	ft_overwrite_shlvl(char ***p_env)
+{
+	char	**env;
+	char	*temp;
+	char	*shlvl_new;
+
+	env = *p_env;
+	while (*env && ft_strncmp("SHLVL", *env, 4))
+		env++;
+	temp = *env;
+	shlvl_new = getenv("SHLVL");
+	*env = ft_strjoin("SHLVL=", shlvl_new);
+	// free(shlvl_new);
+	free(temp);
+	ft_ms_executer(env);
+}
+*/
+
+
 /**
  * @brief function to execute the builtin function "exit", 
  * it closes the programm and frees all allocated memory
  * 
  * @param env an array of strings with all environmental variables
  */
-void    ft_ms_executer(char *env[])
+void	ft_ms_executer(char *env[])
 {
 	char	*temp;
-	char    *shlvl_new;
-	char    *count_new;
-	size_t  count;
-	
+	char	*shlvl_new;
+	char	*count_new;
+	size_t	count;
+
 	count = 0;
 	while (*env && ft_strncmp("SHLVL", *env, 4))
 		env++;
