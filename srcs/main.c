@@ -1,12 +1,8 @@
 #include "minishell.h"
 
-int	signalnum;
 
-// **Note for Markus. 12 Aug** I moved it up "if (argc != 1) error_handling(1);"
-// The reason is that is generally common to start by checking for invalid input
-// or error conditions first. In the context of command-line arguments, this
-// often means checking for incorrect argument counts before proceeding with
-// the valid case. Please look at it, and say if it works for you. Thanks!
+int	signalnum = 0;
+
 /**
  * (To be continued...)
  * An INFINITE LOOP to continuously prompt for and process user input
@@ -16,10 +12,8 @@ int	signalnum;
 
 	* 2. Check if the input is an empty string (user pressed Enter without typing anything).
  * If the input is empty,
-	free the memory allocated for 'input' and assign 0 to 'exitcode'.
- * 3. If input is not empty, proceed with the program logic.
- *
- * @param input a pointer to a character string that will hold user input
+
+	?????????
  */
 int	main(int argc, char **argv, char **envp)
 {
@@ -35,31 +29,29 @@ int	main(int argc, char **argv, char **envp)
 	lexx = NULL;
 	// comm = NULL;
 	exitcode = 0;
-	signalnum = 0;
 	// ft_welcome();
+
+	rl_catch_signals = 0;
+
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)
 	{
-		prompt = ft_strdup("Marina's and Markus' minishell>");
+		prompt = ft_strdup("minishell$ ");
 		input = NULL;
 		big = init_t_big(envp);
 		while (1)
 		{
+			if (signalnum == 1)
+			{
+				signalnum = 0;
+				big->exit_code = 130;
+			}
+
 			ft_handle_signals(false);
 			input = readline(prompt);
-
 			// handler signals after readline
 			ft_handle_signals(true);
-			
-			// if (signalnum == 1)
-			// {
-			// 	ft_putchar_fd('\n', 1);
-			// 	rl_replace_line("", 0); //clear the input line
-			// 	rl_on_new_line(); //Go to a new line
-			// 	rl_redisplay(); //Redisplay the prompt
-			// 	big->exit_code = 1;
-			// }
 			if (!input)
 			{
 				ft_putstr_fd("exit\n", 1);
@@ -101,7 +93,6 @@ int	main(int argc, char **argv, char **envp)
 					big->exit_code = 2;
 					ft_free_ll(&lexx);
 				}
-				signalnum = 0;
 			}
 		}
 		ft_free_ll(&lexx);

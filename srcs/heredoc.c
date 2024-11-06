@@ -65,7 +65,6 @@ static int	here_read_helper(int write_end, char *lim)
 	str = NULL;
 	while (signalnum != 3)
 	{
-		// ft_handle_signals(true);
 		str = readline("> ");
 		if (!str)
 		{
@@ -90,7 +89,7 @@ static int	here_read_helper(int write_end, char *lim)
 	}
 	if (signalnum == 3)
 	{
-		signalnum = 0;
+		signalnum = 1;
 		return (1);
 	}
 	return (0);

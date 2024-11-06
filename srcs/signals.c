@@ -19,7 +19,7 @@ static void	handle_sigint_non(int sig)
 	(void) sig;
 	
 	signalnum = 3;
-	// ft_putstr_fd("\n", 1);
+	ft_putstr_fd("^C", 1);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
@@ -27,30 +27,27 @@ static void	handle_sigint_non(int sig)
 static void	handle_sigint_inter(int sig)
 {
 	(void)sig;
-	if (sig == SIGINT)
-	{
-		ft_dprintf("\nare we here?\n\n");
-		printf("Sandwich\n");
-		ft_putstr_fd("\n", 1);
-		ft_putstr_fd("\n", 1);
-		rl_replace_line("", 0); //clear the input line
-		rl_on_new_line(); //Go to a new line
-		rl_redisplay(); //Redisplay the prompt
-		signalnum = 1;
-	}
-	else
-	{
-		rl_replace_line("", 0); //clear the input line
-		rl_on_new_line(); //Go to a new line
-		rl_redisplay(); //Redisplay the prompt
-		signalnum = 2;
-	}
-}
+	// NEW NEW NEW nEW
+	signalnum = 1;
+	write(1, "^C\n", 2);
+	ioctl(0, TIOCSTI, "\n");
 
-static void	handle_sigint_child(int sig)
-{
-	(void)sig;
-	printf("hi\n");
+	// if (sig == SIGINT)
+	// {
+	// 	ft_putstr_fd("^C\n", 1);
+	// 	rl_replace_line("", 0); //clear the input line
+	// 	rl_on_new_line(); //Go to a new line
+	// 	rl_redisplay(); //Redisplay the prompt
+	// 	signalnum = 1;
+	// }
+	// else
+	// {
+	// 	//printf("handle_sigint_inter_22222");
+	// 	rl_replace_line("", 0); //clear the input line
+	// 	rl_on_new_line(); //Go to a new line
+	// 	rl_redisplay(); //Redisplay the prompt
+	// 	signalnum = 2;
+	// }
 }
 
 /**
@@ -108,20 +105,20 @@ int	ft_handle_signals(bool heredoc)
 	if (heredoc == false)
 	{
 		action.sa_handler = &handle_sigint_inter;
-		if (ft_terminal_config(true) == -1)
-		{
-			perror("tcgetattr faulty\n");
-			return (-1);
-		}
+		// if (ft_terminal_config(true) == -1)
+		// {
+		// 	perror("tcgetattr faulty\n");
+		// 	return (-1);
+		// }
 	}
 	else
 	{
 		action.sa_handler = &handle_sigint_non;
-		if (ft_terminal_config(false) == -1)
-		{
-			perror("tcgetattr faulty\n");
-			return (-1);
-		}
+		// if (ft_terminal_config(false) == -1)
+		// {
+		// 	perror("tcgetattr faulty\n");
+		// 	return (-1);
+		// }
 	}
 	action.sa_flags = 0;
 	if (sigemptyset(&action.sa_mask) == -1)
@@ -137,22 +134,22 @@ int	ft_handle_signals(bool heredoc)
 	return (0);
 }
 
-int	ft_handle_signals_childs(void)
+void	sig_handle_child(int sig_num)
 {
-	struct sigaction	action;
+	(void)sig_num;
+	signalnum = 1;
+}
 
-	ft_memset(&action, 0, sizeof(action));
-	action.sa_handler = &handle_sigint_child;
-	action.sa_flags = 0;
-	if (sigemptyset(&action.sa_mask) == -1)
-	{
-		perror("sigemtyset\n");
-		return (1);
-	}
-	sigaddset(&action.sa_mask, SIGINT);
-	sigaddset(&action.sa_mask, SIGQUIT);
-	sigaction(SIGINT, &action, NULL);
-	action.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &action, NULL);
-	return (0);
+void	ft_handle_signals_childs(void)
+{
+	struct sigaction	sa;
+
+	ft_bzero(&sa, sizeof(sa));
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = &sig_handle_child;
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, 0) == -1)
+		perror("sigaction");
+	if (sigaction(SIGQUIT, &sa, 0) == -1)
+		perror("sigaction");
 }

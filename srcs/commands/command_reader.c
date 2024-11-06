@@ -298,14 +298,16 @@ int ft_executer(t_big *big, char *prompt)
 			delete_heredoc(comm_info);
 		if (comm_info->fd_outfile > 2)
 			close(comm_info->fd_outfile);
+		// NEW
+		if (signalnum == 1)
+			break ;
 		curr = curr->next;
 	}
-	//restore_stdin();
 	exit_status_binary = w_waitpid(big);
-
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
-	//ft_dprintf("FINAL EXIT CODE: %d\n", big->exit_code);
+	///// NEW NEW NEW NEW RESTORING
+	ft_handle_signals(false);
 	return (0);
 }
