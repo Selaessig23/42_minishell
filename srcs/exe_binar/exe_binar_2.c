@@ -179,7 +179,7 @@ void	call_cmd(char **cmd_plus_args, char *env[])
 		&& cmd_plus_args[0][ft_strlen("./minishell")] == '\0')
 	// 	//&& ft_strlen(cmd_plus_args[0]) == ft_strlen("./minishell"))
 	{
-		printf("test 2: %zu\n", ft_strlen(cmd_plus_args[0]));
+		// printf("test 2: %zu\n", ft_strlen(cmd_plus_args[0]));
 		ft_ms_executer(env);
 	}
 	// else

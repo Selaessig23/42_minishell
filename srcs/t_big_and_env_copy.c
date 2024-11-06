@@ -46,11 +46,11 @@ static int	count_strings(char **envp)
 }
 
 /**
- * The function copies array of strings from enironmental 
+ * The function copies array of strings from environmental 
  * variables into array of strings that is a part of
  * struct t_big.
 */
-static char	**copy_envp(char **envp)
+char	**copy_envp(char **envp)
 {
 	char	**copy;
 	int		i;

@@ -135,6 +135,8 @@ void	error_handling(int err);
 t_big	*init_t_big(char **envp);
 void	printf_env(t_big *big);
 void	free_t_big(t_big *big); // temp cleanup function
+char	**copy_envp(char **envp);
+
 //lexer.c
 char	**create_nodes(char **readline_input);
 //ft_split_quotes.c
@@ -204,6 +206,10 @@ int		ft_export(t_big *big, t_data *comm_info);
 void	ft_rmv_var_array(t_big *big, char *str_to_rmv);
 void	export_exit_status(t_big *big, char **cmd_arg);
 int		check_dash_in_var_name(char *argument);
+
+//builtins/export_sort.c
+void	ft_export_sort(t_big *big);
+
 //builtins/unset.c
 int		ft_unset(t_big *big, t_data *comm_info);
 size_t	count_till_char(char *str, char up_to);
