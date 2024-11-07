@@ -120,7 +120,8 @@ int	ft_terminal_config(bool rl_antes)
 		return (-1);
 	// if (rl_antes == true)
 	// {
-	termios_p.c_lflag |= ECHOCTL;
+	termios_p.c_lflag |= ECHOCTL; 
+	
 	// termios_p.c_lflag &= ~ICANON;
 	// }
 	// else
