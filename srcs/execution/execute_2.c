@@ -28,7 +28,6 @@ int	w_waitpid(t_big *big)
 	exitcode = 0;
 	status = -1;
 	curr = big->cmdlist;
-	// NEW NEW NEW NEW NEW NEW NEW NEW
 	while (curr != NULL)
 	{
 		comm_info = curr->content;
@@ -37,11 +36,12 @@ int	w_waitpid(t_big *big)
 		{
 			if ((WTERMSIG(status) == 2 || WTERMSIG(status) == 3) && !signaled)
 			{
+				if (WTERMSIG(status) == 3)
+					ft_dprintf("Quit (core dumped)");
 				signaled = true;
 				exitcode = 128 + WTERMSIG(status);
-				write(1, "\n", 1);
+				write(2, "\n", 1);
 			}
-			signalnum = 0;
 		}
 		curr = curr->next;
 	}

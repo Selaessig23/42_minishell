@@ -224,6 +224,7 @@ static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 	t_data *data;
 
 	data = (ft_lstlast(cmdlist))->content;
+
 	if (big->exit_code == 999)
 		big->exit_code = 126;
 	else if (data->fd_infile < 0 || data->fd_outfile < 0)
@@ -298,16 +299,11 @@ int ft_executer(t_big *big, char *prompt)
 			delete_heredoc(comm_info);
 		if (comm_info->fd_outfile > 2)
 			close(comm_info->fd_outfile);
-		// NEW
-		if (signalnum == 1)
-			break ;
 		curr = curr->next;
 	}
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
-	///// NEW NEW NEW NEW RESTORING
-	ft_handle_signals(false);
 	return (0);
 }

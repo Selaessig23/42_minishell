@@ -182,15 +182,12 @@ int	execute(t_data *comm_info, t_data *c_i_next, t_big *big)
 
 	if (pipe(fd) == -1)
 		w_errpipe_close(comm_info->fd_infile);
-
 	signal(SIGINT, SIG_IGN);
-
 	pid = fork();
 	if (pid == -1)
 		w_errfork_close(comm_info->fd_infile, fd);
 	if (pid == 0)
 	{
-		//// NEW
 		if (child(comm_info, c_i_next, big, fd) == -1)
 			return (-1);
 	}

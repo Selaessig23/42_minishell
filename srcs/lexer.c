@@ -252,7 +252,16 @@ char	**create_nodes(char **readline_input)
 	clean_input = NULL;
 	input_arr = NULL;
 	while (is_open_pipe(*readline_input))
+	{
+		/// NEW
+		if (signalnum == 1)
+		{
+			printf("while (is_open_pipe\n");
+			//cleaning
+			return (NULL);
+		}
 		close_pipe(readline_input);
+	}
 	clean_input = ft_clean_input(*readline_input);
 	if (!clean_input)
 	{

@@ -17,9 +17,9 @@
 static void	handle_sigint_non(int sig)
 {
 	(void) sig;
-	
-	signalnum = 3;
-	ft_putstr_fd("^C", 1);
+
+	signalnum = 1;
+	ft_putstr_fd("^HEREC", 1);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
@@ -27,27 +27,9 @@ static void	handle_sigint_non(int sig)
 static void	handle_sigint_inter(int sig)
 {
 	(void)sig;
-	// NEW NEW NEW nEW
 	signalnum = 1;
 	write(1, "^C\n", 2);
 	ioctl(0, TIOCSTI, "\n");
-
-	// if (sig == SIGINT)
-	// {
-	// 	ft_putstr_fd("^C\n", 1);
-	// 	rl_replace_line("", 0); //clear the input line
-	// 	rl_on_new_line(); //Go to a new line
-	// 	rl_redisplay(); //Redisplay the prompt
-	// 	signalnum = 1;
-	// }
-	// else
-	// {
-	// 	//printf("handle_sigint_inter_22222");
-	// 	rl_replace_line("", 0); //clear the input line
-	// 	rl_on_new_line(); //Go to a new line
-	// 	rl_redisplay(); //Redisplay the prompt
-	// 	signalnum = 2;
-	// }
 }
 
 /**
@@ -64,7 +46,7 @@ static void	handle_sigint_inter(int sig)
 int	ft_terminal_config(bool rl_antes)
 {
 	struct termios	termios_p;
-	
+
 	(void) rl_antes;
 	if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
 		return (-1);
@@ -103,23 +85,9 @@ int	ft_handle_signals(bool heredoc)
 
 	ft_memset(&action, 0, sizeof(action));
 	if (heredoc == false)
-	{
 		action.sa_handler = &handle_sigint_inter;
-		// if (ft_terminal_config(true) == -1)
-		// {
-		// 	perror("tcgetattr faulty\n");
-		// 	return (-1);
-		// }
-	}
 	else
-	{
 		action.sa_handler = &handle_sigint_non;
-		// if (ft_terminal_config(false) == -1)
-		// {
-		// 	perror("tcgetattr faulty\n");
-		// 	return (-1);
-		// }
-	}
 	action.sa_flags = 0;
 	if (sigemptyset(&action.sa_mask) == -1)
 	{
@@ -137,9 +105,10 @@ int	ft_handle_signals(bool heredoc)
 void	sig_handle_child(int sig_num)
 {
 	(void)sig_num;
-	signalnum = 1;
 }
 
+/// @brief  TO REWRITE IT!!!!!
+/// @param  
 void	ft_handle_signals_childs(void)
 {
 	struct sigaction	sa;
@@ -150,6 +119,5 @@ void	ft_handle_signals_childs(void)
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, 0) == -1)
 		perror("sigaction");
-	if (sigaction(SIGQUIT, &sa, 0) == -1)
-		perror("sigaction");
+	signal(SIGQUIT, SIG_DFL);
 }

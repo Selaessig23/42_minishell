@@ -63,7 +63,7 @@ static int	here_read_helper(int write_end, char *lim)
 	char *str;
 
 	str = NULL;
-	while (signalnum != 3)
+	while (signalnum != 1)
 	{
 		str = readline("> ");
 		if (!str)
@@ -72,7 +72,7 @@ static int	here_read_helper(int write_end, char *lim)
 			ft_putstr_fd("delimited by \"end-of-file (wanted `", 2);
 			ft_putstr_fd(lim, 2);
 			ft_putstr_fd("\')\n", 2);
-			signalnum = 3;
+			signalnum = 1;
 		}
 		if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
 			&& ft_strlen(lim) == ft_strlen(str))
@@ -87,11 +87,8 @@ static int	here_read_helper(int write_end, char *lim)
 			free(str);
 		}
 	}
-	if (signalnum == 3)
-	{
-		signalnum = 1;
+	if (signalnum == 1)
 		return (1);
-	}
 	return (0);
 }
 
@@ -129,9 +126,7 @@ int heredoc_start(t_data *comm_info, char *limiter)
 	int		fd;
 	char	*name;
 	char	*cmd_no_str;
-	pid_t	id;
 
-	id = 0;
 	cmd_no_str = ft_itoa(comm_info->commands_no);
 	name = ft_strjoin(".heredoc_", cmd_no_str);
 	free(cmd_no_str);

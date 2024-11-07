@@ -33,29 +33,29 @@ void	update_read_input(char **main, char *extra)
  */
 char	*extra_prompt(void)
 {
-	char	*prompt;
 	char	*input2;
 
-	prompt = ft_strdup(">");
-	if (!prompt)
+	input2 = NULL;
+	while (signalnum != 1)
 	{
-		perror("error extra_prompt");
-		exit(EXIT_FAILURE);
+		input2 = readline(">");
+		// while (input2 && !*input2)
+		// {
+		// 	free(input2);
+		// 	input2 = readline(">");
+		// }
+		if (!input2)
+		{
+			ft_dprintf("minishell: ");
+			ft_dprintf("syntax error: unexpected end of file\n");
+			exit(2);
+		}
+		return (input2);
 	}
-	input2 = readline(prompt);
-	while (input2 && !*input2)
+	if (signalnum == 1)
 	{
-		free(input2);
-		input2 = readline(prompt);
+		return (NULL);
 	}
-	if (!input2)
-	{
-		perror("error extra_input");
-		free(prompt);
-		exit(EXIT_FAILURE);
-	}
-	free(prompt);
-	return (input2);
 }
 
 /**
