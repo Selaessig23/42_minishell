@@ -93,9 +93,9 @@ int	is_open_pipe(char *input)
 	if (i == 0)
 		return (0);
 	else
-		while (input[i] && input[i] == 32)
+		while (i >= 0 && input[i] && input[i] == 32)
 			i--;
-	if (input[i] == '|' && input[i - 1] != '|')
+	if (i >= 0 && input[i] == '|' && input[i - 1] != '|')
 	{
 		i--;
 		while (input[i] == 32)

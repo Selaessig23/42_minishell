@@ -36,7 +36,7 @@ void	ft_ms_executer(char *env[])
 	char	*temp;
 	char	*shlvl_new;
 	char	*count_new;
-	size_t	count;
+	int		count;
 
 	count = 0;
 	while (*env && ft_strncmp("SHLVL", *env, 4))
@@ -44,7 +44,7 @@ void	ft_ms_executer(char *env[])
 	temp = *env;
 	// printf("test 2a: temp = %s\n", temp + 6);
 	count = ft_shlvl_converter(temp + 6);
-	printf("test: %zu`", count);
+	// printf("test: %i", count);
 	if (count < 0)
 		count = 0;
 	else 

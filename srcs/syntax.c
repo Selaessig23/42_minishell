@@ -173,7 +173,9 @@ static int	ft_quotes_check(t_list *lexx)
  */
 int	ft_syntax(t_list *lexx)
 {
-	// ft_printf("test0\n");
+	// ft_printf("testXYZ: %i\n", ((t_lexer *)lexx->content)->token);
+	if (!lexx)
+		return (1);
 	if (ft_quotes_check(lexx))
 	{
 		// ft_printf("test quotes\n");

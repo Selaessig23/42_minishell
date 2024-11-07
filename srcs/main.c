@@ -1,6 +1,25 @@
 #include "minishell.h"
 
 
+/**
+ * @brief checks for empty input (only tabs or spaces)
+ * to ignore it in history and return a new prompt
+ * 
+ * @param input the readline input
+ */
+int	ft_spacetabchecker(char *input)
+{
+	while (*input)
+	{
+		if ((*input >= 9 && *input <= 11)
+			|| *input == 32)
+			input += 1;
+		else
+			return (0);
+	}
+	return (1);
+}
+
 // **Note for Markus. 12 Aug** I moved it up "if (argc != 1) error_handling(1);"
 // The reason is that is generally common to start by checking for invalid input
 // or error conditions first. In the context of command-line arguments, this
@@ -49,10 +68,10 @@ int	main(int argc, char **argv, char **envp)
 			input = readline(prompt);
 			if (!input)
 			{
-				// free session
-				exit(EXIT_FAILURE);
+				// free session and printf exit
+				exit(0);
 			}
-			else if (!*input)
+			else if (!*input || ft_spacetabchecker(input))
 			{
 				free(input);
 				exitcode = 0;
