@@ -251,14 +251,14 @@ char	**create_nodes(char **readline_input)
 	// lexx = NULL;
 	clean_input = NULL;
 	input_arr = NULL;
+	//// if (extra_prompt == NULL)
+	//       return (NULL);
 	while (is_open_pipe(*readline_input))
 	{
-		/// NEW
 		if (signalnum == 1)
 		{
-			printf("while (is_open_pipe\n");
-			//cleaning
-			return (NULL);
+			input_arr = NULL;
+			return (input_arr);
 		}
 		close_pipe(readline_input);
 	}

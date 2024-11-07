@@ -146,7 +146,7 @@ char	**ft_split_quotes(char const *s, char c);
 // extra_prompt.c
 int		is_open_pipe(char *clean_input);
 void	close_pipe(char **readline_input);
-char	*extra_prompt(void);
+char	*extra_prompt_reader(void);
 void	update_read_input(char **main, char *extra);
 //str_spaces_trimer.c
 void	trim_out_spaces(char **str);

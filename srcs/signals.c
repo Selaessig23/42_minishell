@@ -19,7 +19,7 @@ static void	handle_sigint_non(int sig)
 	(void) sig;
 
 	signalnum = 1;
-	ft_putstr_fd("^HEREC", 1);
+	ft_putstr_fd("^C", 2);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
@@ -27,8 +27,9 @@ static void	handle_sigint_non(int sig)
 static void	handle_sigint_inter(int sig)
 {
 	(void)sig;
+
 	signalnum = 1;
-	write(1, "^C\n", 2);
+	ft_putstr_fd("^C", 2);
 	ioctl(0, TIOCSTI, "\n");
 }
 

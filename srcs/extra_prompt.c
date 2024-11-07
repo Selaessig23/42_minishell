@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+
 /**
  * The function that updates the current input when the | character
  * at the end. For instance, if the main input was "ls |" and
@@ -8,8 +9,8 @@
  */
 void	update_read_input(char **main, char *extra)
 {
-	char	*new;
-	int		length;
+	char *new;
+	int length;
 
 	length = ft_strlen(*main) + ft_strlen(extra) + 1;
 	new = ft_calloc(1, length);
@@ -20,7 +21,7 @@ void	update_read_input(char **main, char *extra)
 	}
 	ft_strlcpy(new, *main, ft_strlen(*main) + 1);
 	ft_strlcat(new, extra, length);
-	//ft_printf("updated readline input $%s$\n", new);
+	// ft_printf("updated readline input $%s$\n", new);
 	free(*main);
 	free(extra);
 	*main = new;
@@ -31,12 +32,12 @@ void	update_read_input(char **main, char *extra)
  * It implements behaviour of a bash that is waiting for additional input.
  * (c) Marina
  */
-char	*extra_prompt(void)
+char	*extra_prompt_reader(void)
 {
-	char	*input2;
+	char *input2;
 
 	input2 = NULL;
-	while (signalnum != 1)
+	if (signalnum != 1)
 	{
 		input2 = readline(">");
 		// while (input2 && !*input2)
@@ -48,31 +49,37 @@ char	*extra_prompt(void)
 		{
 			ft_dprintf("minishell: ");
 			ft_dprintf("syntax error: unexpected end of file\n");
+			ft_dprintf("exit\n");
 			exit(2);
 		}
 		return (input2);
 	}
-	if (signalnum == 1)
-	{
-		return (NULL);
-	}
+	else
+		return (NULL);	
 }
 
 /**
  * The function is called when the input ends with |
  * and it opens and extra prompt and waiting for additional
  * input.
-*/
+ */
 void	close_pipe(char **readline_input)
 {
-	char	*extra_input;
+	char *extra_input;
 
 	extra_input = NULL;
-	extra_input = extra_prompt();
+	extra_input = extra_prompt_reader();
 	if (!extra_input)
 		return ;
 	if (extra_input)
+	{
+		if (signalnum == 1)
+			{
+				free(extra_input);
+				return (NULL);
+			}
 		update_read_input(readline_input, extra_input);
+	}
 }
 
 /**
@@ -85,7 +92,7 @@ void	close_pipe(char **readline_input)
  */
 int	is_open_pipe(char *input)
 {
-	int	i;
+	int i;
 
 	if (!*input)
 		return (0);
@@ -100,8 +107,7 @@ int	is_open_pipe(char *input)
 		i--;
 		while (input[i] == 32)
 			i--;
-		if (input[i] && input[i] != '|' && input[i] != '>'
-			&& input[i] != '<')
+		if (input[i] && input[i] != '|' && input[i] != '>' && input[i] != '<')
 			return (1);
 		return (0);
 	}

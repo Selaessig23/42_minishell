@@ -63,11 +63,9 @@ int	main(int argc, char **argv, char **envp)
 				// ft_printf("input length: %i\n", ft_strlen(input));
 				input_arr = create_nodes(&input);
 				free(input);
-				if (!input_arr)
-					free(prompt);
-				else
+				input = NULL;
+				if (input_arr != NULL)
 				{
-					input = NULL;
 					// ft_test_arr_print(input_arr, prompt);
 					// attempt to use both ways, to not destroy the work
 					// with input_arr on extra input of marina
@@ -85,12 +83,13 @@ int	main(int argc, char **argv, char **envp)
 						ft_free_ll(&lexx);
 						ft_executer(big, prompt);
 					}
-					else
+					else if (ft_syntax(lexx))
 					{
 						big->exit_code = 2;
 						ft_free_ll(&lexx);
 					}
 				}
+					
 			}
 			if (signalnum == 1)
 			{
