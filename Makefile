@@ -14,16 +14,17 @@ RLFLAG = -lreadline
 SRCS =	main.c \
 		ascii_graphic.c \
 		error_handling.c \
-		ft_split_quotes.c \
-		lexer.c \
-		extra_prompt.c \
-		str_spaces_trimer.c \
+		lexer/ft_split_quotes.c \
+		lexer/lexer.c \
+		lexer/lexer_cleaner.c \
+		lexer/extra_prompt.c \
+		lexer/str_spaces_trimer.c \
 		tokenizer/tokenizer.c \
 		tokenizer/tokenizer_utils.c \
 		tokenizer/tokenizer_strings.c \
 		tokenizer/tokenizer_operators.c \
-		syntax.c \
-		syntaxerrors.c \
+		syntax_analyzer/syntax.c \
+		syntax_analyzer/syntaxerrors.c \
 		testprints.c \
 		t_big_and_env_copy.c \
 		expander/expander.c \

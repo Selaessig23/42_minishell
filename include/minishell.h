@@ -125,13 +125,6 @@ void	ft_welcome(void);
 // void	error_handling(int err, t_envp *i, int com_no);
 void	error_handling(int err);
 char	**ft_split_quotes(char const *s, char c);
-// extra_prompt.c
-int		is_open_pipe(char *clean_input);
-void	close_pipe(char **readline_input);
-char	*extra_prompt_reader(void);
-void	update_read_input(char **main, char *extra);
-//str_spaces_trimer.c
-void	trim_out_spaces(char **str);
 //error_handling.c
 void	error_handling(int err);
 //t_big_and_env_copy.c
@@ -139,10 +132,21 @@ t_big	*init_t_big(char **envp);
 void	printf_env(t_big *big);
 void	free_t_big(t_big *big);
 char	**copy_envp(char **envp);
-//lexer.c
+//lexer/lexer.c
 char	**create_nodes(char **readline_input);
-//ft_split_quotes.c
+//lexer/lexer_cleaner.c
+void	ft_create_clean_input(char *dest, char *src);
+bool	single_operator_check(char c);
+bool	double_operator_check(char c, char k);
+//lexer/ft_split_quotes.c
 char	**ft_split_quotes(char const *s, char c);
+//lexer/extra_prompt.c
+int		is_open_pipe(char *clean_input);
+void	close_pipe(char **readline_input);
+char	*extra_prompt_reader(void);
+void	update_read_input(char **main, char *extra);
+//lexer/str_spaces_trimer.c
+void	trim_out_spaces(char **str);
 //tokenizer/tokenizer.c
 t_list	*ft_tokenizer(char **input_arr);
 //tokenizer/tokenizer_utils.c
@@ -157,9 +161,9 @@ t_tokentype	ft_creat_str_token(char *input_string);
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
 void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big);
-//syntax.c
+//syntax analyzer/syntax.c
 int		ft_syntax(t_list *lexx);
-//syntaxerrors.c
+//syntax analyzer/syntaxerrors.c
 void	ft_syntax_errors(t_list *lexx, int errorno);
 //expander/expander.c
 void	ft_expa_precond(t_list *lexx, t_big *big);

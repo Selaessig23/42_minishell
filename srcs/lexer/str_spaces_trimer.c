@@ -4,7 +4,7 @@
  * Counting a new length to allocate memory for the new trimmed string.
  * (c) Maryna
  */
-int	count_trim_len(char *str)
+static int	count_trim_len(char *str)
 {
 	char	*temp;
 	size_t	new_len;
@@ -35,7 +35,7 @@ int	count_trim_len(char *str)
  * To trim leading and trailing spaces from a string
  * (c) Maryna
  */
-void	trim_it(char **str, char **new)
+static void	trim_it(char **str, char **new)
 {
 	int	last_not_space;
 	int	last;
