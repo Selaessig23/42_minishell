@@ -19,10 +19,29 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
+//to handle signals
+# include <signal.h>
+// to use struct sigaction
+# include <bits/sigaction.h>
+// function ioctl, macros TIOCSTI
+# include <sys/ioctl.h>
+//to change behaviour of the terminal (not-printing all control squences)
+# include <termios.h>
+
+// for sigset_t data type
+//#include <asm-generic/signal.h>
+//#include <asm/signal.h>
+//#include <bits/types/sigset_t.h>
+// for ECHOCTL flag
+//#include <bits/termios-c_lflag.h>
+//#include <asm-generic/termbits.h>
 
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments\
 to execute minishell\n"
+
+//define a global variable for signal-handling
+extern int	signalnum;
 
 // it is "a good practice" to use a global variable for environment 
 // instead of picking it in the main
@@ -30,7 +49,6 @@ to execute minishell\n"
 // extern char	**environ;
 
 // to define all different tokens
-// see libft_bonus
 typedef enum e_tokentype
 {
 	PIPE = 1,
@@ -76,8 +94,6 @@ typedef struct s_lexer
 
 // cmd - Command and arguments
 typedef struct s_data {
-	// int	infile;// Input file descriptor (defaults to stdin)
-	// int	outfile;// Output file descriptor (defaults to stdout)
 	bool	in_heredoc;
 	bool	out_append;
 	int		fd_infile;
@@ -100,25 +116,8 @@ typedef struct s_big
 	size_t	count_commds;
 }					t_big;
 
-// main.c
-//
-// init.c
-// int		init_infile(t_envp *infos, char *infile);
-// void	init_compath(t_envp *infos, char **argv, char **paths);
-// void	init_outfile(t_envp *infos);
-// int		init_check(char **argv, char **paths, t_envp *infos);
-// inputcheck.c
-// char	*flagcheck(const char *argv);
-// int		bin_paths_init(char *command, char **paths, char **bin_paths);
-// exec.c
-// int		ft_execute(t_envp *infos, char *const envp[]);
-// void		ft_execute(t_envp *infos, char *const envp[]);
-// utils.c
-// size_t	ft_arrlen(char **arr_str);
-// void	ft_free(char **arr);
-// void	free_struct(t_envp *infos);
 //ascii_graohic.c
-void  ft_welcome(void);
+void	ft_welcome(void);
 // void	error_handling(int err, t_envp *i, int com_no);
 void	error_handling(int err);
 char	**ft_split_quotes(char const *s, char c);
@@ -134,9 +133,8 @@ void	error_handling(int err);
 //t_big_and_env_copy.c
 t_big	*init_t_big(char **envp);
 void	printf_env(t_big *big);
-void	free_t_big(t_big *big); // temp cleanup function
+void	free_t_big(t_big *big);
 char	**copy_envp(char **envp);
-
 //lexer.c
 char	**create_nodes(char **readline_input);
 //ft_split_quotes.c
@@ -150,7 +148,7 @@ int		ft_check_fstquote(char *content, char checker);
 t_tokentype	ft_creat_redir_token(char *input_string);
 t_tokentype	ft_creat_operators_token(char *input_string);
 //tokenizer/tokenizer_strings.c
-t_tokentype			ft_creat_str_token(char *input_string);
+t_tokentype	ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
@@ -190,7 +188,6 @@ void	ft_builtin_executer(t_data *comm_info, t_big *big);
 int		ft_builtin_checker(t_data *comm_info);
 //commands/default_env_paths.c
 void	ft_check_defaultpath(char *binary, char **binarypaths);
-
 //builtins/exit.c
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
 //builtins/env.c
@@ -206,10 +203,8 @@ int		ft_export(t_big *big, t_data *comm_info);
 void	ft_rmv_var_array(t_big *big, char *str_to_rmv);
 void	export_exit_status(t_big *big, char **cmd_arg);
 int		check_dash_in_var_name(char *argument);
-
 //builtins/export_sort.c
 void	ft_export_sort(t_big *big);
-
 //builtins/unset.c
 int		ft_unset(t_big *big, t_data *comm_info);
 size_t	count_till_char(char *str, char up_to);
@@ -218,22 +213,21 @@ int		heredoc_start(t_data *comm_info, char *limiter);
 void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
 void	ft_minishell_help(int fd);
+//signals.c
+int		ft_handle_signals(bool rl_antes);
 //exe_binar/exe_binar.c
-void    ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big);
+void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	print_stderr(char *what_error);
 void	perror_and_exit(char *what_error, int *pipe_fd);
-
 //exe_binar/exe_binar_2.c
 void	call_cmd(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
 char	*get_all_folders(const char *env_var_path, char **env);
 char	*build_cmd_path(const char *folder, const char *cmd_name);
-
 //exe_binar/exe_binar_3.c
 int		w_waitpid(t_big *big);
-
 //exe_binar_minishell_executer.c
-void    ft_ms_executer(char *env[]);
+void	ft_ms_executer(char *env[]);
 void	ft_overwrite_shlvl(char ***p_env);
 
 #endif

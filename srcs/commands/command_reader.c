@@ -160,6 +160,7 @@ void ft_builtin_executer(t_data *comm_info, t_big *big) // char *prompt
 		ft_minishell_help(comm_info->fd_outfile);
 }
 
+// Check if it is Last Built-in in Pipeline
 static int ft_builtin_lstcmd_checker(t_data *comm_info)
 {
 	char **argv;
@@ -257,6 +258,7 @@ int ft_executer(t_big *big, char *prompt)
 	comm_info = curr->content;
 	while (curr != NULL)
 	{
+		// printf("fd heredoc5: %i\n", comm_info->fd_infile);
 		comm_info = curr->content;
 		if (curr->next != NULL)
 			comm_info_next = curr->next->content;
@@ -275,7 +277,12 @@ int ft_executer(t_big *big, char *prompt)
 				if (big->count_commds == comm_info->commands_no)
 					ft_builtin_exe_lstcmd(comm_info, big, prompt);
 				else if (comm_info_next && comm_info_next->fd_infile == 0)
+				{
 					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
+					// how to not execute it? but to check for error
+					// e.g. function "validate_cd_syntax"
+					ft_builtin_exe_lstcmd(comm_info, big, prompt);
+				}
 			}
 			else if (big->count_commds == comm_info->commands_no && ft_builtin_checker(comm_info))
 				ft_builtin_executer(comm_info, big);

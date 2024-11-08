@@ -178,7 +178,7 @@ int	ft_export_exe(t_big *big, t_data *comm_info)
  * if not --> simply sort env-vars in alphabetical order (ft_export_sort)
  * if yes --> execute the export-function (ft_export_exe)
  * 
- * @param big big big struct with all command infos 
+ * @param big struct with all command infos 
  * that are required for executing builtins or 
  * that have to be freed
  * @param comm_info struct with all necessary infos to 

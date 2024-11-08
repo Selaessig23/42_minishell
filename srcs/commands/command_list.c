@@ -269,7 +269,8 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 			// test_arr = comm_info->cmd;
 			// printf("what the hack IV: %s\n", test_arr[0]);
 		}
-		curr_lexx = curr_lexx->next;
+		if (curr_lexx != NULL)
+			curr_lexx = curr_lexx->next;
 		if (curr_lexx != NULL)
 			token = curr_lexx->content;
 		while (curr_lexx != NULL
@@ -281,16 +282,17 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 				token = curr_lexx->content;
 		}
 	}
+	// printf("fd heredoc: %i\n", comm_info->fd_infile);
 	ft_lstadd_back(comm, ft_lstnew(comm_info));
 	// printf("what the hack V\n");
 	if (token->token == 1 || token->token == 2)
 	{
-		// printf("recursive\n");
 		curr_lexx = curr_lexx->next;
 		set_number_helper(comm_info, curr_lexx);
 		ft_init_clist(&curr_lexx, comm, p_big);
 	}
 	// printf("what the hack VI\n");
+	// printf("fd heredoc: %i\n", comm_info->fd_infile);
 }
 
 /**

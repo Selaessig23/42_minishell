@@ -44,3 +44,6 @@ Before a command is executed, its input and output may be redirected using a spe
 
 ### ft_dprintf
 > Feature to display a message on standard error output.
+
+### PIPELINE
+> pipes typically create subshells (child processes)... This means any changes made by a command within a subshell (such as `cd` changing the directory) won’t affect the parent shell or subsequent commands in the pipeline.

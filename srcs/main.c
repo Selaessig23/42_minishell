@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+int	signalnum;
 
 /**
  * @brief checks for empty input (only tabs or spaces)
@@ -53,23 +54,33 @@ int	main(int argc, char **argv, char **envp)
 	lexx = NULL;
 	// comm = NULL;
 	exitcode = 0;
+	signalnum = 0;
 	// ft_welcome();
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)
 	{
-		// if (!*__environ)
-		// error_handling(4);
 		prompt = ft_strdup("Marina's and Markus' minishell>");
 		input = NULL;
 		big = init_t_big(envp);
 		while (1)
 		{
+			ft_handle_signals(true);
 			input = readline(prompt);
+			// if (signalnum == 1)
+			// {
+			// 	ft_putchar_fd('\n', 1);
+			// 	rl_replace_line("", 0); //clear the input line
+			// 	rl_on_new_line(); //Go to a new line
+			// 	rl_redisplay(); //Redisplay the prompt
+			// 	big->exit_code = 1;
+			// }
 			if (!input)
 			{
-				// free session and printf exit
-				exit(0);
+				ft_putstr_fd("exit\n", 1);
+				ft_free(big->env);
+				free(prompt);
+				exit(EXIT_FAILURE);
 			}
 			else if (!*input || ft_spacetabchecker(input))
 			{
@@ -102,24 +113,14 @@ int	main(int argc, char **argv, char **envp)
 					// ft_test_ll_print(lexx, prompt, big);
 					ft_commands(lexx, &big);
 					ft_free_ll(&lexx);
-					// if (!((t_data *)big->cmdlist->content)->cmd)
-					// 	ft_dprintf("cmd is NULL\n");
-					// if (((t_data *)big->cmdlist->content)->cmd)
-					// 	ft_dprintf("cmd is a pointer\n");
-					// if (!((t_data *)big->cmdlist->content)->cmd[0])
-					// 	ft_dprintf("There is NO any command to execute\nI EXIT!\n");
-					// // else
-					// if (((t_data *)big->cmdlist->content)->cmd[0])
-						// printf("first command: %s\n",((t_data *)big->cmdlist->content)->cmd[0]);
-						//printf("second command: %s\n",((t_data *)big->cmdlist->content)->cmd[1]);
 					ft_executer(big, prompt);
-					
 				}
 				else
 				{
 					big->exit_code = 2;
 					ft_free_ll(&lexx);
 				}
+				signalnum = 0;
 			}
 		}
 		ft_free_ll(&lexx);
