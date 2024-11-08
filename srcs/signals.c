@@ -2,7 +2,7 @@
 
 /**
  * DESRIPTION: 
- * in this file the the following behaviour for signals will be
+ * in this file the following behaviour for signals will be
  * integrated:
  * >ctrl-C (=sigint) displays "^C" followd by a new prompt on a new line, 
  * same on heredoc (here it closes heredoc)!
@@ -13,36 +13,24 @@
  * on non empty line nothing happens
  * >ctrl-\ (=sigquit) does nothing (do not quit!).
 */
+// !This is for heredoc readlin
 static void	handle_sigint_non(int sig)
 {
 	(void) sig;
-	
-	signalnum = 3;
+
+	signalnum = 1;
+	ft_putstr_fd("^C", 2);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
-// Is called in case of if (heredoc == true)
-// So it was set in main (ft_handle_signals(true);)
-// Why boolean heredoc true? I don't know, need to ask Markus.
+// this is for readline in main
 static void	handle_sigint_inter(int sig)
 {
 	(void)sig;
-	if (sig == SIGINT)
-	{
 
-		ft_putstr_fd("\n", 1);
-		rl_replace_line("", 0); //clear the input line
-		rl_on_new_line(); //Go to a new line
-		rl_redisplay(); //Redisplay the prompt
-		signalnum = 1;
-	}
-	else
-	{
-		rl_replace_line("", 0); //clear the input line
-		rl_on_new_line(); //Go to a new line
-		rl_redisplay(); //Redisplay the prompt
-		signalnum = 2;
-	}
+	signalnum = 1;
+	ft_putstr_fd("^C", 2);
+	ioctl(0, TIOCSTI, "\n");
 }
 
 /**
@@ -59,7 +47,7 @@ static void	handle_sigint_inter(int sig)
 int	ft_terminal_config(bool rl_antes)
 {
 	struct termios	termios_p;
-	
+
 	(void) rl_antes;
 	if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
 		return (-1);
@@ -97,24 +85,10 @@ int	ft_handle_signals(bool heredoc)
 	struct sigaction	action;
 
 	ft_memset(&action, 0, sizeof(action));
-	if (heredoc == true)
-	{
+	if (heredoc == false)
 		action.sa_handler = &handle_sigint_inter;
-		if (ft_terminal_config(true) == -1)
-		{
-			perror("tcgetattr faulty\n");
-			return (-1);
-		}
-	}
 	else
-	{
 		action.sa_handler = &handle_sigint_non;
-		if (ft_terminal_config(false) == -1)
-		{
-			perror("tcgetattr faulty\n");
-			return (-1);
-		}
-	}
 	action.sa_flags = 0;
 	if (sigemptyset(&action.sa_mask) == -1)
 	{
@@ -127,4 +101,24 @@ int	ft_handle_signals(bool heredoc)
 	action.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &action, NULL);
 	return (0);
+}
+
+void	sig_handle_child(int sig_num)
+{
+	(void)sig_num;
+}
+
+/// @brief  TO REWRITE IT!!!!!
+/// @param  
+void	ft_handle_signals_childs(void)
+{
+	struct sigaction	sa;
+
+	ft_bzero(&sa, sizeof(sa));
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = &sig_handle_child;
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, 0) == -1)
+		perror("sigaction");
+	signal(SIGQUIT, SIG_DFL);
 }

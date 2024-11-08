@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-int	signalnum;
 
 /**
  * @brief checks for empty input (only tabs or spaces)
@@ -26,6 +25,8 @@ int	ft_spacetabchecker(char *input)
 // or error conditions first. In the context of command-line arguments, this
 // often means checking for incorrect argument counts before proceeding with
 // the valid case. Please look at it, and say if it works for you. Thanks!
+int	signalnum = 0;
+
 /**
  * (To be continued...)
  * An INFINITE LOOP to continuously prompt for and process user input
@@ -35,10 +36,8 @@ int	ft_spacetabchecker(char *input)
 
 	* 2. Check if the input is an empty string (user pressed Enter without typing anything).
  * If the input is empty,
-	free the memory allocated for 'input' and assign 0 to 'exitcode'.
- * 3. If input is not empty, proceed with the program logic.
- *
- * @param input a pointer to a character string that will hold user input
+
+	?????????
  */
 int	main(int argc, char **argv, char **envp)
 {
@@ -54,27 +53,22 @@ int	main(int argc, char **argv, char **envp)
 	lexx = NULL;
 	// comm = NULL;
 	exitcode = 0;
-	signalnum = 0;
 	// ft_welcome();
+
+	rl_catch_signals = 0;
+
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)
 	{
-		prompt = ft_strdup("Marina's and Markus' minishell>");
+		prompt = ft_strdup("minishell$ ");
 		input = NULL;
 		big = init_t_big(envp);
 		while (1)
 		{
-			ft_handle_signals(true);
+			ft_handle_signals(false);
 			input = readline(prompt);
-			// if (signalnum == 1)
-			// {
-			// 	ft_putchar_fd('\n', 1);
-			// 	rl_replace_line("", 0); //clear the input line
-			// 	rl_on_new_line(); //Go to a new line
-			// 	rl_redisplay(); //Redisplay the prompt
-			// 	big->exit_code = 1;
-			// }
+			ft_handle_signals(true);
 			if (!input)
 			{
 				ft_putstr_fd("exit\n", 1);
@@ -94,33 +88,37 @@ int	main(int argc, char **argv, char **envp)
 				input_arr = create_nodes(&input);
 				free(input);
 				input = NULL;
-				// ft_test_arr_print(input_arr, prompt);
-				// attempt to use both ways, to not destroy the work
-				// with input_arr on extra input of marina
-				// otherwise I would add this function call to create_nodes-function
-				// in lexer.c
-				// ft_printf("test0\n");
-				lexx = ft_tokenizer(input_arr);
-				// ft_printf("test1\n");
-				ft_free(input_arr);
-				// to seperate debug-infos of lexer from bash-output
-				// ft_printf("\n");
-				if (!ft_syntax(lexx))
+				if (input_arr != NULL)
 				{
-					// printf_env(big);
-					ft_expa_precond(lexx, big);
-					// ft_printf("test\n");
-					// ft_test_ll_print(lexx, prompt, big);
-					ft_commands(lexx, &big);
-					ft_free_ll(&lexx);
-					ft_executer(big, prompt);
+					// ft_test_arr_print(input_arr, prompt);
+					// attempt to use both ways, to not destroy the work
+					// with input_arr on extra input of marina
+					// otherwise I would add this function call to create_nodes-function
+					// in lexer.c
+					lexx = ft_tokenizer(input_arr);
+					ft_free(input_arr);
+					if (!ft_syntax(lexx))
+					{
+						// printf_env(big);
+						ft_expa_precond(lexx, big);
+						// ft_printf("test\n");
+						// ft_test_ll_print(lexx, prompt, big);
+						ft_commands(lexx, &big);
+						ft_free_ll(&lexx);
+						ft_executer(big, prompt);
+					}
+					else if (ft_syntax(lexx))
+					{
+						big->exit_code = 2;
+						ft_free_ll(&lexx);
+					}
 				}
-				else
-				{
-					big->exit_code = 2;
-					ft_free_ll(&lexx);
-				}
+					
+			}
+			if (signalnum == 1)
+			{
 				signalnum = 0;
+				big->exit_code = 130;
 			}
 		}
 		ft_free_ll(&lexx);

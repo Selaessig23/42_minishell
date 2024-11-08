@@ -225,6 +225,7 @@ static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 	t_data *data;
 
 	data = (ft_lstlast(cmdlist))->content;
+
 	if (big->exit_code == 999)
 		big->exit_code = 126;
 	else if (data->fd_infile < 0 || data->fd_outfile < 0)
@@ -258,7 +259,6 @@ int ft_executer(t_big *big, char *prompt)
 	comm_info = curr->content;
 	while (curr != NULL)
 	{
-		// printf("fd heredoc5: %i\n", comm_info->fd_infile);
 		comm_info = curr->content;
 		if (curr->next != NULL)
 			comm_info_next = curr->next->content;
@@ -289,7 +289,7 @@ int ft_executer(t_big *big, char *prompt)
 			else
 			{
 				if (!check_cmd(comm_info->cmd, big->env, big->binarypaths))
-					ft_binar_exe(comm_info, comm_info_next, big);
+					execute(comm_info, comm_info_next, big);
 				else
 					big->exit_code = 999;
 			}
@@ -302,11 +302,9 @@ int ft_executer(t_big *big, char *prompt)
 			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
-	//restore_stdin();
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
-	//ft_dprintf("FINAL EXIT CODE: %d\n", big->exit_code);
 	return (0);
 }

@@ -84,12 +84,16 @@ typedef enum e_tokentype
 	WORD_CLEANED = 29 // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
 }	t_tokentype;
 
-// struct for lexer analysis
+/**
+ * struct for lexer analysis
+ * 
+ * @param number_helper helps to create many heredocs
+ */
 typedef struct s_lexer
 {
 	char			*value;
 	t_tokentype		token;
-	int				number_helper; // it helps to create many heredocs
+	int				number_helper;
 }				t_lexer;
 
 // cmd - Command and arguments
@@ -124,7 +128,7 @@ char	**ft_split_quotes(char const *s, char c);
 // extra_prompt.c
 int		is_open_pipe(char *clean_input);
 void	close_pipe(char **readline_input);
-char	*extra_prompt(void);
+char	*extra_prompt_reader(void);
 void	update_read_input(char **main, char *extra);
 //str_spaces_trimer.c
 void	trim_out_spaces(char **str);
@@ -215,16 +219,17 @@ void	delete_heredoc(t_data *comm_info);
 void	ft_minishell_help(int fd);
 //signals.c
 int		ft_handle_signals(bool rl_antes);
-//exe_binar/exe_binar.c
-void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big);
+void	ft_handle_signals_childs(void);
+//execution/execute_0.c
+int		execute(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	print_stderr(char *what_error);
 void	perror_and_exit(char *what_error, int *pipe_fd);
-//exe_binar/exe_binar_2.c
+//execution/execute_1.c
 void	call_cmd(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
 char	*get_all_folders(const char *env_var_path, char **env);
 char	*build_cmd_path(const char *folder, const char *cmd_name);
-//exe_binar/exe_binar_3.c
+//execution/execute_2.c
 int		w_waitpid(t_big *big);
 //exe_binar_minishell_executer.c
 void	ft_ms_executer(char *env[]);

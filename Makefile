@@ -52,10 +52,10 @@ SRCS =	main.c \
 		heredoc.c \
 		builtins/help.c \
 		signals.c \
-		exe_binar/exe_binar.c \
-		exe_binar/exe_binar_2.c \
-		exe_binar/exe_binar_3.c \
-		exe_binar/minishell_executer.c
+		execution/execute_0.c \
+		execution/execute_1.c \
+		execution/execute_2.c \
+		execution/minishell_executer.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c

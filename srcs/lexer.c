@@ -251,8 +251,17 @@ char	**create_nodes(char **readline_input)
 	// lexx = NULL;
 	clean_input = NULL;
 	input_arr = NULL;
+	//// if (extra_prompt == NULL)
+	//       return (NULL);
 	while (is_open_pipe(*readline_input))
+	{
+		if (signalnum == 1)
+		{
+			input_arr = NULL;
+			return (input_arr);
+		}
 		close_pipe(readline_input);
+	}
 	clean_input = ft_clean_input(*readline_input);
 	if (!clean_input)
 	{

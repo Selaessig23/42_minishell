@@ -107,8 +107,64 @@ void	w_errfork_close(int open_fd, int *pipe_fd)
 	exit(EXIT_FAILURE);
 }
 
+static int	child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
+{
+	ft_handle_signals_childs();
+	close(fd[0]);
+	if (c_i_next == NULL)
+	{
+		// fprintf(stderr, "child. it's the last command\n");
+		if (comm_info->fd_infile == 0 && comm_info->fd_outfile == 1)
+		{
+			// fprintf(stderr, "no < or << and > or >>\n");
+			if (ft_builtin_checker(comm_info))
+			{
+				ft_builtin_executer(comm_info, big);
+				exit(EXIT_SUCCESS);
+			}
+			else
+				call_cmd(comm_info->cmd, big->env);
+		}
+		if (comm_info->fd_outfile > 1)
+		{
+			// fprintf(stderr, "output to file\n");
+			dup2(comm_info->fd_outfile, STDOUT_FILENO);
+			close(comm_info->fd_outfile);
+		}
+		if (comm_info->fd_infile > 0)
+		{
+			// fprintf(stderr, "input from file or prev. pipe\n");
+			// printf("fd_infile X: %i\n", comm_info->fd_infile);
+			dup2(comm_info->fd_infile, STDIN_FILENO);
+			// printf("fd after dup: %i\n", STDIN_FILENO);
+			close(comm_info->fd_infile);
+		}
+	}
+	else if (c_i_next != NULL)
+	{
+		// fprintf(stderr, "child. it's not the last command\n");
+		if (comm_info->fd_infile > 0)
+		{
+			dup2(comm_info->fd_infile, STDIN_FILENO);
+			close(comm_info->fd_infile);
+		}
+		if (comm_info->fd_outfile == 1)
+			dup2(fd[1], STDOUT_FILENO);
+		else
+			dup2(comm_info->fd_outfile, STDOUT_FILENO);
+	}
+	if (ft_builtin_checker(comm_info))
+	{
+		ft_builtin_executer(comm_info, big);
+		exit(EXIT_SUCCESS);
+	}
+	else
+		call_cmd(comm_info->cmd, big->env);
+	return (0);
+}
+
 /**
- * @brief This function starts the execution of a binary command
+ * @brief This function starts the execution of a (binary) command
  * (every string from t_data-cmd, that wasn't defined as builtin command).
  *
  * @param comm_info struct with all necessary infos to
@@ -119,73 +175,21 @@ void	w_errfork_close(int open_fd, int *pipe_fd)
  * @param big struct with environmental variables, exit_code integer,
  * and count_commds size_t.
  */
-void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
+int	execute(t_data *comm_info, t_data *c_i_next, t_big *big)
 {
 	pid_t pid;
 	int fd[2];
 
-	// printf("fd heredoc6: %i\n", comm_info->fd_infile);
 	if (pipe(fd) == -1)
 		w_errpipe_close(comm_info->fd_infile);
+	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
 		w_errfork_close(comm_info->fd_infile, fd);
 	if (pid == 0)
 	{
-		close(fd[0]);
-		if (c_i_next == NULL)
-		{
-			//fprintf(stderr, "child. it's the last command\n");
-			if (comm_info->fd_infile == 0 && comm_info->fd_outfile == 1)
-			{
-				// fprintf(stderr, "no < or << and > or >>\n");
-				if (ft_builtin_checker(comm_info))
-				{
-					ft_builtin_executer(comm_info, big);
-					exit(EXIT_SUCCESS);
-				}
-				else
-					call_cmd(comm_info->cmd, big->env);
-			}
-			// if (comm_info->fd_outfile == 1 )
-			// 	fprintf(stderr, "output to terminal\n");
-			// if (comm_info->fd_infile == 0)
-			// 	fprintf(stderr, "input from terminal (if needed)\n");
-			if (comm_info->fd_outfile > 1)
-			{
-				// fprintf(stderr, "output to file\n");
-				dup2(comm_info->fd_outfile, STDOUT_FILENO);
-				close(comm_info->fd_outfile);
-			}
-			if (comm_info->fd_infile > 0)
-			{
-				// fprintf(stderr, "input from file or prev. pipe\n");
-				// printf("fd_infile X: %i\n", comm_info->fd_infile);
-				dup2(comm_info->fd_infile, STDIN_FILENO);
-				// printf("fd after dup: %i\n", STDIN_FILENO);
-				close(comm_info->fd_infile);
-			}
-		}
-		else if (c_i_next != NULL)
-		{
-			// fprintf(stderr, "child. it's not the last command\n");
-			if (comm_info->fd_infile > 0)
-			{
-				dup2(comm_info->fd_infile, STDIN_FILENO);
-				close(comm_info->fd_infile);
-			}
-			if (comm_info->fd_outfile == 1)
-				dup2(fd[1], STDOUT_FILENO);
-			else
-				dup2(comm_info->fd_outfile, STDOUT_FILENO);
-		}
-		if (ft_builtin_checker(comm_info))
-		{
-			ft_builtin_executer(comm_info, big);
-			exit(EXIT_SUCCESS);
-		}
-		else
-			call_cmd(comm_info->cmd, big->env);
+		if (child(comm_info, c_i_next, big, fd) == -1)
+			return (-1);
 	}
 	else if (pid != 0)
 	{
@@ -193,14 +197,11 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 	 	// && comm_info->cmd[0][ft_strlen("./minishell")] == '\0')
 		// 	waitpid(pid, 0, 0);
 		close(fd[1]);
-		// printf("\nparent. %s\n", comm_info->cmd[0]);
-		// printf("fd_infile: %d\n", comm_info->fd_infile);
-		// printf("fd_outfile: %d\n", comm_info->fd_outfile);
 		if (c_i_next != NULL)
 		{
 			if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
 			{
-				//ft_dprintf("Sending pipe_fd to next pipe...\n");
+				// ft_dprintf("Sending pipe_fd to next pipe...\n");
 				c_i_next->fd_infile = fd[0];
 			}
 			else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
@@ -213,4 +214,5 @@ void	ft_binar_exe(t_data *comm_info, t_data *c_i_next, t_big *big)
 			close(fd[0]);
 	}
 	comm_info->id = pid;
+	return (0);
 }
