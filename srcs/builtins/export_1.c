@@ -144,6 +144,8 @@ static int	exp_check_var(char **env, char *arg)
  * @param comm_info struct with all necessary infos to 
  * execute a single command
  */
+// execution IF exe is true
+// if exe is false - checking for errors and exit assigns exit code
 int	ft_export(t_big *big, t_data *comm_info)
 {
 	char	**cmd_arg;

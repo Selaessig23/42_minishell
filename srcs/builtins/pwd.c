@@ -37,10 +37,10 @@ static void	ft_get_env_pwd(int fd)
  */
 void	ft_print_pwd(t_big *big, t_data *comm_info)
 {
-	char	**envp;
+	//char	**envp;
 	int		fd;
 
-	envp = big->env;
+	//envp = big->env;
 	fd = comm_info->fd_outfile;
 	// while (*envp && ft_strncmp("PWD=", *envp, 4))
 	// 	envp++;
@@ -54,5 +54,4 @@ void	ft_print_pwd(t_big *big, t_data *comm_info)
 	if (fd > 2)
 		close(fd);
 	big->exit_code = 0;
-	// return (0);
 }

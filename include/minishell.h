@@ -113,12 +113,16 @@ typedef struct s_data {
 // a copy of the environment
 // cmdlist - Linked list t_data
 // env - Copy of environment variables
+// exe - to define if we execute export, unset
+// cd and exit. we execute it fully only if there
+// is no pipeline, but only one command.
 typedef struct s_big
 {
 	t_list	*cmdlist;
 	char	**env;
 	int		exit_code;
 	size_t	count_commds;
+	bool	exe;
 }					t_big;
 
 // main.c
@@ -196,17 +200,23 @@ char	*ft_givenbr(int nbr);
 int		ft_is_env_var(char c);
 //expander/expander_q.c
 void	ft_q_word_handling(void **token, t_big *big);
+
+// COMMANDS
 //commands/command_list.c
 void	ft_commands(t_list *lexx, t_big **big);
 int		fd_out_creator(bool appender, char *filename);
 //int		fd_in_checker(bool heredoc, char *infile);
 int		fd_in_checker(t_data *comm_info, char *infile);
 //commands/command_utils.c
+void	exe_fd_error(t_big *big, t_data *comm_info_next);
+t_data	*ft_pointer_next_command(t_list	*curr);
 void	ft_free_cl(t_list **ll);
 //commands/command_reader.c
 int		ft_executer(t_big *big, char *prompt);
 void	ft_builtin_executer(t_data *comm_info, t_big *big);
 int		ft_builtin_checker(t_data *comm_info);
+
+// BUILT-INS
 //builtins/exit.c
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
 //builtins/env.c

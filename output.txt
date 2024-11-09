@@ -1,17 +1,0 @@
-HELLO
-[?2004hMarina's and Markus' minishell>
-[?2004l[?2004hMarina's and Markus' minishell>
-[?2004l[?2004hMarina's and Markus' minishell>
-[?2004l[?2004hMarina's and Markus' minishell>
-[?2004l[?2004hMarina's and Markus' minishell>
-[?2004l[?2004hMarina's and Markus' minishell>
-[?2004l[?2004hMarina's and Markus' minishell>svadvvd
-[?2004lno builtin command was found
-in_heredoc: 0
-out_append: 0
-fd_infile: 0
-fd_outfile: 1
-command no: 1
-command_array (0): svadvvd
---------------------------------------
-[?2004hMarina's and Markus' minishell>^C[?2004l

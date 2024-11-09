@@ -1,6 +1,7 @@
 #include "minishell.h"
 #include <sys/ioctl.h>
 
+// F_OK -- test for file existence. 
 static int	fd_here_creator(char *filename, bool wr)
 {
 	int		fd;

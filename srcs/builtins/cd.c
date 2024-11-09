@@ -76,6 +76,28 @@ static void	ft_update_env(t_big *big)
 	free(temp1);
 }
 
+int	cd_error(char **argv)
+{
+	if (ft_arrlen(argv) > 2)
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		return (1);
+	}
+	else if (access(argv[1], F_OK))
+	{
+		ft_dprintf("minishell: cd: %s: No such file or directory\n", argv[1]);
+		return (1);
+	}
+
+	else if (access(argv[1], X_OK))
+	{
+		ft_dprintf("minishell: cd: %s: Permission denied\n", argv[1]);
+		return (1);
+	}
+	else
+		return (0);
+}
+
 /**
  * @brief function to change the current working directory
  * and update the env-variable, give error message in case of
@@ -86,25 +108,27 @@ static void	ft_update_env(t_big *big)
  * @param big the struct which holds all information for 
  * execution part incl. cmdlist and env
  */
+// execution IF exe is true
+// if exe is false - checking for errors and exit assigns exit code
+// F_OK -- test for file existence. 
 void	ft_cd(t_big *big, char **argv)
 {
-	int		i;
+	bool	err;
 
-	i = 0;
-	if (ft_arrlen(argv) > 2)
+	err = false;
+	if (ft_arrlen(argv) < 2)
 	{
-		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-		big->exit_code = 1;
-	}
-	else if (ft_arrlen(argv) < 2)
 		ft_putstr_fd("minishell: cd: Please specifiy the path you want to change to\n", 2);
-	else
+		big->exit_code = 0;
+		return ;
+	}
+	else if (cd_error(argv))
+		err = true;
+	if (err == true)
+		big->exit_code = 1;
+	else if (err == false && big->exe == true)
 	{
-		i = chdir(argv[1]);
-		if (i < 0)
-			ft_dprintf("minishell: cd: %s: No such file or directory\n", argv[1]);
-		// if (i < 0)
-		// 	error_handling(0);
+		chdir(argv[1]);		
 		ft_update_env(big);
 		big->exit_code = 0;
 	}

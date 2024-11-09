@@ -31,6 +31,10 @@ static void	ft_count_commands(t_list *comm, t_big **p_big)
 		((t_data *)curr->content)->commands_no = i;
 		curr = curr->next;
 	}
+	if (big->count_commds == 1)
+		big->exe = true;
+	else
+		big->exe = false;
 }
 
 /**
@@ -247,10 +251,10 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 	t_data	*comm_info;
 	t_list	*curr_lexx;
 	t_lexer	*token;
-	char	**test_arr;
+	//char	**test_arr;
 
 	comm_info = NULL;
-	test_arr = NULL;
+	//test_arr = NULL;
 	curr_lexx = *lexx;
 	token = curr_lexx->content;
 	comm_info = ft_calloc(1, sizeof(t_data));

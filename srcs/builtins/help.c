@@ -7,7 +7,8 @@
  * the minishell and some instructions on how to use it
  * 
  */
-
+// execution IF exe is true
+// if exe is false - checking for errors and exit assigns exit code
 /**
  * @brief 
  */

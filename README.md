@@ -7,6 +7,7 @@
 (...)
 
 ## Architecture
+Description of a all projects and structures we use.
 
 ### Set env Variables
 (Our choice: ...)
@@ -45,5 +46,23 @@ Before a command is executed, its input and output may be redirected using a spe
 ### ft_dprintf
 > Feature to display a message on standard error output.
 
+### EXECUTION
+
+> The name of command and its arguments are stored in "t_data" struct, in array of strings "char	**cmd". The pointer is assigned to this variable (where? in what function). Execution part is called only if the first string in array "cmd" is not a NULL.
+
+Function "ft_executer"
+{piece of code}
+`t_data	*comm_info;`
+(...)
+`if (comm_info->cmd[0] != NULL)`
+
 ### PIPELINE
 > pipes typically create subshells (child processes)... This means any changes made by a command within a subshell (such as `cd` changing the directory) won’t affect the parent shell or subsequent commands in the pipeline.
+
+> part of built-ins execute (?) only if there is no pipeline but only one command.
+It is - export, unset, cd and exit. Hence the bash checks executes them in child processes and check for errors, although `exit [number]` always assigns an exit status number even in a pipeline, e.g. `cat | ls | exit 3`. We use `exe` bool variable in a "big" struct to define if we execute these built-ins or not.
+
+> We assign true or false to `exe` in "ft_count_commands" function.
+
+> We do not execute this part of built-ins in child processes at all. (Because ...)
+

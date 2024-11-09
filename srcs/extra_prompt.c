@@ -76,7 +76,7 @@ void	close_pipe(char **readline_input)
 		if (signalnum == 1)
 			{
 				free(extra_input);
-				return (NULL);
+				return ;
 			}
 		update_read_input(readline_input, extra_input);
 	}

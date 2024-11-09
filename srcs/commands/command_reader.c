@@ -109,7 +109,9 @@ static int	check_cmd(char **cmd_plus_args, char *env[])
 }
 
 // export, unset, cd, exit
-static void ft_builtin_exe_lstcmd(t_data *comm_info, t_big *big, char *prompt)
+// execution IF exe is true
+// if exe is false - checking for errors and exit assigns exit code
+static void parent_builtin_exe(t_data *comm_info, t_big *big, char *prompt)
 {
 	char **argv;
 
@@ -159,8 +161,8 @@ void ft_builtin_executer(t_data *comm_info, t_big *big) // char *prompt
 		ft_minishell_help(comm_info->fd_outfile);
 }
 
-// Check if it is Last Built-in in Pipeline
-static int ft_builtin_lstcmd_checker(t_data *comm_info)
+// Check if it is parent type built-ins
+static int checker_parent_builtin(t_data *comm_info)
 {
 	char **argv;
 
@@ -231,7 +233,7 @@ static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 		return ;
 	else
 	{
-		if (!ft_builtin_lstcmd_checker(data))
+		if (!checker_parent_builtin(data))
 			big->exit_code = exit_status_binar;
 	}
 }
@@ -248,9 +250,9 @@ static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
  */
 int ft_executer(t_big *big, char *prompt)
 {
-	t_list *curr;
-	t_data *comm_info;
-	t_data *comm_info_next;
+	t_list	*curr;
+	t_data	*comm_info;
+	t_data	*comm_info_next;
 	int		exit_status_binary;
 
 	exit_status_binary = -100;
@@ -259,32 +261,20 @@ int ft_executer(t_big *big, char *prompt)
 	while (curr != NULL)
 	{
 		comm_info = curr->content;
-		if (curr->next != NULL)
-			comm_info_next = curr->next->content;
-		else
-			comm_info_next = NULL;
+		comm_info_next = ft_pointer_next_command(curr);
 		if (comm_info->cmd[0] != NULL)
 		{
 			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
+				exe_fd_error(big, comm_info_next);
+			if (checker_parent_builtin(comm_info))
 			{
-				big->exit_code = 1;
+				// check this if statement. why do we need it.
 				if (comm_info_next && comm_info_next->fd_infile == 0)
 					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
+				parent_builtin_exe(comm_info, big, prompt);
 			}
-			else if (ft_builtin_lstcmd_checker(comm_info))
-			{
-				if (big->count_commds == comm_info->commands_no)
-					ft_builtin_exe_lstcmd(comm_info, big, prompt);
-				else if (comm_info_next && comm_info_next->fd_infile == 0)
-				{
-					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
-					// how to not execute it? but to check for error
-					// e.g. function "validate_cd_syntax"
-					ft_builtin_exe_lstcmd(comm_info, big, prompt);
-				}
-			}
-			else if (big->count_commds == comm_info->commands_no && ft_builtin_checker(comm_info))
-				ft_builtin_executer(comm_info, big);
+			// else if (big->count_commds == comm_info->commands_no && ft_builtin_checker(comm_info))
+			// 	ft_builtin_executer(comm_info, big);
 			else
 			{
 				if (!check_cmd(comm_info->cmd, big->env))

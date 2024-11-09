@@ -17,6 +17,8 @@
  * that have to be freed
  * @param prompt string that has to be freed before exit the program
  */
+// execution IF exe is true
+// if exe is false - checking for errors and exit assigns exit code
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 {
 	char	**argv;
