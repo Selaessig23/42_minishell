@@ -155,13 +155,15 @@ int	ft_export(t_big *big, t_data *comm_info)
 	a = 1;
 	while (cmd_arg[a] != NULL)
 	{
+		// error
 		if (*cmd_arg[a] == '=' || ft_isdigit(*cmd_arg[a]))
 				ft_dprintf("bash: export: `%s': not a valid identifier\n",
 					cmd_arg[a]);
 		else if (check_dash_in_var_name(cmd_arg[a]))
 				ft_dprintf("bash: export: `%s': not a valid identifier\n",
 					cmd_arg[a]);
-		else if (ft_strchr(cmd_arg[a], '='))
+		// big->exe == true
+		else if (big->exe == true && ft_strchr(cmd_arg[a], '='))
 		{
 			if (!exp_check_var(big->env, cmd_arg[a]))
 				exp_create(big, cmd_arg[a]);
