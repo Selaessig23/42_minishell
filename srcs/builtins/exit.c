@@ -7,6 +7,26 @@
  * of same name is created
  */
 
+static void	exit_exe(char *prompt, t_big *big, char	**argv, bool is_nondigit)
+{
+	ft_putstr_fd("exit\n", 1);
+	if (ft_arrlen(argv) > 2 && is_nondigit == false)
+	{
+		big->exit_code = 1;
+	}
+	else if (is_nondigit == true)
+	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd((argv[1]), 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		big->exit_code = 2;
+	}
+	free(prompt);
+	prompt = NULL;
+	rl_clear_history();
+	free_t_big(big);
+	exit(big->exit_code);
+}
 
 /**
  * @brief function to execute the builtin function "exit", 
@@ -44,32 +64,25 @@ void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 	if (ft_arrlen(argv) >= 2 && is_nondigit == false)
 		exit_code = ft_atoi(argv[1]);
 	exit_code = (exit_code % 256 + 256) % 256;
-	if (ft_arrlen(argv) > 2 && is_nondigit == false)
+	if (big->exe == false)
 	{
-		ft_putstr_fd("exit\n", 1);
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		big->exit_code = 1;
-		return ;
-	}
-	else
-	{
-		if (is_nondigit == true)
+		if (ft_arrlen(argv) > 2 && is_nondigit == false)
 		{
-			ft_putstr_fd("exit\n", 1);
+			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+			big->exit_code = 1;
+			return ;
+		}
+		else if (is_nondigit == true)
+		{
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd((argv[1]), 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
-			exit_code = 2;
+			big->exit_code = 2;
+			return ;
 		}
 	}
+	// do we need this line? check it
 	big->exit_code = exit_code;
 	if (big->exe == true)
-	{
-		ft_putstr_fd("exit\n", 1);
-		free(prompt);
-		prompt = NULL;
-		rl_clear_history();
-		free_t_big(big);
-		exit(exit_code);
-	}
+		exit_exe(prompt, big, argv, is_nondigit);
 }
