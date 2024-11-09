@@ -68,7 +68,7 @@ int	ft_unset(t_big *big, t_data *comm_info)
 
 	cmd_arg = comm_info->cmd;
 	a = 1;
-	while (cmd_arg[a] != NULL)
+	while (big->exe == true && cmd_arg[a] != NULL)
 	{
 		if (uns_check_var(big->env, cmd_arg[a]))
 			ft_rmv_var_array(big, cmd_arg[a]);
