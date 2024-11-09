@@ -108,26 +108,6 @@ static int	check_cmd(char **cmd_plus_args, char *env[])
 	}
 }
 
-// export, unset, cd, exit
-// execution IF exe is true
-// if exe is false - checking for errors and exit assigns exit code
-static void parent_builtin_exe(t_data *comm_info, t_big *big, char *prompt)
-{
-	char **argv;
-
-	argv = comm_info->cmd;
-	if (argv[0] && !ft_strncmp(argv[0], "cd", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("cd"))
-		ft_cd(big, argv);
-	else if (argv[0] && !ft_strncmp(argv[0], "export", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("export"))
-		ft_export(big, comm_info);
-	else if (argv[0] && !ft_strncmp(argv[0], "unset", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("unset"))
-		ft_unset(big, comm_info);
-	else if (argv[0] && !ft_strncmp(argv[0], "exit", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("exit"))
-		ft_exit_minishell(comm_info, big, prompt);
-	else if (argv[0] && !ft_strncmp(argv[0], "help", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("help"))
-		ft_minishell_help(comm_info->fd_outfile);
-}
-
 /**
  * @brief function to organise execution of built-in-commands
  *
@@ -161,23 +141,6 @@ void ft_builtin_executer(t_data *comm_info, t_big *big) // char *prompt
 		ft_minishell_help(comm_info->fd_outfile);
 }
 
-// Check if it is parent type built-ins
-static int checker_parent_builtin(t_data *comm_info)
-{
-	char **argv;
-
-	argv = comm_info->cmd;
-	if (argv[0] != NULL &&
-		((!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("cd")) 
-		|| (!ft_strncmp(argv[0], "export", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("export")) 
-		|| (!ft_strncmp(argv[0], "unset", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("unset")) 
-		|| (!ft_strncmp(argv[0], "exit", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("exit")) 
-		|| (!ft_strncmp(argv[0], "help", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("help"))))
-		return (1);
-	else
-		return (0);
-}
-
 /**
  * @brief function to check for built-in-commands
  *
@@ -208,25 +171,11 @@ int	ft_builtin_checker(t_data *comm_info)
 		return (0);
 }
 
-// Restore STDIN if it was changed before
-// If you redirected STDIN, reset it back to original terminal
-// static void	restore_stdin()
-// {
-// 	int	terminal_fd;
-
-// 	terminal_fd = open("/dev/tty", O_RDONLY);
-// 	if (terminal_fd == -1)
-// 			error_handling(1);
-// 	dup2(terminal_fd, STDIN_FILENO);
-// 	close(terminal_fd);
-// }
-
 static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 {
 	t_data *data;
 
 	data = (ft_lstlast(cmdlist))->content;
-
 	if (big->exit_code == 999)
 		big->exit_code = 126;
 	else if (data->fd_infile < 0 || data->fd_outfile < 0)

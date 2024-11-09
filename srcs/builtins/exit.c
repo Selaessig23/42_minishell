@@ -47,7 +47,6 @@ void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 	// if (exit_code < 0)
 	// 	exit_code += 256;
 	// else if (exit_code > 255)
-		
 	if (ft_arrlen(argv) > 2 && is_nondigit == false)
 	{
 		ft_putstr_fd("exit\n", 1);
@@ -56,23 +55,38 @@ void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 	}
 	else
 	{
-		free(prompt);
-		prompt = NULL;
-		rl_clear_history();
 		if (is_nondigit == true)
 		{
 			ft_putstr_fd("exit\n", 1);
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd((argv[1]), 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
-			free_t_big(big);
-			exit(2);
+			// if (big->exe == true)
+			// {
+			// 	free_t_big(big);
+			// 	exit(2);
+			// }
+			exit_code = 2;
 		}
-		else
-		{
-			ft_putstr_fd("exit\n", 1);
-			free_t_big(big);
-			exit(exit_code);
-		}
+		// else
+		// {
+		// // 	ft_putstr_fd("exit\n", 1);
+		// 	// if (big->exe == true)
+		// 	// {
+		// 	// 	free_t_big(big);
+		// 	// 	exit(exit_code);
+		// 	// }
+		// 	exit_code = 
+		// }
+	}
+	big->exit_code = exit_code;
+	if (big->exe == true)
+	{
+		ft_putstr_fd("exit\n", 1);
+		free(prompt);
+		prompt = NULL;
+		rl_clear_history();
+		free_t_big(big);
+		exit(exit_code);
 	}
 }

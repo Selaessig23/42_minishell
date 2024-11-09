@@ -1,7 +1,6 @@
 
 #include "minishell.h"
 
-
 /**
  * @brief Used to discard input when no valid command is provided,
  * preventing unnecessary input processing from the original file descriptor.

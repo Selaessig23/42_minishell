@@ -52,7 +52,8 @@ SRCS =	main.c \
 		signals.c \
 		execution/execute_0.c \
 		execution/execute_1.c \
-		execution/execute_2.c
+		execution/execute_2.c \
+		execution/execute_parent_built-ins.c
 #		inputcheck.c \
 #		exe.c \
 #		utils.c
