@@ -266,15 +266,15 @@ int ft_executer(t_big *big, char *prompt)
 		{
 			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
 				exe_fd_error(big, comm_info_next);
-			if (checker_parent_builtin(comm_info))
+			else if (checker_parent_builtin(comm_info))
 			{
 				// check this if statement. why do we need it.
 				if (comm_info_next && comm_info_next->fd_infile == 0)
 					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
 				parent_builtin_exe(comm_info, big, prompt);
 			}
-			// else if (big->count_commds == comm_info->commands_no && ft_builtin_checker(comm_info))
-			// 	ft_builtin_executer(comm_info, big);
+			else if (big->count_commds == comm_info->commands_no && ft_builtin_checker(comm_info))
+				ft_builtin_executer(comm_info, big);
 			else
 			{
 				if (!check_cmd(comm_info->cmd, big->env))
