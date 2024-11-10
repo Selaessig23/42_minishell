@@ -6,7 +6,6 @@
  * which should work similar to the bash-function
  * of same name is created
  */
-
 static void	exit_error_handling_only(t_big *big, char **argv, bool is_digit)
 {
 	if (ft_arrlen(argv) > 2 && is_digit == true)
@@ -48,26 +47,24 @@ static void	exit_exe(char *prompt, t_big *big, char	**argv, bool is_digit)
 	free_t_big(big);
 	exit(big->exit_code);
 }
+
 // Utils function of builtin exit which checks if
 // the first  argument arg1 is a digit.
 // return 1 if it is a digit
-static int exit_utils_check_first_arg(char **argv)
+// WHAT is it? "if (*arg1 && (*arg1 - 1) != '-')""
+static int	exit_utils_check_first_arg(char **argv)
 {
 	char	*arg1;
-	
+
 	arg1 = argv[1];
 	if (*arg1 == '-' || *arg1 == '+')
 		arg1 += 1;
 	while (*arg1 && ft_isdigit(*arg1))
 		arg1 += 1;
 	if (*arg1 && (*arg1 - 1) != '-')
-	{
-		//printf("exit_utils_check_first_arg\n");
-		//printf("if (*arg1 && (*arg1 - 1) != '-')\n");
-		return (0); // it is not a digit
-	}
+		return (0);
 	else
-		return (1); // it is a digit
+		return (1);
 }
 
 /**
@@ -79,14 +76,14 @@ static int exit_utils_check_first_arg(char **argv)
  */
 static int	exit_utils(char **argv, bool is_digit, t_big *big)
 {
-	int		code;
+	int	code;
 
 	code = 0;
 	if (exit_utils_check_first_arg(argv) == 1)
 		is_digit = true;
 	else
 		is_digit = false;
-	if (is_digit == true) // ft_arrlen(argv) >= 2 && 
+	if (is_digit == true)
 	{
 		if (ft_arrlen(argv) > 2 && big->exe == true)
 		{
@@ -100,7 +97,7 @@ static int	exit_utils(char **argv, bool is_digit, t_big *big)
 		}
 	}
 	big->exit_code = code;
-	if (is_digit == true) 
+	if (is_digit == true)
 		return (1);
 	return (0);
 }
@@ -116,7 +113,6 @@ static int	exit_utils(char **argv, bool is_digit, t_big *big)
  */
 // FULL execution IF big->exe is true
 // if exe is false - checking for errors and assigns exit code
-//temp note: argv = comm_info->cmd; - removed second same line
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 {
 	char	**argv;
