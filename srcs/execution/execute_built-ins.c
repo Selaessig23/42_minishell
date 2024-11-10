@@ -1,14 +1,5 @@
 #include "minishell.h"
 
-static int	is_exact_string(const char *str_org,char *str_cmp)
-{
-	if (!ft_strncmp(str_org, str_cmp, ft_strlen(str_org)) 
-		&& ft_strlen(str_org) == ft_strlen(str_cmp))
-		return (1);
-	else
-		return (0);
-}
-
 // export, unset, cd, exit
 // execution IF exe is true
 // if exe is false - checking for errors and exit assigns exit code
@@ -59,8 +50,3 @@ void exe_other_builtin(t_data *comm_info, t_big *big) // char *prompt
 			ft_minishell_help(comm_info, big);
 	}
 }
-//(!ft_strncmp(argv[0], "echo", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("echo"))
-// (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("pwd"))
-// (!ft_strncmp(argv[0], "env", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("env"))
-//(!ft_strncmp(argv[0], "help", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("help"))
-//  

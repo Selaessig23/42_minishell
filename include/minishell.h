@@ -251,5 +251,7 @@ void	call_cmd(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
 //execution/execute_2.c
 int		w_waitpid(t_big *big);
-
+// Utils
+//utils_strings/utils_string.c
+int		is_exact_string(const char *str_org,char *str_cmp);
 #endif
