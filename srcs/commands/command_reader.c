@@ -125,50 +125,12 @@ void ft_builtin_executer(t_data *comm_info, t_big *big) // char *prompt
 	argv = comm_info->cmd;
 	if (argv[0] && !ft_strncmp(argv[0], "echo", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("echo"))
 		ft_echo(comm_info, big);
-	// else if (argv[0] && !ft_strncmp(argv[0], "cd", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("cd"))
-	// 	ft_cd(big, argv);
 	else if (argv[0] && !ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("pwd"))
 		ft_print_pwd(big, comm_info);
-	// else if (argv[0] && !ft_strncmp(argv[0], "export", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("export"))
-	// 	ft_export(big, comm_info);
-	// else if (argv[0] && !ft_strncmp(argv[0], "unset", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("unset"))
-	// 	ft_unset(big, comm_info);
 	else if (argv[0] && !ft_strncmp(argv[0], "env", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("env"))
 		ft_print_env(comm_info, big);
-	// else if (argv[0] && !ft_strncmp(argv[0], "exit", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("exit"))
-	// 	ft_exit_minishell(comm_info, big, prompt);
 	else if (argv[0] && !ft_strncmp(argv[0], "help", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("help"))
 		ft_minishell_help(comm_info->fd_outfile);
-}
-
-/**
- * @brief function to check for built-in-commands
- *
- * @param comm_info struct with all necessary infos to
- * execute a single command
- */
-int	ft_builtin_checker(t_data *comm_info)
-{
-	char **argv;
-
-	argv = comm_info->cmd;
-	if (argv[0] && ((!ft_strncmp(argv[0], "echo", ft_strlen(argv[0])) && 
-		ft_strlen(argv[0]) == ft_strlen("echo")) || (!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])) 
-			&& ft_strlen(argv[0]) == ft_strlen("cd")) || (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])) 
-				&& ft_strlen(argv[0]) == ft_strlen("pwd")) 
-					|| (!ft_strncmp(argv[0], "export", ft_strlen(argv[0])) 
-						&& ft_strlen(argv[0]) == ft_strlen("export")) 
-							|| (!ft_strncmp(argv[0], "unset", ft_strlen(argv[0])) 
-								&& ft_strlen(argv[0]) == ft_strlen("unset")) 
-									|| (!ft_strncmp(argv[0], "env", ft_strlen(argv[0])) 
-										&& ft_strlen(argv[0]) == ft_strlen("env")) 
-											|| (!ft_strncmp(argv[0], "exit", ft_strlen(argv[0])) 
-												&& ft_strlen(argv[0]) == ft_strlen("exit")) 
-													|| (!ft_strncmp(argv[0], "help", ft_strlen(argv[0])) 
-														&& ft_strlen(argv[0]) == ft_strlen("help"))))
-		return (1);
-	else
-		return (0);
 }
 
 static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
@@ -182,7 +144,7 @@ static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 		return ;
 	else
 	{
-		if (!checker_parent_builtin(data))
+		if (!check_builtin_parent(data))
 			big->exit_code = exit_status_binar;
 	}
 }
@@ -215,14 +177,14 @@ int ft_executer(t_big *big, char *prompt)
 		{
 			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
 				exe_fd_error(big, comm_info_next);
-			else if (checker_parent_builtin(comm_info))
+			else if (check_builtin_parent(comm_info))
 			{
 				// check this if statement. why do we need it.
 				if (comm_info_next && comm_info_next->fd_infile == 0)
 					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
 				parent_builtin_exe(comm_info, big, prompt);
 			}
-			else if (big->count_commds == comm_info->commands_no && ft_builtin_checker(comm_info))
+			else if (big->count_commds == comm_info->commands_no && check_builtin_other(comm_info))
 				ft_builtin_executer(comm_info, big);
 			else
 			{

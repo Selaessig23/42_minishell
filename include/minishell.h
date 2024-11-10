@@ -214,9 +214,11 @@ void	ft_free_cl(t_list **ll);
 //commands/command_reader.c
 int		ft_executer(t_big *big, char *prompt);
 void	ft_builtin_executer(t_data *comm_info, t_big *big);
-int		ft_builtin_checker(t_data *comm_info);
 
 // BUILT-INS
+//builtins/builtin_check.c
+int		check_builtin_parent(t_data *comm_info);
+int		check_builtin_other(t_data *comm_info);
 //builtins/exit.c
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
 //builtins/env.c
@@ -246,7 +248,6 @@ void	ft_handle_signals_childs(void);
 
 // EXECUTION
 //execution/execute_parent_built-ins.c
-int		checker_parent_builtin(t_data *comm_info);
 void	parent_builtin_exe(t_data *comm_info, t_big *big, char *prompt);
 //execution/execute_0.c
 int		execute(t_data *comm_info, t_data *c_i_next, t_big *big);

@@ -116,7 +116,7 @@ static int	child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
 		if (comm_info->fd_infile == 0 && comm_info->fd_outfile == 1)
 		{
 			// fprintf(stderr, "no < or << and > or >>\n");
-			if (ft_builtin_checker(comm_info))
+			if (check_builtin_other(comm_info))
 			{
 				ft_builtin_executer(comm_info, big);
 				exit(EXIT_SUCCESS);
@@ -152,7 +152,7 @@ static int	child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
 		else
 			dup2(comm_info->fd_outfile, STDOUT_FILENO);
 	}
-	if (ft_builtin_checker(comm_info))
+	if (check_builtin_other(comm_info))
 	{
 		ft_builtin_executer(comm_info, big);
 		exit(EXIT_SUCCESS);
