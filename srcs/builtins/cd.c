@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 20:49:13 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/10 20:49:27 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/10 20:53:38 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int	cd_error(char **argv)
 		ft_dprintf("minishell: cd: %s: No such file or directory\n", argv[1]);
 		return (1);
 	}
-
 	else if (access(argv[1], X_OK))
 	{
 		ft_dprintf("minishell: cd: %s: Permission denied\n", argv[1]);
@@ -131,7 +130,8 @@ void	ft_cd(t_big *big, char **argv)
 	err = false;
 	if (ft_arrlen(argv) < 2)
 	{
-		ft_putstr_fd("minishell: cd: Please specifiy the path you want to change to\n", 2);
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd("Please specifiy the path you want to change to\n", 2);
 		big->exit_code = 0;
 		return ;
 	}
@@ -141,7 +141,7 @@ void	ft_cd(t_big *big, char **argv)
 		big->exit_code = 1;
 	else if (err == false && big->exe == true)
 	{
-		chdir(argv[1]);		
+		chdir(argv[1]);
 		ft_update_env(big);
 		big->exit_code = 0;
 	}
