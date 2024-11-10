@@ -45,6 +45,7 @@ Before a command is executed, its input and output may be redirected using a spe
 
 ### ft_dprintf
 > Feature to display a message on standard error output.
+> As alternative we use ft_putstr_fd with file descriptor 2 which stands for standard error.
 
 ### EXECUTION
 
