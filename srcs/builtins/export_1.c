@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_1.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/10 20:48:39 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/10 20:48:39 by mpeshko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -6,24 +18,6 @@
  * which should work similar to the bash-function
  * of same name is created
  */
-
-/**
- * The function check the argument for invalid case
- * with a '-' in the name of the variable.
- * For instance, "export HELLO-=123".
-*/
-int	check_dash_in_var_name(char *argument)
-{
-	char	**checker;
-	int		i;
-
-	i = 0;
-	checker = ft_split(argument, '=');
-	if (ft_strchr(checker[0], '-'))
-		i = 1;
-	ft_free(checker);
-	return (i);
-}
 
 /**
  * The function is a helper fuction for 'exp_create' function.
@@ -155,14 +149,12 @@ int	ft_export(t_big *big, t_data *comm_info)
 	a = 1;
 	while (cmd_arg[a] != NULL)
 	{
-		// error
 		if (*cmd_arg[a] == '=' || ft_isdigit(*cmd_arg[a]))
-				ft_dprintf("bash: export: `%s': not a valid identifier\n",
-					cmd_arg[a]);
+			ft_dprintf("bash: export: `%s': not a valid identifier\n",
+				cmd_arg[a]);
 		else if (check_dash_in_var_name(cmd_arg[a]))
-				ft_dprintf("bash: export: `%s': not a valid identifier\n",
-					cmd_arg[a]);
-		// big->exe == true
+			ft_dprintf("bash: export: `%s': not a valid identifier\n",
+				cmd_arg[a]);
 		else if (big->exe == true && ft_strchr(cmd_arg[a], '='))
 		{
 			if (!exp_check_var(big->env, cmd_arg[a]))

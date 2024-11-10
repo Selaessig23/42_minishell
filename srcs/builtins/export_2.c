@@ -1,9 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_2.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/10 20:48:30 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/10 20:50:38 by mpeshko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
  * DESCRIPTION
  * in this second file of the built-in command "export"
  */
+/**
+ * The function check the argument for invalid case
+ * with a '-' in the name of the variable.
+ * For instance, "export HELLO-=123".
+*/
+int	check_dash_in_var_name(char *argument)
+{
+	char	**checker;
+	int		i;
+
+	i = 0;
+	checker = ft_split(argument, '=');
+	if (ft_strchr(checker[0], '-'))
+		i = 1;
+	ft_free(checker);
+	return (i);
+}
 
 /**
  * EXIT_STATUS checker for EXPORT built-in.

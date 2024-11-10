@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/10 20:49:13 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/10 20:49:27 by mpeshko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /** DESCRIPTION
@@ -41,6 +53,7 @@ void	ft_update_oldpwd(char **p_env_oldpwd, char *oldpwd_new)
 		*p_env_oldpwd = ft_strjoin("OLDPWD=", (oldpwd_new));
 	free(env_oldpwd);
 }
+
 /**
  * @brief function to update the env in big
  * 
@@ -133,4 +146,3 @@ void	ft_cd(t_big *big, char **argv)
 		big->exit_code = 0;
 	}
 }
-
