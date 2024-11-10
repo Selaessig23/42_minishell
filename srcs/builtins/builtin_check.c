@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 19:16:51 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/10 19:36:43 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/10 20:37:46 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,15 @@ int	check_builtin_parent(t_data *comm_info)
 	argv = comm_info->cmd;
 	if (argv[0] != NULL)
 	{
-		if (!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])) 
-			&& ft_strlen(argv[0]) == ft_strlen("cd"))
+		if (is_exact_string(argv[0], "cd"))
 			return (1);
-		if (!ft_strncmp(argv[0], "export", ft_strlen(argv[0])) 
-			&& ft_strlen(argv[0]) == ft_strlen("export"))
+		if (is_exact_string(argv[0], "export"))
 			return (1);
-		if (!ft_strncmp(argv[0], "unset", ft_strlen(argv[0])) 
-			&& ft_strlen(argv[0]) == ft_strlen("unset"))
+		if (is_exact_string(argv[0], "unset"))
 			return (1);
-		if (!ft_strncmp(argv[0], "exit", ft_strlen(argv[0])) 
-			&& ft_strlen(argv[0]) == ft_strlen("exit"))
+		if (is_exact_string(argv[0], "exit"))
 			return (1);
-		if (!ft_strncmp(argv[0], "help", ft_strlen(argv[0])) 
-			&& ft_strlen(argv[0]) == ft_strlen("help"))
+		if (is_exact_string(argv[0], "help"))
 			return (1);
 	}
 	return (0);
@@ -58,17 +53,13 @@ int	check_builtin_other(t_data *comm_info)
 	argv = comm_info->cmd;
 	if (argv[0] != NULL)
 	{
-		if (!ft_strncmp(argv[0], "echo", ft_strlen(argv[0])) 
-			&& ft_strlen(argv[0]) == ft_strlen("echo"))
+		if (is_exact_string(argv[0], "echo"))
 			return (1);
-		if (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])) 
-			&& ft_strlen(argv[0]) == ft_strlen("pwd"))
+		if (is_exact_string(argv[0], "pwd"))
 			return (1);
-		if (!ft_strncmp(argv[0], "env", ft_strlen(argv[0])) 
-			&& ft_strlen(argv[0]) == ft_strlen("env"))
+		if (is_exact_string(argv[0], "env"))
 			return (1);
-		if (!ft_strncmp(argv[0], "help", ft_strlen(argv[0])) 
-			&& ft_strlen(argv[0]) == ft_strlen("help"))
+		if (is_exact_string(argv[0], "help"))
 			return (1);
 	}
 	return (0);
