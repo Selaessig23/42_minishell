@@ -50,6 +50,26 @@ static void	exit_exe(char *prompt, t_big *big, char	**argv, bool is_nondigit)
 	free_t_big(big);
 	exit(big->exit_code);
 }
+// Utils function of builtin exit which checks if
+// the first  argument arg1 is a digit.
+// return 1 if it is not a digit
+static int exit_utils_check_first_arg(char **argv)
+{
+	char	*arg1;
+	
+	arg1 = argv[1];
+	// if (ft_arrlen(argv) >= 2)
+	// {
+	if (*arg1 == '-' || *arg1 == '+')
+		arg1 += 1;
+	while (*arg1 && ft_isdigit(*arg1))
+		arg1 += 1;
+	if (*arg1 && (*arg1 - 1) != '-')
+		return (1);
+	else
+		return (0);
+	// }
+}
 
 /**
  * @brief function to execute the builtin function "exit", 
@@ -62,28 +82,23 @@ static void	exit_exe(char *prompt, t_big *big, char	**argv, bool is_nondigit)
  */
 // execution IF exe is true
 // if exe is false - checking for errors and exit assigns exit code
+//argv2 = NULL;
+// argv - arg1
+//argv = comm_info->cmd;
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 {
 	char	**argv;
-	char	*argv2;
 	bool	is_nondigit;
 	int		exit_code;
 
 	argv = comm_info->cmd;
-	//argv2 = NULL;
-	argv2 = argv[1];
-	is_nondigit = 0;
+	is_nondigit = false;
 	exit_code = 0;
 	if (ft_arrlen(argv) >= 2)
 	{
-		if (*argv2 == '-' || *argv2 == '+')
-			argv2 += 1;
-		while (*argv2 && ft_isdigit(*argv2))
-			argv2 += 1;
-		if (*argv2 && (*argv2 - 1) != '-')
+		if (exit_utils_check_first_arg(argv) == 1)
 			is_nondigit = true;
 	}
-	//argv = comm_info->cmd;
 	if (ft_arrlen(argv) >= 2 && is_nondigit == false)
 	{
 		exit_code = ft_atoi(argv[1]);
