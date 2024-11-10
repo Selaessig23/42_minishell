@@ -57,6 +57,12 @@ Function "ft_executer"
 (...)
 `if (comm_info->cmd[0] != NULL)`
 
+> checking directories...
+> Markus uses Macro: int S_ISDIR in
+`static int	check_cmd(char **cmd_plus_args, char *env[])`.
+I need to know more about it.
+This macro returns non-zero if the file is a directory. 
+
 ### PIPELINE
 > pipes typically create subshells (child processes)... This means any changes made by a command within a subshell (such as `cd` changing the directory) won’t affect the parent shell or subsequent commands in the pipeline.
 

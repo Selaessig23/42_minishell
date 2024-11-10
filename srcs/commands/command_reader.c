@@ -1,7 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_reader.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/10 19:39:56 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/10 19:39:56 by mpeshko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/stat.h>
-
 /**
  * DESCRIPTION:
  * file to read from cmdlist and organises execution of
@@ -108,31 +117,6 @@ static int	check_cmd(char **cmd_plus_args, char *env[])
 	}
 }
 
-/**
- * @brief function to organise execution of built-in-commands
- *
- * @param comm_info struct with all necessary infos to
- * execute a single command
- * @param big big struct with all command infos
- * that are required for executing builtins or
- * that have to be freed in case of builtin exit
- * @param prompt string that has to be freed in case of builtin exit
- */
-void ft_builtin_executer(t_data *comm_info, t_big *big) // char *prompt
-{
-	char **argv;
-
-	argv = comm_info->cmd;
-	if (argv[0] && !ft_strncmp(argv[0], "echo", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("echo"))
-		ft_echo(comm_info, big);
-	else if (argv[0] && !ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("pwd"))
-		ft_print_pwd(big, comm_info);
-	else if (argv[0] && !ft_strncmp(argv[0], "env", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("env"))
-		ft_print_env(comm_info, big);
-	else if (argv[0] && !ft_strncmp(argv[0], "help", ft_strlen(argv[0])) && ft_strlen(argv[0]) == ft_strlen("help"))
-		ft_minishell_help(comm_info->fd_outfile);
-}
-
 static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 {
 	t_data *data;
@@ -179,13 +163,13 @@ int ft_executer(t_big *big, char *prompt)
 				exe_fd_error(big, comm_info_next);
 			else if (check_builtin_parent(comm_info))
 			{
-				// check this if statement. why do we need it.
-				if (comm_info_next && comm_info_next->fd_infile == 0)
-					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
-				parent_builtin_exe(comm_info, big, prompt);
+				// !!! check this if statement. I'm not sure we need it.
+				// if (comm_info_next && comm_info_next->fd_infile == 0)
+				// 	comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
+				exe_parent_builtin(comm_info, big, prompt);
 			}
 			else if (big->count_commds == comm_info->commands_no && check_builtin_other(comm_info))
-				ft_builtin_executer(comm_info, big);
+				exe_other_builtin(comm_info, big);
 			else
 			{
 				if (!check_cmd(comm_info->cmd, big->env))

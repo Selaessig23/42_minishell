@@ -118,7 +118,7 @@ static int	child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
 			// fprintf(stderr, "no < or << and > or >>\n");
 			if (check_builtin_other(comm_info))
 			{
-				ft_builtin_executer(comm_info, big);
+				exe_other_builtin(comm_info, big);
 				exit(EXIT_SUCCESS);
 			}
 			else
@@ -154,7 +154,7 @@ static int	child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
 	}
 	if (check_builtin_other(comm_info))
 	{
-		ft_builtin_executer(comm_info, big);
+		exe_other_builtin(comm_info, big);
 		exit(EXIT_SUCCESS);
 	}
 	else

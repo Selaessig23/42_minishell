@@ -27,15 +27,8 @@
 # include <sys/ioctl.h>
 //to change behaviour of the terminal (not-printing all control squences)
 # include <termios.h>
-
-// for sigset_t data type
-//#include <asm-generic/signal.h>
-//#include <asm/signal.h>
-//#include <bits/types/sigset_t.h>
-// for ECHOCTL flag
-//#include <bits/termios-c_lflag.h>
-//#include <asm-generic/termbits.h>
-
+// for S_ISDIR macro in check_cmd function
+# include <sys/stat.h>
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments\
 to execute minishell\n"
@@ -213,7 +206,6 @@ t_data	*ft_pointer_next_command(t_list	*curr);
 void	ft_free_cl(t_list **ll);
 //commands/command_reader.c
 int		ft_executer(t_big *big, char *prompt);
-void	ft_builtin_executer(t_data *comm_info, t_big *big);
 
 // BUILT-INS
 //builtins/builtin_check.c
@@ -241,14 +233,15 @@ size_t	count_till_char(char *str, char up_to);
 int		heredoc_start(t_data *comm_info, char *limiter);
 void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
-void	ft_minishell_help(int fd);
+void	ft_minishell_help(t_data *comm_info, t_big *big);
 //signals.c
 int		ft_handle_signals(bool rl_antes);
 void	ft_handle_signals_childs(void);
 
 // EXECUTION
-//execution/execute_parent_built-ins.c
-void	parent_builtin_exe(t_data *comm_info, t_big *big, char *prompt);
+//execution/execute_built-ins.c
+void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt);
+void	exe_other_builtin(t_data *comm_info, t_big *big);
 //execution/execute_0.c
 int		execute(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	print_stderr(char *what_error);
