@@ -7,18 +7,16 @@
  * of same name is created
  */
 
-static void	exit_error_handling_only(t_big *big, char **argv, bool is_nondigit)
+static void	exit_error_handling_only(t_big *big, char **argv, bool is_digit)
 {
-	if (ft_arrlen(argv) > 2 && is_nondigit == false)
+	if (ft_arrlen(argv) > 2 && is_digit == true)
 	{
-		//ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		big->exit_code = 1;
 		return ;
 	}
-	else if (is_nondigit == true)
+	else if (is_digit == false)
 	{
-		//ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd((argv[1]), 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
@@ -30,14 +28,14 @@ static void	exit_error_handling_only(t_big *big, char **argv, bool is_nondigit)
 /**
  * Part of exit built-in which exit from a minishell.
  */
-static void	exit_exe(char *prompt, t_big *big, char	**argv, bool is_nondigit)
+static void	exit_exe(char *prompt, t_big *big, char	**argv, bool is_digit)
 {
 	ft_putstr_fd("exit\n", 1);
-	if (ft_arrlen(argv) > 2 && is_nondigit == false)
+	if (ft_arrlen(argv) > 2 && is_digit == true)
 	{
 		big->exit_code = 1;
 	}
-	else if (is_nondigit == true)
+	else if (is_digit == false)
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd((argv[1]), 2);
@@ -52,23 +50,59 @@ static void	exit_exe(char *prompt, t_big *big, char	**argv, bool is_nondigit)
 }
 // Utils function of builtin exit which checks if
 // the first  argument arg1 is a digit.
-// return 1 if it is not a digit
+// return 1 if it is a digit
 static int exit_utils_check_first_arg(char **argv)
 {
 	char	*arg1;
 	
 	arg1 = argv[1];
-	// if (ft_arrlen(argv) >= 2)
-	// {
 	if (*arg1 == '-' || *arg1 == '+')
 		arg1 += 1;
 	while (*arg1 && ft_isdigit(*arg1))
 		arg1 += 1;
 	if (*arg1 && (*arg1 - 1) != '-')
-		return (1);
+	{
+		//printf("exit_utils_check_first_arg\n");
+		//printf("if (*arg1 && (*arg1 - 1) != '-')\n");
+		return (0); // it is not a digit
+	}
 	else
-		return (0);
-	// }
+		return (1); // it is a digit
+}
+
+/**
+ * It does a lot different things that  original exit does.
+ * It returns 1 if the first arg is a digit.
+ * It check the first argument if it is a digit or not.
+ * If the first argument is a digit than bool is_digit = true.
+ * 
+ */
+static int	exit_utils(char **argv, bool is_digit, t_big *big)
+{
+	int		code;
+
+	code = 0;
+	if (exit_utils_check_first_arg(argv) == 1)
+		is_digit = true;
+	else
+		is_digit = false;
+	if (is_digit == true) // ft_arrlen(argv) >= 2 && 
+	{
+		if (ft_arrlen(argv) > 2 && big->exe == true)
+		{
+			big->exe = false;
+			ft_putstr_fd("exit\n", 2);
+		}
+		else
+		{
+			code = ft_atoi(argv[1]);
+			code = (code % 256 + 256) % 256;
+		}
+	}
+	big->exit_code = code;
+	if (is_digit == true) 
+		return (1);
+	return (0);
 }
 
 /**
@@ -80,41 +114,28 @@ static int exit_utils_check_first_arg(char **argv)
  * that have to be freed
  * @param prompt string that has to be freed before exit the program
  */
-// execution IF exe is true
-// if exe is false - checking for errors and exit assigns exit code
-//argv2 = NULL;
-// argv - arg1
-//argv = comm_info->cmd;
+// FULL execution IF big->exe is true
+// if exe is false - checking for errors and assigns exit code
+//temp note: argv = comm_info->cmd; - removed second same line
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 {
 	char	**argv;
-	bool	is_nondigit;
-	int		exit_code;
+	bool	is_digit;
 
 	argv = comm_info->cmd;
-	is_nondigit = false;
-	exit_code = 0;
+	is_digit = true;
 	if (ft_arrlen(argv) >= 2)
 	{
-		if (exit_utils_check_first_arg(argv) == 1)
-			is_nondigit = true;
+		if (exit_utils(argv, is_digit, big) == 1)
+			is_digit = true;
+		else 
+			is_digit = false;
 	}
-	if (ft_arrlen(argv) >= 2 && is_nondigit == false)
-	{
-		exit_code = ft_atoi(argv[1]);
-		if (ft_arrlen(argv) > 2 && big->exe == true)
-		{
-			big->exe = false;
-			ft_putstr_fd("exit\n", 2);
-		}
-	}
-	exit_code = (exit_code % 256 + 256) % 256;
-	big->exit_code = exit_code;
 	if (big->exe == false)
 	{
-		exit_error_handling_only(big, argv, is_nondigit);
+		exit_error_handling_only(big, argv, is_digit);
 		return ;
 	}
 	if (big->exe == true)
-		exit_exe(prompt, big, argv, is_nondigit);
+		exit_exe(prompt, big, argv, is_digit);
 }
