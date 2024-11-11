@@ -36,11 +36,11 @@ SRCS =	main.c \
 		expander/expander_pid.c \
 		expander/expander_utils.c \
 		expander/expander_q.c \
-		commands/command_list.c \
-		commands/command_utils.c \
-		commands/command_reader.c \
-		commands/file_creator.c \
-		commands/default_env_paths.c \
+		command_creation/command_list.c \
+		command_creation/command_utils.c \
+		command_creation/command_reader.c \
+		command_creation/file_creator.c \
+		command_creation/_check_def_env_paths.c \
 		builtins/builtin_check.c \
 		builtins/exit.c \
 		builtins/echo.c \

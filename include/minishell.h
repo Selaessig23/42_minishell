@@ -185,20 +185,20 @@ int		ft_is_env_var(char c);
 void	ft_q_word_handling(void **token, t_big *big);
 
 // COMMANDS
-//commands/command_list.c
+//command_creation/command_list.c
 void	ft_commands(t_list *lexx, t_big **big);
 int		fd_out_creator(bool appender, char *filename);
-//commands/file_creator.
+//command_creation/file_creator.
 int		fd_in_checker(t_data *comm_info, char *infile, t_big **p_big);
-//commands/command_utils.c
+//command_creation/command_utils.c
 void	exe_fd_error(t_big *big, t_data *comm_info_next);
 t_data	*ft_pointer_next_command(t_list	*curr);
 void	ft_free_cl(t_list **ll);
-//commands/command_reader.c
+//command_creation/command_reader.c
 int		ft_executer(t_big *big, char *prompt);
 void	ft_builtin_executer(t_data *comm_info, t_big *big);
 int		ft_builtin_checker(t_data *comm_info);
-//commands/default_env_paths.c
+//command_creation/check_def_env_paths.c
 void	ft_check_defaultpath(char *binary, char **binarypaths);
 
 // BUILT-INS
