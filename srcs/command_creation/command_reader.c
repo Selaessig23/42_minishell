@@ -162,18 +162,18 @@ int ft_executer(t_big *big, char *prompt)
 		{
 			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
 				exe_fd_error(big, comm_info_next);
-			// else if (check_builtin_parent(comm_info))
-			// {
-			// 	// !!! check this if statement. I'm not sure we need it.
-			// 	// if (comm_info_next && comm_info_next->fd_infile == 0)
-			// 	// 	comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
-			// 	exe_parent_builtin(comm_info, big, prompt);
-			// }
-			// else if (big->count_commds == comm_info->commands_no && check_builtin_other(comm_info))
-			// 	exe_other_builtin(comm_info, big);
-			//else
+			else if (check_builtin_parent(comm_info))
 			{
-				ft_dprintf("Once or twice?\n");
+				// !!! check this if statement. I'm not sure we need it.
+				// if (comm_info_next && comm_info_next->fd_infile == 0)
+				// 	comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
+				exe_parent_builtin(comm_info, big, prompt);
+			}
+			else if (big->count_commds == comm_info->commands_no && check_builtin_other(comm_info))
+				exe_other_builtin(comm_info, big);
+			else
+			{
+				ft_dprintf("execute\n");
 				if (!check_cmd(comm_info->cmd, big->env, big->binarypaths))
 					execute(comm_info, comm_info_next, big);
 				else
@@ -186,8 +186,8 @@ int ft_executer(t_big *big, char *prompt)
 			delete_heredoc(comm_info);
 		if (comm_info->fd_outfile > 2)
 		{
+			ft_dprintf("comm_info->fd_outfile (%d) is closed PARENT\n", comm_info->fd_outfile);
 			close(comm_info->fd_outfile);
-			ft_dprintf("comm_info->fd_outfile (%d) is closed IN PARENT\n", comm_info->fd_outfile);
 		}
 		curr = curr->next;
 	}

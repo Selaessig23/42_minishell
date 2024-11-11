@@ -127,12 +127,14 @@ static int	child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
 			else
 				call_cmd(comm_info->cmd, big->env);
 		}
+
+		//////// ????
 		if (comm_info->fd_outfile > 1)
 		{
-			ft_dprintf("output to file\n");
+			//ft_dprintf("output to file\n");
 			dup2(comm_info->fd_outfile, STDOUT_FILENO);
-			close(comm_info->fd_outfile);
 			ft_dprintf("comm_info->fd_outfile (%d) is closed IN CHILD\n", comm_info->fd_outfile);
+			close(comm_info->fd_outfile);
 		}
 		if (comm_info->fd_infile > 0)
 		{
@@ -149,27 +151,36 @@ static int	child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
 		if (comm_info->fd_infile > 0)
 		{
 			dup2(comm_info->fd_infile, STDIN_FILENO);
-			close(comm_info->fd_infile);
 			ft_dprintf("comm_info->fd_infile (%d) is closed IN CHILD\n", comm_info->fd_infile);
+			close(comm_info->fd_infile);
 		}
 		if (comm_info->fd_outfile == 1)
+		{
 			dup2(fd[1], STDOUT_FILENO);
+			ft_dprintf("fd[1] (%d) is closed IN CHILD\n", fd[1]);
+			close(fd[1]);
+		}
 		else
+		{
 			dup2(comm_info->fd_outfile, STDOUT_FILENO);
+			ft_dprintf("comm_info->fd_outfile (%d) is closed IN CHILD\n", comm_info->fd_outfile);
+			close(comm_info->fd_outfile);
+		}
 	}
 	if (check_builtin_other(comm_info))
 	{
 		exe_other_builtin(comm_info, big);
+		//close(comm_info->fd_outfile);
 		/// new new new!!!!!!!!!!!!!!!!
-		close(fd[1]);
+		// close(fd[1]);
 		exit(EXIT_SUCCESS);
 	}
 	else
 		call_cmd(comm_info->cmd, big->env);
 	///// NEW NEW NEW !!!!!!! If there was no execution... 
 	// Cleanup fds.
-	if (comm_info->fd_outfile > 2)
-		close(comm_info->fd_outfile);
+	// if (comm_info->fd_outfile > 2)
+	// 	close(comm_info->fd_outfile);
 	close(fd[1]);
 
 	//ft_dprintf("pipes fd[1] %d is closed IN CHILD\n", fd[1]);
@@ -200,8 +211,8 @@ int	execute(t_data *comm_info, t_data *c_i_next, t_big *big)
 		w_errpipe_close(comm_info->fd_infile);
 	signal(SIGINT, SIG_IGN);
 
-	//printf("fd->infile is %d\n", comm_info->fd_infile);
-	//printf("fd->outfile is %d\n", comm_info->fd_outfile);
+	printf("fd->infile is %d\n", comm_info->fd_infile);
+	printf("fd->outfile is %d\n", comm_info->fd_outfile);
 
 	pid = fork();
 	if (pid == -1)
@@ -228,11 +239,10 @@ int	execute(t_data *comm_info, t_data *c_i_next, t_big *big)
 			else if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
 			{
 				ft_dprintf("Sending pipe_fd to next pipe...\n");
-				//c_i_next->fd_infile = fd[0];  // old
-				/// NEW NEW NEW !!!!
-				dup2(fd[0], c_i_next->fd_infile);
-				close(fd[0]);
-				printf("pipes fd[0] (fd %d) is closed IN PARENT\n", fd[0]);
+				ft_dprintf("c_i_next->fd_infile: %d\n", c_i_next->fd_infile);
+				ft_dprintf("fd[0]: %d\n", fd[0]);
+				c_i_next->fd_infile = fd[0];
+				ft_dprintf("c_i_next->fd_infile: %d\n", c_i_next->fd_infile);
 			}
 			else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
 			{
@@ -242,7 +252,7 @@ int	execute(t_data *comm_info, t_data *c_i_next, t_big *big)
 		}
 		else if (c_i_next == NULL)
 		{
-			//printf("pipes fd[0] (fd %d) is closed in PARENT\n", fd[0]);
+			printf("pipes fd[0] (fd %d) is closed in PARENT\n", fd[0]);
 			close(fd[0]);
 		}
 	}
