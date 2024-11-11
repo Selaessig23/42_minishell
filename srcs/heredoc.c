@@ -29,6 +29,26 @@ static int	fd_here_creator(char *filename, bool wr)
 }
 
 /**
+ * @brief function to expand the heredoc file with env-var infos
+ */
+static void	ft_expand_heredoc(char **str, t_big **p_big)
+{
+	t_lexer	*heredoc_input;
+	char	*temp;
+
+	temp = *str;
+	heredoc_input = ft_calloc(1, sizeof(t_lexer));
+	// lexx_input->value = ft_strdup(*input_arr);
+	heredoc_input->value = temp;
+	heredoc_input->token = 20;
+	// ft_lstadd_back(lexx, ft_lstnew(lexx_input));
+	heredoc_input->number_helper = 0;
+	ft_var_checker((void**)&heredoc_input, *p_big);
+	*str = heredoc_input->value;
+	free(heredoc_input);
+}
+
+/**
  * The function deletes a tmp file of heredoc
  * in case there are two or more heredocs in
  * one command.
@@ -59,7 +79,7 @@ void	delete_heredoc(t_data *comm_info)
  * @param write_end: File descriptor for the file being written to.
  * @param lim: The delimiter string that marks the end of the input.
  */
-static int	here_read_helper(int write_end, char *lim)
+static int	here_read_helper(int write_end, char *lim, t_big **p_big, t_data *comm_info)
 {
 	char *str;
 
@@ -83,6 +103,8 @@ static int	here_read_helper(int write_end, char *lim)
 		}
 		if (str)
 		{
+			if (comm_info->heredoc_expander == true)
+				ft_expand_heredoc(&str, p_big);
 			write(write_end, str, ft_strlen(str));
 			ft_putchar_fd('\n', write_end);
 			free(str);
@@ -122,7 +144,7 @@ static int here_read(char *name, char *lim)
  * information (stores the number of commands, "commands_no").
  * @param limiter: The string that serves as the stopping point for input.
  */
-int heredoc_start(t_data *comm_info, char *limiter)
+int	heredoc_start(t_data *comm_info, char *limiter, t_big **p_big)
 {
 	int		fd;
 	char	*name;
@@ -132,7 +154,7 @@ int heredoc_start(t_data *comm_info, char *limiter)
 	name = ft_strjoin(".heredoc_", cmd_no_str);
 	free(cmd_no_str);
 	fd = here_read(name, limiter);
-	here_read_helper(fd, limiter);
+	here_read_helper(fd, limiter, p_big, comm_info);
 	close(fd);
 	fd = fd_here_creator(name, false);
 	free(name);

@@ -14,13 +14,13 @@
  * @param heredoc to check if a new heredoc file has to be created
  * @param infile the infile name to read from
  */
-int	fd_in_checker(t_data *comm_info, char *infile)
+int	fd_in_checker(t_data *comm_info, char *infile, t_big **p_big)
 {
 	int		fd_in;
 
 	fd_in = 0;
 	if (comm_info->in_heredoc == true)
-		fd_in = heredoc_start(comm_info, infile);
+		fd_in = heredoc_start(comm_info, infile, p_big);
 	else if (access(infile, F_OK))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
