@@ -6,7 +6,6 @@
  * which should work similar to the bash-function
  * of same name is created
  */
-
 /**
  * function to print a string
  * 

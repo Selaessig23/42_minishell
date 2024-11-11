@@ -18,7 +18,6 @@
  * which should work similar to the bash-function
  * of same name is created
  */
-
 /**
  * @brief function to print all env-variables
  * 
@@ -40,13 +39,11 @@ void	ft_print_env(t_data *comm_info, t_big *big)
 		big->exit_code = 0;
 		return ;
 	}
-
 	env_list = big->env;
 	while (env_list && *env_list)
 	{
 		ft_putstr_fd(*env_list, fd);
 		ft_putchar_fd('\n', fd);
-		// ft_printf("%s\n", *env_list);
 		env_list += 1;
 	}
 	if (fd > 2)
