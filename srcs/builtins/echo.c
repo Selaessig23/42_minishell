@@ -17,7 +17,7 @@
  * @param big big struct with all command infos, inclusive
  * env and exit status
  */
-void    ft_echo(t_data *comm_info, t_big *big)
+void	ft_echo(t_data *comm_info, t_big *big)
 {
 	char	**argv;
 	int		fd;
@@ -32,17 +32,13 @@ void    ft_echo(t_data *comm_info, t_big *big)
 		no_nl = true;
 		argv += 1;
 	}
-	// printf("fd-check: %i\n", fd);
 	while (*argv)
 	{
 		ft_putstr_fd(*argv, fd);
-		// printf("to print -check: %s\n",*argv);
-		// dprintf(fd, "print: %s", *argv);
 		argv += 1;
 		if (*argv)
 			ft_putchar_fd(' ', fd);
 	}
-	// printf("fd-check 2: %i\n", fd);
 	if (no_nl == 0)
 		ft_putchar_fd('\n', fd);
 	if (fd > 2)

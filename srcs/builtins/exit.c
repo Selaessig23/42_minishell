@@ -167,7 +167,7 @@ static int	exit_utils(char **argv, bool is_digit, t_big *big)
 		if (ft_arrlen(argv) > 2 && big->exe == true)
 		{
 			big->exe = false;
-			ft_putstr_fd("exit\n", 2);
+			ft_putstr_fd("exit\n", 1);
 		}
 		else
 		{

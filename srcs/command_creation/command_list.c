@@ -12,6 +12,10 @@
  * 1) the total number of commands and writes it to t_big
  * 2) the position (number) of each command
  * 
+ * big->exe variable is used for execution of parent type builtins
+ * (exit, cd, unset,export). Full execution if `exe` is true, 
+ * if `exe` is false - only checking for errors and assigns exit code.
+ * 
  * @param comm the list where each node stands for a command 
  * that has to be counted
  * @param p_big a pointer to the big struct 

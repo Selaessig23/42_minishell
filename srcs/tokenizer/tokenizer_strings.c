@@ -60,16 +60,11 @@ static t_tokentype	ft_creat_dquoted_token(char *input_string)
 		&& ft_check_totalchar(input_string, '\"') == 2
 		&& !ft_check_lastchar(input_string, '\"'))
 		return (21);
-	// else if (ft_check_totalchar(input_string, '\"') >= 2
-	// 	&& !(ft_check_totalchar(input_string, '\"') % 2))
 	else if (ft_check_totalchar(input_string, '\"') >= 2)
-		// && (ft_strncmp(input_string, "\"", 1) || ft_check_lastchar(input_string, '\"')))
 		return (25);
 	else if (!ft_strncmp(input_string, "\"", 1)
 		&& ft_check_lastchar(input_string, '\"'))
 		return (23);
-	// else if (ft_check_totalchar(input_string, '\"') >= 0
-		// && (ft_check_totalchar(input_string, '\"') % 2))
 	else if (ft_check_totalchar(input_string, '\"') == 1)
 		return (27);
 	else 
@@ -91,16 +86,11 @@ t_tokentype	ft_creat_str_token(char *input_string)
 		&& ft_check_totalchar(input_string, '\'') == 2
 		&& !ft_check_lastchar(input_string, '\''))
 		return (22);
-	// else if (ft_check_totalchar(input_string, '\'') >= 2
-		// && !(ft_check_totalchar(input_string, '\'') % 2))
 	else if (ft_check_totalchar(input_string, '\'') >= 2)
-		// && (ft_strncmp(input_string, "\'", 1) || ft_check_lastchar(input_string, '\'')))
 		return (26);
 	else if (!ft_strncmp(input_string, "\'", 1)
 		&& ft_check_lastchar(input_string, '\''))
 		return (24);
-	// else if (ft_check_totalchar(input_string, '\'') >= 0
-		// && (ft_check_totalchar(input_string, '\'') % 2) != 0)
 	else if (ft_check_totalchar(input_string, '\'') == 1)
 		return (28);
 	else if (ft_creat_dquoted_token(input_string))

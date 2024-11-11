@@ -134,15 +134,8 @@ char	*ft_var_creator(char *value_old, char **env)
 		if (value_old[i] == '$')
 		{
 			k = i;
-			// i++;
 			i += ft_var_cutter(&value_old[i]);
-			// while (value_old[i]
-			// 	&& !((value_old[i] >= 9 && value_old[i] <= 13)
-			// 		|| (value_old[i] == ' ')
-			// 		|| !(ft_isalnum(value_old[i]))))
-			// 	i++;
 			temp = ft_substr(value_old, k, (i - k));
-			// printf("Variable name to search for: %s\n", temp);
 			if (!temp)
 				error_handling(2);
 			value_new = ft_var_envchecker(value_old, temp, env);

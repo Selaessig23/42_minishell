@@ -14,7 +14,7 @@
 
 /**
  * DESCRIPTION:
- * in this file the inbuilt-function "pwd"
+ * in this file the inbuilt-function "env"
  * which should work similar to the bash-function
  * of same name is created
  */
@@ -46,7 +46,6 @@ void	ft_print_env(t_data *comm_info, t_big *big)
 	{
 		ft_putstr_fd(*env_list, fd);
 		ft_putchar_fd('\n', fd);
-		// ft_printf("%s\n", *env_list);
 		env_list += 1;
 	}
 	if (fd > 2)
