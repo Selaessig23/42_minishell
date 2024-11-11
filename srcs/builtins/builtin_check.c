@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 19:16:51 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/10 20:37:46 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/11 17:26:13 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

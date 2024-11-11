@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/11 17:13:29 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/11 17:17:55 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -9,7 +21,7 @@
 
 /**
  * @brief function to get and print current working directory
- * if there is no variable for it in env
+ * to fd
  * 
  * @param fd the file descriptor to write in
  */
@@ -26,9 +38,9 @@ static void	ft_get_env_pwd(int fd)
 }
 
 /**
- * @brief function to print content of env-variable 'pwd'
- * 
- * TODO: set exit correct (when 1?) status in struct big after execution
+ * @brief function to print content of env-variable 'pwd' to
+ * big->fd_outfile (int). If there are no permissions rights,
+ * big->fd_outfile will be < 0.
  * 
  * @param big the struct which holds all information for 
  * execution part incl. cmdlist and env and exit status
@@ -40,7 +52,8 @@ void	ft_print_pwd(t_big *big, t_data *comm_info)
 	int	fd;
 
 	fd = comm_info->fd_outfile;
-	ft_get_env_pwd(fd);
+	if (fd >= 0)
+		ft_get_env_pwd(fd);
 	if (fd > 2)
 		close(fd);
 	big->exit_code = 0;

@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/10 20:49:13 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/10 20:53:38 by mpeshko          ###   ########.fr       */
+/*   Created: 2024/11/11 16:50:02 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/11 16:50:14 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
 /** DESCRIPTION
- * in this file the inbuilt-function "exit"
+ * in this file the inbuilt-function "cd"
  * which should work similar to the bash-function
  * of same name is created
  */

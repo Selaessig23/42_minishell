@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/10 20:48:48 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/10 20:48:48 by mpeshko          ###   ########.fr       */
+/*   Created: 2024/11/11 17:20:14 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/11 17:20:19 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_print_env(t_data *comm_info, t_big *big)
 		big->exit_code = 0;
 		return ;
 	}
-
 	env_list = big->env;
 	while (env_list && *env_list)
 	{

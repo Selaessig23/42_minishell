@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/11 16:50:26 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/11 16:59:30 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -8,9 +20,8 @@
  */
 
 /**
- * function to print a string
- * 
- * TODO: set exit correct (when 1?) status in struct big after execution
+ * function to print a string, if there the option "-n"
+ * was set, then also print a new line afterwards
  *
  * @param comm_info struct with all necessary infos to 
  * execute a single command

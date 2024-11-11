@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_sort.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/11 17:14:03 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/11 17:18:00 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -22,7 +34,10 @@ static void	ft_swap(char **a, char **b)
 }
 
 /**
- * @brief function to sort the array of env
+ * @brief function to sort the array of env by
+ * comparing two variable names and check if they
+ * are sorted correctly, if not swap ans re-start 
+ * checking the env-var-names from the beginning
  * 
  * @param env_cpy copy of array env that should be sorted
  */
@@ -48,6 +63,12 @@ static void	ft_export_sort_algo(char ***p_env_cpy)
 /**
  * @brief function to organise the sorting request of the 
  * builtin function "export"
+ * (1) it creates a copy of env to print from
+ * (2) it sorts 
+ * (3) it prints
+ * (4) it frees the copy
+ * 
+ * @param big struct which holds the env-variable inside
  */
 void	ft_export_sort(t_big *big)
 {
