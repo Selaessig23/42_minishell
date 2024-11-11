@@ -107,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 						ft_free_ll(&lexx);
 						ft_executer(big, prompt);
 					}
-					else if (ft_syntax(lexx))
+					else
 					{
 						big->exit_code = 2;
 						ft_free_ll(&lexx);

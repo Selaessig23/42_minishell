@@ -8,24 +8,6 @@
  */
 
 /**
- * The function check the argument for invalid case
- * with a '-' in the name of the variable.
- * For instance, "export HELLO-=123".
-*/
-int	check_dash_in_var_name(char *argument)
-{
-	char	**checker;
-	int		i;
-
-	i = 0;
-	checker = ft_split(argument, '=');
-	if (ft_strchr(checker[0], '-'))
-		i = 1;
-	ft_free(checker);
-	return (i);
-}
-
-/**
  * The function is a helper fuction for 'exp_create' function.
  * It inserts a string 'str_to_add' into a array of strings.
  * It copies all strings from 'array_old' into 'array_new' and inserts
@@ -144,6 +126,8 @@ static int	exp_check_var(char **env, char *arg)
  * @param comm_info struct with all necessary infos to 
  * execute a single command
  */
+// execution IF exe is true
+// if exe is false - checking for errors and exit assigns exit code
 int	ft_export_exe(t_big *big, t_data *comm_info)
 {
 	char	**cmd_arg;
@@ -159,7 +143,7 @@ int	ft_export_exe(t_big *big, t_data *comm_info)
 		else if (check_dash_in_var_name(cmd_arg[a]))
 			ft_dprintf("bash: export: `%s': not a valid identifier\n",
 				cmd_arg[a]);
-		else if (ft_strchr(cmd_arg[a], '='))
+		else if (big->exe == true && ft_strchr(cmd_arg[a], '='))
 		{
 			if (!exp_check_var(big->env, cmd_arg[a]))
 				exp_create(big, cmd_arg[a]);

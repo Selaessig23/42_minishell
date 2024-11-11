@@ -27,15 +27,8 @@
 # include <sys/ioctl.h>
 //to change behaviour of the terminal (not-printing all control squences)
 # include <termios.h>
-
-// for sigset_t data type
-//#include <asm-generic/signal.h>
-//#include <asm/signal.h>
-//#include <bits/types/sigset_t.h>
-// for ECHOCTL flag
-//#include <bits/termios-c_lflag.h>
-//#include <asm-generic/termbits.h>
-
+// for S_ISDIR macro in check_cmd function
+# include <sys/stat.h>
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments\
 to execute minishell\n"
@@ -111,6 +104,9 @@ typedef struct s_data {
 // a copy of the environment
 // cmdlist - Linked list t_data
 // env - Copy of environment variables
+// exe - to define if we execute export, unset
+// cd and exit. we execute it fully only if there
+// is no pipeline, but only one command.
 typedef struct s_big
 {
 	t_list	*cmdlist;
@@ -118,6 +114,7 @@ typedef struct s_big
 	char	**binarypaths;
 	int		exit_code;
 	size_t	count_commds;
+	bool	exe;
 }					t_big;
 
 //ascii_graohic.c
@@ -183,12 +180,16 @@ char	*ft_givenbr(int nbr);
 int		ft_is_env_var(char c);
 //expander/expander_q.c
 void	ft_q_word_handling(void **token, t_big *big);
+
+// COMMANDS
 //commands/command_list.c
 void	ft_commands(t_list *lexx, t_big **big);
 int		fd_out_creator(bool appender, char *filename);
 //int		fd_in_checker(bool heredoc, char *infile);
 int		fd_in_checker(t_data *comm_info, char *infile);
 //commands/command_utils.c
+void	exe_fd_error(t_big *big, t_data *comm_info_next);
+t_data	*ft_pointer_next_command(t_list	*curr);
 void	ft_free_cl(t_list **ll);
 //commands/command_reader.c
 int		ft_executer(t_big *big, char *prompt);
@@ -196,6 +197,11 @@ void	ft_builtin_executer(t_data *comm_info, t_big *big);
 int		ft_builtin_checker(t_data *comm_info);
 //commands/default_env_paths.c
 void	ft_check_defaultpath(char *binary, char **binarypaths);
+
+// BUILT-INS
+//builtins/builtin_check.c
+int		check_builtin_parent(t_data *comm_info);
+int		check_builtin_other(t_data *comm_info);
 //builtins/exit.c
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
 //builtins/env.c
@@ -220,10 +226,15 @@ size_t	count_till_char(char *str, char up_to);
 int		heredoc_start(t_data *comm_info, char *limiter);
 void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
-void	ft_minishell_help(int fd);
+void	ft_minishell_help(t_data *comm_info, t_big *big);
 //signals.c
 int		ft_handle_signals(bool rl_antes);
 void	ft_handle_signals_childs(void);
+
+// EXECUTION
+//execution/execute_built-ins.c
+void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt);
+void	exe_other_builtin(t_data *comm_info, t_big *big);
 //execution/execute_0.c
 int		execute(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	print_stderr(char *what_error);
@@ -235,8 +246,10 @@ char	*get_all_folders(const char *env_var_path, char **env);
 char	*build_cmd_path(const char *folder, const char *cmd_name);
 //execution/execute_2.c
 int		w_waitpid(t_big *big);
-//exe_binar_minishell_executer.c
+//execution/minishell_executer.c
 void	ft_ms_executer(char *env[]);
 void	ft_overwrite_shlvl(char ***p_env);
-
+// Utils
+//utils_strings/utils_string.c
+int		is_exact_string(const char *str_org, char *str_cmp);
 #endif

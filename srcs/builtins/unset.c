@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/10 20:48:55 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/10 20:48:58 by mpeshko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -59,6 +71,8 @@ static int	uns_check_var(char **env, char *arg)
  * @param comm_info struct with all necessary infos to 
  * execute a single command
  */
+// execution IF exe is true
+// if exe is false - checking for errors and exit assigns exit code
 int	ft_unset(t_big *big, t_data *comm_info)
 {
 	char	**cmd_arg;
@@ -66,7 +80,7 @@ int	ft_unset(t_big *big, t_data *comm_info)
 
 	cmd_arg = comm_info->cmd;
 	a = 1;
-	while (cmd_arg[a] != NULL)
+	while (big->exe == true && cmd_arg[a] != NULL)
 	{
 		if (uns_check_var(big->env, cmd_arg[a]))
 			ft_rmv_var_array(big, cmd_arg[a]);

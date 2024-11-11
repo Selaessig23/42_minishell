@@ -1,6 +1,21 @@
 
 #include "minishell.h"
 
+void	exe_fd_error(t_big *big, t_data *comm_info_next)
+{
+	big->exit_code = 1;
+	if (comm_info_next && comm_info_next->fd_infile == 0)
+		comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
+}
+
+t_data	*ft_pointer_next_command(t_list	*curr)
+{
+	if (curr->next != NULL)
+		return (curr->next->content);
+	else
+		return (NULL);
+}
+
 /**
  * DESCRIPTION:
  * file which holds all functions of feat command

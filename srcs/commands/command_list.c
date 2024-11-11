@@ -31,6 +31,10 @@ static void	ft_count_commands(t_list *comm, t_big **p_big)
 		((t_data *)curr->content)->commands_no = i;
 		curr = curr->next;
 	}
+	if (big->count_commds == 1)
+		big->exe = true;
+	else
+		big->exe = false;
 }
 
 /**

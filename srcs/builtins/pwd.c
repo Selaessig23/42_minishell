@@ -54,5 +54,4 @@ void	ft_print_pwd(t_big *big, t_data *comm_info)
 	if (fd > 2)
 		close(fd);
 	big->exit_code = 0;
-	// return (0);
 }
