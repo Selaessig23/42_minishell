@@ -49,7 +49,7 @@ static int	ft_check_executable(char *executable)
  * @param cmd_plus_args[0] The first element of **cmd_plus_args 
  * is the command.
  */
-static int	no_cmd_path(char **cmd_plus_args)
+static int	no_cmd_path(char **cmd_plus_args, char **binarypaths)
 {
 	if (!ft_strncmp(cmd_plus_args[0], "./", 2))
 		return (ft_check_executable(cmd_plus_args[0]));
@@ -63,6 +63,7 @@ static int	no_cmd_path(char **cmd_plus_args)
 	}
 	else
 	{
+		ft_check_defaultpath(cmd_plus_args[0], binarypaths);
 		ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
 		ft_putstr_fd(": command not found", STDERR_FILENO);
 		ft_putstr_fd("\n", STDERR_FILENO);
@@ -75,7 +76,7 @@ static int	no_cmd_path(char **cmd_plus_args)
  * It explicitly prints an error message 
  * (via "no_cmd_path") if the command cannot be found.
  */
-static int	check_cmd(char **cmd_plus_args, char *env[])
+static int	check_cmd(char **cmd_plus_args, char *env[], char **binarypaths)
 {
 	char	*cmd_path;
 	struct stat check_dir;
@@ -105,7 +106,7 @@ static int	check_cmd(char **cmd_plus_args, char *env[])
 	cmd_path = get_path(cmd_plus_args[0], env);
 	if (!cmd_path)
 	{
-		if (no_cmd_path(cmd_plus_args))
+		if (no_cmd_path(cmd_plus_args, binarypaths))
 			return (1);
 		else
 			return (0);
@@ -172,7 +173,7 @@ int ft_executer(t_big *big, char *prompt)
 				exe_other_builtin(comm_info, big);
 			else
 			{
-				if (!check_cmd(comm_info->cmd, big->env))
+				if (!check_cmd(comm_info->cmd, big->env, big->binarypaths))
 					execute(comm_info, comm_info_next, big);
 				else
 					big->exit_code = 999;

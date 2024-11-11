@@ -74,10 +74,10 @@ void	close_pipe(char **readline_input)
 	if (extra_input)
 	{
 		if (signalnum == 1)
-			{
-				free(extra_input);
-				return ;
-			}
+		{
+			free(extra_input);
+			return ;
+		}
 		update_read_input(readline_input, extra_input);
 	}
 }
@@ -100,9 +100,9 @@ int	is_open_pipe(char *input)
 	if (i == 0)
 		return (0);
 	else
-		while (input[i] && input[i] == 32)
+		while (i >= 0 && input[i] && input[i] == 32)
 			i--;
-	if (input[i] == '|' && input[i - 1] != '|')
+	if (i >= 0 && input[i] == '|' && input[i - 1] != '|')
 	{
 		i--;
 		while (input[i] == 32)

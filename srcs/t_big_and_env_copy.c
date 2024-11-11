@@ -7,6 +7,7 @@ void	free_t_big(t_big *big)
 {
 	ft_free(big->env);
 	ft_free_cl(&(big->cmdlist));
+	ft_free(big->binarypaths);
 	// free(big->cmdlist);
 	// big->cmdlist = NULL;
 	free(big);
@@ -45,11 +46,11 @@ static int	count_strings(char **envp)
 }
 
 /**
- * The function copies array of strings from enironmental 
+ * The function copies array of strings from environmental 
  * variables into array of strings that is a part of
  * struct t_big.
 */
-static char	**copy_envp(char **envp)
+char	**copy_envp(char **envp)
 {
 	char	**copy;
 	int		i;
@@ -88,13 +89,23 @@ t_big	*init_t_big(char **envp)
 {
 	t_big	*big;
 	char	**env;
+	char	*all_folders;
 
 	big = ft_calloc(1, sizeof(t_big));
 	if (big == NULL)
 		error_handling(2);
 	big->cmdlist = NULL;
 	env = copy_envp(envp);
+	// ft_overwrite_shlvl(&env);
 	big->env = env;
+	all_folders = get_all_folders("PATH", env);
+	// printf("test\n");
+	big->binarypaths = ft_split(all_folders, ':');
+	if (!big->binarypaths)
+	{
+		print_stderr("malloc");
+		return (NULL);
+	}
 	big->exit_code = 0;
 	big->count_commds = 0;
 	return (big);

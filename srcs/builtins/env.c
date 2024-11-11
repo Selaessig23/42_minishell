@@ -14,7 +14,7 @@
 
 /**
  * DESCRIPTION:
- * in this file the inbuilt-function "pwd"
+ * in this file the inbuilt-function "env"
  * which should work similar to the bash-function
  * of same name is created
  */

@@ -107,7 +107,6 @@ static int	ft_redirect_check(t_list *lexx)
 		}
 		curr = curr->next;
 	}
-	// ft_printf("test3\n");
 	return (0);
 }
 
@@ -133,7 +132,6 @@ static int	ft_start_check(t_list *start)
 		ft_syntax_errors(start, 2);
 		return (1);
 	}
-	// ft_printf("test2\n");
 	return (0);
 }
 
@@ -149,7 +147,6 @@ static int	ft_quotes_check(t_list *lexx)
 	t_list	*curr;
 
 	curr = lexx;
-	// ft_printf("test token: %d\n", (int)curr->token);
 	while (curr != NULL)
 	{
 		if (((t_lexer *)curr->content)->token == 23
@@ -162,7 +159,6 @@ static int	ft_quotes_check(t_list *lexx)
 		}
 		curr = curr->next;
 	}
-	// ft_printf("test1\n");
 	return (0);
 }
 
@@ -173,31 +169,17 @@ static int	ft_quotes_check(t_list *lexx)
  */
 int	ft_syntax(t_list *lexx)
 {
-	// ft_printf("test0\n");
+	if (!lexx)
+		return (1);
 	if (ft_quotes_check(lexx))
-	{
-		// ft_printf("test quotes\n");
 		return (1);
-	}
 	else if (ft_start_check(lexx))
-	{
-		// ft_printf("test start\n");
 		return (1);
-	}
 	else if (ft_redirect_check(lexx))
-	{
-		// ft_printf("test redirect\n");
 		return (1);
-	}
 	else if (ft_pipe_check(lexx))
-	{	
-		// ft_printf("test pipe\n");
 		return (1);
-	}
 	else if (ft_bonus_check(lexx))
-	{
-		// ft_printf("test bonus\n");
 		return (1);
-	}
 	return (0);
 }

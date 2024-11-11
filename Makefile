@@ -6,7 +6,7 @@ LIBFT_PATH = $(CUR_DIR)/libft
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -g -Iinclude -Isrcs -Ireadline
-RLFLAG = -lreadline
+RLFLAG = -lreadline -lncurses -ltinfo
 
 #sources
 #VPATH = sources:include
@@ -14,16 +14,17 @@ RLFLAG = -lreadline
 SRCS =	main.c \
 		ascii_graphic.c \
 		error_handling.c \
-		ft_split_quotes.c \
-		lexer.c \
-		extra_prompt.c \
-		str_spaces_trimer.c \
+		lexer/ft_split_quotes.c \
+		lexer/lexer.c \
+		lexer/lexer_cleaner.c \
+		lexer/extra_prompt.c \
+		lexer/str_spaces_trimer.c \
 		tokenizer/tokenizer.c \
 		tokenizer/tokenizer_utils.c \
 		tokenizer/tokenizer_strings.c \
 		tokenizer/tokenizer_operators.c \
-		syntax.c \
-		syntaxerrors.c \
+		syntax_analyzer/syntax.c \
+		syntax_analyzer/syntaxerrors.c \
 		testprints.c \
 		t_big_and_env_copy.c \
 		expander/expander.c \
@@ -35,10 +36,11 @@ SRCS =	main.c \
 		expander/expander_pid.c \
 		expander/expander_utils.c \
 		expander/expander_q.c \
-		commands/command_list.c \
-		commands/command_utils.c \
-		commands/command_reader.c \
-		commands/file_creator.c \
+		command_creation/command_list.c \
+		command_creation/command_utils.c \
+		command_creation/command_reader.c \
+		command_creation/file_creator.c \
+		command_creation/check_def_env_paths.c \
 		builtins/builtin_check.c \
 		builtins/exit.c \
 		builtins/echo.c \
@@ -47,6 +49,7 @@ SRCS =	main.c \
 		builtins/cd.c \
 		builtins/export_1.c \
 		builtins/export_2.c \
+		builtins/export_sort.c \
 		builtins/unset.c \
 		heredoc.c \
 		builtins/help.c \
@@ -54,6 +57,7 @@ SRCS =	main.c \
 		execution/execute_0.c \
 		execution/execute_1.c \
 		execution/execute_2.c \
+		execution/minishell_executer.c \
 		execution/execute_built-ins.c \
 		utils_strings/utils_string.c
 #		inputcheck.c \

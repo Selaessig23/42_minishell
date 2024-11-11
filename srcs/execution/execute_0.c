@@ -192,6 +192,9 @@ int	execute(t_data *comm_info, t_data *c_i_next, t_big *big)
 	}
 	else if (pid != 0)
 	{
+		// if (!ft_strncmp(comm_info->cmd[0], "./minishell", ft_strlen("./minishell"))
+	 	// && comm_info->cmd[0][ft_strlen("./minishell")] == '\0')
+		// 	waitpid(pid, 0, 0);
 		close(fd[1]);
 		if (c_i_next != NULL)
 		{

@@ -6,13 +6,20 @@
  * in this file the list of commands will be created as part of 
  * t_big big (cmdlist) which will be used in execution part later on
  */
+
 /**
  * @brief this function counts 
  * 1) the total number of commands and writes it to t_big
  * 2) the position (number) of each command
  * 
- * @param comm the list where each node stands for a command that has to be counted
- * @param p_big a pointer to the big struct that holds all information to execute the 
+ * big->exe variable is used for execution of parent type builtins
+ * (exit, cd, unset,export). Full execution if `exe` is true, 
+ * if `exe` is false - only checking for errors and assigns exit code.
+ * 
+ * @param comm the list where each node stands for a command 
+ * that has to be counted
+ * @param p_big a pointer to the big struct 
+ * that holds all information to execute the 
  * commands, here the total amount of commands has to be written in
  */
 static void	ft_count_commands(t_list *comm, t_big **p_big)
@@ -171,8 +178,12 @@ static t_list	*ft_set_r_in(t_lexer *token,
 		comm_info->in_heredoc = true;
 	lexx = lexx->next;
 	token = lexx->content;
+	if (token->token == 30)
+		comm_info->heredoc_expander = true;
+	else
+		comm_info->heredoc_expander = false;
 	comm_info->fd_infile = 
-		fd_in_checker(comm_info, token->value);
+		fd_in_checker(comm_info, token->value, p_big);
 	if (comm_info->fd_infile == -1)
 	{
 		big->exit_code = 1;

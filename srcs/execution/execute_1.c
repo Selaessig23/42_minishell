@@ -171,19 +171,32 @@ char	*get_path(char *cmd_name, char **env)
 void	call_cmd(char **cmd_plus_args, char *env[])
 {
 	char	*cmd_path;
-    
-    cmd_path = NULL;
-	if (access(cmd_plus_args[0], F_OK | X_OK) == 0)
+	// char	*temp;
+
+	cmd_path = NULL;
+	// printf("test: %s\n", cmd_plus_args[0]);
+	if (!ft_strncmp(cmd_plus_args[0], "./minishell", ft_strlen("./minishell"))
+		&& cmd_plus_args[0][ft_strlen("./minishell")] == '\0')
+	// 	//&& ft_strlen(cmd_plus_args[0]) == ft_strlen("./minishell"))
 	{
-		if (execve(cmd_plus_args[0], cmd_plus_args, env) == -1)
+		// printf("test 2: %zu\n", ft_strlen(cmd_plus_args[0]));
+		ft_ms_executer(env);
+	}
+	// else
+	// {
+		// printf("test 3\n");
+		if (access(cmd_plus_args[0], F_OK | X_OK) == 0)
+		{
+			if (execve(cmd_plus_args[0], cmd_plus_args, env) == -1)
+				exit(127);
+		}
+		cmd_path = get_path(cmd_plus_args[0], env);
+		if (!cmd_path)
 			exit(127);
-	}
-	cmd_path = get_path(cmd_plus_args[0], env);
-	if (!cmd_path)
-		exit(127);
-	if (execve(cmd_path, cmd_plus_args, env) == -1)
-	{
-        free(cmd_path);
-		exit(127);
-	}
+		if (execve(cmd_path, cmd_plus_args, env) == -1)
+		{
+			free(cmd_path);
+			exit(127);
+		}
+	// }
 }

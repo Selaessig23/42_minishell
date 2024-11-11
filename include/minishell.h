@@ -74,7 +74,8 @@ typedef enum e_tokentype
 		// like argument1"withoutspaceafterquotes
 	S_Q_WORD_F = 28, // to define cases a single single quotation mark
 		//like argument1'withoutspaceafterquotes
-	WORD_CLEANED = 29 // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
+	WORD_CLEANED = 29, // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
+	HEREDOC_LIMITER = 30 //
 }	t_tokentype;
 
 /**
@@ -91,9 +92,8 @@ typedef struct s_lexer
 
 // cmd - Command and arguments
 typedef struct s_data {
-	// int	infile;// Input file descriptor (defaults to stdin)
-	// int	outfile;// Output file descriptor (defaults to stdout)
 	bool	in_heredoc;
+	bool	heredoc_expander;
 	bool	out_append;
 	int		fd_infile;
 	int		fd_outfile;
@@ -113,50 +113,39 @@ typedef struct s_big
 {
 	t_list	*cmdlist;
 	char	**env;
+	char	**binarypaths;
 	int		exit_code;
 	size_t	count_commds;
 	bool	exe;
 }					t_big;
 
-// main.c
-//
-// init.c
-// int		init_infile(t_envp *infos, char *infile);
-// void	init_compath(t_envp *infos, char **argv, char **paths);
-// void	init_outfile(t_envp *infos);
-// int		init_check(char **argv, char **paths, t_envp *infos);
-// inputcheck.c
-// char	*flagcheck(const char *argv);
-// int		bin_paths_init(char *command, char **paths, char **bin_paths);
-// exec.c
-// int		ft_execute(t_envp *infos, char *const envp[]);
-// void		ft_execute(t_envp *infos, char *const envp[]);
-// utils.c
-// size_t	ft_arrlen(char **arr_str);
-// void	ft_free(char **arr);
-// void	free_struct(t_envp *infos);
 //ascii_graohic.c
-void  ft_welcome(void);
+void	ft_welcome(void);
 // void	error_handling(int err, t_envp *i, int com_no);
 void	error_handling(int err);
 char	**ft_split_quotes(char const *s, char c);
-// extra_prompt.c
-int		is_open_pipe(char *clean_input);
-void	close_pipe(char **readline_input);
-char	*extra_prompt_reader(void);
-void	update_read_input(char **main, char *extra);
-//str_spaces_trimer.c
-void	trim_out_spaces(char **str);
 //error_handling.c
 void	error_handling(int err);
 //t_big_and_env_copy.c
 t_big	*init_t_big(char **envp);
 void	printf_env(t_big *big);
-void	free_t_big(t_big *big); // temp cleanup function
-//lexer.c
+void	free_t_big(t_big *big);
+char	**copy_envp(char **envp);
+//lexer/lexer.c
 char	**create_nodes(char **readline_input);
-//ft_split_quotes.c
+//lexer/lexer_cleaner.c
+void	ft_create_clean_input(char *dest, char *src);
+bool	single_operator_check(char c);
+bool	double_operator_check(char c, char k);
+//lexer/ft_split_quotes.c
 char	**ft_split_quotes(char const *s, char c);
+//lexer/extra_prompt.c
+int		is_open_pipe(char *clean_input);
+void	close_pipe(char **readline_input);
+char	*extra_prompt_reader(void);
+void	update_read_input(char **main, char *extra);
+//lexer/str_spaces_trimer.c
+void	trim_out_spaces(char **str);
 //tokenizer/tokenizer.c
 t_list	*ft_tokenizer(char **input_arr);
 //tokenizer/tokenizer_utils.c
@@ -166,17 +155,18 @@ int		ft_check_fstquote(char *content, char checker);
 t_tokentype	ft_creat_redir_token(char *input_string);
 t_tokentype	ft_creat_operators_token(char *input_string);
 //tokenizer/tokenizer_strings.c
-t_tokentype			ft_creat_str_token(char *input_string);
+t_tokentype	ft_creat_str_token(char *input_string);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
 void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big);
-//syntax.c
+//syntax analyzer/syntax.c
 int		ft_syntax(t_list *lexx);
-//syntaxerrors.c
+//syntax analyzer/syntaxerrors.c
 void	ft_syntax_errors(t_list *lexx, int errorno);
 //expander/expander.c
 void	ft_expa_precond(t_list *lexx, t_big *big);
+void	ft_var_checker(void	**token, t_big *big);
 //expander/expander_quotes.c
 void	ft_quote_checker(void **token);
 //expander/expander_env.c
@@ -195,17 +185,21 @@ int		ft_is_env_var(char c);
 void	ft_q_word_handling(void **token, t_big *big);
 
 // COMMANDS
-//commands/command_list.c
+//command_creation/command_list.c
 void	ft_commands(t_list *lexx, t_big **big);
 int		fd_out_creator(bool appender, char *filename);
-//int		fd_in_checker(bool heredoc, char *infile);
-int		fd_in_checker(t_data *comm_info, char *infile);
-//commands/command_utils.c
+//command_creation/file_creator.
+int		fd_in_checker(t_data *comm_info, char *infile, t_big **p_big);
+//command_creation/command_utils.c
 void	exe_fd_error(t_big *big, t_data *comm_info_next);
 t_data	*ft_pointer_next_command(t_list	*curr);
 void	ft_free_cl(t_list **ll);
-//commands/command_reader.c
+//command_creation/command_reader.c
 int		ft_executer(t_big *big, char *prompt);
+void	ft_builtin_executer(t_data *comm_info, t_big *big);
+int		ft_builtin_checker(t_data *comm_info);
+//command_creation/check_def_env_paths.c
+void	ft_check_defaultpath(char *binary, char **binarypaths);
 
 // BUILT-INS
 //builtins/builtin_check.c
@@ -226,11 +220,13 @@ int		ft_export(t_big *big, t_data *comm_info);
 void	ft_rmv_var_array(t_big *big, char *str_to_rmv);
 void	export_exit_status(t_big *big, char **cmd_arg);
 int		check_dash_in_var_name(char *argument);
+//builtins/export_sort.c
+void	ft_export_sort(t_big *big);
 //builtins/unset.c
 int		ft_unset(t_big *big, t_data *comm_info);
 size_t	count_till_char(char *str, char up_to);
 //heredoc.c
-int		heredoc_start(t_data *comm_info, char *limiter);
+int		heredoc_start(t_data *comm_info, char *limiter, t_big **p_big);
 void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
 void	ft_minishell_help(t_data *comm_info, t_big *big);
@@ -249,9 +245,14 @@ void	perror_and_exit(char *what_error, int *pipe_fd);
 //execution/execute_1.c
 void	call_cmd(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
+char	*get_all_folders(const char *env_var_path, char **env);
+char	*build_cmd_path(const char *folder, const char *cmd_name);
 //execution/execute_2.c
 int		w_waitpid(t_big *big);
+//execution/minishell_executer.c
+void	ft_ms_executer(char *env[]);
+void	ft_overwrite_shlvl(char ***p_env);
 // Utils
 //utils_strings/utils_string.c
-int		is_exact_string(const char *str_org,char *str_cmp);
+int		is_exact_string(const char *str_org, char *str_cmp);
 #endif

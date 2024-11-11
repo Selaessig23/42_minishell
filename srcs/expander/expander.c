@@ -18,7 +18,7 @@
  * @param token node of token-list that has to be cleaned from quotes
  * @param big structure which contains the environmental variable array
  */
-static void	ft_var_checker(void	**token, t_big *big)
+void	ft_var_checker(void	**token, t_big *big)
 {
 	t_lexer	*temp;
 	char	*value_new;

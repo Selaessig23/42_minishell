@@ -30,7 +30,7 @@ static void	handle_sigint_inter(int sig)
 
 	signalnum = 1;
 	ft_putstr_fd("^C", 2);
-	ioctl(0, TIOCSTI, "\n");
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
 /**
@@ -74,7 +74,8 @@ int	ft_terminal_config(bool rl_antes)
  * @param sigaction Structure describing the action to be taken when 
  * a signal arrives.
  * It consists of:
- * @param __sighandler_t sa_handler;
+ * @param __sighandler_t sa_handler;	write();
+
  * @param __sigset_t sa_mask - the signal blocking functions use 
  * a data structure (an array of integers) called a signal set 
  * to specify what signals are affected.

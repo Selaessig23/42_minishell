@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   export_1.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/10 20:48:39 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/10 20:48:39 by mpeshko          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 /**
@@ -140,7 +128,7 @@ static int	exp_check_var(char **env, char *arg)
  */
 // execution IF exe is true
 // if exe is false - checking for errors and exit assigns exit code
-int	ft_export(t_big *big, t_data *comm_info)
+int	ft_export_exe(t_big *big, t_data *comm_info)
 {
 	char	**cmd_arg;
 	size_t	a;
@@ -166,5 +154,31 @@ int	ft_export(t_big *big, t_data *comm_info)
 	}
 	big->exit_code = 0;
 	export_exit_status(big, cmd_arg);
+	return (0);
+}
+
+/**
+ * @brief function to check if the command has an argument or not
+ * if not --> simply sort env-vars in alphabetical order (ft_export_sort)
+ * if yes --> execute the export-function (ft_export_exe)
+ * 
+ * @param big struct with all command infos 
+ * that are required for executing builtins or 
+ * that have to be freed
+ * @param comm_info struct with all necessary infos to 
+ * execute a single command
+ */
+int	ft_export(t_big *big, t_data *comm_info)
+{
+	char	**cmd_arg;
+
+	cmd_arg = comm_info->cmd;
+	if (cmd_arg && *cmd_arg
+		&& !ft_strncmp (cmd_arg[0], "export", ft_strlen("export"))
+		&& ft_strlen("export") == ft_strlen(cmd_arg[0])
+		&& ft_arrlen(cmd_arg) == 1)
+		ft_export_sort(big);
+	else if (cmd_arg && *cmd_arg)
+		ft_export_exe(big, comm_info);
 	return (0);
 }

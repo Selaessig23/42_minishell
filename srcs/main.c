@@ -1,6 +1,30 @@
 #include "minishell.h"
 
 
+/**
+ * @brief checks for empty input (only tabs or spaces)
+ * to ignore it in history and return a new prompt
+ * 
+ * @param input the readline input
+ */
+int	ft_spacetabchecker(char *input)
+{
+	while (*input)
+	{
+		if ((*input >= 9 && *input <= 11)
+			|| *input == 32)
+			input += 1;
+		else
+			return (0);
+	}
+	return (1);
+}
+
+// **Note for Markus. 12 Aug** I moved it up "if (argc != 1) error_handling(1);"
+// The reason is that is generally common to start by checking for invalid input
+// or error conditions first. In the context of command-line arguments, this
+// often means checking for incorrect argument counts before proceeding with
+// the valid case. Please look at it, and say if it works for you. Thanks!
 int	signalnum = 0;
 
 /**
@@ -52,7 +76,7 @@ int	main(int argc, char **argv, char **envp)
 				free(prompt);
 				exit(EXIT_FAILURE);
 			}
-			else if (!*input)
+			else if (!*input || ft_spacetabchecker(input))
 			{
 				free(input);
 				exitcode = 0;
@@ -83,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 						ft_free_ll(&lexx);
 						ft_executer(big, prompt);
 					}
-					else if (ft_syntax(lexx))
+					else
 					{
 						big->exit_code = 2;
 						ft_free_ll(&lexx);
