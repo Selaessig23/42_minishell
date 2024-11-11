@@ -110,6 +110,9 @@ static int	child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
 {
 	ft_handle_signals_childs();
 	close(fd[0]);
+
+	//ft_dprintf("pipes fd[0] (%d) is closed in CHILD\n", fd[0]);
+
 	if (c_i_next == NULL)
 	{
 		// fprintf(stderr, "child. it's the last command\n");
@@ -126,9 +129,10 @@ static int	child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
 		}
 		if (comm_info->fd_outfile > 1)
 		{
-			// fprintf(stderr, "output to file\n");
+			ft_dprintf("output to file\n");
 			dup2(comm_info->fd_outfile, STDOUT_FILENO);
 			close(comm_info->fd_outfile);
+			ft_dprintf("comm_info->fd_outfile (%d) is closed IN CHILD\n", comm_info->fd_outfile);
 		}
 		if (comm_info->fd_infile > 0)
 		{
@@ -138,14 +142,15 @@ static int	child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
 			// printf("fd after dup: %i\n", STDIN_FILENO);
 			close(comm_info->fd_infile);
 		}
+		close(fd[1]);
 	}
 	else if (c_i_next != NULL)
 	{
-		// fprintf(stderr, "child. it's not the last command\n");
 		if (comm_info->fd_infile > 0)
 		{
 			dup2(comm_info->fd_infile, STDIN_FILENO);
 			close(comm_info->fd_infile);
+			ft_dprintf("comm_info->fd_infile (%d) is closed IN CHILD\n", comm_info->fd_infile);
 		}
 		if (comm_info->fd_outfile == 1)
 			dup2(fd[1], STDOUT_FILENO);
@@ -155,10 +160,22 @@ static int	child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
 	if (check_builtin_other(comm_info))
 	{
 		exe_other_builtin(comm_info, big);
+		/// new new new!!!!!!!!!!!!!!!!
+		close(fd[1]);
 		exit(EXIT_SUCCESS);
 	}
 	else
 		call_cmd(comm_info->cmd, big->env);
+	///// NEW NEW NEW !!!!!!! If there was no execution... 
+	// Cleanup fds.
+	if (comm_info->fd_outfile > 2)
+		close(comm_info->fd_outfile);
+	close(fd[1]);
+
+	//ft_dprintf("pipes fd[1] %d is closed IN CHILD\n", fd[1]);
+
+	/// NEW NEW NEW part of call_cmd
+	exit(127);
 	return (0);
 }
 
@@ -182,6 +199,10 @@ int	execute(t_data *comm_info, t_data *c_i_next, t_big *big)
 	if (pipe(fd) == -1)
 		w_errpipe_close(comm_info->fd_infile);
 	signal(SIGINT, SIG_IGN);
+
+	//printf("fd->infile is %d\n", comm_info->fd_infile);
+	//printf("fd->outfile is %d\n", comm_info->fd_outfile);
+
 	pid = fork();
 	if (pid == -1)
 		w_errfork_close(comm_info->fd_infile, fd);
@@ -192,16 +213,26 @@ int	execute(t_data *comm_info, t_data *c_i_next, t_big *big)
 	}
 	else if (pid != 0)
 	{
-		// if (!ft_strncmp(comm_info->cmd[0], "./minishell", ft_strlen("./minishell"))
-	 	// && comm_info->cmd[0][ft_strlen("./minishell")] == '\0')
-		// 	waitpid(pid, 0, 0);
 		close(fd[1]);
+
+		printf("pipes fd[1] (fd %d) is closed IN PARENT\n", fd[1]);
+
 		if (c_i_next != NULL)
 		{
-			if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
+			//// NEW NEW NEW !!!!!!!!!!!!!!!!!!!!!!!!!
+			if (comm_info->fd_outfile > 1)
 			{
-				// ft_dprintf("Sending pipe_fd to next pipe...\n");
-				c_i_next->fd_infile = fd[0];
+				close(fd[0]);
+				//printf("pipes fd[0] (fd %d) is closed IN PARENT\n", fd[0]);
+			}
+			else if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
+			{
+				ft_dprintf("Sending pipe_fd to next pipe...\n");
+				//c_i_next->fd_infile = fd[0];  // old
+				/// NEW NEW NEW !!!!
+				dup2(fd[0], c_i_next->fd_infile);
+				close(fd[0]);
+				printf("pipes fd[0] (fd %d) is closed IN PARENT\n", fd[0]);
 			}
 			else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
 			{
@@ -210,7 +241,10 @@ int	execute(t_data *comm_info, t_data *c_i_next, t_big *big)
 			}
 		}
 		else if (c_i_next == NULL)
+		{
+			//printf("pipes fd[0] (fd %d) is closed in PARENT\n", fd[0]);
 			close(fd[0]);
+		}
 	}
 	comm_info->id = pid;
 	return (0);

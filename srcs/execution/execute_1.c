@@ -188,15 +188,18 @@ void	call_cmd(char **cmd_plus_args, char *env[])
 		if (access(cmd_plus_args[0], F_OK | X_OK) == 0)
 		{
 			if (execve(cmd_plus_args[0], cmd_plus_args, env) == -1)
-				exit(127);
+				return ;
+				//exit(127);
 		}
 		cmd_path = get_path(cmd_plus_args[0], env);
 		if (!cmd_path)
-			exit(127);
+			return ;
+			//exit(127);
 		if (execve(cmd_path, cmd_plus_args, env) == -1)
 		{
 			free(cmd_path);
-			exit(127);
+			return ;
+			//exit(127);
 		}
 	// }
 }
