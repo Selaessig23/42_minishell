@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_cleaner.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 10:39:59 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/12 10:40:02 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
  * DESRIPTION:
- * in this file the input cleaning is organised by checking for
- * specific single-char-operators and double-char-operators
+ * in this file the input cleaning is organised by writing 
+ * to a new cleaned_input-string adding spaces before and after 
+ * single-char-operators and double-char-operators
+ * (if not within quotes)
  */
 
 /**

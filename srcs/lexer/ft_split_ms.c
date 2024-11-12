@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split_ms.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 10:36:27 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/12 10:36:32 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -53,8 +64,7 @@ static char	**ft_strcut(char **dest, const char *s, char c, size_t i)
 	{
 		if (s[i] == '\"' || s[i] == '\'')
 			i = ft_quo_handling(s, i);
-		if (s[i] == c || is_tab(s[i])
-			|| ((i == ft_strlen(s) - 1) && s[i] != c))
+		if (s[i] == c || is_tab(s[i]) || ((i == ft_strlen(s) - 1) && s[i] != c))
 		{
 			if ((i == ft_strlen(s) - 1) && s[i] != c)
 				dest[a] = ft_substr(s, p, (i + 1 - p));
