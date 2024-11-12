@@ -58,24 +58,16 @@ typedef enum e_tokentype
 	DOUBLE_PIPE = 12, // ||
 	LOG_NEG = 13, //Logical Negation (!)
 	WORD = 20,
-	D_QUOTED = 21, //double quoted word
-	S_QUOTED = 22, //single quoted word
-	D_QUOTED_F = 23, //to define cases without closing quotation mark
-		// like "argument1withoutquotend
-	S_QUOTED_F = 24, //to define cases without closing quotation mark
-		// like 'argument1withoutquotend
-	D_Q_WORD = 25, //to define cases like
-		//"argument1"withoutspaceafterquotes or
-		// argument1"withoutspace"afterquotes...
-	S_Q_WORD = 26, // to define cases like
-		//'argument1'withoutspaceafterquotes or
-		// argument1'withoutspace'afterquotes...
-	D_Q_WORD_F = 27, //to define cases with a single double quotation mark
-		// like argument1"withoutspaceafterquotes
-	S_Q_WORD_F = 28, // to define cases a single single quotation mark
-		//like argument1'withoutspaceafterquotes
+	D_QUOTED = 21,
+	S_QUOTED = 22,
+	D_QUOTED_F = 23,
+	S_QUOTED_F = 24,
+	D_Q_WORD = 25,
+	S_Q_WORD = 26,
+	D_Q_WORD_F = 27,
+	S_Q_WORD_F = 28,
 	WORD_CLEANED = 29, // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
-	HEREDOC_LIMITER = 30 //
+	HEREDOC_LIMITER = 30
 }	t_tokentype;
 
 /**
@@ -163,6 +155,8 @@ t_tokentype	ft_creat_redir_token(char *input_string);
 t_tokentype	ft_creat_operators_token(char *input_string);
 //tokenizer/tokenizer_strings.c
 t_tokentype	ft_creat_str_token(char *input_string);
+//tokenizer/tokenizer_qwords.c
+void	ft_qword_quotecheck(char *input_string, t_tokentype *token_old);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);

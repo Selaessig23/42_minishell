@@ -25,7 +25,7 @@ void	ft_syntax_errors(t_list *lexx, int errorno)
 	}
 	else if (errorno == 3)
 	{
-		ft_putstr_fd("minishell: unclosed quotes cannot be interpreted in this version: `", 2);
+		ft_putstr_fd("minishell: unclosed quotes cannot be interpreted in this shell: `", 2);
 		ft_putstr_fd(((t_lexer *)lexx->content)->value, 2);
 		ft_putstr_fd("\'\n", 2);
 		// ft_printf("minishell: unclosed quotes cannot be interpreted "

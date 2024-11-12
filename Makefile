@@ -25,6 +25,7 @@ SRCS =	main.c \
 		tokenizer/tokenizer_utils.c \
 		tokenizer/tokenizer_strings.c \
 		tokenizer/tokenizer_operators.c \
+		tokenizer/tokenizer_qwords.c \
 		syntax_analyzer/syntax.c \
 		syntax_analyzer/syntaxerrors.c \
 		testprints.c \
