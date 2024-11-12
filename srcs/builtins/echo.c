@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:50:26 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/11 16:59:30 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:58:19 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_echo(t_data *comm_info, t_big *big)
 	}
 	if (no_nl == 0)
 		ft_putchar_fd('\n', fd);
-	if (fd > 2)
-		close(fd);
+	// if (fd > 2)
+	// 	close(fd);
 	big->exit_code = 0;
 }

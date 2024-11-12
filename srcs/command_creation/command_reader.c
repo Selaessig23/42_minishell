@@ -164,16 +164,14 @@ int ft_executer(t_big *big, char *prompt)
 				exe_fd_error(big, comm_info_next);
 			else if (check_builtin_parent(comm_info))
 			{
-				// !!! check this if statement. I'm not sure we need it.
-				// if (comm_info_next && comm_info_next->fd_infile == 0)
-				// 	comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
+				if (comm_info_next && comm_info_next->fd_infile == 0)
+					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
 				exe_parent_builtin(comm_info, big, prompt);
 			}
-			else if (big->count_commds == comm_info->commands_no && check_builtin_other(comm_info))
+			else if (big->count_commds == 1 && check_builtin_other(comm_info))
 				exe_other_builtin(comm_info, big);
 			else
 			{
-				ft_dprintf("execute\n");
 				if (!check_cmd(comm_info->cmd, big->env, big->binarypaths))
 					execute(comm_info, comm_info_next, big);
 				else
@@ -185,18 +183,12 @@ int ft_executer(t_big *big, char *prompt)
 		if (comm_info->in_heredoc == true)
 			delete_heredoc(comm_info);
 		if (comm_info->fd_outfile > 2)
-		{
-			ft_dprintf("comm_info->fd_outfile (%d) is closed PARENT\n", comm_info->fd_outfile);
 			close(comm_info->fd_outfile);
-		}
 		curr = curr->next;
 	}
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
-
-
-	ft_dprintf("last line of ft_executer\n");
 	return (0);
 }

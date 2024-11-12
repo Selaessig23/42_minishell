@@ -46,7 +46,7 @@ void	ft_print_env(t_data *comm_info, t_big *big)
 		ft_putchar_fd('\n', fd);
 		env_list += 1;
 	}
-	if (fd > 2)
-		close(fd);
+	// if (fd > 2)
+	// 	close(fd);
 	big->exit_code = 0;
 }

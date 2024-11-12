@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 17:13:29 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/11 17:17:55 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:58:25 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_print_pwd(t_big *big, t_data *comm_info)
 	fd = comm_info->fd_outfile;
 	if (fd >= 0)
 		ft_get_env_pwd(fd);
-	if (fd > 2)
-		close(fd);
+	// if (fd > 2)
+	// 	close(fd);
 	big->exit_code = 0;
 }
