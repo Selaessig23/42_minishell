@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_env_yes.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 14:36:44 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/12 14:36:46 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -33,9 +45,9 @@ static int	ft_add_env(char *value_new, char *env)
 	return (j);
 }
 
-
 /**
- * @brief function that adds required envp-variable to value
+ * @brief function that adds required envp-variable to a new value 
+ * which wil serve as new content for a node of the lexx linked list
  * 
  * @param value_old	the value of the command line input token that has
  * to be adapted

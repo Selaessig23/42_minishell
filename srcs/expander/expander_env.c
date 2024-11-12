@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_env.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 14:48:19 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/12 14:48:22 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -8,44 +20,36 @@
  */
 
 /**
- * @brief function to cut (at '=') the varnames of env out of env
+ * @brief function to cut (at '=') the variable values of env to
+ * only use the varnames and return this new array of string
  * 
- * find ft_is_env_var in expander_utils.c
+ * function ft_is_env_var is located in expander_utils.c
  * 
  * @param env the array with all environment variables that have to be cutted
  * to var_name only
 */
-static char **ft_env_varname_creator(char **env)
+static char	**ft_env_varname_creator(char **env)
 {
 	char	**env_var_names;
 	char	**env_var_names_save;
-	char 	*env_value;
+	char	*env_value;
 	int		i;
-	// int		j;
 
 	i = 0;
-	// j = 0;
 	env_var_names = ft_calloc((ft_arrlen(env) + 1), sizeof(char *));
 	env_var_names_save = env_var_names;
 	while (env && *env)
 	{
 		i = 0;
-		// j = 0;
 		env_value = *env;
-		// printf("env_value: %s\n", env_value);
-		while(env_value[i] && ft_is_env_var(env_value[i]))
-		{
-			// (*env) += 1;
+		while (env_value[i] && ft_is_env_var(env_value[i]))
 			i += 1;
-		}
-		// printf("char_check 1: %c\n", **env);
 		if (env_value[i] == '=')
 		{
 			*env_var_names = ft_substr(*env, 0, i);
 			if (!*env_var_names)
 				error_handling(2);
 		}
-		// printf("env_var_name: %s\n", *env_var_names);
 		env_var_names += 1;
 		env += 1;
 	}
@@ -54,7 +58,7 @@ static char **ft_env_varname_creator(char **env)
 }
 
 /**
- * @brief function that checks if the &keywords is part of envp
+ * @brief function that checks if the &keywords (var_name) is part of envp
  * 
  * @param value_old the value of the command line input token that has
  * to be adapted
@@ -70,10 +74,8 @@ static char	*ft_var_envchecker(char *value_old, char *var_name, char **env)
 	if (!env_var_names)
 		error_handling(2);
 	env_var_names_save = env_var_names;
-	// printf("env variable name: %s\nlength: %zu\n", (var_name + 1), ft_strlen(var_name + 1));
 	while (env_var_names && *env_var_names)
 	{
-		// printf("test 2A: %s\n", *env_var_names);
 		if (!ft_strncmp(*env_var_names, 
 				(var_name + 1), ft_strlen(*env_var_names))
 			&& (ft_strlen(*env_var_names) == ft_strlen (var_name + 1)))
@@ -85,7 +87,6 @@ static char	*ft_var_envchecker(char *value_old, char *var_name, char **env)
 		env_var_names++;
 		env++;
 	}
-	// printf("test2B\n");
 	ft_free(env_var_names_save);
 	return (delete_varname_from_value(value_old, var_name));
 }
