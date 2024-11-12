@@ -1,7 +1,5 @@
 #include "minishell.h"
-#include <sys/ioctl.h>
-
-// F_OK -- test for file existence. 
+#include <sys/ioctl.h>/// F_OK -- test for file existence. 
 static int	fd_here_creator(char *filename, bool wr)
 {
 	int		fd;
@@ -89,7 +87,7 @@ static int	here_read_helper(int write_end, char *lim, t_big **p_big, t_data *com
 		str = readline("> ");
 		if (!str)
 		{
-			ft_putstr_fd("bash: warning: here-document at line 1 ", 2);
+			ft_putstr_fd("bash: warning: here-document ", 2);
 			ft_putstr_fd("delimited by \"end-of-file (wanted `", 2);
 			ft_putstr_fd(lim, 2);
 			ft_putstr_fd("\')\n", 2);
@@ -151,6 +149,10 @@ int	heredoc_start(t_data *comm_info, char *limiter, t_big **p_big)
 	char	*cmd_no_str;
 
 	cmd_no_str = ft_itoa(comm_info->commands_no);
+	name = ft_strjoin(".heredoc_", cmd_no_str);
+	free(cmd_no_str);
+	fd = here_read(name, limiter);
+	here_read_helper(fd, limiter, p_big, comm_info);
 	name = ft_strjoin(".heredoc_", cmd_no_str);
 	free(cmd_no_str);
 	fd = here_read(name, limiter);

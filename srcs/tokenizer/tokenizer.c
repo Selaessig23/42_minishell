@@ -78,7 +78,6 @@ char	*ft_get_quotendpointer(char *input_string, t_tokentype token, bool returner
  */
 void	ft_qword_special(char *input_string, t_tokentype *token_old)
 {
-	// t_tokentype	token_new;
 	int		count_squote;
 	int		count_dquote;
 	char	*input_string_copy;
@@ -88,11 +87,9 @@ void	ft_qword_special(char *input_string, t_tokentype *token_old)
 	count_dquote = 0;
 	i = 0;
 	input_string_copy = input_string;
-	//test
-	while (*input_string_copy && (ft_get_quotendpointer(input_string_copy, 0, true) != NULL))
+	while (*input_string_copy 
+		&& (ft_get_quotendpointer(input_string_copy, 0, true) != NULL))
 		input_string_copy = ft_get_quotendpointer(input_string_copy, 0, 0);
-	//testend
-	// printf("quotepointer final: %s\n", input_string_copy);
 	while (input_string_copy[i])
 	{
 		if (input_string_copy[i] == '\'')
@@ -101,28 +98,11 @@ void	ft_qword_special(char *input_string, t_tokentype *token_old)
 			count_dquote += 1;
 		i += 1;
 	}
-	//'hello'washeht"""'
-	//'hello'washeht"dsds""hyuhu
-	// printf("test count_squote: %i\ntest count_dquote: %i\n", count_squote, count_dquote);
-	if (count_squote != 0 && (count_squote % 2 != 0) && (!ft_check_fstquote(input_string_copy, '\''))
-		//get pointer to part of string after second "\'" if token == 26 or
-		//get pointer to part of string after second "\"" if token == 25
-		// && !ft_check_fstquote(ft_get_quotendpointer(input_string_copy, *token_old), '\'')
-	)
+	if (count_squote != 0 && (count_squote % 2 != 0) 
+		&& (!ft_check_fstquote(input_string_copy, '\'')))
 		*token_old = 28;
-	else if (count_dquote != 0 && (count_dquote % 2 != 0)
-		//get pointer to part of string after second "\'" if token == 26 or
-		//get pointer to part of string after second "\"" if token == 25
-		// && !ft_check_fstquote(pointer, '\"')
-		// && !ft_check_fstquote(ft_get_quotendpointer(input_string_copy, *token_old), '\"')
-	)
-	{
+	else if (count_dquote != 0 && (count_dquote % 2 != 0))
 		*token_old = 27;
-		// printf("test2\n");
-	}	
-	// else
-	// 	token_new = *token_old;
-	// token_old = &token_new;
 }
 
 /**
