@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_pid.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 14:38:07 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/12 14:38:10 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -26,7 +38,8 @@ char	*ft_pid_expander(((char *)curr->content)->value)
 			value++;
 			if (*value == '$')
 				ft_pid_extender
-			else if (*value //cut until first occurence of tab or space and compare to env)
+			else if (*value 
+			//cut until first occurence of tab or space and compare to env)
 		}
 	}
 }

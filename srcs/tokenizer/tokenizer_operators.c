@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer_operators.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 11:32:53 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/12 11:33:29 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
  * DESRIPTION: 
  * in this file the cleaned input and by delimiters separated array of strings
- * will be checked for all kinds of operator defintions (tokens < 20). 
+ * will be checked for all kinds of operator definitions (tokens < 20). 
  * On basis of that, specific tokens will be added. 
  */
 

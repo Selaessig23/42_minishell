@@ -1,11 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 09:42:56 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/12 10:07:09 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
 /**
  * DESRIPTION:
- * in this file the lexer-part of creating the minishell is organised
- * 1st it searches for operators (except those in quotes)
+ * in this file the lexing-part of creating the minishell is organised
+ * 1st it checks for open pipes (->extra prompt)
+ * 2nd it searches for operators (except those in quotes)
  * and adds spaces before and after
- * 2nd it searches for spaces and tabs (except those in quotes)
- * and splits the input string from readline into an array of strings
+ * 3rd it splits the input string from readline into an array of strings
  */
 
 /**
@@ -73,7 +86,6 @@ static int	ft_count(char *src)
  * as spaces and tabs will be deleted by split function afterwards anyhow)
  * 
  * @param src the source string to clean
- * @return src in case there are no operators, otherwise dest_original
  */
 static char	*ft_clean_input(char *src)
 {
@@ -93,6 +105,30 @@ static char	*ft_clean_input(char *src)
 	ft_create_clean_input(dest, src);
 	trim_out_spaces(&dest);
 	return (dest);
+}
+
+/**
+ * @brief function that organises the splitting of
+ * command line input (=string) to an array of strings,
+ * separators are tabs, spaces
+ * 
+ * @param readline_input the genuine command line input string* 
+ * @param clean_input the cleaned (prepared) command line input string
+ */
+static char	**ft_split_rlinput(char **readline_input, char *clean_input)
+{
+	char	**input_arr;
+
+	input_arr = ft_split_quotes(clean_input, ' ');
+	if (!input_arr)
+	{
+		free(clean_input);
+		clean_input = NULL;
+		ft_free(readline_input);
+		readline_input = NULL;
+		error_handling(2);
+	}
+	return (input_arr);
 }
 
 /**
@@ -118,13 +154,9 @@ char	**create_nodes(char **readline_input)
 {
 	char	*clean_input;
 	char	**input_arr;
-	// t_list	*lexx;
 
-	// lexx = NULL;
 	clean_input = NULL;
 	input_arr = NULL;
-	//// if (extra_prompt == NULL)
-	//       return (NULL);
 	while (is_open_pipe(*readline_input))
 	{
 		if (signalnum == 1)
@@ -140,15 +172,8 @@ char	**create_nodes(char **readline_input)
 		ft_free(readline_input);
 		error_handling(2);
 	}
-	input_arr = ft_split_quotes(clean_input, ' ');
+	input_arr = ft_split_rlinput(readline_input, clean_input);
 	free(clean_input);
 	clean_input = NULL;
-	if (!input_arr)
-	{
-		// TODO: error_handling;
-		exit(EXIT_FAILURE);
-	}
-	// lexx = ft_tokenizer(input_arr);
-	// return (lexx);
 	return (input_arr);
 }

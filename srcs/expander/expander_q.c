@@ -69,18 +69,15 @@ char	*ft_listtostr(t_list *q_word_list)
 	int		count_str;
 	int		j;
 
-	// printf("testA\n");
 	curr = q_word_list;
 	count_str = ft_count_str_in_ll(q_word_list);
 	j = 0;
-	// printf("count_str: %i\n", count_str);
 	str = ft_calloc(((count_str) + 1), sizeof(char));
 	curr = q_word_list;
 	while (curr != NULL)
 	{
 		j = ft_strlen(str);
 		ft_strcpy(&str[j], ((t_lexer *)curr->content)->value);
-		// str = ft_strcpy(str, ((t_lexer *)curr->content)->value);
 		curr = curr->next;
 	}
 	str[count_str] = '\0';
@@ -147,7 +144,6 @@ void	ft_q_arr_creator(char *value_old, char ***p_value_new)
 		else
 			ft_q_arrcreat_helper(&j, &i, value_old, 'X');
 		*value_new = ft_substr(value_old, j, ((i + 1) - j));
-		// printf("value_new = %s\n", *value_new);
 		value_new += 1;
 		if (value_old[i])
 			i += 1;
@@ -165,7 +161,7 @@ void	ft_q_arr_creator(char *value_old, char ***p_value_new)
  * @param sign the sign to check for
 */ 
 static void	ft_q_count_helper(int *counter, int *i,
-	char *value_old, char sign)
+				char *value_old, char sign)
 {
 	*(counter) += 1;
 	*i += 1;
@@ -190,20 +186,12 @@ int	ft_q_counter(char *value_old)
 	i = 0;
 	while (value_old[i])
 	{
-		// printf("string: %s\n", &value_old[i]);
 		if (value_old[i] == '\'')
-		{
-			// printf("case A\n");
 			ft_q_count_helper(&counter, &i, value_old, '\'');
-		}
 		else if (value_old[i] == '\"')
-		{
-			// printf("case B\n");
 			ft_q_count_helper(&counter, &i, value_old, '\"');
-		}
 		else
 		{
-			// printf("case C\n");
 			counter += 1;
 			if (value_old[i + 1] 
 				&& !(value_old[i + 1] == '\'' || value_old[i + 1] == '\"'))
@@ -215,7 +203,6 @@ int	ft_q_counter(char *value_old)
 		if (value_old[i])
 			i += 1;
 	}
-	// printf("counter says: %i\n", counter);
 	return (counter);
 }
 
@@ -242,22 +229,15 @@ void	ft_q_word_handling(void **token, t_big *big)
 	char	**help_arr;
 	t_list	*q_word_list;
 
-	// printf("test1\n");
 	temp = *token;
 	value_old = temp->value;
 	help_arr = ft_calloc((ft_q_counter(value_old) + 1), sizeof(char *));
-	// printf("test2\n");
 	ft_q_arr_creator(value_old, &help_arr);
-	// printf("test3\n");
 	q_word_list = ft_tokenizer(help_arr);
 	ft_free(help_arr);
-	// printf("test4\n");
 	ft_expa_precond(q_word_list, big);
-	// printf("test5\n");
 	value_new = ft_listtostr(q_word_list);
-	// printf("test6\n");
 	ft_free_ll(&q_word_list);
-	// printf("test7\n");
 	temp->value = value_new;
 	temp->token = 29;
 	free(value_old);

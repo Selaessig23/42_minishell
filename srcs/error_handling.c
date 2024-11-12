@@ -38,12 +38,8 @@ void	error_handling(int err)
 	}
 	else if (err == 3)
 	{
-		ft_putstr_fd("zsh: ", 2);
-//		ft_printf("command not found: %s\n", i->commands[com_no][0]);
-//		free_struct(i);
 		exit(127);
 	}
 	perror("Error");
 	exit(EXIT_FAILURE);
 }
-

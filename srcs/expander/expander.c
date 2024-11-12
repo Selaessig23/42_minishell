@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 13:48:05 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/12 13:48:12 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
  * DESRIPTION: 
- * in this file the cleaning and extension of specific strings will
- * be organised
+ * in this file the cleaning (deletion) and extension of parts of 
+ * specific tokens of type strings (>= 20) is organised
  */
 
 /**
@@ -15,20 +27,26 @@
  * treated and therefor not seen as special character
  * except $env and $?
  * 
- * @param token node of token-list that has to be cleaned from quotes
+ * it would have been nicer to dereference node_content by using an
+ * additional variable, like
+ * t_lexer	*temp;
+ * temp = *node_content;
+ * value_old = temp->value;
+ * temp->value = value_new;
+ * But there are not enough lines left according to norminette
+ * 
+ * @param node_content node of token-list that has to be cleaned from quotes
  * @param big structure which contains the environmental variable array
  */
-void	ft_var_checker(void	**token, t_big *big)
+void	ft_var_checker(void	**node_content, t_big *big)
 {
-	t_lexer	*temp;
 	char	*value_new;
 	char	*value_old;
 	int		i;
 
 	i = 0;
-	temp = *token;
 	value_new = NULL;
-	value_old = temp->value;
+	value_old = ((t_lexer *)(*node_content))->value;
 	while (value_old[i])
 	{
 		if (value_old[i + 1] && value_old[i] == '$'
@@ -37,15 +55,11 @@ void	ft_var_checker(void	**token, t_big *big)
 			if (value_old[i + 1] == '?')
 				value_new = ft_exit_expander(value_old, big->exit_code);
 			else
-			{
 				value_new = ft_var_creator(value_old, big->env);
-				if (!*value_new)
-					big->exit_code = 0;
-			}
-			temp->value = value_new;
+			((t_lexer *)(*node_content))->value = value_new;
 			free (value_old);
 			value_old = NULL;
-			value_old = temp->value;
+			value_old = ((t_lexer *)(*node_content))->value;
 		}
 		if (value_old[i])
 			i += 1;
@@ -56,7 +70,7 @@ void	ft_var_checker(void	**token, t_big *big)
  * @brief function that organises the expansion and reduction
  * of command line input by checking for specific string tokens
  * 
- * MISSING, if we want to handle UNCLOSED QUOTES: delete them
+ * MISSING, if shell should handle UNCLOSED QUOTES: delete them
  * 
  * @param lexx linked list with cleaned command line input and tokens
  * @param big structure which contains the environmental variable array
