@@ -14,9 +14,11 @@ RLFLAG = -lreadline -lncurses -ltinfo
 SRCS =	main.c \
 		ascii_graphic.c \
 		error_handling.c \
-		lexer/ft_split_quotes.c \
+		lexer/ft_split_ms.c \
+		lexer/ft_split_specials.c \
 		lexer/lexer.c \
 		lexer/lexer_cleaner.c \
+		lexer/lexer_op_check.c \
 		lexer/extra_prompt.c \
 		lexer/str_spaces_trimer.c \
 		tokenizer/tokenizer.c \

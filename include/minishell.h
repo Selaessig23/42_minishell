@@ -38,7 +38,7 @@ extern int	signalnum;
 
 // it is "a good practice" to use a global variable for environment 
 // instead of picking it in the main
-// but it is not allowd to use global variables
+// but according t subject it is not allowed to use global variables
 // extern char	**environ;
 
 // to define all different tokens
@@ -131,14 +131,21 @@ t_big	*init_t_big(char **envp);
 void	printf_env(t_big *big);
 void	free_t_big(t_big *big);
 char	**copy_envp(char **envp);
+
+// PARSING - LEXICAL ANALYSIS
 //lexer/lexer.c
 char	**create_nodes(char **readline_input);
 //lexer/lexer_cleaner.c
 void	ft_create_clean_input(char *dest, char *src);
+//lexer/lexer_op_check.c
 bool	single_operator_check(char c);
 bool	double_operator_check(char c, char k);
-//lexer/ft_split_quotes.c
+//lexer/ft_split_ms.c
 char	**ft_split_quotes(char const *s, char c);
+//lexer/ft_split_specials.c
+int		ft_space_tab_jump(const char *s, char c, int i);
+int		ft_quo_handling(const char *s, int i);
+int		is_tab(char c);
 //lexer/extra_prompt.c
 int		is_open_pipe(char *clean_input);
 void	close_pipe(char **readline_input);
@@ -160,10 +167,14 @@ t_tokentype	ft_creat_str_token(char *input_string);
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
 void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big);
+
+// PARSING - SYNTAX ANALYSIS
 //syntax analyzer/syntax.c
 int		ft_syntax(t_list *lexx);
 //syntax analyzer/syntaxerrors.c
 void	ft_syntax_errors(t_list *lexx, int errorno);
+
+// PARSING - EXPANDER
 //expander/expander.c
 void	ft_expa_precond(t_list *lexx, t_big *big);
 void	ft_var_checker(void	**token, t_big *big);
@@ -184,7 +195,7 @@ int		ft_is_env_var(char c);
 //expander/expander_q.c
 void	ft_q_word_handling(void **token, t_big *big);
 
-// COMMANDS
+// COMMAND LIST CREATION AND READING
 //command_creation/command_list.c
 void	ft_commands(t_list *lexx, t_big **big);
 int		fd_out_creator(bool appender, char *filename);

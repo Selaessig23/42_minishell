@@ -7,33 +7,6 @@
  */
 
 /**
- * @brief function that checks for double operators
- *
- * @param c the first char to search in
- * @param k the second char to search in
- */
-bool	double_operator_check(char c, char k)
-{
-	if ((c == '<' && k == '<') || (c == '>' && k == '>'))
-		return (1);
-	else
-		return (0);
-}
-
-/**
- * @brief function that checks for single operators
- *
- * @param c the char to search in
- */
-bool	single_operator_check(char c)
-{
-	if ((c == '<') || (c == '>') || (c == '|') || (c == ';'))
-		return (1);
-	else
-		return (0);
-}
-
-/**
  * @brief a helper function for ft_create_clean_input
  * it loops through not necessary parts of a string
  * (within quotes)
