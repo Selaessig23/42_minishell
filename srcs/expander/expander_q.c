@@ -1,88 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_q.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/13 13:54:45 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/13 13:54:52 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
  * DESRIPTION: 
- * in this file the q_words-tokens will be cleaned and extended with
- * special content if there is $ in parts without quotes or within double-quotes, 
- * nothing will be extended if in parts with single-quotes. 
+ * in this file the q_words-tokens will be cleaned 
+ * and extended with special content if there is $ in parts 
+ * without quotes or within double-quotes, 
+ * nothing will be extended if $ in parts with single-quotes. 
  * q_words-tokens are special in that kind, that they they can consist of
  * several types of strings (with single quotes / double quotes / no quotes) 
  * within one large string. depending on the kind
  * of quotation mark, $-variables have to be considered 
  * (if in double quote part or in parts without a quote) 
- * or not (if in single quote part), e. g. hello"this"isa'$single'thisa"$double"
+ * or not (if in single quote part), 
+ * e. g. hello"this"isa'$single'thisa"$double"
  */
-
-/**
- * @brief function to copy from src to dest
- * 
- * @param dest the string to copy in
- * @param src the string to copy from
- */
-char	*ft_strcpy(char *dest, const char *src)
-{
-	if (!src)
-		return (NULL);
-	while (*src)
-	{
-		*dest = *src;
-		dest += 1;
-		src += 1;
-	}
-	return (dest);
-}
-
-/**
- * @brief helper function for ft_listtostr to count the
- * size of each string of the linked list
- * 
- * @param q_word_list the linked list in wich the strings of 
- * (void) content have to be counted
- */
-size_t	ft_count_str_in_ll(t_list *q_word_list)
-{
-	t_list	*curr;
-	char	*str_to_count;
-	size_t	count_str;
-
-	curr = q_word_list;
-	count_str = 0;
-	while (curr != NULL)
-	{
-		str_to_count = ((t_lexer *)curr->content)->value;
-		count_str += ft_strlen(str_to_count);
-		curr = curr->next;
-	}
-	return (count_str);
-}
-
-/**
- * @brief function that transforms an array of strings to a 
- * single string
- *  
- * @param arr the array of strings to read from
- */
-char	*ft_listtostr(t_list *q_word_list)
-{
-	t_list	*curr;
-	char	*str;
-	int		count_str;
-	int		j;
-
-	curr = q_word_list;
-	count_str = ft_count_str_in_ll(q_word_list);
-	j = 0;
-	str = ft_calloc(((count_str) + 1), sizeof(char));
-	curr = q_word_list;
-	while (curr != NULL)
-	{
-		j = ft_strlen(str);
-		ft_strcpy(&str[j], ((t_lexer *)curr->content)->value);
-		curr = curr->next;
-	}
-	str[count_str] = '\0';
-	return (str);
-}
 
 /**
  * @brief helper function for ft_q_arr_creator, it iteraters 
@@ -116,10 +59,10 @@ static void	ft_q_arrcreat_helper(int *j, int *i,
 	}
 }
 
-
 /**
- * @brief function that creates and array of strings
- * out of the q_word to better handle the q_word-tokens
+ * @brief function that creates an array of strings
+ * out of the q_word to better handle the q_word-tokens,
+ * delimiter are quotation marks
  * 
  * @param value_old the char to count 
  * cut and transferred to array of strings 
@@ -153,7 +96,7 @@ void	ft_q_arr_creator(char *value_old, char ***p_value_new)
 
 /**
  * @brief helper function for ft_q_counter, it iterates
- * through the string until next " or ' is found * 
+ * through the string (value_old) until next " or ' (sign) is found 
  * 
  * @param p_counter pointer to the counter
  * @param p_i pointer to iterator of value_old
@@ -168,7 +111,6 @@ static void	ft_q_count_helper(int *counter, int *i,
 	while (value_old[*(i)] && value_old[*(i)] != sign)
 		*(i) += 1;
 }
-
 
 /**
  * @brief function to count the size of new array of strings
@@ -210,8 +152,9 @@ int	ft_q_counter(char *value_old)
  * @brief this functions organises the special treatment of
  * values of token 25 / 26
  * 1) values of these tokens are transformed to an array of strings
- * 2) than this array will run through the tokenizer and expander
- * as if it would be a readline-input
+ * 2) than this array will run through the tokenizer 
+ * (which also creates a linked list out of the array) and expander
+ * as if it would be a readline-input 
  * 3) at the end this linked-list (q_word_list) will be transformed
  * to a string again and the adress of token 25/26 will be 
  * overwritten by this string, and a new tokentype (28) will be assigned, 
@@ -225,7 +168,7 @@ void	ft_q_word_handling(void **token, t_big *big)
 {
 	t_lexer	*temp;
 	char	*value_old;
-	char 	*value_new;
+	char	*value_new;
 	char	**help_arr;
 	t_list	*q_word_list;
 

@@ -123,6 +123,10 @@ t_big	*init_t_big(char **envp);
 void	printf_env(t_big *big);
 void	free_t_big(t_big *big);
 char	**copy_envp(char **envp);
+//testprints.c --> only test functions
+void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
+void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
+void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big);
 
 // PARSING - LEXICAL ANALYSIS
 //lexer/lexer.c
@@ -157,10 +161,6 @@ t_tokentype	ft_creat_operators_token(char *input_string);
 t_tokentype	ft_creat_str_token(char *input_string);
 //tokenizer/tokenizer_qwords.c
 void	ft_qword_quotecheck(char *input_string, t_tokentype *token_old);
-//testprints.c --> only test functions
-void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
-void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
-void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big);
 
 // PARSING - SYNTAX ANALYSIS
 //syntax analyzer/syntax.c
@@ -188,6 +188,8 @@ char	*ft_givenbr(int nbr);
 int		ft_is_env_var(char c);
 //expander/expander_q.c
 void	ft_q_word_handling(void **token, t_big *big);
+//expander/llist_to_string.c
+char	*ft_listtostr(t_list *q_word_list);
 
 // COMMAND LIST CREATION AND READING
 //command_creation/command_list.c
