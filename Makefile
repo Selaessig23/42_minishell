@@ -39,6 +39,7 @@ SRCS =	main.c \
 		expander/expander_pid.c \
 		expander/expander_utils.c \
 		expander/expander_q.c \
+		expander/llist_to_string.c \
 		command_creation/command_list.c \
 		command_creation/command_utils.c \
 		command_creation/command_reader.c \
