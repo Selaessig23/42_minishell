@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_def_env_paths.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/13 15:27:57 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/13 15:28:00 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -114,7 +126,6 @@ void	ft_check_defaultpath(char *binary, char **binarypaths)
 
 	match_counter = ft_match_counter(binary, binarypaths);
 	path_matches = NULL;
-	// printf("test1: %zu\n", match_counter);
 	if (match_counter == 0)
 		return ;
 	path_matches = ft_calloc((match_counter + 1), sizeof(char *));
