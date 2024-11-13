@@ -88,10 +88,10 @@ static int	here_read_helper(int write_end, char *lim, t_big **p_big, t_data *com
 		if (!str)
 		{
 			ft_putstr_fd("bash: warning: here-document ", 2);
-			ft_putstr_fd("delimited by \"end-of-file (wanted `", 2);
+			ft_putstr_fd("delimited by end-of-file (wanted `", 2);
 			ft_putstr_fd(lim, 2);
 			ft_putstr_fd("\')\n", 2);
-			signalnum = 1;
+			return (0);
 		}
 		if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
 			&& ft_strlen(lim) == ft_strlen(str))
