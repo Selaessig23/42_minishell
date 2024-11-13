@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file_creator.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/13 15:26:43 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/13 16:29:17 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -6,7 +18,6 @@
  * in case of output redirect also creates the files that are asked for in 
  * command line input
  */
-
 
 /**
  * checks if infile is accessible and opens it. Initiate heredoc if required.
@@ -43,7 +54,7 @@ int	fd_in_checker(t_data *comm_info, char *infile, t_big **p_big)
  * @brief function to get the fd of the outfile and check 
  * accessibility
  * 
- * @param appender information if filename should be opened with trunc-mode
+ * @param appender information of filename should be opened with trunc-mode
  * or append-mode (true)
  * @param filename filename (outfile) to write in 
  */
@@ -77,7 +88,7 @@ static int	ft_get_fd(bool appender, char *filename)
  * function to check if outfile exists. If not it will be created. 
  * If yes, function ft_get_fd will check accessibility
  * 
- * @param appender information if filename should be opened with trunc-mode
+ * @param appender information of filename should be opened with trunc-mode
  * or append-mode (true)
  * @param filename filename (outfile) to write in 
  */

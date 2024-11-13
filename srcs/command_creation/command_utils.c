@@ -1,5 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/13 15:30:24 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/13 15:30:32 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * DESCRIPTION:
+ * file which holds all functions of directory command_creation
+ * that are required by more than one file of functions
+ */
 
 void	exe_fd_error(t_big *big, t_data *comm_info_next)
 {
@@ -15,12 +32,6 @@ t_data	*ft_pointer_next_command(t_list	*curr)
 	else
 		return (NULL);
 }
-
-/**
- * DESCRIPTION:
- * file which holds all functions of feat command
- * that are required by more than one function
- */
 
 /**
  * @brief function to free the linked list of commands
@@ -39,8 +50,6 @@ void	ft_free_cl(t_list **ll)
 		temp = curr;
 		comm_info = temp->content;
 		curr = curr->next;
-		// free(comm_info->infile);
-		// free(comm_info->outfile);
 		ft_free(comm_info->cmd);
 		free(comm_info);
 		free(temp);

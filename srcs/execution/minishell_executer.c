@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_executer.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/13 15:43:57 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/13 15:44:17 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -8,9 +20,11 @@
  */
 
 /**
- * @brief function to convert existing SHLVL-value into a number
+ * @brief function to convert existing SHLVL-value (char) into a number (int)
+ * 
+ * @param shlvl_old 
  */
-size_t	ft_shlvl_converter(char *shlvl_old)
+int	ft_shlvl_converter(char *shlvl_old)
 {
 	int	i;
 
@@ -26,8 +40,9 @@ size_t	ft_shlvl_converter(char *shlvl_old)
 }
 
 /**
- * @brief function to execute the builtin function "exit", 
- * it closes the programm and frees all allocated memory
+ * @brief function that organises the increasement of env-variable
+ * SHLVL (SHELL-LEVEL) in case of executing ./minishell
+ * within minishell
  * 
  * @param env an array of strings with all environmental variables
  */
@@ -42,14 +57,11 @@ void	ft_ms_executer(char *env[])
 	while (*env && ft_strncmp("SHLVL", *env, 4))
 		env++;
 	temp = *env;
-	// printf("test 2a: temp = %s\n", temp + 6);
 	count = ft_shlvl_converter(temp + 6);
-	// printf("test: %i", count);
 	if (count < 0)
 		count = 0;
 	else 
 		count += 1;
-	// printf("test 2b: count = %zu\n", count);
 	count_new = ft_itoa(count);
 	if (!count_new)
 		error_handling(1);
@@ -57,7 +69,6 @@ void	ft_ms_executer(char *env[])
 	if (!shlvl_new)
 		error_handling(1);
 	free(count_new);
-	// printf("test 2c: env new = %s\n", shlvl_new);
 	*env = shlvl_new;
 	free (temp);
 }

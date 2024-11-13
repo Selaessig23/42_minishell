@@ -153,10 +153,6 @@ int	heredoc_start(t_data *comm_info, char *limiter, t_big **p_big)
 	free(cmd_no_str);
 	fd = here_read(name, limiter);
 	here_read_helper(fd, limiter, p_big, comm_info);
-	name = ft_strjoin(".heredoc_", cmd_no_str);
-	free(cmd_no_str);
-	fd = here_read(name, limiter);
-	here_read_helper(fd, limiter, p_big, comm_info);
 	close(fd);
 	fd = fd_here_creator(name, false);
 	free(name);

@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:32:53 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/12 11:33:29 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/13 16:13:09 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ t_tokentype	ft_creat_redir_token(char *input_string)
  * to initiate variable token of linked list lexx,
  * here: operators (except redirect operators)
  * 
+ * 	// else if ((!ft_strncmp(input_string, ";", ft_strlen(";")) 
+	// 		&& ft_strlen(input_string) == ft_strlen(";")))
+	// 	return (2);
+ * 
  * @param input_string string as part of input_arr with cleaned input of 
  * command line input
  */
@@ -58,9 +62,7 @@ t_tokentype	ft_creat_operators_token(char *input_string)
 	if ((!ft_strncmp(input_string, "|", ft_strlen("|")) 
 			&& ft_strlen(input_string) == ft_strlen("|")))
 		return (1);
-	else if ((!ft_strncmp(input_string, ";", ft_strlen(";")) 
-			&& ft_strlen(input_string) == ft_strlen(";")))
-		return (2);
+
 	else
 		return (0);
 }

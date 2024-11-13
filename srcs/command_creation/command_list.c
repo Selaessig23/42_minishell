@@ -64,7 +64,6 @@ static int	ft_arrcpy(char ***p_old, char ***p_new)
 	new = *p_new;
 	while (old[i] != NULL)
 	{
-		// printf("what the hack A-b, count\n");
 		new[i] = ft_strdup(old[i]);
 		i++;
 	}
@@ -91,105 +90,19 @@ void	ft_add_arr_back(char *token_value, t_data **p_comm_info)
 	comm_info = *p_comm_info;
 	command_array_old = comm_info->cmd;
 	count = ft_arrlen(command_array_old);
-	// printf("what the hack A, count:: %zu\n", count);
 	command_array_new = (char **)malloc(sizeof(char *) * (count + 2));
 	if (!command_array_new)
 		error_handling(2);
 	if (count > 0)
 		i += ft_arrcpy(&command_array_old, &command_array_new);
-	// printf("what the hack A-c, count\n");
 	command_array_new[i] = ft_strdup(token_value);
-	// printf("what the hack A-d, count\n");
 	if (!command_array_new[i])
 		error_handling(2);
 	i += 1;
 	command_array_new[i] = NULL;
 	comm_info->cmd = command_array_new;
-	// printf("what the hack B: %s\n", *p_command_array[0]);;
-	// printf("what the hack B: %s\n", comm_info->cmd[0]);;
 	if ((command_array_old))
 		ft_free(command_array_old);
-}
-
-/**
- * @brief function to set values of command struct in case of
- * redirection out (> or >>). If there was set a redirect out before,
- * old fd will be closed and command data will be overwritten.
- * 
- * 
- * @param token the specific token (node) of the command line input
- * which stands for the redirection symbol
- * @param comminfo pointer to the struct that holds the command infos
- * @param lexx the expanded linked list with command line input
- * @param p_big pointer to the struct big to integrate the exit code in
- * case of an error when opening redirect out or in
- */
-static t_list	*ft_set_r_out(t_lexer *token, 
-	t_data **cominfo, t_list *lexx, t_big **p_big)
-{
-	t_data	*comm_info;
-	t_big	*big;
-
-	comm_info = *cominfo;
-	big = *p_big;
-	if (comm_info->fd_outfile > 2)
-		close(comm_info->fd_outfile);
-	if (token->token == 6)
-		comm_info->out_append = true;
-	lexx = lexx->next;
-	token = lexx->content;
-	comm_info->fd_outfile = 
-		fd_out_creator(comm_info->out_append, token->value);
-	if (comm_info->fd_outfile == -1)
-	{
-		big->exit_code = 1;
-		// return (NULL);
-	}
-	return (lexx);
-}
-
-/**
- * @brief function to set values of command struct in case of
- * redirection in (<) or heredoc-signal (<<). If there was set 
- * a redirect in / heredoc before, old fd will be closed 
- * (and heredoc file will be deleted) and 
- * command data will be overwritten. 
- * 
- * @param token the specific token (node) of the command line input
- * which stands for the redirection symbol
- * @param comminfo pointer to the struct that holds the command infos
- * @param lexx the expanded linked list with command line input 
- * @param p_big pointer to the struct big to integrate the exit code in
- * case of an error when opening redirect out or in
- */
-static t_list	*ft_set_r_in(t_lexer *token, 
-	t_data **cominfo, t_list *lexx, t_big **p_big)
-{
-	t_data	*comm_info;
-	t_big	*big;
-
-	comm_info = *cominfo;
-	big = *p_big;
-	if (comm_info->fd_infile > 2)
-		close(comm_info->fd_infile);
-	if (comm_info->in_heredoc == true)
-		delete_heredoc(*cominfo);
-	if (token->token == 3)
-		comm_info->in_heredoc = true;
-	lexx = lexx->next;
-	token = lexx->content;
-	if (token->token == 30)
-		comm_info->heredoc_expander = true;
-	else
-		comm_info->heredoc_expander = false;
-	comm_info->fd_infile = 
-		fd_in_checker(comm_info, token->value, p_big);
-	if (comm_info->fd_infile == -1)
-	{
-		big->exit_code = 1;
-		// return (ft_lstlast(lexx));
-	}
-	return (lexx);
 }
 
 /**
@@ -234,7 +147,7 @@ static void	init_comm(t_data **p_comm_info, t_list *lexx)
 static void set_number_helper(t_data *comm_info, t_list *curr_lexx)
 {
 	int	i;
-	
+
 	i = (int)comm_info->commands_no;
 	i++;
 	((t_lexer *)(curr_lexx->content))->number_helper = i;
@@ -250,6 +163,7 @@ static void set_number_helper(t_data *comm_info, t_list *curr_lexx)
  * 
  * !would have been better to name the variable token in struct 
  * t_lexer tokentype instead of token!
+ * variable "number_helper" helps to create many heredocs
  * 
  * @param lexx the expanded linked list with command line input 
  * @param comm linked list of commands which should be filled
@@ -262,10 +176,8 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 	t_data	*comm_info;
 	t_list	*curr_lexx;
 	t_lexer	*token;
-	//char	**test_arr;
 
 	comm_info = NULL;
-	//test_arr = NULL;
 	curr_lexx = *lexx;
 	token = curr_lexx->content;
 	comm_info = ft_calloc(1, sizeof(t_data));
@@ -274,24 +186,18 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 	init_comm(&comm_info, *lexx);
 	while (curr_lexx != NULL && token->token != 1 && token->token != 2)
 	{
-		if (token->token == 3 || token->token == 4) //heredoc or redirect in
+		if (token->token == 3 || token->token == 4)
 			curr_lexx = ft_set_r_in(token, &comm_info, curr_lexx, p_big);
-		else if (token->token == 5 || token->token == 6) //redirect out or redirect out append
+		else if (token->token == 5 || token->token == 6)
 			curr_lexx = ft_set_r_out(token, &comm_info, curr_lexx, p_big);
-		else //strings become part of command_array
-		{
-			// if (!*token->value)
-			// 	ft_dprintf("token->value \"%s\" is empty\n", token->value);
-			// else
+		else
 			if (*token->value)
 				ft_add_arr_back(token->value, &comm_info);
-			// test_arr = comm_info->cmd;
-			// printf("what the hack IV: %s\n", test_arr[0]);
-		}
 		if (curr_lexx != NULL)
 			curr_lexx = curr_lexx->next;
 		if (curr_lexx != NULL)
 			token = curr_lexx->content;
+		// ft_init_comminfo(token, comm_info, curr_lexx, big);
 		while (curr_lexx != NULL
 			&& (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
 			&& token->token != 1 && token->token != 2)
@@ -312,9 +218,8 @@ static void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big)
 
 /**
  * @brief function to create a linked list of commands 
+ * (for execution part)
  * which should be part of the struct big (cmdlist)
- * 
- * variable "number_helper" helps to create many heredocs
  * 
  * @param lexx the expanded linked list with command line input
  * @param p_big pointer to the struct big to integrate a linked list of
