@@ -149,9 +149,7 @@ int ft_executer(t_big *big, char *prompt)
 	t_list	*curr;
 	t_data	*comm_info;
 	t_data	*comm_info_next;
-	int		exit_status_binary;
-
-	exit_status_binary = -100;
+	
 	curr = big->cmdlist;
 	comm_info = curr->content;
 	while (curr != NULL)
@@ -168,11 +166,11 @@ int ft_executer(t_big *big, char *prompt)
 					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
 				exe_parent_builtin(comm_info, big, prompt);
 			}
-			else if (big->count_commds == 1 && check_builtin_other(comm_info))
-				exe_other_builtin(comm_info, big);
 			else
 			{
-				if (!check_cmd(comm_info->cmd, big->env, big->binarypaths))
+				if (check_builtin_other(comm_info))
+					execute(comm_info, comm_info_next, big);
+				else if (!check_cmd(comm_info->cmd, big->env, big->binarypaths))
 					execute(comm_info, comm_info_next, big);
 				else
 					big->exit_code = 999;
@@ -186,6 +184,9 @@ int ft_executer(t_big *big, char *prompt)
 			close(comm_info->fd_outfile);
 		curr = curr->next;
 	}
+	int		exit_status_binary;
+
+	exit_status_binary = -100;
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
 	ft_free_cl(&(big->cmdlist));
