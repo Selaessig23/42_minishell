@@ -41,8 +41,10 @@ SRCS =	main.c \
 		expander/expander_q.c \
 		expander/llist_to_string.c \
 		command_creation/command_list.c \
+		command_creation/initiate_comm_infos.c \
 		command_creation/handle_redirections.c \
 		command_creation/file_creator.c \
+		command_creation/create_argv_of_cmds.c \
 		command_creation/command_utils.c \
 		command_creation/command_reader.c \
 		command_creation/check_def_env_paths.c \

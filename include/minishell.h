@@ -195,12 +195,16 @@ char	*ft_listtostr(t_list *q_word_list);
 //command_creation/command_list.c
 void	ft_commands(t_list *lexx, t_big **big);
 int		fd_out_creator(bool appender, char *filename);
+//command_creation/initiate_comm_infos.c
+void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big);
 //command_creation/handle_redirections.c
 t_list	*ft_set_r_in(t_lexer *token, 
 			t_data **cominfo, t_list *lexx, t_big **p_big);
 t_list	*ft_set_r_out(t_lexer *token, 
 			t_data **cominfo, t_list *lexx, t_big **p_big);
-//command_creation/file_creator.
+//command_creation/create_argv_of_cmds.c
+void	ft_add_arr_end(char *token_value, t_data **p_comm_info);
+//command_creation/file_creator.c
 int		fd_in_checker(t_data *comm_info, char *infile, t_big **p_big);
 //command_creation/command_utils.c
 void	exe_fd_error(t_big *big, t_data *comm_info_next);
