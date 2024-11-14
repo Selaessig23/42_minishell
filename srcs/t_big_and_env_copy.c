@@ -8,8 +8,6 @@ void	free_t_big(t_big *big)
 	ft_free(big->env);
 	ft_free_cl(&(big->cmdlist));
 	ft_free(big->binarypaths);
-	// free(big->cmdlist);
-	// big->cmdlist = NULL;
 	free(big);
 	big = NULL;
 }

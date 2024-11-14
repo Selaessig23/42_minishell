@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 19:16:51 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/11 17:26:13 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:55:35 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * only when it is only one command that executes without
  * forking.
  */
-int	check_builtin_parent(t_data *comm_info)
+int	check_parent_builtin(t_data *comm_info)
 {
 	char	**argv;
 
@@ -46,7 +46,7 @@ int	check_builtin_parent(t_data *comm_info)
  * @param comm_info struct with all necessary infos to
  * execute a single command
  */
-int	check_builtin_other(t_data *comm_info)
+int	check_child_builtin(t_data *comm_info)
 {
 	char	**argv;
 

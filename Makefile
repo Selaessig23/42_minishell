@@ -61,11 +61,12 @@ SRCS =	main.c \
 		builtins/help.c \
 		signals.c \
 		execution/command_reader.c \
-		execution/execute_0.c \
+		execution/exe_binary.c \
+		execution/exe_built-ins.c \
 		execution/execute_1.c \
 		execution/execute_2.c \
 		execution/minishell_executer.c \
-		execution/execute_built-ins.c \
+		execution/exe_error_handling.c \
 		utils_strings/utils_string.c
 
 #libraries

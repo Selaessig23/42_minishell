@@ -27,7 +27,7 @@
 # include <sys/ioctl.h>
 //to change behaviour of the terminal (not-printing all control squences)
 # include <termios.h>
-// for S_ISDIR macro in check_cmd function
+// for S_ISDIR macro in check_binary_or_invalid_cmd function
 # include <sys/stat.h>
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments\
@@ -215,8 +215,8 @@ void	ft_check_defaultpath(char *binary, char **binarypaths);
 
 // BUILT-INS
 //builtins/builtin_check.c
-int		check_builtin_parent(t_data *comm_info);
-int		check_builtin_other(t_data *comm_info);
+int		check_parent_builtin(t_data *comm_info);
+int		check_child_builtin(t_data *comm_info);
 //builtins/exit.c
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
 //builtins/env.c
@@ -249,25 +249,36 @@ void	ft_handle_signals_childs(void);
 // EXECUTION
 //execution/command_reader.c
 int		ft_executer(t_big *big, char *prompt);
-void	ft_builtin_executer(t_data *comm_info, t_big *big);
-int		ft_builtin_checker(t_data *comm_info);
-//execution/execute_built-ins.c
+//execution/exe_built-ins.c
 void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt);
-void	exe_other_builtin(t_data *comm_info, t_big *big);
-//execution/execute_0.c
-int		execute(t_data *comm_info, t_data *c_i_next, t_big *big);
-void	print_stderr(char *what_error);
-void	perror_and_exit(char *what_error, int *pipe_fd);
+int		fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, t_big *big);
+void	setup_and_exe_builtin_in_child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd);
+void	exe_child_builtin(t_data *comm_info, t_big *big);
+//execution/exe_binary.c
+int		fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big);
+void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd);
 //execution/execute_1.c
-void	call_cmd(char **cmd_plus_args, char *env[]);
+void	exe_child_binary(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
 char	*get_all_folders(const char *env_var_path, char **env);
 char	*build_cmd_path(const char *folder, const char *cmd_name);
 //execution/execute_2.c
+void	fd_cleanup_in_child(t_big *big, int fd_write_end);
+void	setup_input_output(t_data *comm_info, t_data *c_i_next, int fd_write_end);
+
+void	fd_cleaning_child(t_big *big, t_data *to_close_fd);
+
 int		w_waitpid(t_big *big);
 //execution/minishell_executer.c
 void	ft_ms_executer(char *env[]);
 void	ft_overwrite_shlvl(char ***p_env);
+//execution/exe_error_handling.c
+void	close_fd_with_error_handling();
+void	w_errpipe_close(int open_fd);
+void	w_errfork_close(int open_fd, int *pipe_fd);
+void	perror_and_exit(char *what_error, int *pipe_fd);
+void	print_stderr(char *what_error);
+
 // Utils
 //utils_strings/utils_string.c
 int		is_exact_string(const char *str_org, char *str_cmp);

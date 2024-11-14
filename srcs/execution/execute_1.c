@@ -168,7 +168,7 @@ char	*get_path(char *cmd_name, char **env)
  * @param argument The command and its arguments as a string.
  * @param env The environment variables array.
  */
-void	call_cmd(char **cmd_plus_args, char *env[])
+void	exe_child_binary(char **cmd_plus_args, char *env[])
 {
 	char	*cmd_path;
 	// char	*temp;

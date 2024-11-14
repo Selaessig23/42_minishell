@@ -76,11 +76,13 @@ static int	no_cmd_path(char **cmd_plus_args, char **binarypaths)
  * It explicitly prints an error message 
  * (via "no_cmd_path") if the command cannot be found.
  */
-static int	check_cmd(char **cmd_plus_args, char *env[], char **binarypaths)
+static int	check_binary_or_invalid_cmd(char **cmd_plus_args, t_big *big)
 {
-	char	*cmd_path;
-	struct stat check_dir;
+	char		*cmd_path;
+	struct stat	check_dir;
     
+	char **c_env = big->env;
+	char **binarypaths = big->binarypaths;
 	// Check if it's a directory
 	if (stat((cmd_plus_args[0]), &check_dir) == 0)
 	{
@@ -98,16 +100,20 @@ static int	check_cmd(char **cmd_plus_args, char *env[], char **binarypaths)
 			ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
 			ft_putstr_fd(": command not found", STDERR_FILENO);
 			ft_putstr_fd("\n", STDERR_FILENO);
-		return (0);
+			//big->exit_code = 127;
+			return (1);
 		}
 	}
 	if (access(cmd_plus_args[0], F_OK | X_OK) == 0)
 		return (0);
-	cmd_path = get_path(cmd_plus_args[0], env);
+	cmd_path = get_path(cmd_plus_args[0], c_env);
 	if (!cmd_path)
 	{
-		if (no_cmd_path(cmd_plus_args, binarypaths))
+		if (!no_cmd_path(cmd_plus_args, binarypaths))
+		{
+			//big->exit_code = 127;
 			return (1);
+		}
 		else
 			return (0);
 	}
@@ -124,14 +130,102 @@ static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 
 	data = (ft_lstlast(cmdlist))->content;
 	if (big->exit_code == 999)
-		big->exit_code = 126;
+		big->exit_code = 127; /// It was 126
 	else if (data->fd_infile < 0 || data->fd_outfile < 0)
 		return ;
 	else
 	{
-		if (!check_builtin_parent(data))
+		if (!check_parent_builtin(data))
 			big->exit_code = exit_status_binar;
 	}
+}
+
+static void	process_binary_and_child_builtin(t_big *big, t_data	*comm_info, t_data *comm_info_next)
+{
+	if (check_child_builtin(comm_info))
+		fork_and_exe_child_builtin(comm_info, comm_info_next, big);
+	else if (!check_binary_or_invalid_cmd(comm_info->cmd, big))
+	{
+		fork_and_exe_binary(comm_info, comm_info_next, big);
+	}
+	/// case 127 means the command was not found at all.
+
+	/// case 126 indicates that a command was found, but it is not executable
+	/// Permission Denied
+	// Directory as a Command
+	else
+		big->exit_code = 999;
+}
+
+static void	ft_executer_loop_loop(t_big *big, t_list *curr, char *prompt)
+{
+	t_data	*comm_info_next;
+	t_data	*comm_info;
+	
+	t_list	*curr_to_close_fd = curr;
+
+	while (curr != NULL)
+	{
+		comm_info = curr->content;
+		comm_info_next = ft_pointer_next_command(curr);
+		if (comm_info->cmd[0] != NULL)
+		{
+			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
+				exe_fd_error(big, comm_info_next);
+			else if (check_parent_builtin(comm_info))
+			{
+				if (comm_info_next && comm_info_next->fd_infile == 0)
+					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
+				exe_parent_builtin(comm_info, big, prompt);
+			}
+			else
+				process_binary_and_child_builtin(big, comm_info, comm_info_next);
+		}
+		// if (comm_info->fd_infile > 2)
+		// {
+		// 	close(comm_info->fd_infile);
+		// }
+		// if (comm_info->in_heredoc == true)
+		// 	delete_heredoc(comm_info);
+		// if (comm_info->fd_outfile > 2)
+		// 	close(comm_info->fd_outfile);
+		// if (comm_info->fd_outfile > 2)
+		// {
+		// 	printf("OUT %d is closed in parent\n", comm_info->fd_outfile);
+		// 	close(comm_info->fd_outfile);
+		// }
+		// if (comm_info->in_heredoc == true)
+		// 	delete_heredoc(comm_info);
+		curr = curr->next;
+	}
+	/// to close all fd and delete AFTER whole execution
+	while (curr_to_close_fd != NULL)
+	{
+		comm_info = curr_to_close_fd->content;
+
+		if (comm_info->fd_infile > 2)
+			close(comm_info->fd_infile);
+		if (comm_info->fd_outfile > 2)
+		{
+			//printf("OUT %d is closed in parent\n", comm_info->fd_outfile);
+			close(comm_info->fd_outfile);
+		}
+		if (comm_info->in_heredoc == true)
+			delete_heredoc(comm_info);
+		curr_to_close_fd = curr_to_close_fd->next;
+	}
+
+}
+
+static void	ft_executer_loop(t_big *big, char *prompt)
+{
+	t_list	*curr;
+	
+	if (big->cmdlist)
+		curr = big->cmdlist;
+	else
+		return ;
+	ft_executer_loop_loop(big, curr, prompt);
 }
 
 /**
@@ -146,47 +240,10 @@ static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
  */
 int ft_executer(t_big *big, char *prompt)
 {
-	t_list	*curr;
-	t_data	*comm_info;
-	t_data	*comm_info_next;
-	
-	curr = big->cmdlist;
-	comm_info = curr->content;
-	while (curr != NULL)
-	{
-		comm_info = curr->content;
-		comm_info_next = ft_pointer_next_command(curr);
-		if (comm_info->cmd[0] != NULL)
-		{
-			if (comm_info->fd_infile < 0 || comm_info->fd_outfile < 0)
-				exe_fd_error(big, comm_info_next);
-			else if (check_builtin_parent(comm_info))
-			{
-				if (comm_info_next && comm_info_next->fd_infile == 0)
-					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
-				exe_parent_builtin(comm_info, big, prompt);
-			}
-			else
-			{
-				if (check_builtin_other(comm_info))
-					execute(comm_info, comm_info_next, big);
-				else if (!check_cmd(comm_info->cmd, big->env, big->binarypaths))
-					execute(comm_info, comm_info_next, big);
-				else
-					big->exit_code = 999;
-			}
-		}
-		if (comm_info->fd_infile > 2)
-			close(comm_info->fd_infile);
-		if (comm_info->in_heredoc == true)
-			delete_heredoc(comm_info);
-		if (comm_info->fd_outfile > 2)
-			close(comm_info->fd_outfile);
-		curr = curr->next;
-	}
 	int		exit_status_binary;
 
 	exit_status_binary = -100;
+	ft_executer_loop(big, prompt);
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
 	ft_free_cl(&(big->cmdlist));
