@@ -48,5 +48,9 @@ void exe_other_builtin(t_data *comm_info, t_big *big) // char *prompt
 			ft_print_env(comm_info, big);
 		else if (is_exact_string(argv[0], "help"))
 			ft_minishell_help(comm_info, big);
+		else if (is_exact_string(argv[0], "export")
+			&& ft_arrlen(argv) == 1)
+			ft_export(big, comm_info);
 	}
 }
+

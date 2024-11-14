@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 19:16:51 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/11 17:26:13 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:07:51 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	check_builtin_parent(t_data *comm_info)
 	{
 		if (is_exact_string(argv[0], "cd"))
 			return (1);
-		if (is_exact_string(argv[0], "export"))
+		if (is_exact_string(argv[0], "export")
+			&& ft_arrlen(argv) > 1)
 			return (1);
 		if (is_exact_string(argv[0], "unset"))
 			return (1);
@@ -60,6 +61,9 @@ int	check_builtin_other(t_data *comm_info)
 		if (is_exact_string(argv[0], "env"))
 			return (1);
 		if (is_exact_string(argv[0], "help"))
+			return (1);
+		if (is_exact_string(argv[0], "export")
+			&& ft_arrlen(argv) == 1)
 			return (1);
 	}
 	return (0);
