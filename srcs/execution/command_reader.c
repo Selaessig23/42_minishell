@@ -169,9 +169,15 @@ int ft_executer(t_big *big, char *prompt)
 			else
 			{
 				if (check_builtin_other(comm_info))
+				{
+					printf("test1\n");
 					execute(comm_info, comm_info_next, big);
+				}
 				else if (!check_cmd(comm_info->cmd, big->env, big->binarypaths))
+				{
 					execute(comm_info, comm_info_next, big);
+					printf("test2\n");
+				}
 				else
 					big->exit_code = 999;
 			}

@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 17:14:03 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/14 12:36:25 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:53:39 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,10 @@ void	ft_export_sort(t_big *big)
 	int		i;
 
 	i = 0;
-	if (big->exe == false)
-		env_cpy = NULL;
-	else
-	{
+	// if (big->exe == false)
+	// 	env_cpy = NULL;
+	// else
+	// {
 		env_cpy = copy_envp(big->env);
 		ft_export_sort_algo(&env_cpy);
 		while (env_cpy[i])
@@ -147,5 +147,5 @@ void	ft_export_sort(t_big *big)
 			i += 1;
 		}
 		ft_free(env_cpy);
-	}
+	// }
 }
