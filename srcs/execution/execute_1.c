@@ -142,6 +142,8 @@ char	*get_path(char *cmd_name, char **env)
 	char	*all_folders;
 
 	all_folders = get_all_folders("PATH", env);
+	if(!all_folders)
+		return(NULL);
 	folders = ft_split(all_folders, ':');
 	if (!folders)
 	{

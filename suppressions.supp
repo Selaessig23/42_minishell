@@ -1,0 +1,29 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    suppressions.supp                                  :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/11/07 12:58:02 by mstracke          #+#    #+#              #
+#    Updated: 2024/11/07 12:58:58 by mstracke         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# This is a suppression file for Valgrind
+
+# Suppress leaks from the readline library
+{
+   READLINE_COND
+   Memcheck:Cond
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   ...
+}
+{
+   READLINE_LEAK
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1                                                                                                 
+   ...
+}
