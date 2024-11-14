@@ -27,9 +27,8 @@
 */
 int	ft_is_env_var(char c)
 {
-	if ((c >= 'A' && c <= 'Z')
-		|| c == '_'
-		|| ft_isdigit(c))
+	if (c == '_'
+		|| ft_isalnum(c))
 		return (1);
 	else
 		return (0);

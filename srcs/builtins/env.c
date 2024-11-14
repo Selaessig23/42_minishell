@@ -40,7 +40,7 @@ void	ft_print_env(t_data *comm_info, t_big *big)
 		return ;
 	}
 	env_list = big->env;
-	while (env_list && *env_list)
+	while (env_list && *env_list && ft_strchr(*env_list, '='))
 	{
 		ft_putstr_fd(*env_list, fd);
 		ft_putchar_fd('\n', fd);

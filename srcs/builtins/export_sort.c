@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 17:14:03 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/11 17:18:00 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/14 12:36:25 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,63 @@
  * this file handles the sorting request of builtin "export" access
  * (if command line input == "export" without any arguments)
  */
+
+/**
+ * @brief helper function for ft_export_addquotes
+ * that copies from value_old to value_new. integrating quotation marks
+ * between the value of the env-var
+ * 
+ * @param env_cpy copy of array env that should be adapted
+ */
+static void	ft_export_addquotes_helper(char **p_env_var_new, char *env_var_old)
+{
+	int		i;
+	char	*env_var_new;
+
+	i = 0;
+	env_var_new = *p_env_var_new;
+	while (env_var_old[i] && env_var_old[i] != '=')
+	{
+		env_var_new[i] = env_var_old[i];
+		i += 1;
+	}
+	env_var_new[i] = env_var_old[i];
+	env_var_new[i + 1] = '\"';
+	i += 1;
+	while (env_var_old[i])
+	{
+		env_var_new[i + 1] = env_var_old[i];
+		i += 1;
+	}
+	env_var_new[i + 1] = '\"';
+	env_var_new[i + 2] = '\0';
+}
+
+/**
+ * @brief this function adds quotation marks for alle values of
+ * the env_variables
+ * 
+ * @param env_cpy copy of array env that should be adapted
+ */
+static void	ft_export_addquotes(char ***p_env_cpy)
+{
+	char	**env_cpy;
+	char	*env_var_old;
+	char	*env_var_new;
+
+	env_cpy = *p_env_cpy;
+	env_var_old = NULL;
+	env_var_new = NULL;
+	while (env_cpy && *env_cpy)
+	{
+		env_var_old = *env_cpy;
+		env_var_new = ft_calloc((ft_strlen(env_var_old) + 3), sizeof(char));
+		ft_export_addquotes_helper(&env_var_new, env_var_old);
+		*env_cpy = env_var_new;
+		free(env_var_old);
+		env_cpy += 1;
+	}
+}
 
 /**
  * @brief function to swap two pointers
@@ -58,6 +115,7 @@ static void	ft_export_sort_algo(char ***p_env_cpy)
 		else
 			i += 1;
 	}
+	ft_export_addquotes(p_env_cpy);
 }
 
 /**
@@ -76,13 +134,18 @@ void	ft_export_sort(t_big *big)
 	int		i;
 
 	i = 0;
-	env_cpy = copy_envp(big->env);
-	ft_export_sort_algo(&env_cpy);
-	while (env_cpy[i])
+	if (big->exe == false)
+		env_cpy = NULL;
+	else
 	{
-		ft_putstr_fd("declare -x ", 1);
-		ft_putendl_fd(env_cpy[i], 1);
-		i += 1;
+		env_cpy = copy_envp(big->env);
+		ft_export_sort_algo(&env_cpy);
+		while (env_cpy[i])
+		{
+			ft_putstr_fd("declare -x ", 1);
+			ft_putendl_fd(env_cpy[i], 1);
+			i += 1;
+		}
+		ft_free(env_cpy);
 	}
-	ft_free(env_cpy);
 }

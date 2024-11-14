@@ -66,7 +66,7 @@ typedef enum e_tokentype
 	S_Q_WORD = 26,
 	D_Q_WORD_F = 27,
 	S_Q_WORD_F = 28,
-	WORD_CLEANED = 29, // to define cases a single single quotation marklike argument1'withoutspaceafterquotes
+	WORD_CLEANED = 29,
 	HEREDOC_LIMITER = 30
 }	t_tokentype;
 
@@ -210,10 +210,6 @@ int		fd_in_checker(t_data *comm_info, char *infile, t_big **p_big);
 void	exe_fd_error(t_big *big, t_data *comm_info_next);
 t_data	*ft_pointer_next_command(t_list	*curr);
 void	ft_free_cl(t_list **ll);
-//command_creation/command_reader.c
-int		ft_executer(t_big *big, char *prompt);
-void	ft_builtin_executer(t_data *comm_info, t_big *big);
-int		ft_builtin_checker(t_data *comm_info);
 //command_creation/check_def_env_paths.c
 void	ft_check_defaultpath(char *binary, char **binarypaths);
 
@@ -251,6 +247,10 @@ int		ft_handle_signals(bool rl_antes);
 void	ft_handle_signals_childs(void);
 
 // EXECUTION
+//execution/command_reader.c
+int		ft_executer(t_big *big, char *prompt);
+void	ft_builtin_executer(t_data *comm_info, t_big *big);
+int		ft_builtin_checker(t_data *comm_info);
 //execution/execute_built-ins.c
 void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt);
 void	exe_other_builtin(t_data *comm_info, t_big *big);

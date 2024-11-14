@@ -46,7 +46,6 @@ SRCS =	main.c \
 		command_creation/file_creator.c \
 		command_creation/create_argv_of_cmds.c \
 		command_creation/command_utils.c \
-		command_creation/command_reader.c \
 		command_creation/check_def_env_paths.c \
 		builtins/builtin_check.c \
 		builtins/exit.c \
@@ -61,18 +60,13 @@ SRCS =	main.c \
 		heredoc.c \
 		builtins/help.c \
 		signals.c \
+		execution/command_reader.c \
 		execution/execute_0.c \
 		execution/execute_1.c \
 		execution/execute_2.c \
 		execution/minishell_executer.c \
 		execution/execute_built-ins.c \
 		utils_strings/utils_string.c
-#		inputcheck.c \
-#		exe.c \
-#		utils.c
-#		image_creation.c \
-#		hooks.c \
-#		utils.c
 
 #libraries
 #add pathes of lib to cflags to find headers easily
