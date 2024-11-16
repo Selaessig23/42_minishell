@@ -47,6 +47,7 @@ void	fd_cleanup_read_end_in_child(t_big *big)
  * child procces. Current node is in used, so closing from the
  * next node if it is not NULL.
  */
+/// WARNING // 	close_fd_with_error_handling();
 void	fd_cleanup_in_child(t_big *big)
 {
 	t_list	*linked_list;
@@ -63,37 +64,6 @@ void	fd_cleanup_in_child(t_big *big)
 			close(comm_info->fd_outfile);
 		if (comm_info->fd_pipe[1] > 2)
 			close(comm_info->fd_pipe[1]);
-		linked_list = linked_list->next;
-	}
-}
-
-/**
- * Closing all opened file descriptors that we don't need in 
- * child procces. Current node is in used, so closing from the
- * next node if it is not NULL.
- */
-void	fd_cleaning_child(t_big *big, t_data *to_close_fd)
-{
-	t_list	*linked_list;
-	t_data	*node;
-
-	linked_list = big->cmdlist->next;
-	node = NULL;
-	while (linked_list != NULL)
-	{
-		node = linked_list->content;
-		if (node != to_close_fd)
-			linked_list = linked_list->next;
-		else if (node == to_close_fd)
-			break ;
-	}
-	while (linked_list != NULL)
-	{
-		node = linked_list->content;
-		if (node->fd_infile > 2)
-			close(node->fd_infile);
-		if (node->fd_outfile > 2)
-			close(node->fd_outfile);
 		linked_list = linked_list->next;
 	}
 }

@@ -267,9 +267,6 @@ char	*build_cmd_path(const char *folder, const char *cmd_name);
 void	fd_cleanup_in_child(t_big *big);
 void	fd_cleanup_read_end_in_child(t_big *big);
 void	setup_input_output(t_data *comm_info, t_data *c_i_next);
-
-void	fd_cleaning_child(t_big *big, t_data *to_close_fd);
-
 int		w_waitpid(t_big *big);
 //execution/minishell_executer.c
 void	ft_ms_executer(char *env[]);

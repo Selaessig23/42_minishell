@@ -6,11 +6,30 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:27:35 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/16 06:43:16 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/16 07:31:39 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * @brief This function is a wrapper around the dup2 system call.
+ * It attempts to duplicate dupfd onto newfd. If dup2 fails, it handles
+ * the error by closing the file descriptors,
+ * printing an error message, and terminating the program.
+ */
+void	w_dup2(int dupfd, int newfd)
+{
+	if (dup2(dupfd, newfd) == -1)
+	{
+		print_stderr("dup2");
+		if (newfd > 2)
+			close(newfd);
+		if (dupfd > 2)
+			close(dupfd);
+		exit(EXIT_FAILURE);
+	}
+}
 
 /**
  * Prints a message to standard error describing the error associated

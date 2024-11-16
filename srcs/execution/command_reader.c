@@ -154,7 +154,12 @@ static void	process_binary_and_child_builtin(t_big *big, t_data	*comm_info, t_da
 	/// Permission Denied
 	// Directory as a Command
 	else
+	{
+		// for case `catttt | grep "hello"` etc.
+		if (comm_info_next->fd_infile == 0)
+			comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
 		big->exit_code = 999;
+	}
 }
 
 static void	ft_executer_loop_loop(t_big *big, t_list *curr, char *prompt)
@@ -179,17 +184,13 @@ static void	ft_executer_loop_loop(t_big *big, t_list *curr, char *prompt)
 			else
 				process_binary_and_child_builtin(big, comm_info, comm_info_next);
 		}
-
 		// It must be here due to Lucas test
 		if (comm_info->fd_infile > 2)
 			close(comm_info->fd_infile);
 		if (comm_info->fd_outfile > 2)
 			close(comm_info->fd_outfile);
-		// if (comm_info->fd_pipe[0] > 2)
-		// 	close(comm_info->fd_pipe[0]);
 		if (comm_info->in_heredoc == true)
 			delete_heredoc(comm_info);
-
 		curr = curr->next;
 	}
 }
@@ -224,29 +225,6 @@ int ft_executer(t_big *big, char *prompt)
 
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
-
-	/// to close all fd and delete AFTER  child processes
-	/// are done
-	// t_list	*curr;
-	// if (big->cmdlist)
-	// 	curr = big->cmdlist;
-	// // else
-	// // 	return ;
-	// while (curr != NULL)
-	// {
-	// 	t_data	*comm_info;
-	// 	comm_info = curr->content;
-
-	// 	if (comm_info->fd_infile > 2)
-	// 		close(comm_info->fd_infile);
-	// 	if (comm_info->fd_outfile > 2)
-	// 		close(comm_info->fd_outfile);
-	// 	// if (comm_info->fd_pipe[0] > 2)
-	// 	// 	close(comm_info->fd_pipe[0]);
-	// 	if (comm_info->in_heredoc == true)
-	// 		delete_heredoc(comm_info);
-	// 	curr = curr->next;
-	// }
 
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
