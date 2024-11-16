@@ -83,32 +83,38 @@ void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *b
 int	fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big)
 {
 	pid_t pid;
-	int fd[2];
+	// int fd[2];
 
-	if (pipe(fd) == -1)
+	// if (pipe(fd) == -1)
+	// 	w_errpipe_close(comm_info->fd_infile);
+	// comm_info->fd_pipe[0] = fd[0];
+	// comm_info->fd_pipe[1] = fd[1];
+
+	if (pipe(comm_info->fd_pipe) == -1)
 		w_errpipe_close(comm_info->fd_infile);
-	comm_info->fd_pipe[0] = fd[0];
-	comm_info->fd_pipe[1] = fd[1];
-
-	if (c_i_next != NULL)
-	{
-		if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
-			c_i_next->fd_infile = dup(fd[0]);
-		else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
-			c_i_next->fd_infile = open("/dev/null", O_RDONLY);
-	}
 
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
-		w_errfork_close(comm_info->fd_infile, fd);
+		w_errfork_close(comm_info->fd_infile, comm_info->fd_pipe);
 	if (pid == 0)
 	{
 		setup_and_exe_binary_in_child(comm_info, c_i_next, big);
 	}
 
-	close(fd[1]);
+	close(comm_info->fd_pipe[1]);
+
+	// this is must be after fork... WHY?
+	if (c_i_next != NULL)
+	{
+		if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
+			c_i_next->fd_infile = dup(comm_info->fd_pipe[0]);
+		else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
+			c_i_next->fd_infile = open("/dev/null", O_RDONLY);
+	}
 	
+	if (comm_info->fd_pipe[0] > 2)
+		close(comm_info->fd_pipe[0]);
 
 	comm_info->id = pid;
 	return (0);

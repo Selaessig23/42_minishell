@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:27:35 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/14 17:41:02 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/16 06:43:16 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	perror_and_exit(char *what_error, int *pipe_fd)
  */
 void	w_errpipe_close(int open_fd)
 {
-	close(open_fd);
+	if (open_fd > 2)
+		close(open_fd);
 	perror_and_exit("pipe", NULL);
 }
 
@@ -64,7 +65,8 @@ void	w_errpipe_close(int open_fd)
 void	w_errfork_close(int open_fd, int *pipe_fd)
 {
 	perror("Fork Error");
-	close(open_fd);
+	if (open_fd > 2)
+		close(open_fd);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	exit(EXIT_FAILURE);

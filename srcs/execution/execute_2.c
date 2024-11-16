@@ -2,6 +2,16 @@
 
 void	setup_input_output(t_data *comm_info, t_data *c_i_next)
 {
+	if (c_i_next == NULL)
+	{
+		if (comm_info->fd_infile == 0 && comm_info->fd_outfile == 1)
+			return ;
+	}
+	if (c_i_next != NULL)
+	{
+		if (comm_info->fd_outfile == 1) 
+			dup2(comm_info->fd_pipe[1], STDOUT_FILENO);
+	}
 	if (comm_info->fd_infile > 0)
 	{
 		// ft_dprintf("%s\n", comm_info->cmd[0]);
@@ -11,11 +21,7 @@ void	setup_input_output(t_data *comm_info, t_data *c_i_next)
 	}
 	if (comm_info->fd_outfile > 1)
 		dup2(comm_info->fd_outfile, STDOUT_FILENO);
-	if (c_i_next != NULL)
-	{
-		if (comm_info->fd_outfile == 1)
-			dup2(comm_info->fd_pipe[1], STDOUT_FILENO);
-	}
+	
 }
 
 void	fd_cleanup_read_end_in_child(t_big *big)

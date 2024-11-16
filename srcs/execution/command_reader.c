@@ -179,6 +179,17 @@ static void	ft_executer_loop_loop(t_big *big, t_list *curr, char *prompt)
 			else
 				process_binary_and_child_builtin(big, comm_info, comm_info_next);
 		}
+
+		// BACK BACK BACK
+		if (comm_info->fd_infile > 2)
+			close(comm_info->fd_infile);
+		if (comm_info->fd_outfile > 2)
+			close(comm_info->fd_outfile);
+		// if (comm_info->fd_pipe[0] > 2)
+		// 	close(comm_info->fd_pipe[0]);
+		if (comm_info->in_heredoc == true)
+			delete_heredoc(comm_info);
+
 		curr = curr->next;
 	}
 }
@@ -210,32 +221,32 @@ int ft_executer(t_big *big, char *prompt)
 
 	exit_status_binary = -100;
 	ft_executer_loop(big, prompt);
+
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
 
 	/// to close all fd and delete AFTER  child processes
 	/// are done
-	t_list	*curr;
-	if (big->cmdlist)
-		curr = big->cmdlist;
-	// else
-	// 	return ;
-	while (curr != NULL)
-	{
-		t_data	*comm_info;
-		comm_info = curr->content;
+	// t_list	*curr;
+	// if (big->cmdlist)
+	// 	curr = big->cmdlist;
+	// // else
+	// // 	return ;
+	// while (curr != NULL)
+	// {
+	// 	t_data	*comm_info;
+	// 	comm_info = curr->content;
 
-		if (comm_info->fd_infile > 2)
-			close(comm_info->fd_infile);
-		if (comm_info->fd_outfile > 2)
-			close(comm_info->fd_outfile);
-		if (comm_info->fd_pipe[0] > 2)
-			close(comm_info->fd_pipe[0]);
-		if (comm_info->in_heredoc == true)
-			delete_heredoc(comm_info);
-		curr = curr->next;
-	}
-
+	// 	if (comm_info->fd_infile > 2)
+	// 		close(comm_info->fd_infile);
+	// 	if (comm_info->fd_outfile > 2)
+	// 		close(comm_info->fd_outfile);
+	// 	// if (comm_info->fd_pipe[0] > 2)
+	// 	// 	close(comm_info->fd_pipe[0]);
+	// 	if (comm_info->in_heredoc == true)
+	// 		delete_heredoc(comm_info);
+	// 	curr = curr->next;
+	// }
 
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
