@@ -33,9 +33,13 @@ Before a command is executed, its input and output may be redirected using a spe
 `export` - environment variables, create new ones and replace old ones.
 `unset` - use unset to remove some of environment variables.
 
-### exit status
+### exit statu (exit code)
 
 > The value returned by a command to its caller. The value is restricted to eight bits, so the maximum value is 255. 
+
+> 126: The command is found but is not executable (e.g., lacks execute permissions or is a directory).
+
+> 127: The command is not found (e.g., an invalid path or name).
 
 ### extra input
 

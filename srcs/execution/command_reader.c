@@ -67,7 +67,8 @@ static int	no_cmd_path(char **cmd_plus_args, char **binarypaths)
 		ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
 		ft_putstr_fd(": command not found", STDERR_FILENO);
 		ft_putstr_fd("\n", STDERR_FILENO);
-		return (0);
+		return (0); /// it was 0 - means do not execute
+		//return (1); /// let's try execute invalid command
 	}
 
 }
@@ -87,8 +88,9 @@ static int	check_binary_or_invalid_cmd(char **cmd_plus_args, t_big *big)
 	if (stat((cmd_plus_args[0]), &check_dir) == 0)
 	{
 		// printf ("mhhh: %s\n", cmd_plus_args[0]);
-		if ((!ft_strncmp(cmd_plus_args[0], "./", 2) || !ft_strncmp(cmd_plus_args[0], "/", 1))
-			&& S_ISDIR(check_dir.st_mode))
+		/// NEW NEW NEW (!is_last_char(cmd_plus_args[0], "/")))
+		if ((!ft_strncmp(cmd_plus_args[0], "./", 2) || !ft_strncmp(cmd_plus_args[0], "/", 1)
+			|| (is_last_char(cmd_plus_args[0], '/'))) && S_ISDIR(check_dir.st_mode))
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
@@ -100,7 +102,7 @@ static int	check_binary_or_invalid_cmd(char **cmd_plus_args, t_big *big)
 			ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
 			ft_putstr_fd(": command not found", STDERR_FILENO);
 			ft_putstr_fd("\n", STDERR_FILENO);
-			//big->exit_code = 127;
+			/// !!! return (0) in main
 			return (1);
 		}
 	}
@@ -110,10 +112,7 @@ static int	check_binary_or_invalid_cmd(char **cmd_plus_args, t_big *big)
 	if (!cmd_path)
 	{
 		if (!no_cmd_path(cmd_plus_args, binarypaths))
-		{
-			//big->exit_code = 127;
 			return (1);
-		}
 		else
 			return (0);
 	}
@@ -156,9 +155,10 @@ static void	process_binary_and_child_builtin(t_big *big, t_data	*comm_info, t_da
 	else
 	{
 		// for case `catttt | grep "hello"` etc.
-		if (comm_info_next->fd_infile == 0)
+		if (comm_info_next && comm_info_next->fd_infile == 0)
 			comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
-		big->exit_code = 999;
+		/// execution of invalid command
+		fork_and_exe_binary(comm_info, comm_info_next, big);
 	}
 }
 

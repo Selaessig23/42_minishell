@@ -170,38 +170,64 @@ char	*get_path(char *cmd_name, char **env)
  * @param argument The command and its arguments as a string.
  * @param env The environment variables array.
  */
-void	exe_child_binary(char **cmd_plus_args, char *env[])
+int	exe_child_binary(char **cmd_plus_args, char *env[])
 {
 	char	*cmd_path;
-	// char	*temp;
 
 	cmd_path = NULL;
-	// printf("test: %s\n", cmd_plus_args[0]);
 	if (!ft_strncmp(cmd_plus_args[0], "./minishell", ft_strlen("./minishell"))
 		&& cmd_plus_args[0][ft_strlen("./minishell")] == '\0')
 	// 	//&& ft_strlen(cmd_plus_args[0]) == ft_strlen("./minishell"))
 	{
-		// printf("test 2: %zu\n", ft_strlen(cmd_plus_args[0]));
 		ft_ms_executer(env);
+		/// ASK MARKUS about return value
+		return (0);
 	}
-	// else
-	// {
-		// printf("test 3\n");
-		if (access(cmd_plus_args[0], F_OK | X_OK) == 0)
+
+	// Check access if it's a dicrectory and there is no acces
+	// execve
+	struct stat	check_dir;
+	if (stat((cmd_plus_args[0]), &check_dir) == 0)
+	{
+		//printf("if (stat((cmd_plus_args[0]), &check_dir) == 0)\n");
+		if ((!ft_strncmp(cmd_plus_args[0], "./", 2) || !ft_strncmp(cmd_plus_args[0], "/", 1) 
+			|| (is_last_char(cmd_plus_args[0], '/')))	&& S_ISDIR(check_dir.st_mode))
 		{
-			if (execve(cmd_plus_args[0], cmd_plus_args, env) == -1)
-				return ;
-				//exit(127);
+			execve(cmd_plus_args[0], cmd_plus_args, env);
+			{
+			if (errno == EACCES)
+				return (126);
+			else
+				return (EXIT_FAILURE);
+			}
 		}
-		cmd_path = get_path(cmd_plus_args[0], env);
-		if (!cmd_path)
-			return ;
-			//exit(127);
-		if (execve(cmd_path, cmd_plus_args, env) == -1)
-		{
-			free(cmd_path);
-			return ;
-			//exit(127);
-		}
-	// }
+	}
+	// new && 
+	if (access(cmd_plus_args[0], F_OK | X_OK) == 0 && stat((cmd_plus_args[0]), &check_dir) != 0)
+	{
+		//printf("access(cmd_plus_args[0], F_OK | X_OK) == 0\n");
+		execve(cmd_plus_args[0], cmd_plus_args, env);
+		if (errno == ENOENT)
+			return (127);
+		else if (errno == EACCES)
+			return (126);
+		else
+			return (EXIT_FAILURE);
+	}
+
+	//printf("get cmd_path\n");
+	cmd_path = get_path(cmd_plus_args[0], env);
+	if (!cmd_path)
+		return (127);
+	execve(cmd_path, cmd_plus_args, env);
+	if (errno == EACCES)
+	{
+		free(cmd_path);
+		return(126);
+	}
+	else
+	{
+		free(cmd_path);
+		return (EXIT_FAILURE);
+	}
 }

@@ -98,7 +98,9 @@ int	w_waitpid(t_big *big)
 	while (curr != NULL)
 	{
 		comm_info = curr->content;
-		waitpid(comm_info->id, &status, 0);
+		/// NEW
+		if (comm_info->id != -1)
+			waitpid(comm_info->id, &status, 0);
 		if (WIFSIGNALED(status))
 		{
 			if ((WTERMSIG(status) == 2 || WTERMSIG(status) == 3) && !signaled)

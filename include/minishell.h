@@ -259,7 +259,7 @@ void	exe_child_builtin(t_data *comm_info, t_big *big);
 int		fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big);
 //execution/execute_1.c
-void	exe_child_binary(char **cmd_plus_args, char *env[]);
+int		exe_child_binary(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
 char	*get_all_folders(const char *env_var_path, char **env);
 char	*build_cmd_path(const char *folder, const char *cmd_name);
@@ -281,4 +281,5 @@ void	print_stderr(char *what_error);
 // Utils
 //utils_strings/utils_string.c
 int		is_exact_string(const char *str_org, char *str_cmp);
+int		is_last_char(const char *str, char c);
 #endif
