@@ -161,8 +161,6 @@ static void	ft_executer_loop_loop(t_big *big, t_list *curr, char *prompt)
 {
 	t_data	*comm_info_next;
 	t_data	*comm_info;
-	
-	t_list	*curr_to_close_fd = curr;
 
 	while (curr != NULL)
 	{
@@ -181,40 +179,8 @@ static void	ft_executer_loop_loop(t_big *big, t_list *curr, char *prompt)
 			else
 				process_binary_and_child_builtin(big, comm_info, comm_info_next);
 		}
-		// if (comm_info->fd_infile > 2)
-		// {
-		// 	close(comm_info->fd_infile);
-		// }
-		// if (comm_info->in_heredoc == true)
-		// 	delete_heredoc(comm_info);
-		// if (comm_info->fd_outfile > 2)
-		// 	close(comm_info->fd_outfile);
-		// if (comm_info->fd_outfile > 2)
-		// {
-		// 	printf("OUT %d is closed in parent\n", comm_info->fd_outfile);
-		// 	close(comm_info->fd_outfile);
-		// }
-		// if (comm_info->in_heredoc == true)
-		// 	delete_heredoc(comm_info);
 		curr = curr->next;
 	}
-	/// to close all fd and delete AFTER whole execution
-	while (curr_to_close_fd != NULL)
-	{
-		comm_info = curr_to_close_fd->content;
-
-		if (comm_info->fd_infile > 2)
-			close(comm_info->fd_infile);
-		if (comm_info->fd_outfile > 2)
-		{
-			//printf("OUT %d is closed in parent\n", comm_info->fd_outfile);
-			close(comm_info->fd_outfile);
-		}
-		if (comm_info->in_heredoc == true)
-			delete_heredoc(comm_info);
-		curr_to_close_fd = curr_to_close_fd->next;
-	}
-
 }
 
 static void	ft_executer_loop(t_big *big, char *prompt)
@@ -246,6 +212,31 @@ int ft_executer(t_big *big, char *prompt)
 	ft_executer_loop(big, prompt);
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
+
+	/// to close all fd and delete AFTER  child processes
+	/// are done
+	t_list	*curr;
+	if (big->cmdlist)
+		curr = big->cmdlist;
+	// else
+	// 	return ;
+	while (curr != NULL)
+	{
+		t_data	*comm_info;
+		comm_info = curr->content;
+
+		if (comm_info->fd_infile > 2)
+			close(comm_info->fd_infile);
+		if (comm_info->fd_outfile > 2)
+			close(comm_info->fd_outfile);
+		if (comm_info->fd_pipe[0] > 2)
+			close(comm_info->fd_pipe[0]);
+		if (comm_info->in_heredoc == true)
+			delete_heredoc(comm_info);
+		curr = curr->next;
+	}
+
+
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
 	return (0);

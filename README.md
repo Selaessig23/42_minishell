@@ -73,3 +73,16 @@ It is - export, unset, cd and exit. Hence the bash checks executes them in child
 
 > We do not execute this part of built-ins in child processes at all. (Because ...)
 
+### Pipeline flow
+> Closing of pipe ends.
+I changed execution part because of "Process terminating with the default action of signal 13 (SIGPIPE)". Ensure the parent keeps the read end of the pipe open as long as the child might still be writing.  Cosing the read end of the parent process after waitpid.
+
+I've added int *pipe_fd in t_data struct. Assign -1 as a default value.
+Initiation of `t_data` in `init_comm` function.
+
+I close all fds of parent processes including pipe_fd AFTER waitpid, because even the unused read end of the pipe must remain open until the child finishes writing or exits to avoid signal 13 (SIGPIPE) aka broken pipe.
+
+### Big files
+"Writing more data than the pipe can hold"
+We didn't implement this case. 
+

@@ -89,6 +89,7 @@ typedef struct s_data {
 	bool	out_append;
 	int		fd_infile;
 	int		fd_outfile;
+	int		fd_pipe[2];
 	char	**cmd;
 	size_t	commands_no;
 	pid_t	id;
@@ -252,19 +253,20 @@ int		ft_executer(t_big *big, char *prompt);
 //execution/exe_built-ins.c
 void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt);
 int		fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, t_big *big);
-void	setup_and_exe_builtin_in_child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd);
+void	setup_and_exe_builtin_in_child(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	exe_child_builtin(t_data *comm_info, t_big *big);
 //execution/exe_binary.c
 int		fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big);
-void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd);
+void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big);
 //execution/execute_1.c
 void	exe_child_binary(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
 char	*get_all_folders(const char *env_var_path, char **env);
 char	*build_cmd_path(const char *folder, const char *cmd_name);
 //execution/execute_2.c
-void	fd_cleanup_in_child(t_big *big, int fd_write_end);
-void	setup_input_output(t_data *comm_info, t_data *c_i_next, int fd_write_end);
+void	fd_cleanup_in_child(t_big *big);
+void	fd_cleanup_read_end_in_child(t_big *big);
+void	setup_input_output(t_data *comm_info, t_data *c_i_next);
 
 void	fd_cleaning_child(t_big *big, t_data *to_close_fd);
 

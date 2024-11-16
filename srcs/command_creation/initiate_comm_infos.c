@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initiate_comm_infos.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:52:23 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/14 10:52:26 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/16 03:49:39 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static void	init_comm(t_data **p_comm_info, t_list *lexx)
 	comm_info->fd_infile = 0;
 	comm_info->out_append = false;
 	comm_info->fd_outfile = 1;
+	comm_info->fd_pipe[0] = -1;
+	comm_info->fd_pipe[1] = -1;
 	comm_info->id = 0;
 }
 

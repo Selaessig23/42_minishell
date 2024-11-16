@@ -1,15 +1,38 @@
 #include "minishell.h"
 
-void	setup_input_output(t_data *comm_info, t_data *c_i_next, int fd_write_end)
+void	setup_input_output(t_data *comm_info, t_data *c_i_next)
 {
 	if (comm_info->fd_infile > 0)
+	{
+		// ft_dprintf("%s\n", comm_info->cmd[0]);
+		// ft_dprintf("comm_info->fd_infile: %d\n", comm_info->fd_infile);
+		// ft_dprintf("comm_info->fd_outfile: %d\n", comm_info->fd_outfile);
 		dup2(comm_info->fd_infile, STDIN_FILENO);
+	}
 	if (comm_info->fd_outfile > 1)
 		dup2(comm_info->fd_outfile, STDOUT_FILENO);
 	if (c_i_next != NULL)
 	{
 		if (comm_info->fd_outfile == 1)
-			dup2(fd_write_end, STDOUT_FILENO);
+			dup2(comm_info->fd_pipe[1], STDOUT_FILENO);
+	}
+}
+
+void	fd_cleanup_read_end_in_child(t_big *big)
+{
+	t_list	*linked_list;
+	t_data	*comm_info;
+
+	linked_list = big->cmdlist;
+	comm_info = NULL;
+	while (linked_list != NULL)
+	{
+		comm_info = linked_list->content;
+		if (comm_info->fd_pipe[0] > 2)
+		{
+			close(comm_info->fd_pipe[0]);
+		}
+		linked_list = linked_list->next;
 	}
 }
 
@@ -18,37 +41,23 @@ void	setup_input_output(t_data *comm_info, t_data *c_i_next, int fd_write_end)
  * child procces. Current node is in used, so closing from the
  * next node if it is not NULL.
  */
-void	fd_cleanup_in_child(t_big *big, int fd_write_end)
+void	fd_cleanup_in_child(t_big *big)
 {
 	t_list	*linked_list;
-	t_data	*node;
+	t_data	*comm_info;
 
 	linked_list = big->cmdlist;
-	node = NULL;
-	// while (linked_list != NULL)
-	// {
-	// 	node = linked_list->content;
-	// 	if (node == to_close_fd)
-	// 		break ;
-	// 	// if (node != to_close_fd)
-	// 	linked_list = linked_list->next;
-	// }
+	comm_info = NULL;
 	while (linked_list != NULL)
 	{
-		node = linked_list->content;
-		if (node->fd_infile > 2)
-			close(node->fd_infile);
-		if (node->fd_outfile > 2)
-		{
-			//ft_dprintf("%d is closed in child\n", node->fd_outfile);
-			close(node->fd_outfile);
-		}
+		comm_info = linked_list->content;
+		if (comm_info->fd_infile > 2)
+			close(comm_info->fd_infile);
+		if (comm_info->fd_outfile > 2)
+			close(comm_info->fd_outfile);
+		if (comm_info->fd_pipe[1] > 2)
+			close(comm_info->fd_pipe[1]);
 		linked_list = linked_list->next;
-	}
-	//ft_dprintf("closing pipe %d in a child\n", fd_write_end);
-	if (close(fd_write_end) == -1)
-	{
-		close_fd_with_error_handling();
 	}
 }
 

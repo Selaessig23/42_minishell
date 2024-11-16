@@ -48,15 +48,14 @@ void	w_dup2(int dupfd, int newfd, int fd_open)
 		close(dupfd);
 }
 
-void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big, int *fd)
+void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big)
 {
 	ft_handle_signals_childs();
-	close(fd[0]);
-	//fd_cleaning_child(big, c_i_next);
-	setup_input_output(comm_info, c_i_next, fd[1]);
+
+	setup_input_output(comm_info, c_i_next);
+	fd_cleanup_read_end_in_child(big);
 	if (c_i_next == NULL && comm_info->fd_infile == 0 && comm_info->fd_outfile == 1)
 	{
-		// if ()
 		exe_child_binary(comm_info->cmd, big->env);
 		//fd_cleanup_in_child(big, comm_info, fd[1]);
 	}
@@ -65,16 +64,8 @@ void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *b
 		exe_child_binary(comm_info->cmd, big->env);
 		//fd_cleanup_in_child(big, comm_info, fd[1]);
 	}
-	// if (comm_info->fd_outfile >= 3)
-	// 	close(comm_info->fd_outfile);
-	// if (comm_info->fd_infile > 0)
-	// 	close(comm_info->fd_infile);
-	// if (close(fd[1]) == -1)
-	// 	close_fd_with_error_handling();
-	fd_cleanup_in_child(big, fd[1]);
-
+	fd_cleanup_in_child(big);
 	exit(127);
-	//return (0);
 }
 
 /**
@@ -96,37 +87,29 @@ int	fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big)
 
 	if (pipe(fd) == -1)
 		w_errpipe_close(comm_info->fd_infile);
+	comm_info->fd_pipe[0] = fd[0];
+	comm_info->fd_pipe[1] = fd[1];
+
+	if (c_i_next != NULL)
+	{
+		if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
+			c_i_next->fd_infile = dup(fd[0]);
+		else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
+			c_i_next->fd_infile = open("/dev/null", O_RDONLY);
+	}
+
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
 		w_errfork_close(comm_info->fd_infile, fd);
 	if (pid == 0)
 	{
-		setup_and_exe_binary_in_child(comm_info, c_i_next, big, fd);
-		//return (-1);
+		setup_and_exe_binary_in_child(comm_info, c_i_next, big);
 	}
-	else if (pid != 0)
-	{
-		close(fd[1]);
-		if (c_i_next != NULL)
-		{
-			if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
-				c_i_next->fd_infile = fd[0];
-			else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
-			{
-				close(fd[0]);
-				c_i_next->fd_infile = open("/dev/null", O_RDONLY);
-			}
-			else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile > 2)
-			{
-				close(fd[0]);
-			}
-		}
-		else if (c_i_next == NULL)
-		{
-			close(fd[0]);
-		}
-	}
+
+	close(fd[1]);
+	
+
 	comm_info->id = pid;
 	return (0);
 }
