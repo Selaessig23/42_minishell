@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:43:45 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/16 06:53:16 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/16 07:02:37 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, t_big *big)
 	
 	
 	signal(SIGINT, SIG_IGN);
+	signal(SIGPIPE, SIG_IGN); /// new new new
 	pid = fork();
 	if (pid == -1)
 		w_errfork_close(comm_info->fd_infile, comm_info->fd_pipe);
@@ -117,9 +118,8 @@ int	fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, t_big *big)
 		else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
 			c_i_next->fd_infile = open("/dev/null", O_RDONLY);
 	}
-
-	if (comm_info->fd_pipe[0] > 2)
-		close(comm_info->fd_pipe[0]);
+	
+	close(comm_info->fd_pipe[0]);
 		
 	comm_info->id = pid;
 	return (0);

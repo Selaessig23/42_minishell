@@ -180,7 +180,7 @@ static void	ft_executer_loop_loop(t_big *big, t_list *curr, char *prompt)
 				process_binary_and_child_builtin(big, comm_info, comm_info_next);
 		}
 
-		// BACK BACK BACK
+		// It must be here due to Lucas test
 		if (comm_info->fd_infile > 2)
 			close(comm_info->fd_infile);
 		if (comm_info->fd_outfile > 2)

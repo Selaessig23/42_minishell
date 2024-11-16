@@ -94,6 +94,7 @@ int	fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big)
 		w_errpipe_close(comm_info->fd_infile);
 
 	signal(SIGINT, SIG_IGN);
+	signal(SIGPIPE, SIG_IGN); // new new new
 	pid = fork();
 	if (pid == -1)
 		w_errfork_close(comm_info->fd_infile, comm_info->fd_pipe);
@@ -113,8 +114,7 @@ int	fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big)
 			c_i_next->fd_infile = open("/dev/null", O_RDONLY);
 	}
 	
-	if (comm_info->fd_pipe[0] > 2)
-		close(comm_info->fd_pipe[0]);
+	close(comm_info->fd_pipe[0]);
 
 	comm_info->id = pid;
 	return (0);
