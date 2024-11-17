@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 18:39:16 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/17 18:42:13 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/17 22:57:30 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ char	*build_cmd_path(const char *folder, const char *cmd_name)
 	temp = ft_strjoin(folder, "/");
 	if (!temp)
 	{
-		print_stderr("malloc");
+		perror("malloc");
 		return (NULL);
 	}
 	cmd_path = ft_strjoin(temp, cmd_name);
 	free(temp);
 	if (!cmd_path)
-		print_stderr("malloc");
+		perror("malloc");
 	return (cmd_path);
 }

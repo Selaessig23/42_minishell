@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exe_binary.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/17 23:17:31 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/17 23:17:31 by mpeshko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -21,7 +32,8 @@ int	dev_null(int read_from)
 	return (read_from);
 }
 
-void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big)
+void	setup_and_exe_binary_in_child(t_data *comm_info, 
+	t_data *c_i_next, t_big *big)
 {
 	int	exit_code;
 
@@ -48,12 +60,11 @@ void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *b
  */
 int	fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big)
 {
-	pid_t pid;
-	
+	pid_t	pid;
+
 	if (pipe(comm_info->fd_pipe) == -1)
 		w_errpipe_close(comm_info->fd_infile);
 	signal(SIGINT, SIG_IGN);
-	// new new new
 	signal(SIGPIPE, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
@@ -61,7 +72,6 @@ int	fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big)
 	if (pid == 0)
 		setup_and_exe_binary_in_child(comm_info, c_i_next, big);
 	close(comm_info->fd_pipe[1]);
-	// this is must be after fork or after close(comm_info->fd_pipe[1]... WHY?
 	if (c_i_next != NULL)
 	{
 		if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
@@ -69,9 +79,6 @@ int	fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big)
 		else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
 			c_i_next->fd_infile = open("/dev/null", O_RDONLY);
 	}
-	// must be bash error = ( Broken pipe)
-	// in this case  cat <"./test_files/infile" | echo hi
-	// that's why I close it before waitpid
 	close(comm_info->fd_pipe[0]);
 	comm_info->id = pid;
 	return (0);

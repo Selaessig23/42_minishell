@@ -28,7 +28,6 @@ void	setup_input_output_in_child(t_data *comm_info, t_data *c_i_next)
 		dup2(comm_info->fd_infile, STDIN_FILENO);
 	if (comm_info->fd_outfile > 1)
 		dup2(comm_info->fd_outfile, STDOUT_FILENO);
-	
 }
 
 void	fd_cleanup_read_end_in_child(t_big *big)

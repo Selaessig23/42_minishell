@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 22:23:23 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/17 22:53:27 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/17 23:19:34 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = (ft_lstlast(cmdlist))->content;
-	if (big->exit_code == 999)
-		big->exit_code = 127; /// It was 126
-	else if (data->fd_infile < 0 || data->fd_outfile < 0)
+	if (data->fd_infile < 0 || data->fd_outfile < 0)
 		return ;
 	else
 	{
@@ -28,7 +26,8 @@ void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 	}
 }
 
-static int	w_waitpid(t_data *comm_info, int status, bool signaled, int *exitcode)
+static int	w_waitpid(t_data *comm_info, int status, 
+	bool signaled, int *exitcode)
 {
 	if (comm_info->id != -1)
 	{
@@ -71,7 +70,7 @@ int	get_exit_status_waitpid(t_big *big)
 	int		status;
 	t_data	*comm_info;
 	bool	signaled;
-	
+
 	exitcode = 0;
 	status = -1;
 	curr = big->cmdlist;

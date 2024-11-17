@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 18:28:11 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/17 18:42:06 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/17 23:07:01 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ char	*get_all_folders(const char *env_var_path, char **env)
 			len++;
 		current_env_var = ft_substr(env[i], 0, len);
 		if (!current_env_var)
-			perror_and_exit("malloc", NULL);
+		{
+			perror("malloc");
+			exit(EXIT_FAILURE);
+		}
 		if (ft_strcmp(current_env_var, env_var_path) == 0)
 		{
 			free(current_env_var);
@@ -85,12 +88,12 @@ char	*get_path(char *cmd_name, char **env)
 	char	*all_folders;
 
 	all_folders = get_all_folders("PATH", env);
-	if(!all_folders)
-		return(NULL);
+	if (!all_folders)
+		return (NULL);
 	folders = ft_split(all_folders, ':');
 	if (!folders)
 	{
-		print_stderr("malloc");
+		perror("malloc");
 		return (NULL);
 	}
 	path = exe_exists(folders, cmd_name);
@@ -122,9 +125,8 @@ int	get_path_from_env_path_and_exe(char **cmd_plus_args, char *env[])
 	}
 	if (errno == EACCES)
 	{
-		return(126);
+		return (126);
 	}
 	else
 		return (EXIT_FAILURE);
 }
-

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exe_binary_child_0.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/17 23:14:39 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/17 23:14:39 by mpeshko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -5,12 +16,12 @@ static int	ft_execve_no_free(char *cmd, char **cmd_plus_args, char *env[])
 {
 	execve(cmd, cmd_plus_args, env);
 	{
-	if (errno == ENOENT)
-		return (127);
-	else if (errno == EACCES)
-		return (126);
-	else
-		return (EXIT_FAILURE);
+		if (errno == ENOENT)
+			return (127);
+		else if (errno == EACCES)
+			return (126);
+		else
+			return (EXIT_FAILURE);
 	}
 }
 
@@ -30,7 +41,7 @@ static int	is_command_directory(char *cmd)
 	if (stat((cmd), &check_dir) == 0)
 	{
 		if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1) 
-			|| (is_last_char(cmd, '/'))) && S_ISDIR(check_dir.st_mode))
+				|| (is_last_char(cmd, '/'))) && S_ISDIR(check_dir.st_mode))
 			return (1);
 		else
 			return (0);
@@ -60,7 +71,7 @@ static int	is_just_name_of_directory(const char *cmd_is_name_of_directory)
  */
 static int	is_absolute_path_to_exe(const char *cmd)
 {
-	if (access(cmd, F_OK | X_OK) == 0 )
+	if (access(cmd, F_OK | X_OK) == 0)
 	{
 		if (is_absolute_path(cmd, "/", 1))
 		{

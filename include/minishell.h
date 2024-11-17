@@ -295,8 +295,7 @@ void	ft_ms_executer(char *env[]);
 void	close_fd_with_error_handling();
 void	w_errpipe_close(int open_fd);
 void	w_errfork_close(int open_fd, int *pipe_fd);
-void	perror_and_exit(char *what_error, int *pipe_fd);
-void	print_stderr(char *what_error);
+void	w_dup2(int dupfd, int newfd);
 //execution/exe_utils.c
 int		is_absolute_path(const char *str, const char *str_cmp, int nmb);
 int		is_attempt_to_execute(const char *str, const char *str_cmp, int nmb);

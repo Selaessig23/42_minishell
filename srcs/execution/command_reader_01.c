@@ -31,7 +31,8 @@ static void	ft_executer_fd_close(t_data	*comm_info)
 		delete_heredoc(comm_info);
 }
 
-static void	process_binary_and_child_builtin(t_big *big, t_data	*comm_info, t_data *comm_info_next)
+static void	exe_bin_ch_built_inval(t_big *big, t_data *comm_info, 
+	t_data *comm_info_next)
 {
 	if (check_child_builtin(comm_info))
 		fork_and_exe_child_builtin(comm_info, comm_info_next, big);
@@ -41,7 +42,6 @@ static void	process_binary_and_child_builtin(t_big *big, t_data	*comm_info, t_da
 	}
 	else
 	{
-		// for case `catttt | grep "hello"` etc.
 		if (comm_info_next && comm_info_next->fd_infile == 0)
 			comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
 		fork_and_exe_binary(comm_info, comm_info_next, big);
@@ -68,7 +68,7 @@ static void	ft_executer_loop(t_big *big, t_list *curr, char *prompt)
 				exe_parent_builtin(comm_info, big, prompt);
 			}
 			else
-				process_binary_and_child_builtin(big, comm_info, comm_info_next);
+				exe_bin_ch_built_inval(big, comm_info, comm_info_next);
 		}
 		ft_executer_fd_close(comm_info);
 		curr = curr->next;
@@ -85,7 +85,7 @@ static void	ft_executer_loop(t_big *big, t_list *curr, char *prompt)
  * for execution part like cmdlist, env, last exit status
  * @param prompt string that has to be freed in case of builtin exit
  */
-int ft_executer(t_big *big, char *prompt)
+int	ft_executer(t_big *big, char *prompt)
 {
 	int		exit_status_binary;
 	t_list	*curr;

@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:43:45 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/17 22:28:49 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/17 23:17:04 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 // export, unset, cd, exit
 // execution IF exe is true
 // if exe is false - checking for errors and exit assigns exit code
-void exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt)
+void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt)
 {
-	char **argv;
+	char	**argv;
 
 	argv = comm_info->cmd;
 	if (argv[0])
@@ -45,9 +45,9 @@ void exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt)
  * that have to be freed in case of builtin exit
  * @param prompt string that has to be freed in case of builtin exit
  */
-void exe_child_builtin(t_data *comm_info, t_big *big)
+void	exe_child_builtin(t_data *comm_info, t_big *big)
 {
-	char **argv;
+	char	**argv;
 
 	argv = comm_info->cmd;
 	if (argv[0])
@@ -63,12 +63,12 @@ void exe_child_builtin(t_data *comm_info, t_big *big)
 	}
 }
 
-void	setup_and_exe_builtin_in_child(t_data *comm_info, t_data *c_i_next, t_big *big)
+void	setup_and_exe_builtin_in_child(t_data *comm_info, 
+	t_data *c_i_next, t_big *big)
 {
 	ft_handle_signals_childs();
-	
 	setup_input_output_in_child(comm_info, c_i_next);
-	fd_cleanup_read_end_in_child(big); /// new
+	fd_cleanup_read_end_in_child(big);
 	if (c_i_next == NULL)
 	{
 		if (comm_info->fd_infile == 0 && comm_info->fd_outfile == 1)
@@ -85,12 +85,11 @@ void	setup_and_exe_builtin_in_child(t_data *comm_info, t_data *c_i_next, t_big *
 
 int	fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, t_big *big)
 {
-	pid_t pid;
-	
+	pid_t	pid;
+
 	if (pipe(comm_info->fd_pipe) == -1)
 		w_errpipe_close(comm_info->fd_infile);
 	signal(SIGINT, SIG_IGN);
-	/// new new new
 	signal(SIGPIPE, SIG_IGN); 
 	pid = fork();
 	if (pid == -1)
@@ -98,7 +97,6 @@ int	fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, t_big *big)
 	if (pid == 0)
 		setup_and_exe_builtin_in_child(comm_info, c_i_next, big);
 	close(comm_info->fd_pipe[1]);
-	// this is must be after fork or after close(comm_info->fd_pipe[1]... WHY?
 	if (c_i_next != NULL)
 	{
 		if (comm_info->fd_outfile == 1 && c_i_next->fd_infile == 0)
@@ -106,9 +104,6 @@ int	fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, t_big *big)
 		else if (comm_info->fd_outfile > 1 && c_i_next->fd_infile == 0)
 			c_i_next->fd_infile = open("/dev/null", O_RDONLY);
 	}
-	// must be bash error = ( Broken pipe)
-	// in this case  cat <"./test_files/infile" | echo hi
-	// that's why I close it before waitpid
 	close(comm_info->fd_pipe[0]);
 	comm_info->id = pid;
 	return (0);

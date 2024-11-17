@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:43:57 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/17 18:29:48 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/17 23:20:11 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,16 @@ void	ft_ms_executer(char *env[])
 }
 
 /**
- * Function checks if the command cmd is exactly "./minishell". If so, 
- * it executes the `ft_ms_executer` function.
+ * Function checks if the command cmd is exactly "./minishell".
+ * If so, it executes the `ft_ms_executer` function.
  * 
  * If the command is not "./minishell", it simply returns 1.
  * 
  * The condition cmd[ft_strlen("./minishell")] == '\0' checks if the string 
- * cmd has exactly the content ./minishell, with no additional characters after it.
+ * cmd has exactly the content ./minishell, with no additional characters 
+ * after it.
  */
-int is_minishell_command(char *cmd, char *env[])
+int	is_minishell_command(char *cmd, char *env[])
 {
 	if (!ft_strncmp(cmd, "./minishell", ft_strlen("./minishell"))
 		&& cmd[ft_strlen("./minishell")] == '\0')
