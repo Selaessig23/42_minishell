@@ -16,7 +16,6 @@
  * file to read from cmdlist and organises execution of
  * builtin-functions as well as system-fuctions (binaries)
  */
-
 static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 {
 	t_data *data;
@@ -31,6 +30,20 @@ static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 		if (!check_parent_builtin(data))
 			big->exit_code = exit_status_binar;
 	}
+}
+
+/**
+ * Closing file descriptors in parent process in current
+ * t_data struct before next iteration of the executer loop.
+ */
+static void	ft_executer_fd_close(t_data	*comm_info)
+{
+	if (comm_info->fd_infile > 2)
+		close(comm_info->fd_infile);
+	if (comm_info->fd_outfile > 2)
+		close(comm_info->fd_outfile);
+	if (comm_info->in_heredoc == true)
+		delete_heredoc(comm_info);
 }
 
 static void	process_binary_and_child_builtin(t_big *big, t_data	*comm_info, t_data *comm_info_next)
@@ -50,7 +63,7 @@ static void	process_binary_and_child_builtin(t_big *big, t_data	*comm_info, t_da
 	}
 }
 
-static void	ft_executer_loop_loop(t_big *big, t_list *curr, char *prompt)
+static void	ft_executer_loop(t_big *big, t_list *curr, char *prompt)
 {
 	t_data	*comm_info_next;
 	t_data	*comm_info;
@@ -72,26 +85,9 @@ static void	ft_executer_loop_loop(t_big *big, t_list *curr, char *prompt)
 			else
 				process_binary_and_child_builtin(big, comm_info, comm_info_next);
 		}
-		// It must be here due to Lucas test
-		if (comm_info->fd_infile > 2)
-			close(comm_info->fd_infile);
-		if (comm_info->fd_outfile > 2)
-			close(comm_info->fd_outfile);
-		if (comm_info->in_heredoc == true)
-			delete_heredoc(comm_info);
+		ft_executer_fd_close(comm_info);
 		curr = curr->next;
 	}
-}
-
-static void	ft_executer_loop(t_big *big, char *prompt)
-{
-	t_list	*curr;
-	
-	if (big->cmdlist)
-		curr = big->cmdlist;
-	else
-		return ;
-	ft_executer_loop_loop(big, curr, prompt);
 }
 
 /**
@@ -107,13 +103,13 @@ static void	ft_executer_loop(t_big *big, char *prompt)
 int ft_executer(t_big *big, char *prompt)
 {
 	int		exit_status_binary;
+	t_list	*curr;
 
 	exit_status_binary = -100;
-	ft_executer_loop(big, prompt);
-
+	curr = big->cmdlist;
+	ft_executer_loop(big, curr, prompt);
 	exit_status_binary = w_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
-
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;
 	return (0);
