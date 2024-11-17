@@ -50,7 +50,7 @@ static int	is_command_directory(char *cmd)
  * two strings (str and str_cmp) using ft_strncmp, 
  * and returns 0 if they match, otherwise it returns 1.
  */
-static int	is_attempt_to_execute(const char *str, const char *str_cmp, int nmb)
+int	is_attempt_to_execute(const char *str, const char *str_cmp, int nmb)
 {
 	if (!ft_strncmp(str, str_cmp, nmb))
 		return (1);
@@ -73,8 +73,8 @@ static int	is_just_name_of_directory(const char *cmd_is_name_of_directory)
 }
 
 // When Bash interprets a command that starts with a /, 
-//it is considered an absolute path to a file or directory.
-static int	is_absolute_path(const char *str, const char *str_cmp, int nmb)
+// it is considered an absolute path to a file or directory.
+int	is_absolute_path(const char *str, const char *str_cmp, int nmb)
 {
 	if (!ft_strncmp(str, str_cmp, nmb))
 		return (1);

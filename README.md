@@ -63,7 +63,7 @@ Function "ft_executer"
 
 > checking directories...
 > Markus uses Macro: int S_ISDIR in
-`static int	check_binary_or_invalid_cmd(char **cmd_plus_args, char *env[])`.
+int	is_valid_cmd_and_print_err(char **cmd_plus_args, char *env[])`.
 I need to know more about it.
 This macro returns non-zero if the file is a directory. 
 

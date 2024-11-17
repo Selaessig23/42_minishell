@@ -17,112 +17,6 @@
  * builtin-functions as well as system-fuctions (binaries)
  */
 
-/**
- * @brief helper functin of no_cmd_path
- * st.st_mode & S_IFMT = 
- * This extracts the file type from the st_mode field by masking the mode bits 
- * with S_IFMT, which is the bitmask for the file type
-*/
-static int	ft_check_executable(char *executable)
-{
-	if (access(executable, F_OK))
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(executable, STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		return (0);
-	}
-	else if (access(executable, R_OK))
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(executable, STDERR_FILENO);
-		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
-		return (1);
-	}
-	return (0);
-}
-
-/**
- * Prints a specific error message to standard error 
- * when a command is not found in the system's executable paths.
- * 
- * @param cmd_plus_args[0] The first element of **cmd_plus_args 
- * is the command.
- */
-static int	no_cmd_path(char **cmd_plus_args, char **binarypaths)
-{
-	if (!ft_strncmp(cmd_plus_args[0], "./", 2))
-		return (ft_check_executable(cmd_plus_args[0]));
-	else if (!ft_strncmp(cmd_plus_args[0], "/", 1))
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory", STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
-		return (0);
-	}
-	else
-	{
-		ft_check_defaultpath(cmd_plus_args[0], binarypaths);
-		ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
-		ft_putstr_fd(": command not found", STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
-		return (0); /// it was 0 - means do not execute
-		//return (1); /// let's try execute invalid command
-	}
-
-}
-
-/**
- * It explicitly prints an error message 
- * (via "no_cmd_path") if the command cannot be found.
- */
-static int	check_binary_or_invalid_cmd(char **cmd_plus_args, t_big *big)
-{
-	char		*cmd_path;
-	struct stat	check_dir;
-    
-	char **c_env = big->env;
-	char **binarypaths = big->binarypaths;
-	// Check if it's a directory
-	if (stat((cmd_plus_args[0]), &check_dir) == 0)
-	{
-		// printf ("mhhh: %s\n", cmd_plus_args[0]);
-		/// NEW NEW NEW (!is_last_char(cmd_plus_args[0], "/")))
-		if ((!ft_strncmp(cmd_plus_args[0], "./", 2) || !ft_strncmp(cmd_plus_args[0], "/", 1)
-			|| (is_last_char(cmd_plus_args[0], '/'))) && S_ISDIR(check_dir.st_mode))
-		{
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
-			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
-			return (1);
-		}
-		else if (S_ISDIR(check_dir.st_mode))
-		{
-			ft_putstr_fd(cmd_plus_args[0], STDERR_FILENO);
-			ft_putstr_fd(": command not found", STDERR_FILENO);
-			ft_putstr_fd("\n", STDERR_FILENO);
-			/// !!! return (0) in main
-			return (1);
-		}
-	}
-	if (access(cmd_plus_args[0], F_OK | X_OK) == 0)
-		return (0);
-	cmd_path = get_path(cmd_plus_args[0], c_env);
-	if (!cmd_path)
-	{
-		if (!no_cmd_path(cmd_plus_args, binarypaths))
-			return (1);
-		else
-			return (0);
-	}
-	else
-	{
-		free(cmd_path);
-		return (0);
-	}
-}
-
 static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 {
 	t_data *data;
@@ -143,21 +37,15 @@ static void	process_binary_and_child_builtin(t_big *big, t_data	*comm_info, t_da
 {
 	if (check_child_builtin(comm_info))
 		fork_and_exe_child_builtin(comm_info, comm_info_next, big);
-	else if (!check_binary_or_invalid_cmd(comm_info->cmd, big))
+	else if (is_valid_cmd_and_print_err(comm_info->cmd, big))
 	{
 		fork_and_exe_binary(comm_info, comm_info_next, big);
 	}
-	/// case 127 means the command was not found at all.
-
-	/// case 126 indicates that a command was found, but it is not executable
-	/// Permission Denied
-	// Directory as a Command
 	else
 	{
 		// for case `catttt | grep "hello"` etc.
 		if (comm_info_next && comm_info_next->fd_infile == 0)
 			comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
-		/// execution of invalid command
 		fork_and_exe_binary(comm_info, comm_info_next, big);
 	}
 }

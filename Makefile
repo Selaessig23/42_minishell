@@ -61,6 +61,7 @@ SRCS =	main.c \
 		builtins/help.c \
 		signals.c \
 		execution/command_reader.c \
+		execution/command_reader_print_error.c \
 		execution/exe_binary.c \
 		execution/exe_built-ins.c \
 		execution/exe_binary_child_0.c \

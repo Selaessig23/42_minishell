@@ -27,7 +27,7 @@
 # include <sys/ioctl.h>
 //to change behaviour of the terminal (not-printing all control squences)
 # include <termios.h>
-// for S_ISDIR macro in check_binary_or_invalid_cmd function
+// for S_ISDIR macro in is_valid_cmd_and_print_err function
 # include <sys/stat.h>
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments\
@@ -250,6 +250,10 @@ void	ft_handle_signals_childs(void);
 // EXECUTION
 //execution/command_reader.c
 int		ft_executer(t_big *big, char *prompt);
+//execution/command_reader_print_error.c
+int		is_valid_cmd_and_print_err(char **cmd_plus_args, t_big *big);
+
+
 //execution/exe_built-ins.c
 void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt);
 int		fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, t_big *big);
@@ -260,6 +264,8 @@ int		fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big);
 //execution/exe_binary_child_0.c
 int		exe_child_binary(char **cmd_plus_args, char *env[]);
+int		is_attempt_to_execute(const char *str, const char *str_cmp, int nmb);
+int		is_absolute_path(const char *str, const char *str_cmp, int nmb);
 
 //execution/exe_binary_child_1.c
 int		get_path_from_env_path_and_exe(char **cmd_plus_args, char *env[]);
