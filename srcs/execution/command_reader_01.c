@@ -11,27 +11,12 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 /**
  * DESCRIPTION:
  * file to read from cmdlist and organises execution of
  * builtin-functions as well as system-fuctions (binaries)
  */
-static void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
-{
-	t_data *data;
-
-	data = (ft_lstlast(cmdlist))->content;
-	if (big->exit_code == 999)
-		big->exit_code = 127; /// It was 126
-	else if (data->fd_infile < 0 || data->fd_outfile < 0)
-		return ;
-	else
-	{
-		if (!check_parent_builtin(data))
-			big->exit_code = exit_status_binar;
-	}
-}
-
 /**
  * Closing file descriptors in parent process in current
  * t_data struct before next iteration of the executer loop.

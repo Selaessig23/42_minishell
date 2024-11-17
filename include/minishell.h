@@ -248,8 +248,11 @@ int		ft_handle_signals(bool rl_antes);
 void	ft_handle_signals_childs(void);
 
 // EXECUTION
-//execution/command_reader.c
+//execution/command_reader_01.c
 int		ft_executer(t_big *big, char *prompt);
+//execution/command_reader_02.c
+int		w_waitpid(t_big *big);
+void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big);
 //execution/command_reader_print_err_01.c
 int		is_valid_cmd_and_print_err(char **cmd_plus_args, t_big *big);
 //execution/command_reader_print_err_02.c
@@ -278,11 +281,10 @@ char	*get_all_folders(const char *env_var_path, char **env);
 char	*build_cmd_path(const char *folder, const char *cmd_name);
 char	*exe_exists(char **folders, char *cmd_name);
 
-//execution/execute_2.c
+//execution/exe_child_fd_setup_cleanup.c
 void	fd_cleanup_in_child(t_big *big);
 void	fd_cleanup_read_end_in_child(t_big *big);
-void	setup_input_output(t_data *comm_info, t_data *c_i_next);
-int		w_waitpid(t_big *big);
+void	setup_input_output_in_child(t_data *comm_info, t_data *c_i_next);
 
 //execution/minishell_executer.c
 int		is_minishell_command(char *cmd, char *env[]);

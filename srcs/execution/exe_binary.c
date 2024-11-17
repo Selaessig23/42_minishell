@@ -27,7 +27,7 @@ void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *b
 
 	exit_code = -1;
 	ft_handle_signals_childs();
-	setup_input_output(comm_info, c_i_next);
+	setup_input_output_in_child(comm_info, c_i_next);
 	fd_cleanup_read_end_in_child(big);
 	exit_code = exe_child_binary(comm_info->cmd, big->env);
 	fd_cleanup_in_child(big);
