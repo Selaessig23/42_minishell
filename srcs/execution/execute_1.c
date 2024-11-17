@@ -245,14 +245,13 @@ static int	is_just_name_of_directory(const char *cmd_is_name_of_directory)
 
 	if (stat((cmd_is_name_of_directory), &check_dir) == 0)
 	{
-		if (S_ISDIR(check_dir.st_mode)) // access(cmd_plus_args[0], F_OK | X_OK) == 0 && stat((cmd_plus_args[0]), &check_dir) != 0
+		if (S_ISDIR(check_dir.st_mode))
 		{
-			return (0);
-			//return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
+			return (1);
 		}
-		return (1);
+		return (0);
 	}
-	return (1);
+	return (0);
 }
 
 // When Bash interprets a command that starts with a /, 
@@ -282,6 +281,28 @@ static int	is_absolute_path_to_exe(const char *cmd)
 	return (0);
 }
 
+static int	get_path_from_env_path_and_exe(char **cmd_plus_args, char *env[])
+{
+	char	*cmd_path;
+
+	cmd_path = NULL;
+	cmd_path = get_path(cmd_plus_args[0], env);
+	if (!cmd_path)
+		return (127);
+	execve(cmd_path, cmd_plus_args, env);
+	free(cmd_path);
+	if (errno == ENOENT)
+	{
+		return (127);
+	}
+	if (errno == EACCES)
+	{
+		return(126);
+	}
+	else
+		return (EXIT_FAILURE);
+}
+
 /**
  * @brief Executes a command with its arguments, searching for 
  * the executable path.
@@ -292,53 +313,16 @@ static int	is_absolute_path_to_exe(const char *cmd)
  */
 int	exe_child_binary(char **cmd_plus_args, char *env[])
 {
-	// int	exit_code;
-	// exit_code = -14;
-
 	if (!is_minishell_command(cmd_plus_args[0], env))
 		return (0);
 	else if (is_command_directory(cmd_plus_args[0]))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
 	else if (is_attempt_to_execute(cmd_plus_args[0], "./", 2))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
-
 	else if (is_absolute_path_to_exe(cmd_plus_args[0]))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
-	// execute an executable with an absolute path 
-
-	// else if (access(cmd_plus_args[0], F_OK | X_OK) == 0 )
-	// {
-	// 	if (is_absolute_path(cmd_plus_args[0], "/", 1))
-	// 	{
-	// 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
-	// 	}
-	// }
-
-	else if (!is_just_name_of_directory(cmd_plus_args[0]))
+	else if (is_just_name_of_directory(cmd_plus_args[0]))
 		return (127);
-
-	//printf("get cmd_path\n");
-	char	*cmd_path;
-
-	cmd_path = NULL;
-	cmd_path = get_path(cmd_plus_args[0], env);
-	if (!cmd_path)
-		return (127);
-
-	execve(cmd_path, cmd_plus_args, env);
-	if (errno == ENOENT)
-	{
-		free(cmd_path);
-		return (127);
-	}
-	if (errno == EACCES)
-	{
-		free(cmd_path);
-		return(126);
-	}
 	else
-	{
-		free(cmd_path);
-		return (EXIT_FAILURE);
-	}
+		return (get_path_from_env_path_and_exe(cmd_plus_args, env));
 }
