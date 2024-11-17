@@ -258,19 +258,29 @@ void	exe_child_builtin(t_data *comm_info, t_big *big);
 //execution/exe_binary.c
 int		fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big);
-//execution/execute_1.c
+//execution/exe_binary_child_0.c
 int		exe_child_binary(char **cmd_plus_args, char *env[]);
+
+//execution/exe_binary_child_1.c
+int		get_path_from_env_path_and_exe(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
 char	*get_all_folders(const char *env_var_path, char **env);
 char	*build_cmd_path(const char *folder, const char *cmd_name);
+char	*exe_exists(char **folders, char *cmd_name);
+
 //execution/execute_2.c
 void	fd_cleanup_in_child(t_big *big);
 void	fd_cleanup_read_end_in_child(t_big *big);
 void	setup_input_output(t_data *comm_info, t_data *c_i_next);
 int		w_waitpid(t_big *big);
+
 //execution/minishell_executer.c
+int		is_minishell_command(char *cmd, char *env[]);
 void	ft_ms_executer(char *env[]);
-void	ft_overwrite_shlvl(char ***p_env);
+
+//void	ft_overwrite_shlvl(char ***p_env);
+// ????
+
 //execution/exe_error_handling.c
 void	close_fd_with_error_handling();
 void	w_errpipe_close(int open_fd);
@@ -280,6 +290,10 @@ void	print_stderr(char *what_error);
 
 // Utils
 //utils_strings/utils_string.c
+void	ft_freestr(char **lst);
+int		ft_strcmp(const char *s1, const char *s2);
 int		is_exact_string(const char *str_org, char *str_cmp);
 int		is_last_char(const char *str, char c);
+//utils_binary_path/binary_path.c
+char	*build_cmd_path(const char *folder, const char *cmd_name);
 #endif

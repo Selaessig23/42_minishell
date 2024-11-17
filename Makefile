@@ -63,11 +63,13 @@ SRCS =	main.c \
 		execution/command_reader.c \
 		execution/exe_binary.c \
 		execution/exe_built-ins.c \
-		execution/execute_1.c \
+		execution/exe_binary_child_0.c \
+		execution/exe_binary_child_1.c \
 		execution/execute_2.c \
 		execution/minishell_executer.c \
 		execution/exe_error_handling.c \
-		utils_strings/utils_string.c
+		utils_strings/utils_string.c \
+		utils_binary_path/binary_path.c
 
 #libraries
 #add pathes of lib to cflags to find headers easily
