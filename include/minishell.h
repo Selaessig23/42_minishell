@@ -27,7 +27,7 @@
 # include <sys/ioctl.h>
 //to change behaviour of the terminal (not-printing all control squences)
 # include <termios.h>
-// for S_ISDIR macro in check_cmd function
+// for S_ISDIR macro in is_valid_cmd_and_print_err function
 # include <sys/stat.h>
 //define error message
 # define INPUT_ERROR "Not correct number of input arguments\
@@ -89,6 +89,7 @@ typedef struct s_data {
 	bool	out_append;
 	int		fd_infile;
 	int		fd_outfile;
+	int		fd_pipe[2];
 	char	**cmd;
 	size_t	commands_no;
 	pid_t	id;
@@ -215,8 +216,8 @@ void	ft_check_defaultpath(char *binary, char **binarypaths);
 
 // BUILT-INS
 //builtins/builtin_check.c
-int		check_builtin_parent(t_data *comm_info);
-int		check_builtin_other(t_data *comm_info);
+int		check_parent_builtin(t_data *comm_info);
+int		check_child_builtin(t_data *comm_info);
 //builtins/exit.c
 void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
 //builtins/env.c
@@ -247,28 +248,64 @@ int		ft_handle_signals(bool rl_antes);
 void	ft_handle_signals_childs(void);
 
 // EXECUTION
-//execution/command_reader.c
+//execution/command_reader_01.c
 int		ft_executer(t_big *big, char *prompt);
-void	ft_builtin_executer(t_data *comm_info, t_big *big);
-int		ft_builtin_checker(t_data *comm_info);
-//execution/execute_built-ins.c
+//execution/command_reader_02.c
+int		get_exit_status_waitpid(t_big *big);
+void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big);
+//execution/command_reader_print_err_01.c
+int		is_valid_cmd_and_print_err(char **cmd_plus_args, t_big *big);
+//execution/command_reader_print_err_02.c
+int		is_dir_err_handling(char *cmd);
+int		err_handling_executable(char *executable);
+int		is_absolute_path_to_exe_err_handling(char *cmd);
+int		get_path_from_env_or_binarypaths(t_big *big, char **cmd_plus_args);
+
+//execution/exe_built-ins.c
 void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt);
-void	exe_other_builtin(t_data *comm_info, t_big *big);
-//execution/execute_0.c
-int		execute(t_data *comm_info, t_data *c_i_next, t_big *big);
-void	print_stderr(char *what_error);
-void	perror_and_exit(char *what_error, int *pipe_fd);
-//execution/execute_1.c
-void	call_cmd(char **cmd_plus_args, char *env[]);
+int		fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, t_big *big);
+void	setup_and_exe_builtin_in_child(t_data *comm_info, t_data *c_i_next, t_big *big);
+void	exe_child_builtin(t_data *comm_info, t_big *big);
+//execution/exe_binary.c
+int		fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big);
+void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big);
+//execution/exe_binary_child_0.c
+int		exe_child_binary(char **cmd_plus_args, char *env[]);
+
+//execution/exe_binary_child_1.c
+int		get_path_from_env_path_and_exe(char **cmd_plus_args, char *env[]);
 char	*get_path(char *cmd_name, char **env);
 char	*get_all_folders(const char *env_var_path, char **env);
 char	*build_cmd_path(const char *folder, const char *cmd_name);
-//execution/execute_2.c
-int		w_waitpid(t_big *big);
+char	*exe_exists(char **folders, char *cmd_name);
+
+//execution/exe_child_fd_setup_cleanup.c
+void	fd_cleanup_in_child(t_big *big);
+void	fd_cleanup_read_end_in_child(t_big *big);
+void	setup_input_output_in_child(t_data *comm_info, t_data *c_i_next);
+
 //execution/minishell_executer.c
+int		is_minishell_command(char *cmd, char *env[]);
 void	ft_ms_executer(char *env[]);
-void	ft_overwrite_shlvl(char ***p_env);
-// Utils
+
+//void	ft_overwrite_shlvl(char ***p_env);
+// ????
+
+//execution/exe_error_handling.c
+void	close_fd_with_error_handling();
+void	w_errpipe_close(int open_fd);
+void	w_errfork_close(int open_fd, int *pipe_fd);
+void	w_dup2(int dupfd, int newfd);
+//execution/exe_utils.c
+int		is_absolute_path(const char *str, const char *str_cmp, int nmb);
+int		is_attempt_to_execute(const char *str, const char *str_cmp, int nmb);
+
+// General Utils
 //utils_strings/utils_string.c
+void	ft_freestr(char **lst);
+int		ft_strcmp(const char *s1, const char *s2);
 int		is_exact_string(const char *str_org, char *str_cmp);
+int		is_last_char(const char *str, char c);
+//utils_binary_path/binary_path.c
+char	*build_cmd_path(const char *folder, const char *cmd_name);
 #endif

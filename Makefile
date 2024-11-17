@@ -60,13 +60,20 @@ SRCS =	main.c \
 		heredoc.c \
 		builtins/help.c \
 		signals.c \
-		execution/command_reader.c \
-		execution/execute_0.c \
-		execution/execute_1.c \
-		execution/execute_2.c \
+		execution/command_reader_01.c \
+		execution/command_reader_02.c \
+		execution/command_reader_print_err_01.c \
+		execution/command_reader_print_err_02.c \
+		execution/exe_binary.c \
+		execution/exe_built-ins.c \
+		execution/exe_binary_child_0.c \
+		execution/exe_binary_child_1.c \
+		execution/exe_child_fd_setup_cleanup.c \
 		execution/minishell_executer.c \
-		execution/execute_built-ins.c \
-		utils_strings/utils_string.c
+		execution/exe_error_handling.c \
+		execution/exe_utils.c \
+		utils_strings/utils_string.c \
+		utils_binary_path/binary_path.c
 
 #libraries
 #add pathes of lib to cflags to find headers easily

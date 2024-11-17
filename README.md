@@ -33,9 +33,13 @@ Before a command is executed, its input and output may be redirected using a spe
 `export` - environment variables, create new ones and replace old ones.
 `unset` - use unset to remove some of environment variables.
 
-### exit status
+### exit statu (exit code)
 
 > The value returned by a command to its caller. The value is restricted to eight bits, so the maximum value is 255. 
+
+> 126: The command is found but is not executable (e.g., lacks execute permissions or is a directory).
+
+> 127: The command is not found (e.g., an invalid path or name).
 
 ### extra input
 
@@ -59,7 +63,7 @@ Function "ft_executer"
 
 > checking directories...
 > Markus uses Macro: int S_ISDIR in
-`static int	check_cmd(char **cmd_plus_args, char *env[])`.
+int	is_valid_cmd_and_print_err(char **cmd_plus_args, char *env[])`.
 I need to know more about it.
 This macro returns non-zero if the file is a directory. 
 
@@ -72,4 +76,33 @@ It is - export, unset, cd and exit. Hence the bash checks executes them in child
 > We assign true or false to `exe` in "ft_count_commands" function.
 
 > We do not execute this part of built-ins in child processes at all. (Because ...)
+
+### Pipeline flow
+
+## Tracking file descriptors
+
+> We close unused file descriptors (read/write ends of pipes) in each process.
+
+> We use valgrind to check if all file descriptors were closed safely.
+
+`valgrind --track-fds=yes ./minishell`
+
+> There is a possible error "Process terminating with the default action of signal 13 (SIGPIPE)". It can occur in sertain cases.
+
+> In the context of pipelines (cmd1 | cmd2 | cmd3), encountering SIGPIPE can be normal in some scenarios.
+> When a process like cmd2 exits (e.g., grep finishes finding matches), the read end of the pipe closes. If cmd1 continues writing to the pipe after it has been closed, the system sends a SIGPIPE to cmd1.
+> Example:
+
+`yes | head -n 10`
+
+> `yes` generates infinite "yes\n". `head` reads the first 10 lines and exits. `yes` receives SIGPIPE when it tries to write to a closed pipe.
+
+This is normal behavior in a shell pipeline and is not considered a bug.
+We don't set `signal(SIGPIPE, SIG_IGN)` to be ignored in the program,
+because write function displays "Broke pipe" on stderr, for example,
+in case of `cat | cat | ls`
+
+### Big files
+"Writing more data than the pipe can hold"
+We didn't implement this case. 
 

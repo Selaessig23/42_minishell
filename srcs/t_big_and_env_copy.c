@@ -8,8 +8,6 @@ void	free_t_big(t_big *big)
 	ft_free(big->env);
 	ft_free_cl(&(big->cmdlist));
 	ft_free(big->binarypaths);
-	// free(big->cmdlist);
-	// big->cmdlist = NULL;
 	free(big);
 	big = NULL;
 }
@@ -96,14 +94,12 @@ t_big	*init_t_big(char **envp)
 		error_handling(2);
 	big->cmdlist = NULL;
 	env = copy_envp(envp);
-	// ft_overwrite_shlvl(&env);
 	big->env = env;
 	all_folders = get_all_folders("PATH", env);
-	// printf("test\n");
 	big->binarypaths = ft_split(all_folders, ':');
 	if (!big->binarypaths)
 	{
-		print_stderr("malloc");
+		perror("malloc");
 		return (NULL);
 	}
 	big->exit_code = 0;
