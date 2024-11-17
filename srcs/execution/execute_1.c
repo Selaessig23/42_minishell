@@ -192,12 +192,12 @@ static int	is_command_directory(char *cmd)
 	{
 		if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1) 
 			|| (is_last_char(cmd, '/'))) && S_ISDIR(check_dir.st_mode))
-			return (0);
-		else
 			return (1);
+		else
+			return (0);
 	}
 	else
-		return (1);
+		return (0);
 }
 
 /**
@@ -235,8 +235,8 @@ static int is_minishell_command(char *cmd, char *env[])
 static int	is_attempt_to_execute(const char *str, const char *str_cmp, int nmb)
 {
 	if (!ft_strncmp(str, str_cmp, nmb))
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 static int	is_just_name_of_directory(const char *cmd_is_name_of_directory)
@@ -255,6 +255,33 @@ static int	is_just_name_of_directory(const char *cmd_is_name_of_directory)
 	return (1);
 }
 
+// When Bash interprets a command that starts with a /, 
+//it is considered an absolute path to a file or directory.
+static int	is_absolute_path(const char *str, const char *str_cmp, int nmb)
+{
+	if (!ft_strncmp(str, str_cmp, nmb))
+		return (1);
+	return (0);
+}
+
+/**
+ * Check if the file exists and is executable an
+ * if it is an absolute path, return 1.
+ */
+static int	is_absolute_path_to_exe(const char *cmd)
+{
+	if (access(cmd, F_OK | X_OK) == 0 )
+	{
+		if (is_absolute_path(cmd, "/", 1))
+		{
+			return (1);
+		}
+		else
+			return (0);
+	}
+	return (0);
+}
+
 /**
  * @brief Executes a command with its arguments, searching for 
  * the executable path.
@@ -270,26 +297,23 @@ int	exe_child_binary(char **cmd_plus_args, char *env[])
 
 	if (!is_minishell_command(cmd_plus_args[0], env))
 		return (0);
-	else if (!is_command_directory(cmd_plus_args[0]))
+	else if (is_command_directory(cmd_plus_args[0]))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
-	else if (!is_attempt_to_execute(cmd_plus_args[0], "./", 2))
+	else if (is_attempt_to_execute(cmd_plus_args[0], "./", 2))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
 
-	// path to a executable
-	else if (access(cmd_plus_args[0], F_OK | X_OK) == 0 )
-	{
-		if (!is_attempt_to_execute(cmd_plus_args[0], "/", 1))
-		{
-			//printf("path to a executable\n");
+	else if (is_absolute_path_to_exe(cmd_plus_args[0]))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
-		}
-	}
+	// execute an executable with an absolute path 
 
-	// ASK MARKUS. WE pass test without it.
+	// else if (access(cmd_plus_args[0], F_OK | X_OK) == 0 )
+	// {
+	// 	if (is_absolute_path(cmd_plus_args[0], "/", 1))
+	// 	{
+	// 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
+	// 	}
+	// }
 
-	// Declares a variable check_dir of type struct stat to store file information.
-	// Check File Access. Exists (F_OK). Is executable (X_OK).
-	
 	else if (!is_just_name_of_directory(cmd_plus_args[0]))
 		return (127);
 
