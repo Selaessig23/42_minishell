@@ -201,6 +201,27 @@ static int	is_command_directory(char *cmd)
 }
 
 /**
+ * Function checks if the command cmd is exactly "./minishell". If so, 
+ * it executes the `ft_ms_executer` function.
+ * 
+ * If the command is not "./minishell", it simply returns 1.
+ * 
+ * The condition cmd[ft_strlen("./minishell")] == '\0' checks if the string 
+ * cmd has exactly the content ./minishell, with no additional characters after it.
+ */
+static int is_minishell_command(char *cmd, char *env[])
+{
+	if (!ft_strncmp(cmd, "./minishell", ft_strlen("./minishell"))
+		&& cmd[ft_strlen("./minishell")] == '\0')
+	{
+		ft_ms_executer(env);
+		return (0);
+	}
+	else
+		return (1);
+}
+
+/**
  * @brief Executes a command with its arguments, searching for 
  * the executable path.
  * Return value is an exit code of a child process.
@@ -215,15 +236,9 @@ int	exe_child_binary(char **cmd_plus_args, char *env[])
 	exit_code = -14;
 	// calling minishell in minishell
 
-	//if (!blablabla)
-	if (!ft_strncmp(cmd_plus_args[0], "./minishell", ft_strlen("./minishell"))
-		&& cmd_plus_args[0][ft_strlen("./minishell")] == '\0')
-	{
-		ft_ms_executer(env);
+	if (!is_minishell_command(cmd_plus_args[0], env))
 		return (0);
-	}
-
-	if (!is_command_directory(cmd_plus_args[0]))
+	else if (!is_command_directory(cmd_plus_args[0]))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
 	
 	// run a file with no permission
