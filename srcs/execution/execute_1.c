@@ -202,6 +202,18 @@ int	exe_child_binary(char **cmd_plus_args, char *env[])
 			}
 		}
 	}
+	if (!ft_strncmp(cmd_plus_args[0], "./", 2))
+	{
+		//printf("!ft_strncmp(cmd_plus_args[0], \"./\" 2\n");
+		execve(cmd_plus_args[0], cmd_plus_args, env);
+		if (errno == ENOENT)
+			return (127);
+		else if (errno == EACCES)
+			return (126);
+		else
+			return (EXIT_FAILURE);
+	}
+
 	// new && 
 	if (access(cmd_plus_args[0], F_OK | X_OK) == 0 && stat((cmd_plus_args[0]), &check_dir) != 0)
 	{

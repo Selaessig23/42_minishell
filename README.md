@@ -78,13 +78,29 @@ It is - export, unset, cd and exit. Hence the bash checks executes them in child
 > We do not execute this part of built-ins in child processes at all. (Because ...)
 
 ### Pipeline flow
-> Closing of pipe ends.
-I changed execution part because of "Process terminating with the default action of signal 13 (SIGPIPE)". Ensure the parent keeps the read end of the pipe open as long as the child might still be writing.  Cosing the read end of the parent process after waitpid.
 
-I've added int *pipe_fd in t_data struct. Assign -1 as a default value.
-Initiation of `t_data` in `init_comm` function.
+## Tracking file descriptors
 
-I close all fds of parent processes including pipe_fd AFTER waitpid, because even the unused read end of the pipe must remain open until the child finishes writing or exits to avoid signal 13 (SIGPIPE) aka broken pipe.
+> We close unused file descriptors (read/write ends of pipes) in each process.
+
+> We use valgrind to check if all file descriptors were closed safely.
+
+`valgrind --track-fds=yes ./minishell`
+
+> There is a possible error "Process terminating with the default action of signal 13 (SIGPIPE)". It can occur in sertain cases.
+
+> In the context of pipelines (cmd1 | cmd2 | cmd3), encountering SIGPIPE can be normal in some scenarios.
+> When a process like cmd2 exits (e.g., grep finishes finding matches), the read end of the pipe closes. If cmd1 continues writing to the pipe after it has been closed, the system sends a SIGPIPE to cmd1.
+> Example:
+
+`yes | head -n 10`
+
+> `yes` generates infinite "yes\n". `head` reads the first 10 lines and exits. `yes` receives SIGPIPE when it tries to write to a closed pipe.
+
+This is normal behavior in a shell pipeline and is not considered a bug.
+We set SIGPIPE to be ignored in the program.
+
+> `signal(SIGPIPE, SIG_IGN)`
 
 ### Big files
 "Writing more data than the pipe can hold"

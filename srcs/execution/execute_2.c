@@ -13,12 +13,7 @@ void	setup_input_output(t_data *comm_info, t_data *c_i_next)
 			dup2(comm_info->fd_pipe[1], STDOUT_FILENO);
 	}
 	if (comm_info->fd_infile > 0)
-	{
-		// ft_dprintf("%s\n", comm_info->cmd[0]);
-		// ft_dprintf("comm_info->fd_infile: %d\n", comm_info->fd_infile);
-		// ft_dprintf("comm_info->fd_outfile: %d\n", comm_info->fd_outfile);
 		dup2(comm_info->fd_infile, STDIN_FILENO);
-	}
 	if (comm_info->fd_outfile > 1)
 		dup2(comm_info->fd_outfile, STDOUT_FILENO);
 	
