@@ -239,6 +239,22 @@ static int	is_attempt_to_execute(const char *str, const char *str_cmp, int nmb)
 	return (1);
 }
 
+static int	is_just_name_of_directory(const char *cmd_is_name_of_directory)
+{
+	struct stat	check_dir;
+
+	if (stat((cmd_is_name_of_directory), &check_dir) == 0)
+	{
+		if (S_ISDIR(check_dir.st_mode)) // access(cmd_plus_args[0], F_OK | X_OK) == 0 && stat((cmd_plus_args[0]), &check_dir) != 0
+		{
+			return (0);
+			//return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
+		}
+		return (1);
+	}
+	return (1);
+}
+
 /**
  * @brief Executes a command with its arguments, searching for 
  * the executable path.
@@ -259,16 +275,23 @@ int	exe_child_binary(char **cmd_plus_args, char *env[])
 	else if (!is_attempt_to_execute(cmd_plus_args[0], "./", 2))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
 
-	// if (!ft_strncmp(cmd_plus_args[0], "./", 2))
-	// 	return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
-
-	// new && 
-	struct stat	check_dir;
-
-	if (access(cmd_plus_args[0], F_OK | X_OK) == 0 && stat((cmd_plus_args[0]), &check_dir) != 0)
+	// path to a executable
+	else if (access(cmd_plus_args[0], F_OK | X_OK) == 0 )
 	{
+		if (!is_attempt_to_execute(cmd_plus_args[0], "/", 1))
+		{
+			//printf("path to a executable\n");
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
+		}
 	}
+
+	// ASK MARKUS. WE pass test without it.
+
+	// Declares a variable check_dir of type struct stat to store file information.
+	// Check File Access. Exists (F_OK). Is executable (X_OK).
+	
+	else if (!is_just_name_of_directory(cmd_plus_args[0]))
+		return (127);
 
 	//printf("get cmd_path\n");
 	char	*cmd_path;
