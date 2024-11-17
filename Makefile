@@ -71,6 +71,7 @@ SRCS =	main.c \
 		execution/exe_child_fd_setup_cleanup.c \
 		execution/minishell_executer.c \
 		execution/exe_error_handling.c \
+		execution/exe_utils.c \
 		utils_strings/utils_string.c \
 		utils_binary_path/binary_path.c
 

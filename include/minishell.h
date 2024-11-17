@@ -271,8 +271,6 @@ int		fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big);
 void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big);
 //execution/exe_binary_child_0.c
 int		exe_child_binary(char **cmd_plus_args, char *env[]);
-int		is_attempt_to_execute(const char *str, const char *str_cmp, int nmb);
-int		is_absolute_path(const char *str, const char *str_cmp, int nmb);
 
 //execution/exe_binary_child_1.c
 int		get_path_from_env_path_and_exe(char **cmd_plus_args, char *env[]);
@@ -299,8 +297,11 @@ void	w_errpipe_close(int open_fd);
 void	w_errfork_close(int open_fd, int *pipe_fd);
 void	perror_and_exit(char *what_error, int *pipe_fd);
 void	print_stderr(char *what_error);
+//execution/exe_utils.c
+int		is_absolute_path(const char *str, const char *str_cmp, int nmb);
+int		is_attempt_to_execute(const char *str, const char *str_cmp, int nmb);
 
-// Utils
+// General Utils
 //utils_strings/utils_string.c
 void	ft_freestr(char **lst);
 int		ft_strcmp(const char *s1, const char *s2);

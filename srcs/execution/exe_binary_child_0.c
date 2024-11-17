@@ -39,24 +39,6 @@ static int	is_command_directory(char *cmd)
 		return (0);
 }
 
-/**
- * Function checks if the string starts with "./".
- * In Bash, if a command starts with "./", it interprets it as 
- * an attempt to execute a program or script located in the 
- * current working directory or in the relative path to 
- * a file or executable.
- * 
- * This function compares the first nmb characters of 
- * two strings (str and str_cmp) using ft_strncmp, 
- * and returns 0 if they match, otherwise it returns 1.
- */
-int	is_attempt_to_execute(const char *str, const char *str_cmp, int nmb)
-{
-	if (!ft_strncmp(str, str_cmp, nmb))
-		return (1);
-	return (0);
-}
-
 static int	is_just_name_of_directory(const char *cmd_is_name_of_directory)
 {
 	struct stat	check_dir;
@@ -69,15 +51,6 @@ static int	is_just_name_of_directory(const char *cmd_is_name_of_directory)
 		}
 		return (0);
 	}
-	return (0);
-}
-
-// When Bash interprets a command that starts with a /, 
-// it is considered an absolute path to a file or directory.
-int	is_absolute_path(const char *str, const char *str_cmp, int nmb)
-{
-	if (!ft_strncmp(str, str_cmp, nmb))
-		return (1);
 	return (0);
 }
 
