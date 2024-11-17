@@ -250,9 +250,13 @@ void	ft_handle_signals_childs(void);
 // EXECUTION
 //execution/command_reader.c
 int		ft_executer(t_big *big, char *prompt);
-//execution/command_reader_print_error.c
+//execution/command_reader_print_err_01.c
 int		is_valid_cmd_and_print_err(char **cmd_plus_args, t_big *big);
-
+//execution/command_reader_print_err_02.c
+int		is_dir_err_handling(char *cmd);
+int		err_handling_executable(char *executable);
+int		is_absolute_path_to_exe_err_handling(char *cmd);
+int		get_path_from_env_or_binarypaths(t_big *big, char **cmd_plus_args);
 
 //execution/exe_built-ins.c
 void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt);
