@@ -162,76 +162,99 @@ char	*get_path(char *cmd_name, char **env)
 		return (path);
 	}
 }
+static int	ft_execve_no_free(char *cmd, char **cmd_plus_args, char *env[])
+{
+	execve(cmd, cmd_plus_args, env);
+	{
+	if (errno == ENOENT)
+		return (127);
+	else if (errno == EACCES)
+		return (126);
+	else
+		return (EXIT_FAILURE);
+	}
+}
+
+/**
+ * This function checks if a given command cmd refers to a valid directory.
+ * 
+ * 1. Calls stat: It retrieves the file status of cmd and stores it 
+ * in a struct stat variable (check_dir).
+ * 2. Checks Path Prefix and Directory Type. If cmd starts with ./, /, or 
+ * ends with /, and the path corresponds to a directory 
+ * (S_ISDIR evaluates to true), it returns 0.
+ */
+static int	is_command_directory(char *cmd)
+{
+	struct stat	check_dir;
+
+	if (stat((cmd), &check_dir) == 0)
+	{
+		if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1) 
+			|| (is_last_char(cmd, '/'))) && S_ISDIR(check_dir.st_mode))
+			return (0);
+		else
+			return (1);
+	}
+	else
+		return (1);
+}
 
 /**
  * @brief Executes a command with its arguments, searching for 
  * the executable path.
+ * Return value is an exit code of a child process.
  * 
  * @param argument The command and its arguments as a string.
  * @param env The environment variables array.
  */
 int	exe_child_binary(char **cmd_plus_args, char *env[])
 {
-	char	*cmd_path;
+	int	exit_code;
 
-	cmd_path = NULL;
+	exit_code = -14;
+	// calling minishell in minishell
+
+	//if (!blablabla)
 	if (!ft_strncmp(cmd_plus_args[0], "./minishell", ft_strlen("./minishell"))
 		&& cmd_plus_args[0][ft_strlen("./minishell")] == '\0')
-	// 	//&& ft_strlen(cmd_plus_args[0]) == ft_strlen("./minishell"))
 	{
 		ft_ms_executer(env);
-		/// ASK MARKUS about return value
 		return (0);
 	}
 
-	// Check access if it's a dicrectory and there is no acces
-	// execve
-	struct stat	check_dir;
-	if (stat((cmd_plus_args[0]), &check_dir) == 0)
-	{
-		//printf("if (stat((cmd_plus_args[0]), &check_dir) == 0)\n");
-		if ((!ft_strncmp(cmd_plus_args[0], "./", 2) || !ft_strncmp(cmd_plus_args[0], "/", 1) 
-			|| (is_last_char(cmd_plus_args[0], '/')))	&& S_ISDIR(check_dir.st_mode))
-		{
-			execve(cmd_plus_args[0], cmd_plus_args, env);
-			{
-			if (errno == EACCES)
-				return (126);
-			else
-				return (EXIT_FAILURE);
-			}
-		}
-	}
+	if (!is_command_directory(cmd_plus_args[0]))
+		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
+	
+	// run a file with no permission
 	if (!ft_strncmp(cmd_plus_args[0], "./", 2))
 	{
 		//printf("!ft_strncmp(cmd_plus_args[0], \"./\" 2\n");
-		execve(cmd_plus_args[0], cmd_plus_args, env);
-		if (errno == ENOENT)
-			return (127);
-		else if (errno == EACCES)
-			return (126);
-		else
-			return (EXIT_FAILURE);
+		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
 	}
 
 	// new && 
+	struct stat	check_dir;
+
 	if (access(cmd_plus_args[0], F_OK | X_OK) == 0 && stat((cmd_plus_args[0]), &check_dir) != 0)
 	{
-		//printf("access(cmd_plus_args[0], F_OK | X_OK) == 0\n");
-		execve(cmd_plus_args[0], cmd_plus_args, env);
-		if (errno == ENOENT)
-			return (127);
-		else if (errno == EACCES)
-			return (126);
-		else
-			return (EXIT_FAILURE);
+		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
 	}
 
 	//printf("get cmd_path\n");
+	char	*cmd_path;
+
+	cmd_path = NULL;
 	cmd_path = get_path(cmd_plus_args[0], env);
 	if (!cmd_path)
 		return (127);
+
 	execve(cmd_path, cmd_plus_args, env);
+	if (errno == ENOENT)
+	{
+		free(cmd_path);
+		return (127);
+	}
 	if (errno == EACCES)
 	{
 		free(cmd_path);
