@@ -93,7 +93,7 @@ int ft_executer(t_big *big, char *prompt)
 	exit_status_binary = -100;
 	curr = big->cmdlist;
 	ft_executer_loop(big, curr, prompt);
-	exit_status_binary = w_waitpid(big);
+	exit_status_binary = get_exit_status_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
 	ft_free_cl(&(big->cmdlist));
 	big->count_commds = 0;

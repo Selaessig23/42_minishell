@@ -251,7 +251,7 @@ void	ft_handle_signals_childs(void);
 //execution/command_reader_01.c
 int		ft_executer(t_big *big, char *prompt);
 //execution/command_reader_02.c
-int		w_waitpid(t_big *big);
+int		get_exit_status_waitpid(t_big *big);
 void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big);
 //execution/command_reader_print_err_01.c
 int		is_valid_cmd_and_print_err(char **cmd_plus_args, t_big *big);
