@@ -222,6 +222,24 @@ static int is_minishell_command(char *cmd, char *env[])
 }
 
 /**
+ * Function checks if the string starts with "./".
+ * In Bash, if a command starts with "./", it interprets it as 
+ * an attempt to execute a program or script located in the 
+ * current working directory or in the relative path to 
+ * a file or executable.
+ * 
+ * This function compares the first nmb characters of 
+ * two strings (str and str_cmp) using ft_strncmp, 
+ * and returns 0 if they match, otherwise it returns 1.
+ */
+static int	is_attempt_to_execute(const char *str, const char *str_cmp, int nmb)
+{
+	if (!ft_strncmp(str, str_cmp, nmb))
+		return (0);
+	return (1);
+}
+
+/**
  * @brief Executes a command with its arguments, searching for 
  * the executable path.
  * Return value is an exit code of a child process.
@@ -231,22 +249,18 @@ static int is_minishell_command(char *cmd, char *env[])
  */
 int	exe_child_binary(char **cmd_plus_args, char *env[])
 {
-	int	exit_code;
-
-	exit_code = -14;
-	// calling minishell in minishell
+	// int	exit_code;
+	// exit_code = -14;
 
 	if (!is_minishell_command(cmd_plus_args[0], env))
 		return (0);
 	else if (!is_command_directory(cmd_plus_args[0]))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
-	
-	// run a file with no permission
-	if (!ft_strncmp(cmd_plus_args[0], "./", 2))
-	{
-		//printf("!ft_strncmp(cmd_plus_args[0], \"./\" 2\n");
+	else if (!is_attempt_to_execute(cmd_plus_args[0], "./", 2))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
-	}
+
+	// if (!ft_strncmp(cmd_plus_args[0], "./", 2))
+	// 	return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
 
 	// new && 
 	struct stat	check_dir;
