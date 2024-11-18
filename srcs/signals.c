@@ -6,18 +6,18 @@
  * integrated:
  * >ctrl-C (=sigint) displays "^C" followd by a new prompt on a new line, 
  * same on heredoc (here it closes heredoc)!
- * >ctrl-D exits the shell, on heredoc (only on on empty line:)
+ * >ctrl-D exits the shell, on heredoc (only on empty line:)
  * stops heredoc and returns error message: 
  * "bash: warning: here-document at line 1 delimited by end-of-file 
  * (wanted `$limiter')"
  * on non empty line nothing happens
  * >ctrl-\ (=sigquit) does nothing (do not quit!).
 */
+
 // !This is for heredoc readlin
 static void	handle_sigint_non(int sig)
 {
 	(void) sig;
-
 	signalnum = 1;
 	ft_putstr_fd("^C", 2);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
@@ -27,7 +27,6 @@ static void	handle_sigint_non(int sig)
 static void	handle_sigint_inter(int sig)
 {
 	(void)sig;
-
 	signalnum = 1;
 	ft_putstr_fd("^C", 2);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
@@ -43,8 +42,7 @@ static void	handle_sigint_inter(int sig)
  * 
  * @param rl_antes a booelean value that determines 
  * wether to enable (true) printing control sequences or not (false)
-*/
-int	ft_terminal_config(bool rl_antes)
+static int	ft_terminal_config(bool rl_antes)
 {
 	struct termios	termios_p;
 
@@ -59,6 +57,7 @@ int	ft_terminal_config(bool rl_antes)
 	}
 	return (0);
 }
+*/
 
 /**
  * @brief in this function signal actions are coordinated

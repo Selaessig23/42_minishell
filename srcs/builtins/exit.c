@@ -55,7 +55,6 @@
 // 	// if (exit_code < 0)
 // 	// 	exit_code += 256;
 // 	// else if (exit_code > 255)
-		
 // 	if (ft_arrlen(argv) > 2 && is_nondigit == false)
 // 	{
 // 		if (big->count_commds == 1)

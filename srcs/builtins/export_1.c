@@ -9,9 +9,10 @@
 
 /**
  * The function is a helper fuction for 'exp_create' function.
- * It inserts a string 'str_to_add' into a array of strings.
+ * It inserts a string 'str_to_add' into an array of strings.
  * It copies all strings from 'array_old' into 'array_new' and inserts
- * a new string. It doesn't free anything. It doesn't re-assign any pointers.
+ * the new string at the end. It doesn't free anything. 
+ * It doesn't re-assign any pointers.
  * All pointers reassigning or freeing must be done outside.
 */
 static char	**ft_add_arr_back(char *str_to_add,

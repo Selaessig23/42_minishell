@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:26:43 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/13 16:29:17 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/18 09:33:58 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,40 @@
  * in case of output redirect also creates the files that are asked for in 
  * command line input
  */
+
+/**
+ * @brief function that opens heredoc files if they are accessible
+ * and returns the fd
+ * 
+ * @param filename file to open (in cwd)
+ * @param wr if set to true, than open file with aim write,
+ * otherwise open with aim read
+ */
+int	fd_here_creator(char *filename, bool wr)
+{
+	int		fd;
+
+	fd = 0;
+	if (access(filename, F_OK) && wr == true)
+	{
+		fd = open(filename, O_WRONLY | O_CREAT, 0644);
+		if (fd == -1)
+			error_handling(1);
+	}
+	else if (!access(filename, F_OK) && wr == true)
+	{
+		fd = open(filename, O_WRONLY | O_TRUNC);
+		if (fd == -1)
+			error_handling(1);
+	}
+	else if (!access(filename, F_OK))
+	{
+		fd = open(filename, O_RDONLY);
+		if (fd == -1)
+			error_handling(1);
+	}
+	return (fd);
+}
 
 /**
  * checks if infile is accessible and opens it. Initiate heredoc if required.

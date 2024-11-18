@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:50:26 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/14 10:16:10 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/18 09:16:39 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,14 @@
  * which should work similar to the bash-function
  * of same name is created
  */
+
 /**
- * function to print a string, if there the option "-n"
+ * function to print a string. if the option "-n"
  * was set, then also print a new line afterwards
+ * 
+ * fd-handling is done in execution part
+ * 	// if (fd > 2)
+ * 	// 	close(fd);
  *
  * @param comm_info struct with all necessary infos to 
  * execute a single command
@@ -51,7 +56,5 @@ void	ft_echo(t_data *comm_info, t_big *big)
 	}
 	if (no_nl == 0)
 		ft_putchar_fd('\n', fd);
-	// if (fd > 2)
-	// 	close(fd);
 	big->exit_code = 0;
 }
