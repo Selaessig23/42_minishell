@@ -18,10 +18,13 @@
  * which should work similar to the bash-function
  * of same name is created
  */
+
 /**
  * @brief function to print all env-variables
  * 
- * TODO: set exit correct (when 1?) status in struct big after execution
+ * fd-handling is done in execution part
+ * 	// if (fd > 2)
+ * 	// 	close(fd);
  * 
  * @param comm_info struct with all necessary infos to 
  * execute a single command  
@@ -46,7 +49,5 @@ void	ft_print_env(t_data *comm_info, t_big *big)
 		ft_putchar_fd('\n', fd);
 		env_list += 1;
 	}
-	// if (fd > 2)
-	// 	close(fd);
 	big->exit_code = 0;
 }

@@ -41,38 +41,38 @@ int	main(int argc, char **argv, char **envp)
 {
 	int exitcode;
 	char *input;
-	char *prompt;
 	char **input_arr;
 	t_list *lexx;
 	// t_list	*comm;
 	t_big *big;
 
 	(void)argv;
-	lexx = NULL;
-	// comm = NULL;
 	exitcode = 0;
-	// ft_welcome();
-
+	input = NULL;
+	input_arr = NULL;
+	lexx = NULL;
+	lexx = NULL;
+	big = NULL;
 	rl_catch_signals = 0;
-
+	// ft_welcome();
 	if (argc != 1)
 		error_handling(1);
 	else if (argc == 1)
 	{
-		prompt = ft_strdup("minishell$ ");
-		input = NULL;
 		big = init_t_big(envp);
 		while (1)
 		{
 			ft_handle_signals(false);
-			input = readline(prompt);
+			input = readline("minishell$ ");
 			ft_handle_signals(true);
 			if (!input)
 			{
 				ft_putstr_fd("exit\n", 1);
-				ft_free(big->env);
-				free(prompt);
-				exit(EXIT_FAILURE);
+				// ft_free(big->env);
+				exitcode = big->exit_code;
+				free_t_big(big);
+				rl_clear_history();
+				exit(exitcode);
 			}
 			else if (!*input || ft_spacetabchecker(input))
 			{
@@ -88,7 +88,7 @@ int	main(int argc, char **argv, char **envp)
 				input = NULL;
 				if (input_arr != NULL)
 				{
-					// ft_test_arr_print(input_arr, prompt);
+					// ft_test_arr_print(input_arr, big);
 					// attempt to use both ways, to not destroy the work
 					// with input_arr on extra input of marina
 					// otherwise I would add this function call to create_nodes-function
@@ -100,19 +100,19 @@ int	main(int argc, char **argv, char **envp)
 						// printf_env(big);
 						ft_expa_precond(lexx, big);
 						// ft_printf("test\n");
-						// ft_test_ll_print(lexx, prompt, big);
+						// ft_test_ll_print(lexx, big);
 						ft_commands(lexx, &big);
 						ft_free_ll(&lexx);
 						if (g_signalnum != 1)
-							ft_executer(big, prompt);
+							ft_executer(big);
 					}
 					else
 					{
 						big->exit_code = 2;
 						ft_free_ll(&lexx);
 					}
+					// free_t_big(big);
 				}
-					
 			}
 			if (g_signalnum == 1)
 			{
@@ -125,8 +125,6 @@ int	main(int argc, char **argv, char **envp)
 		ft_free_ll(&lexx);
 		free_t_big(big);
 		rl_clear_history();
-		free(prompt);
-		prompt = NULL;
 		free_t_big(big);
 	}
 	exit(exitcode);

@@ -14,7 +14,7 @@
 
 static int	ft_execve_no_free(char *cmd, char **cmd_plus_args, char *env[])
 {
-	execve(cmd, cmd_plus_args, env);
+	if (execve(cmd, cmd_plus_args, env) == -1)
 	{
 		if (errno == ENOENT)
 			return (127);
@@ -23,6 +23,7 @@ static int	ft_execve_no_free(char *cmd, char **cmd_plus_args, char *env[])
 		else
 			return (EXIT_FAILURE);
 	}
+	return (0);
 }
 
 /**
@@ -93,9 +94,8 @@ static int	is_absolute_path_to_exe(const char *cmd)
  */
 int	exe_child_binary(char **cmd_plus_args, char *env[])
 {
-	if (!is_minishell_command(cmd_plus_args[0], env))
-		return (0);
-	else if (is_command_directory(cmd_plus_args[0]))
+	is_minishell_command(cmd_plus_args[0], env);
+	if (is_command_directory(cmd_plus_args[0]))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));
 	else if (is_attempt_to_execute(cmd_plus_args[0], "./", 2))
 		return (ft_execve_no_free(cmd_plus_args[0], cmd_plus_args, env));

@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   binary_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 18:39:16 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/17 22:57:30 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/18 09:19:17 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Used during command creation and execution.
-// During command creation in `ft_match_counter` and `ft_match_filler` functions,
+// During command creation in `ft_match_counter` 
+// and `ft_match_filler` functions,
 // and during execution `exe_exists` function.
+
 /**
  * @brief Constructs the full path to a command by joining a folder and 
  * command name.

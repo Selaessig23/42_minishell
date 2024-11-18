@@ -25,9 +25,8 @@
  * @param big struct with all command infos 
  * that are required for executing builtins or 
  * that have to be freed
- * @param prompt string that has to be freed before exit the program
  */
-// void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
+// void	ft_exit_minishell(t_data *comm_info, t_big *big)
 // {
 // 	char	**argv;
 // 	char	*argv2;
@@ -55,7 +54,6 @@
 // 	// if (exit_code < 0)
 // 	// 	exit_code += 256;
 // 	// else if (exit_code > 255)
-		
 // 	if (ft_arrlen(argv) > 2 && is_nondigit == false)
 // 	{
 // 		if (big->count_commds == 1)
@@ -67,8 +65,6 @@
 // 	{
 // 		if (big->count_commds == 1)
 // 		{
-// 			free(prompt);
-// 			prompt = NULL;
 // 			rl_clear_history();
 // 		}
 // 		if (is_nondigit == true)
@@ -116,7 +112,7 @@ static void	exit_error_handling_only(t_big *big, char **argv, bool is_digit)
 /**
  * Part of exit built-in which exit from a minishell.
  */
-static void	exit_exe(char *prompt, t_big *big, char	**argv, bool is_digit)
+static void	exit_exe(t_big *big, char **argv, bool is_digit)
 {
 	int	exit_value;
 
@@ -133,8 +129,6 @@ static void	exit_exe(char *prompt, t_big *big, char	**argv, bool is_digit)
 		ft_putstr_fd(": numeric argument required\n", 2);
 		big->exit_code = 2;
 	}
-	free(prompt);
-	prompt = NULL;
 	rl_clear_history();
 	exit_value = big->exit_code;
 	free_t_big(big);
@@ -202,11 +196,10 @@ static int	exit_utils(char **argv, bool is_digit, t_big *big)
  * @param big struct with all command infos 
  * that are required for executing builtins or 
  * that have to be freed
- * @param prompt string that has to be freed before exit the program
  */
 // FULL execution IF big->exe is true
 // if exe is false - checking for errors and assigns exit code
-void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
+void	ft_exit_minishell(t_data *comm_info, t_big *big)
 {
 	char	**argv;
 	bool	is_digit;
@@ -226,7 +219,5 @@ void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 		return ;
 	}
 	if (big->exe == true)
-	{
-		exit_exe(prompt, big, argv, is_digit);
-	}
+		exit_exe(big, argv, is_digit);
 }

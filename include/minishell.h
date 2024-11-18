@@ -137,10 +137,9 @@ void	printf_env(t_big *big);
 void	free_t_big(t_big *big);
 char	**copy_envp(char **envp);
 //testprints.c --> only test functions
-void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
-void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
-void	ft_test_command_print(char *prompt, t_data *comm_info, 
-			t_big *big);
+void	ft_test_arr_print(char **input_arr, t_big *big);
+void	ft_test_ll_print(t_list *lexx, t_big *big);
+void	ft_test_command_print(t_data *comm_info, t_big *big);
 
 // PARSING - LEXICAL ANALYSIS
 //lexer/lexer.c
@@ -207,7 +206,6 @@ char	*ft_listtostr(t_list *q_word_list);
 // COMMAND LIST CREATION AND READING
 //command_creation/command_list.c
 void	ft_commands(t_list *lexx, t_big **big);
-int		fd_out_creator(bool appender, char *filename);
 //command_creation/initiate_comm_infos.c
 void	ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big);
 //command_creation/handle_redirections.c
@@ -219,6 +217,8 @@ t_list	*ft_set_r_out(t_lexer *token,
 void	ft_add_arr_end(char *token_value, t_data **p_comm_info);
 //command_creation/file_creator.c
 int		fd_in_checker(t_data *comm_info, char *infile, t_big **p_big);
+int		fd_here_creator(char *filename, bool wr);
+int		fd_out_creator(bool appender, char *filename);
 //command_creation/command_utils.c
 void	exe_fd_error(t_big *big, t_data *comm_info_next);
 t_data	*ft_pointer_next_command(t_list	*curr);
@@ -231,7 +231,7 @@ void	ft_check_defaultpath(char *binary, char **binarypaths);
 int		check_parent_builtin(t_data *comm_info);
 int		check_child_builtin(t_data *comm_info);
 //builtins/exit.c
-void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt);
+void	ft_exit_minishell(t_data *comm_info, t_big *big);
 //builtins/env.c
 void	ft_print_env(t_data *comm_info, t_big *big);
 //builtins/echo.c
@@ -261,7 +261,7 @@ void	ft_handle_signals_childs(void);
 
 // EXECUTION
 //execution/command_reader_01.c
-int		ft_executer(t_big *big, char *prompt);
+int		ft_executer(t_big *big);
 //execution/command_reader_02.c
 int		get_exit_status_waitpid(t_big *big);
 void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big);
@@ -273,7 +273,7 @@ int		err_handling_executable(char *executable);
 int		is_absolute_path_to_exe_err_handling(char *cmd);
 int		get_path_from_env_or_binarypaths(t_big *big, char **cmd_plus_args);
 //execution/exe_built-ins.c
-void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt);
+void	exe_parent_builtin(t_data *comm_info, t_big *big);
 int		fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, 
 			t_big *big);
 void	setup_and_exe_builtin_in_child(t_data *comm_info, t_data *c_i_next, 

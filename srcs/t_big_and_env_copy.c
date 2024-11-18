@@ -5,9 +5,15 @@
 */
 void	free_t_big(t_big *big)
 {
-	ft_free(big->env);
-	ft_free_cl(&(big->cmdlist));
-	ft_free(big->binarypaths);
+	if (big->env)
+		ft_free(big->env);
+	// printf("test1\n");
+	if (big->cmdlist)
+		ft_free_cl(&(big->cmdlist));
+	// printf("test2\n");
+	if (big->binarypaths)
+		ft_free(big->binarypaths);
+	// printf("test3\n");
 	free(big);
 	big = NULL;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:50:02 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/14 19:59:17 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/18 11:05:21 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,25 @@ static void	ft_update_env(t_big *big)
 	free(temp1);
 }
 
+/**
+ * @brief function to check the accessibility of the file
+ * in case of problems with the file it returns an error message
+ * 
+ * @param argv the array of commands (cmd) that holds all information
+ * for execution (argv[0] == cd, argv[1] == directory to change to)
+ */
 int	cd_error(char **argv)
 {
+	struct stat	check_dir;
+
 	if (ft_arrlen(argv) > 2)
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		return (1);
+	}
+	else if (stat((argv[1]), &check_dir) == 0 && !S_ISDIR(check_dir.st_mode))
+	{
+		ft_dprintf("minishell: cd: %s: Not a directory\n", argv[1]);
 		return (1);
 	}
 	else if (access(argv[1], F_OK))

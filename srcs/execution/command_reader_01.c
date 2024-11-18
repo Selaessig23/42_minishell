@@ -48,7 +48,7 @@ static void	exe_bin_ch_built_inval(t_big *big, t_data *comm_info,
 	}
 }
 
-static void	ft_executer_loop(t_big *big, t_list *curr, char *prompt)
+static void	ft_executer_loop(t_big *big, t_list *curr)
 {
 	t_data	*comm_info_next;
 	t_data	*comm_info;
@@ -65,7 +65,7 @@ static void	ft_executer_loop(t_big *big, t_list *curr, char *prompt)
 			{
 				if (comm_info_next && comm_info_next->fd_infile == 0)
 					comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
-				exe_parent_builtin(comm_info, big, prompt);
+				exe_parent_builtin(comm_info, big);
 			}
 			else
 				exe_bin_ch_built_inval(big, comm_info, comm_info_next);
@@ -83,16 +83,15 @@ static void	ft_executer_loop(t_big *big, t_list *curr, char *prompt)
  *
  * @param big structure that holds all importand information
  * for execution part like cmdlist, env, last exit status
- * @param prompt string that has to be freed in case of builtin exit
  */
-int	ft_executer(t_big *big, char *prompt)
+int	ft_executer(t_big *big)
 {
 	int		exit_status_binary;
 	t_list	*curr;
 
 	exit_status_binary = -100;
 	curr = big->cmdlist;
-	ft_executer_loop(big, curr, prompt);
+	ft_executer_loop(big, curr);
 	exit_status_binary = get_exit_status_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
 	ft_free_cl(&(big->cmdlist));

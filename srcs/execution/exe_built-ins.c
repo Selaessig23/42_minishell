@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_built-ins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:43:45 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/17 23:28:26 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/18 14:29:18 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // export, unset, cd, exit
 // execution IF exe is true
 // if exe is false - checking for errors and exit assigns exit code
-void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt)
+void	exe_parent_builtin(t_data *comm_info, t_big *big)
 {
 	char	**argv;
 
@@ -29,7 +29,7 @@ void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt)
 		else if (is_exact_string(argv[0], "unset"))
 			ft_unset(big, comm_info);
 		else if (is_exact_string(argv[0], "exit"))
-			ft_exit_minishell(comm_info, big, prompt);
+			ft_exit_minishell(comm_info, big);
 		else if (is_exact_string(argv[0], "help"))
 			ft_minishell_help(comm_info, big);
 	}
@@ -43,7 +43,6 @@ void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt)
  * @param big big struct with all command infos
  * that are required for executing builtins or
  * that have to be freed in case of builtin exit
- * @param prompt string that has to be freed in case of builtin exit
  */
 void	exe_child_builtin(t_data *comm_info, t_big *big)
 {
@@ -75,11 +74,13 @@ void	setup_and_exe_builtin_in_child(t_data *comm_info,
 		{
 			exe_child_builtin(comm_info, big);
 			fd_cleanup_in_child(big);
+			free_t_big(big);
 			exit(EXIT_SUCCESS);
 		}
 	}
 	exe_child_builtin(comm_info, big);
 	fd_cleanup_in_child(big);
+	free_t_big(big);
 	exit(EXIT_SUCCESS);
 }
 
