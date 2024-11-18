@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 09:42:56 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 15:01:43 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/18 16:10:26 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ char	**create_nodes(char **readline_input)
 	input_arr = NULL;
 	while (is_incomplete_input(*readline_input))
 	{
-		if (signalnum == 1)
+		if (g_signalnum == 1)
 		{
 			input_arr = NULL;
 			return (input_arr);

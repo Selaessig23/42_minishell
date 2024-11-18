@@ -226,5 +226,7 @@ void	ft_exit_minishell(t_data *comm_info, t_big *big, char *prompt)
 		return ;
 	}
 	if (big->exe == true)
+	{
 		exit_exe(prompt, big, argv, is_digit);
+	}
 }

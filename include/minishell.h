@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/18 15:41:14 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/18 15:41:14 by mpeshko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // to avoid duplications
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -34,7 +46,7 @@
 to execute minishell\n"
 
 //define a global variable for signal-handling
-extern int	signalnum;
+extern int	g_signalnum;
 
 // it is "a good practice" to use a global variable for environment 
 // instead of picking it in the main
@@ -50,13 +62,13 @@ typedef enum e_tokentype
 	REDIRECT_IN = 4,
 	REDIRECT_STDOUT = 5,
 	REDIRECT_STDOUT_APP = 6,
-	REDIRECT_ERROUT = 7, //2>: Redirects standard error to a file.
-	REDIRECT_STDERROUT = 8, //&>: Redirects both standard output and standard error to a file.
-	REDIRECT_STDERROUT_MERGE = 9, //2>&1: Merges standard error with standard output.
-	AMPERSAND = 10, // &
-	DOUBLE_AMPERSAND = 11, // &&
-	DOUBLE_PIPE = 12, // ||
-	LOG_NEG = 13, //Logical Negation (!)
+	REDIRECT_ERROUT = 7,
+	REDIRECT_STDERROUT = 8,
+	REDIRECT_STDERROUT_MERGE = 9,
+	AMPERSAND = 10,
+	DOUBLE_AMPERSAND = 11,
+	DOUBLE_PIPE = 12,
+	LOG_NEG = 13,
 	WORD = 20,
 	D_QUOTED = 21,
 	S_QUOTED = 22,
@@ -127,7 +139,8 @@ char	**copy_envp(char **envp);
 //testprints.c --> only test functions
 void	ft_test_arr_print(char **input_arr, char *prompt, t_big *big);
 void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big);
-void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big);
+void	ft_test_command_print(char *prompt, t_data *comm_info, 
+			t_big *big);
 
 // PARSING - LEXICAL ANALYSIS
 //lexer/lexer.c
@@ -181,7 +194,6 @@ char	*ft_var_creator(char *value_old, char **env);
 char	*delete_varname_from_value(char *value_old, char *wrongenvp);
 //expander/expander_env_yes.c
 char	*add_env_to_value(char *value_old, char *env, char *env_name);
-//expander/expander_pid.c
 //expander/expander_exit.c
 char	*ft_exit_expander(char *value_old, int exit_code);
 //expander/expander_utils.c
@@ -260,15 +272,17 @@ int		is_dir_err_handling(char *cmd);
 int		err_handling_executable(char *executable);
 int		is_absolute_path_to_exe_err_handling(char *cmd);
 int		get_path_from_env_or_binarypaths(t_big *big, char **cmd_plus_args);
-
 //execution/exe_built-ins.c
 void	exe_parent_builtin(t_data *comm_info, t_big *big, char *prompt);
-int		fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, t_big *big);
-void	setup_and_exe_builtin_in_child(t_data *comm_info, t_data *c_i_next, t_big *big);
+int		fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, 
+			t_big *big);
+void	setup_and_exe_builtin_in_child(t_data *comm_info, t_data *c_i_next, 
+			t_big *big);
 void	exe_child_builtin(t_data *comm_info, t_big *big);
 //execution/exe_binary.c
 int		fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big);
-void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, t_big *big);
+void	setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, 
+			t_big *big);
 //execution/exe_binary_child_0.c
 int		exe_child_binary(char **cmd_plus_args, char *env[]);
 
@@ -278,21 +292,15 @@ char	*get_path(char *cmd_name, char **env);
 char	*get_all_folders(const char *env_var_path, char **env);
 char	*build_cmd_path(const char *folder, const char *cmd_name);
 char	*exe_exists(char **folders, char *cmd_name);
-
 //execution/exe_child_fd_setup_cleanup.c
 void	fd_cleanup_in_child(t_big *big);
 void	fd_cleanup_read_end_in_child(t_big *big);
 void	setup_input_output_in_child(t_data *comm_info, t_data *c_i_next);
-
 //execution/minishell_executer.c
 int		is_minishell_command(char *cmd, char *env[]);
 void	ft_ms_executer(char *env[]);
-
-//void	ft_overwrite_shlvl(char ***p_env);
-// ????
-
 //execution/exe_error_handling.c
-void	close_fd_with_error_handling();
+void	close_fd_with_error_handling(void);
 void	w_errpipe_close(int open_fd);
 void	w_errfork_close(int open_fd, int *pipe_fd);
 void	w_dup2(int dupfd, int newfd);

@@ -82,7 +82,7 @@ static int	here_read_helper(int write_end, char *lim, t_big **p_big, t_data *com
 	char *str;
 
 	str = NULL;
-	while (signalnum != 1)
+	while (g_signalnum != 1)
 	{
 		str = readline("> ");
 		if (!str)
@@ -108,7 +108,7 @@ static int	here_read_helper(int write_end, char *lim, t_big **p_big, t_data *com
 			free(str);
 		}
 	}
-	if (signalnum == 1)
+	if (g_signalnum == 1)
 		return (1);
 	return (0);
 }

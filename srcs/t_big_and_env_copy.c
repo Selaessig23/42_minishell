@@ -81,6 +81,8 @@ char	**copy_envp(char **envp)
  * @param t_big	*big
  * @param char **envp
  * @param char	**env
+ * 
+ * by default big->exe = true;
 */
 
 t_big	*init_t_big(char **envp)
@@ -104,5 +106,6 @@ t_big	*init_t_big(char **envp)
 	}
 	big->exit_code = 0;
 	big->count_commds = 0;
+	big->exe = true;
 	return (big);
 }

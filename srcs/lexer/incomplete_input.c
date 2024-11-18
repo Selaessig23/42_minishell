@@ -47,7 +47,7 @@ char	*extra_prompt_reader(void)
 	char	*input2;
 
 	input2 = NULL;
-	if (signalnum != 1)
+	if (g_signalnum != 1)
 	{
 		input2 = readline(">");
 		if (!input2)
@@ -78,7 +78,7 @@ void	to_complete_input(char **readline_input)
 		return ;
 	if (extra_input)
 	{
-		if (signalnum == 1)
+		if (g_signalnum == 1)
 		{
 			free(extra_input);
 			return ;

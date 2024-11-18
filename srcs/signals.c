@@ -18,8 +18,9 @@ static void	handle_sigint_non(int sig)
 {
 	(void) sig;
 
-	signalnum = 1;
+	g_signalnum = 1;
 	ft_putstr_fd("^C", 2);
+	//rl_replace_line("", 0);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
@@ -28,8 +29,9 @@ static void	handle_sigint_inter(int sig)
 {
 	(void)sig;
 
-	signalnum = 1;
+	g_signalnum = 1;
 	ft_putstr_fd("^C", 2);
+	rl_replace_line("", 0);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 

@@ -25,7 +25,7 @@ int	ft_spacetabchecker(char *input)
 // or error conditions first. In the context of command-line arguments, this
 // often means checking for incorrect argument counts before proceeding with
 // the valid case. Please look at it, and say if it works for you. Thanks!
-int	signalnum = 0;
+int	g_signalnum = 0;
 
 /**
  * (To be continued...)
@@ -36,8 +36,6 @@ int	signalnum = 0;
 
 	* 2. Check if the input is an empty string (user pressed Enter without typing anything).
  * If the input is empty,
-
-	?????????
  */
 int	main(int argc, char **argv, char **envp)
 {
@@ -105,7 +103,8 @@ int	main(int argc, char **argv, char **envp)
 						// ft_test_ll_print(lexx, prompt, big);
 						ft_commands(lexx, &big);
 						ft_free_ll(&lexx);
-						ft_executer(big, prompt);
+						if (g_signalnum != 1)
+							ft_executer(big, prompt);
 					}
 					else
 					{
@@ -115,10 +114,12 @@ int	main(int argc, char **argv, char **envp)
 				}
 					
 			}
-			if (signalnum == 1)
+			if (g_signalnum == 1)
 			{
-				signalnum = 0;
+				g_signalnum = 0;
 				big->exit_code = 130;
+				ft_free_cl(&(big->cmdlist));
+				big->count_commds = 0;
 			}
 		}
 		ft_free_ll(&lexx);
