@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 17:13:29 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/16 02:39:06 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/18 20:14:08 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	ft_get_env_pwd(int fd)
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		error_handling(2);
+		error_and_exit(2);
 	ft_putstr_fd(pwd, fd);
 	ft_putchar_fd('\n', fd);
 	free(pwd);

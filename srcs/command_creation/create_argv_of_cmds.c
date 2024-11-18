@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_argv_of_cmds.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:54:04 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 15:45:26 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:14:19 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ void	ft_add_arr_end(char *token_value, t_data **p_comm_info)
 	count = ft_arrlen(command_array_old);
 	command_array_new = (char **)malloc(sizeof(char *) * (count + 2));
 	if (!command_array_new)
-		error_handling(2);
+		error_and_exit(2);
 	if (count > 0)
 		i += ft_arrcpy(&command_array_old, &command_array_new);
 	command_array_new[i] = ft_strdup(token_value);
 	if (!command_array_new[i])
-		error_handling(2);
+		error_and_exit(2);
 	i += 1;
 	command_array_new[i] = NULL;
 	comm_info->cmd = command_array_new;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_env_no.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 14:37:36 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/12 14:37:40 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:15:15 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*delete_varname_from_value(char *value_old, char *wrongenvp)
 	i = (ft_strlen(value_old) - ft_strlen(wrongenvp));
 	value_new = ft_calloc((i + 1), sizeof(char));
 	if (!value_new)
-		error_handling(2);
+		error_and_exit(2);
 	i = 0;
 	while (value_old[i] && 
 		(!ft_strnstr(&(value_old[i]), wrongenvp, ft_strlen(wrongenvp))))

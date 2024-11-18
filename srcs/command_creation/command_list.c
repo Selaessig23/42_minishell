@@ -72,7 +72,7 @@ void	ft_commands(t_list *lexx, t_big **p_big)
 	t_big	*big;
 
 	if (!lexx)
-		error_handling(0);
+		error_and_exit(0);
 	big = *p_big;
 	command_list = NULL;
 	((t_lexer *)(lexx->content))->number_helper = 1;

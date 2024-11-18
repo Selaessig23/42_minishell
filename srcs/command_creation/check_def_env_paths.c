@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_def_env_paths.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:27:57 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/13 15:28:00 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:14:11 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	ft_check_defaultpath(char *binary, char **binarypaths)
 		return ;
 	path_matches = ft_calloc((match_counter + 1), sizeof(char *));
 	if (!path_matches)
-		error_handling(1);
+		error_and_exit(1);
 	ft_match_filler(&path_matches, binary, binarypaths);
 	ft_print_error(match_counter, binary, path_matches);
 	ft_free(path_matches);

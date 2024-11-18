@@ -95,7 +95,7 @@ char	*ft_givenbr(int nbr)
 		count = ft_count_nbr(nbr);
 		charnbr = ft_calloc((count + 1), sizeof(char));
 		if (!charnbr)
-			error_handling(2);
+			error_and_exit(2);
 		if (nbr < 0)
 		{
 			charnbr[i] = '-';

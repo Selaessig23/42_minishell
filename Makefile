@@ -12,8 +12,9 @@ RLFLAG = -lreadline -lncurses -ltinfo
 #VPATH = sources:include
 #INCLUDES = minishell.h
 SRCS =	main.c \
-		ascii_graphic.c \
-		error_handling.c \
+		01_pre_prompt/pre_prompt.c \
+		error/error_and_exit.c \
+		02_sig/signals.c \
 		lexer/ft_split_ms.c \
 		lexer/ft_split_specials.c \
 		lexer/lexer.c \
@@ -28,8 +29,6 @@ SRCS =	main.c \
 		tokenizer/tokenizer_qwords.c \
 		syntax_analyzer/syntax.c \
 		syntax_analyzer/syntaxerrors.c \
-		testprints.c \
-		t_big_and_env_copy.c \
 		expander/expander.c \
 		expander/expander_quotes.c \
 		expander/expander_env.c \
@@ -43,6 +42,7 @@ SRCS =	main.c \
 		command_creation/initiate_comm_infos.c \
 		command_creation/handle_redirections.c \
 		command_creation/file_creator.c \
+		command_creation/heredoc.c \
 		command_creation/create_argv_of_cmds.c \
 		command_creation/command_utils.c \
 		command_creation/check_def_env_paths.c \
@@ -56,9 +56,7 @@ SRCS =	main.c \
 		builtins/export_2.c \
 		builtins/export_sort.c \
 		builtins/unset.c \
-		heredoc.c \
 		builtins/help.c \
-		signals.c \
 		execution/command_reader_01.c \
 		execution/command_reader_02.c \
 		execution/command_reader_print_err_01.c \
@@ -72,7 +70,11 @@ SRCS =	main.c \
 		execution/exe_error_handling.c \
 		execution/exe_utils.c \
 		utils_strings/utils_string.c \
-		utils_binary_path/binary_path.c
+		utils_binary_path/binary_path.c \
+		free/free.c
+
+#test_and_debug/test_and_debug.c
+#test_and_debug/testprints.c
 
 #libraries
 #add pathes of lib to cflags to find headers easily

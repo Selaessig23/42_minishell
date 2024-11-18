@@ -48,7 +48,7 @@ static char	**ft_env_varname_creator(char **env)
 		{
 			*env_var_names = ft_substr(*env, 0, i);
 			if (!*env_var_names)
-				error_handling(2);
+				error_and_exit(2);
 		}
 		env_var_names += 1;
 		env += 1;
@@ -72,7 +72,7 @@ static char	*ft_var_envchecker(char *value_old, char *var_name, char **env)
 
 	env_var_names = ft_env_varname_creator(env);
 	if (!env_var_names)
-		error_handling(2);
+		error_and_exit(2);
 	env_var_names_save = env_var_names;
 	while (env_var_names && *env_var_names)
 	{
@@ -138,7 +138,7 @@ char	*ft_var_creator(char *value_old, char **env)
 			i += ft_var_cutter(&value_old[i]);
 			temp = ft_substr(value_old, k, (i - k));
 			if (!temp)
-				error_handling(2);
+				error_and_exit(2);
 			value_new = ft_var_envchecker(value_old, temp, env);
 			free(temp);
 			return (value_new);

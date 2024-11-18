@@ -25,7 +25,7 @@ static char	**ft_add_arr_back(char *str_to_add,
 	count = ft_arrlen(array_old);
 	array_new = (char **)malloc(sizeof(char *) * (count + 2));
 	if (!array_new)
-		error_handling(2);
+		error_and_exit(2);
 	if (count > 0)
 	{
 		while (array_old[i] != NULL)
@@ -36,7 +36,7 @@ static char	**ft_add_arr_back(char *str_to_add,
 	}
 	array_new[i] = ft_strdup(str_to_add);
 	if (!array_new[i])
-		error_handling(2);
+		error_and_exit(2);
 	i += 1;
 	array_new[i] = NULL;
 	return (array_new);

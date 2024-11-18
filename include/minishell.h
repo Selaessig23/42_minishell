@@ -14,11 +14,9 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-//stdio.h (for debugging) | stdlib.h (for malloc & free) | 
 //unistd.h (for write) is included in libft.h
 # include "../libft/include/libft.h"
 # include "../libft/include/libft_bonus.h"
-//#include <limits.h>
 //to use data type bool
 # include <stdbool.h>
 //to provide a standardized way to report and interpret error conditions
@@ -30,6 +28,7 @@
 // to consider readline while compiling
 # include <readline/history.h>
 # include <readline/readline.h>
+//stdio.h (for debugging) | stdlib.h (for malloc & free) | 
 # include <stdio.h>
 //to handle signals
 # include <signal.h>
@@ -47,11 +46,6 @@ to execute minishell\n"
 
 //define a global variable for signal-handling
 extern int	g_signalnum;
-
-// it is "a good practice" to use a global variable for environment 
-// instead of picking it in the main
-// but according t subject it is not allowed to use global variables
-// extern char	**environ;
 
 // to define all different tokens
 typedef enum e_tokentype
@@ -107,13 +101,13 @@ typedef struct s_data {
 	pid_t	id;
 }				t_data;
 
-// Main struct containing the list of commands and
-// a copy of the environment
-// cmdlist - Linked list t_data
+// Main struct containing the list of commands and a copy of the environment
+// cmdlist.
+// Linked list t_data
 // env - Copy of environment variables
-// exe - to define if we execute export, unset
-// cd and exit. we execute it fully only if there
-// is no pipeline, but only one command.
+// exe - to define if we execute export, unset, cd and exit.
+// We execute those cmds fully only if there is no pipeline, 
+// but only one command.
 typedef struct s_big
 {
 	t_list	*cmdlist;
@@ -124,22 +118,19 @@ typedef struct s_big
 	bool	exe;
 }					t_big;
 
-//ascii_graohic.c
-void	ft_welcome(void);
-// void	error_handling(int err, t_envp *i, int com_no);
-void	error_handling(int err);
-char	**ft_split_quotes(char const *s, char c);
-//error_handling.c
-void	error_handling(int err);
-//t_big_and_env_copy.c
+//01_pre_prompt/pre_prompt.c
 t_big	*init_t_big(char **envp);
-void	printf_env(t_big *big);
-void	free_t_big(t_big *big);
 char	**copy_envp(char **envp);
+int		ft_spacetabchecker(char *input);
+void	ft_welcome(void);
+//error/error_handling.c
+void	error_and_exit(int err);
+//02_sig/signals.c
+int		ft_handle_signals(bool rl_antes);
+void	ft_handle_signals_childs(void);
+
 //testprints.c --> only test functions
-void	ft_test_arr_print(char **input_arr, t_big *big);
-void	ft_test_ll_print(t_list *lexx, t_big *big);
-void	ft_test_command_print(t_data *comm_info, t_big *big);
+
 
 // PARSING - LEXICAL ANALYSIS
 //lexer/lexer.c
@@ -219,6 +210,9 @@ void	ft_add_arr_end(char *token_value, t_data **p_comm_info);
 int		fd_in_checker(t_data *comm_info, char *infile, t_big **p_big);
 int		fd_here_creator(char *filename, bool wr);
 int		fd_out_creator(bool appender, char *filename);
+//command_creation/heredoc.c
+int		heredoc_start(t_data *comm_info, char *limiter, t_big **p_big);
+void	delete_heredoc(t_data *comm_info);
 //command_creation/command_utils.c
 void	exe_fd_error(t_big *big, t_data *comm_info_next);
 t_data	*ft_pointer_next_command(t_list	*curr);
@@ -250,14 +244,8 @@ void	ft_export_sort(t_big *big);
 //builtins/unset.c
 int		ft_unset(t_big *big, t_data *comm_info);
 size_t	count_till_char(char *str, char up_to);
-//heredoc.c
-int		heredoc_start(t_data *comm_info, char *limiter, t_big **p_big);
-void	delete_heredoc(t_data *comm_info);
 //builtins/help.c
 void	ft_minishell_help(t_data *comm_info, t_big *big);
-//signals.c
-int		ft_handle_signals(bool rl_antes);
-void	ft_handle_signals_childs(void);
 
 // EXECUTION
 //execution/command_reader_01.c
@@ -309,11 +297,25 @@ int		is_absolute_path(const char *str, const char *str_cmp, int nmb);
 int		is_attempt_to_execute(const char *str, const char *str_cmp, int nmb);
 
 // General Utils
+//free/free.c
+void	free_t_big(t_big *big);
+
 //utils_strings/utils_string.c
+int		count_strings(char **envp);
 void	ft_freestr(char **lst);
 int		ft_strcmp(const char *s1, const char *s2);
 int		is_exact_string(const char *str_org, char *str_cmp);
 int		is_last_char(const char *str, char c);
 //utils_binary_path/binary_path.c
 char	*build_cmd_path(const char *folder, const char *cmd_name);
+//test_and_debug/test_and_debug.c
+/*
+void	printf_env(t_big *big);
+*/
+//test_and_debug/testprints.c
+/*
+void	ft_test_arr_print(char **input_arr, t_big *big);
+void	ft_test_ll_print(t_list *lexx, t_big *big);
+void	ft_test_command_print(t_data *comm_info, t_big *big);
+*/
 #endif

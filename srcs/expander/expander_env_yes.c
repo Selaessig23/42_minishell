@@ -63,7 +63,7 @@ char	*add_env_to_value(char *value_old, char *env, char *env_name)
 	i = (ft_strlen(value_old) + ft_strlen(&(*(env + 1))));
 	value_new = ft_calloc(i, sizeof(char));
 	if (!value_new)
-		error_handling(2);
+		error_and_exit(2);
 	i = 0;
 	j = 0;
 	while (value_old[i] 

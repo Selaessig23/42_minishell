@@ -114,9 +114,9 @@ static void	exit_error_handling_only(t_big *big, char **argv, bool is_digit)
  */
 static void	exit_exe(t_big *big, char **argv, bool is_digit)
 {
-	int	exit_value;
+	int	exitcode;
 
-	exit_value = 0;
+	exitcode = 0;
 	ft_putstr_fd("exit\n", 1);
 	if (ft_arrlen(argv) > 2 && is_digit == true)
 	{
@@ -130,9 +130,9 @@ static void	exit_exe(t_big *big, char **argv, bool is_digit)
 		big->exit_code = 2;
 	}
 	rl_clear_history();
-	exit_value = big->exit_code;
+	exitcode = big->exit_code;
 	free_t_big(big);
-	exit(exit_value);
+	exit(exitcode);
 }
 
 // Utils function of builtin exit which checks if

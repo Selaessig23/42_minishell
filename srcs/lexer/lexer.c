@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 09:42:56 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 16:10:26 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/18 20:15:36 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static char	*ft_clean_input(char *src)
 	if (!dest)
 	{
 		free(src);
-		error_handling(2);
+		error_and_exit(2);
 	}
 	ft_create_clean_input(dest, src);
 	trim_out_spaces(&dest);
@@ -125,7 +125,7 @@ static char	**ft_split_rlinput(char **readline_input, char *clean_input)
 		clean_input = NULL;
 		ft_free(readline_input);
 		readline_input = NULL;
-		error_handling(2);
+		error_and_exit(2);
 	}
 	return (input_arr);
 }
@@ -160,7 +160,7 @@ char	**create_nodes(char **readline_input)
 	if (!clean_input)
 	{
 		ft_free(readline_input);
-		error_handling(2);
+		error_and_exit(2);
 	}
 	input_arr = ft_split_rlinput(readline_input, clean_input);
 	free(clean_input);

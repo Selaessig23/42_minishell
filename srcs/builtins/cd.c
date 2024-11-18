@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:50:02 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 11:05:21 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:13:52 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	ft_get_cwd(char **p_pwd)
 	pwd = *p_pwd;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		error_handling(2);
+		error_and_exit(2);
 }
 
 /**
@@ -77,7 +77,7 @@ static void	ft_update_env(t_big *big)
 		temp1 = *envp;
 		new_pwd = getcwd(NULL, 0);
 		if (!new_pwd)
-			error_handling(2);
+			error_and_exit(2);
 		*envp = ft_strjoin("PWD=", new_pwd);
 		free(new_pwd);
 		envp = big->env;

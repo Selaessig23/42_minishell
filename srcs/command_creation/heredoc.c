@@ -6,18 +6,16 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 10:05:17 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 18:49:47 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/18 19:51:49 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/ioctl.h>/// F_OK -- test for file existence. 
 
 /**
  * DESCRIPTION
  * in this file the creation of heredoc files is organised.
  */
-
 /**
  * @brief function to expand the heredoc file with env-var infos
  * 
@@ -127,25 +125,6 @@ static int	here_read_helper(int write_end, char *lim,
 	}
 	return (0);
 }
-
-/**
- * @brief Opens a file and reads from standard input until
- * a limiter is encountered. It passes the file descriptor "fd"
- * and the limiter to "here_read_helper(), which performs the
- * actual reading of input and writes it to the file.
- *
- * @param name: Name of the file to open for writing.
- * @param lim: The delimiter string that marks the end of the input.
- 
-static int here_read(char *name, char *lim)
-{
-	int fd;
-
-	(void) lim;
-	fd = fd_here_creator(name, true);
-	return (fd);
-}
-*/
 
 /**
  * @brief This function starts the "heredoc" process, which takes input

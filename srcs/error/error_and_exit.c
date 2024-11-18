@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handling.c                                   :+:      :+:    :+:   */
+/*   error_and_exit.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 09:53:25 by mstracke          #+#    #+#             */
-/*   Updated: 2024/07/16 10:08:51 by mstracke         ###   ########.fr       */
+/*   Created: 2024/11/18 20:16:01 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/18 20:16:01 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@
  * e.g. 1 = input error
  * @param i the struct which contains all required infos for minishell program
  */
-void	error_handling(int err)
+void	error_and_exit(int err)
 {
-	if (err == 4)
-		ft_putstr_fd("PATH not readable from ENVP", 2);
-	else if (err == 1)
+	if (err == 1)
 	{
 		errno = 5;
 		ft_putstr_fd(INPUT_ERROR, 2);
@@ -40,6 +38,8 @@ void	error_handling(int err)
 	{
 		exit(127);
 	}
+	else if (err == 4)
+		ft_putstr_fd("PATH not readable from ENVP", 2);
 	perror("Error");
 	exit(EXIT_FAILURE);
 }

@@ -24,11 +24,9 @@ void	ft_free(char **arr)
 	i = 0;
 	while (arr[i] && *arr[i])
 	{
-		// printf("test hi\n");
 		free(arr[i]);
 		i++;
 	}
-	// printf("test hallo\n");
 	if (arr != NULL)
 		free(arr);
 	arr = NULL;

@@ -6,11 +6,28 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 20:29:49 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/17 18:29:01 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/18 19:32:30 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * Function counts a number of strings in array of strings.
+ * It serves for memory allocation for an array of strings.
+*/
+int	count_strings(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (*envp)
+	{
+		i++;
+		envp++;
+	}
+	return (i);
+}
 
 /**
  * This function frees an array of strings.
