@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_binary_child_1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 18:28:11 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/17 23:07:01 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/18 15:59:21 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,16 +117,19 @@ int	get_path_from_env_path_and_exe(char **cmd_plus_args, char *env[])
 	cmd_path = get_path(cmd_plus_args[0], env);
 	if (!cmd_path)
 		return (127);
-	execve(cmd_path, cmd_plus_args, env);
-	free(cmd_path);
-	if (errno == ENOENT)
+	if (execve(cmd_path, cmd_plus_args, env) == -1)
 	{
-		return (127);
+		free(cmd_path);
+		if (errno == ENOENT)
+		{
+			return (127);
+		}
+		if (errno == EACCES)
+		{
+			return (126);
+		}
+		else
+			return (EXIT_FAILURE);
 	}
-	if (errno == EACCES)
-	{
-		return (126);
-	}
-	else
-		return (EXIT_FAILURE);
+	return (0);
 }

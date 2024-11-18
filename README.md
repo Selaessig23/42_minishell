@@ -106,3 +106,7 @@ in case of `cat | cat | ls`
 "Writing more data than the pipe can hold"
 We didn't implement this case. 
 
+### Special features
+
+1. check_binarypaths in case value of PATH env variable was changed.
+

@@ -43,6 +43,7 @@ void	setup_and_exe_binary_in_child(t_data *comm_info,
 	fd_cleanup_read_end_in_child(big);
 	exit_code = exe_child_binary(comm_info->cmd, big->env);
 	fd_cleanup_in_child(big);
+	free_t_big(big);
 	exit(exit_code);
 }
 

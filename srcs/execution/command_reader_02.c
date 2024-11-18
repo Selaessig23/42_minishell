@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_reader_02.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 22:23:23 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/17 23:19:34 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/18 14:04:34 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,18 @@ void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 }
 
 static int	w_waitpid(t_data *comm_info, int status, 
-	bool signaled, int *exitcode)
+	bool *signaled, int *exitcode)
 {
 	if (comm_info->id != -1)
 	{
 		waitpid(comm_info->id, &status, 0);
 		if (WIFSIGNALED(status))
 		{
-			if ((WTERMSIG(status) == 2 || WTERMSIG(status) == 3) && !signaled)
+			if ((WTERMSIG(status) == 2 || WTERMSIG(status) == 3) && *signaled == false)
 			{
 				if (WTERMSIG(status) == 3)
 					ft_dprintf("Quit (core dumped)");
-				signaled = true;
+				*signaled = true;
 				*exitcode = 128 + WTERMSIG(status);
 				write(2, "\n", 1);
 			}
@@ -74,11 +74,12 @@ int	get_exit_status_waitpid(t_big *big)
 	exitcode = 0;
 	status = -1;
 	curr = big->cmdlist;
+	signaled = false;
 	while (curr != NULL)
 	{
-		signaled = false;
+		//signaled = false;
 		comm_info = curr->content;
-		status = w_waitpid(comm_info, status, signaled, &exitcode);
+		status = w_waitpid(comm_info, status, &signaled, &exitcode);
 		curr = curr->next;
 	}
 	if (status >= 0)

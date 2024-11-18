@@ -15,7 +15,7 @@
 /**
  * function to print and work with cleaned array of strings
  */
-/*void ft_test_arr_print(char **input_arr, char *prompt, t_big *big)
+/*void ft_test_arr_print(char **input_arr, t_big *big)
 {
 	char	**env_list;
 	int		i;
@@ -35,8 +35,6 @@
 				"exit", 4) && ft_strlen(input_arr[0]) == 4))
 	{
 		ft_free(input_arr);
-		free(prompt);
-		prompt = NULL;
 		free_t_big(big);
 		rl_clear_history();
 		exit(EXIT_SUCCESS);
@@ -121,7 +119,7 @@ static char	*print_tokens(int i)
  * test function to print the content of the linked list
  * lexx (= command line input)
  
-void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
+void	ft_test_ll_print(t_list *lexx, t_big *big)
 {
 	t_list	*curr;
 	char	*token_print;
@@ -138,8 +136,6 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
 			&& ft_strlen(((t_lexer *)curr->content)->value) == 4)
 		{
 			// ft_free(input_arr);
-			free(prompt);
-			prompt = NULL;
 			free_t_big(big);
 			ft_free_ll(&lexx);
 			rl_clear_history();
@@ -180,7 +176,7 @@ void	ft_test_ll_print(t_list *lexx, char *prompt, t_big *big)
  * test function to print the content of the linked list
  * comm (command struct)
  
-void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big)
+void	ft_test_command_print(t_data *comm_info, t_big *big)
 {
 	// t_list	*curr;
 	// char	*token_print;
@@ -195,7 +191,6 @@ void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big)
 	// curr = big->cmdlist;
 	// printf("testB\n");
 	// comm_info = curr->content;
-	(void) prompt;
 	// while (curr != NULL)
 	// {
 		i = 0;
@@ -205,8 +200,6 @@ void	ft_test_command_print(char *prompt, t_data *comm_info, t_big *big)
 		// 	&& ft_strlen(comm_info->cmd[0]) == 4)
 		// {
 		// 	// ft_free(input_arr);
-		// 	free(prompt);
-		// 	prompt = NULL;
 		// 	free_t_big(big);
 		// 	// ft_free_ll(&comm);
 		// 	rl_clear_history();

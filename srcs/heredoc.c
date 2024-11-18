@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 10:05:17 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 10:05:19 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:31:28 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,14 @@ int	heredoc_start(t_data *comm_info, char *limiter, t_big **p_big)
 	fd = fd_here_creator(name, true);
 	here_read_helper(fd, limiter, p_big, comm_info);
 	close(fd);
-	fd = fd_here_creator(name, false);
+	if (signalnum != 1)
+		fd = fd_here_creator(name, false);
+	else
+	{
+		unlink(name);
+		fd = -1;
+	}
 	free(name);
+	name = NULL;
 	return (fd);
 }

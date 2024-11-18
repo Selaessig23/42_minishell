@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:30:24 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/13 15:30:32 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:41:33 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,14 @@ void	ft_free_cl(t_list **ll)
 	t_list	*curr;
 	t_data	*comm_info;
 
-	curr = *ll;
+	if (*ll != NULL)
+		curr = *ll;
+	else
+	{
+		temp = NULL;
+		curr = NULL;
+		comm_info = NULL;
+	}
 	while (curr != NULL)
 	{
 		temp = curr;
@@ -53,6 +60,7 @@ void	ft_free_cl(t_list **ll)
 		ft_free(comm_info->cmd);
 		free(comm_info);
 		free(temp);
+		temp = NULL;
 	}
-	curr = NULL;
+	*ll = NULL;
 }
