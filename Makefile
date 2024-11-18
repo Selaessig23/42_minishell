@@ -19,8 +19,8 @@ SRCS =	main.c \
 		lexer/lexer.c \
 		lexer/lexer_cleaner.c \
 		lexer/lexer_op_check.c \
-		lexer/extra_prompt.c \
-		lexer/str_spaces_trimer.c \
+		lexer/incomplete_input.c \
+		lexer/lexer_str_utils.c \
 		tokenizer/tokenizer.c \
 		tokenizer/tokenizer_utils.c \
 		tokenizer/tokenizer_strings.c \

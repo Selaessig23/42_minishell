@@ -1,5 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   incomplete_input.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/18 15:03:04 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/18 15:03:04 by mpeshko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minishell.h"
 
 /**
  * The function that updates the current input when the | character
@@ -9,8 +20,8 @@
  */
 void	update_read_input(char **main, char *extra)
 {
-	char *new;
-	int length;
+	char	*new;
+	int		length;
 
 	length = ft_strlen(*main) + ft_strlen(extra) + 1;
 	new = ft_calloc(1, length);
@@ -21,7 +32,6 @@ void	update_read_input(char **main, char *extra)
 	}
 	ft_strlcpy(new, *main, ft_strlen(*main) + 1);
 	ft_strlcat(new, extra, length);
-	// ft_printf("updated readline input $%s$\n", new);
 	free(*main);
 	free(extra);
 	*main = new;
@@ -29,22 +39,17 @@ void	update_read_input(char **main, char *extra)
 
 /**
  * The function open a prompt in case when in the end the PIPE sign.
- * It implements behaviour of a bash that is waiting for additional input.
- * (c) Marina
+ * It implements behaviour of a bash that is waiting for input to
+ * complete input.
  */
 char	*extra_prompt_reader(void)
 {
-	char *input2;
+	char	*input2;
 
 	input2 = NULL;
 	if (signalnum != 1)
 	{
 		input2 = readline(">");
-		// while (input2 && !*input2)
-		// {
-		// 	free(input2);
-		// 	input2 = readline(">");
-		// }
 		if (!input2)
 		{
 			ft_dprintf("minishell: ");
@@ -55,7 +60,7 @@ char	*extra_prompt_reader(void)
 		return (input2);
 	}
 	else
-		return (NULL);	
+		return (NULL);
 }
 
 /**
@@ -63,9 +68,9 @@ char	*extra_prompt_reader(void)
  * and it opens and extra prompt and waiting for additional
  * input.
  */
-void	close_pipe(char **readline_input)
+void	to_complete_input(char **readline_input)
 {
-	char *extra_input;
+	char	*extra_input;
 
 	extra_input = NULL;
 	extra_input = extra_prompt_reader();
@@ -88,11 +93,10 @@ void	close_pipe(char **readline_input)
  * It returns 0 if all input is only one PIPE and if
  * if the preceding character (excluding all spaces) is PIPE '|' or
  * LESS '<' or GREATER '>'.
- * (c) Marina
  */
-int	is_open_pipe(char *input)
+int	is_incomplete_input(char *input)
 {
-	int i;
+	int	i;
 
 	if (!*input)
 		return (0);

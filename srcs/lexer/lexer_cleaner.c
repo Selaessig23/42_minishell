@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_cleaner.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:39:59 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/12 10:40:02 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:03:12 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
  * single-char-operators and double-char-operators
  * (if not within quotes)
  */
-
 /**
  * @brief a helper function for ft_create_clean_input
  * it loops through not necessary parts of a string

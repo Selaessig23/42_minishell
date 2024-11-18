@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 09:42:56 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/12 10:07:09 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:01:43 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
  * and adds spaces before and after
  * 3rd it splits the input string from readline into an array of strings
  */
-
 /**
  * @brief a helper function for ft_count,
  * it loops through not necessary parts of a string
@@ -132,20 +131,11 @@ static char	**ft_split_rlinput(char **readline_input, char *clean_input)
 }
 
 /**
- * @brief function that creates an array of strings and
- * organises the cleaning of command line 
- * (according to syntax rules) as well as checking 
- * for extra input in case of unclosed pipe
+ * @brief function that creates an array of strings and organises 
+ * the cleaning of command line (according to syntax rules) as well 
+ * as checking for extra input in case of incomplete_input (unclosed pipe).
  * 
- * Marina:
- * - is_open_pipe - function that handles input with one | in the end.
- * - extra_prompt - function that takes additional input and concetanates it
- * - with readline_input.
- * Marina:
- * - changes in ft_clean_input: function that trim all leading 
- * and trailing spaces. 
- * (It might be that we don't need it, since later same job
- * will be done in ft_split_quotes)
+ * is_incomplete_input - function that handles input with one | in the end.
  *
  * @param readline_input the input of command line read by function readline
  * @return: an array of strings with cleaned command line input
@@ -157,14 +147,14 @@ char	**create_nodes(char **readline_input)
 
 	clean_input = NULL;
 	input_arr = NULL;
-	while (is_open_pipe(*readline_input))
+	while (is_incomplete_input(*readline_input))
 	{
 		if (signalnum == 1)
 		{
 			input_arr = NULL;
 			return (input_arr);
 		}
-		close_pipe(readline_input);
+		to_complete_input(readline_input);
 	}
 	clean_input = ft_clean_input(*readline_input);
 	if (!clean_input)

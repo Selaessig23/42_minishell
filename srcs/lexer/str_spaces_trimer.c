@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   str_spaces_trimer.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/18 15:38:26 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/18 15:38:26 by mpeshko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
- * Counting a new length to allocate memory for the new trimmed string.
- * (c) Maryna
+ * Counting a new length to allocate memory for a new trimmed string.
  */
 static int	count_trim_len(char *str)
 {

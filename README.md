@@ -41,7 +41,7 @@ Before a command is executed, its input and output may be redirected using a spe
 
 > 127: The command is not found (e.g., an invalid path or name).
 
-### extra input
+### is_incomplete_input = extra input
 
 > Out program has a feature to open additional prompt in case of unclosed pipe.
 > For instance, `echo hello |` waits for further user unput until the pipe is not in the end.

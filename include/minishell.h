@@ -143,12 +143,12 @@ char	**ft_split_quotes(char const *s, char c);
 int		ft_space_tab_jump(const char *s, char c, int i);
 int		ft_quo_handling(const char *s, int i);
 int		is_tab(char c);
-//lexer/extra_prompt.c
-int		is_open_pipe(char *clean_input);
-void	close_pipe(char **readline_input);
+//lexer/is_incomplete_input.c
+int		is_incomplete_input(char *clean_input);
+void	to_complete_input(char **readline_input);
 char	*extra_prompt_reader(void);
 void	update_read_input(char **main, char *extra);
-//lexer/str_spaces_trimer.c
+//lexer/lexer_str_utils.c.c
 void	trim_out_spaces(char **str);
 //tokenizer/tokenizer.c
 t_list	*ft_tokenizer(char **input_arr);

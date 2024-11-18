@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_op_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 09:24:46 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/12 09:25:58 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:03:14 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
  * different kinds of operators, required for lexer-part of minishell,
  * to clean the command line input string
  */
-
 /**
  * @brief function that checks for double operators
  *
