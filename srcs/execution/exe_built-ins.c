@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:43:45 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/19 09:29:14 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/19 11:53:20 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ void	exe_child_builtin(t_data *comm_info, t_big *big)
 			ft_print_env(comm_info, big);
 		else if (is_exact_string(argv[0], "help"))
 			ft_minishell_help(comm_info, big);
+		if (is_exact_string(argv[0], "export")
+			&& ft_arrlen(argv) == 1)
+			ft_export(big, comm_info);
 	}
 }
 
