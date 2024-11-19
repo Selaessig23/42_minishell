@@ -13,8 +13,21 @@
  * on non empty line nothing happens
  * >ctrl-\ (=sigquit) does nothing (do not quit!).
 */
+/**
+ * @brief function to reset the global variable
+ * g_signalnum (it is only set to !0 if a signal was used)
+ * and defines the exit code in case of a signal
+ * 
+ * @brief big struct with all necessary information to run a command, 
+ * exit_codes are saved here
+ */
+void	signal_set_exitcode_and_reset(t_big *big)
+{
+	g_signalnum = 0;
+	big->exit_code = 130;
+}
 
-// !This is for heredoc readlin
+// !This is for heredoc readline
 static void	handle_sigint_non(int sig)
 {
 	(void) sig;
@@ -32,37 +45,8 @@ static void	handle_sigint_inter(int sig)
 	g_signalnum = 1;
 	ft_putstr_fd("^C", 2);
 	rl_replace_line("", 0);
-	// rl_on_new_line(); //Go to a new line
-	// rl_redisplay(); //Redisplay the prompt
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
-
-/**
- * @brief function that changes the standard behaviour of terminal
- * to not print control sequences like ^\ or ^C if false
- * 
- * 1st the current set has to be catched
- * 2nd the new config (~ECHOCTL) has to be implemented
- * 3rd the new config has to be set
- * 
- * @param rl_antes a booelean value that determines 
- * wether to enable (true) printing control sequences or not (false)
-static int	ft_terminal_config(bool rl_antes)
-{
-	struct termios	termios_p;
-
-	(void) rl_antes;
-	if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
-		return (-1);
-	termios_p.c_lflag |= ECHOCTL;
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
-	{
-		perror("tcsetattr");
-		return (-1);
-	}
-	return (0);
-}
-*/
 
 /**
  * @brief in this function signal actions are coordinated
