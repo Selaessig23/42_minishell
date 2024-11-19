@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:50:02 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 20:13:52 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/19 12:15:13 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,8 @@ void	ft_cd(t_big *big, char **argv)
 		big->exit_code = 1;
 	else if (err == false && big->exe == true)
 	{
-		chdir(argv[1]);
+		if (chdir(argv[1]) < 0)
+			error_and_exit(errno);
 		ft_update_env(big);
 		big->exit_code = 0;
 	}

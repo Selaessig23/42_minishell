@@ -26,8 +26,6 @@ void	signal_set_exitcode_and_reset(t_big *big)
 {
 	g_signalnum = 0;
 	big->exit_code = 130;
-	// ft_free_cl(&(big->cmdlist));
-	// big->count_commds = 0;
 }
 
 /**
@@ -104,11 +102,12 @@ void	minishell_is_running(t_big	*big)
 			add_history(input);
 			if (minishell_parsing(input, big) && g_signalnum != 1)
 				ft_executer(big);
-			if (g_signalnum == 1)
-				signal_set_exitcode_and_reset(big);
 		}
+		if (g_signalnum == 1)
+			signal_set_exitcode_and_reset(big);
 		ft_free_cl(&(big->cmdlist));
 		big->count_commds = 0;
+		big->exe = true;
 	}
 }
 

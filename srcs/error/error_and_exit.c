@@ -31,7 +31,7 @@ void	error_and_exit(int err)
 	else if (err == 2)
 	{
 		errno = 12;
-		ft_putstr_fd("Problems with malloc", 2);
+		ft_putstr_fd("Problems with malloc\n", 2);
 		exit (1);
 	}
 	else if (err == 3)
@@ -39,7 +39,9 @@ void	error_and_exit(int err)
 		exit(127);
 	}
 	else if (err == 4)
-		ft_putstr_fd("PATH not readable from ENVP", 2);
-	perror("Error");
+		ft_putstr_fd("PATH not readable from ENVP\n", 2);
+	// perror("Error");
+	ft_putstr_fd("Error occurred! errno:\n", 2);
+	ft_putendl_fd(strerror(err), 2);
 	exit(EXIT_FAILURE);
 }
