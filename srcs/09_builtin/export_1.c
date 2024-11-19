@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_1.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/19 14:44:08 by mpeshko           #+#    #+#             */
+/*   Updated: 2024/11/19 14:50:10 by mpeshko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -15,7 +27,7 @@
  * It doesn't re-assign any pointers.
  * All pointers reassigning or freeing must be done outside.
 */
-static char	**ft_add_arr_back(char *str_to_add,
+char	**ft_add_arr_back(char *str_to_add,
 	char **array_old, char **array_new)
 {
 	size_t	count;
@@ -40,33 +52,6 @@ static char	**ft_add_arr_back(char *str_to_add,
 	i += 1;
 	array_new[i] = NULL;
 	return (array_new);
-}
-
-/**
- * The function replaces the old value of the environmental
- * variable to the new one.
- * @param var_to_rmv is a string with only a name of environmental
- * variable, it is retrived from a 'str_new_val'
- * @param str_new_val is a string as an argument for export command
- * which contains a variable that is already in env array and also either
- * consist of '=' and following characters or only '=' sign.
- */
-static void	exp_replace_val(t_big *big, char *str_new_val)
-{
-	char	**old;
-	char	**new;
-	char	**var_to_rmv;
-
-	new = NULL;
-	old = NULL;
-	var_to_rmv = ft_split(str_new_val, '=');
-	ft_rmv_var_array(big, var_to_rmv[0]);
-	ft_free(var_to_rmv);
-	old = big->env;
-	new = ft_add_arr_back(str_new_val, old, new);
-	big->env = new;
-	if ((old))
-		ft_free(old);
 }
 
 /**
@@ -144,9 +129,7 @@ int	ft_export_exe(t_big *big, t_data *comm_info)
 		else if (check_dash_in_var_name(cmd_arg[a]))
 			ft_dprintf("bash: export: `%s': not a valid identifier\n",
 				cmd_arg[a]);
-		else if (big->exe == true 
-		// && ft_strchr(cmd_arg[a], '=')
-		)
+		else if (big->exe == true)
 		{
 			if (!exp_check_var(big->env, cmd_arg[a]))
 				exp_create(big, cmd_arg[a]);

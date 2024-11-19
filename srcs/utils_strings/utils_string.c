@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 20:29:49 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/18 19:32:30 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/19 14:42:04 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,24 +73,19 @@ int	ft_strcmp(const char *s1, const char *s2)
 
 int	is_last_char(const char *str, char c)
 {
-	size_t len;
+	size_t	len;
 
 	len = 0;
-    if (!str || *str == '\0')
-	{ // Check if string is NULL or empty
-        return (0);
-    }
-    len = strlen(str); // Get the length of the string
-    if (str[len - 1] == c)
-	{ // Compare the last character
-        return (1);
-    } else
-	{
-        return (0);
-    }
+	if (!str || *str == '\0')
+		return (0);
+	len = ft_strlen(str);
+	if (str[len - 1] == c)
+		return (1);
+	else
+		return (0);
 }
 
-int	is_exact_string(const char *str_org,char *str_cmp)
+int	is_exact_string(const char *str_org, char *str_cmp)
 {
 	if (!ft_strncmp(str_org, str_cmp, ft_strlen(str_org)) 
 		&& ft_strlen(str_org) == ft_strlen(str_cmp))
