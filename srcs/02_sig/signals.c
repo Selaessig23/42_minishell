@@ -32,8 +32,6 @@ static void	handle_sigint_inter(int sig)
 	g_signalnum = 1;
 	ft_putstr_fd("^C", 2);
 	rl_replace_line("", 0);
-	// rl_on_new_line(); //Go to a new line
-	// rl_redisplay(); //Redisplay the prompt
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
