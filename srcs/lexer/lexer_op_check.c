@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_op_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 09:24:46 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 15:03:14 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/19 15:04:01 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,14 @@ bool	double_operator_check(char c, char k)
 /**
  * @brief function that checks for single operators
  *
+ * the functionality of ";" is not implemented
+ * || (c == ';')
+ * 
  * @param c the char to search in
  */
 bool	single_operator_check(char c)
 {
-	if ((c == '<') || (c == '>') || (c == '|') || (c == ';'))
+	if ((c == '<') || (c == '>') || (c == '|'))
 		return (1);
 	else
 		return (0);
