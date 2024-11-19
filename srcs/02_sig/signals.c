@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/19 14:49:39 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/19 14:51:04 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -12,55 +24,36 @@
  * (wanted `$limiter')"
  * on non empty line nothing happens
  * >ctrl-\ (=sigquit) does nothing (do not quit!).
+ * 
+ * in child processes the default behaviour should be implmented
 */
 
-// !This is for heredoc readlin
+/**
+ * @brief This is for heredoc readline
+ * different behaviour from main-readline-loop
+ * as it should exit the loop in case of CRTL+C
+ */ 
 static void	handle_sigint_non(int sig)
 {
 	(void) sig;
-
 	g_signalnum = 1;
 	ft_putstr_fd("^C", 2);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
-// this is for readline in main
+/**
+ *  @brief This is for readline in main
+ * here the rl-input has to be deleted as we do not exit the 
+ * loop and do not want to use the rl-input in case of CRTL+C
+ */ 
 static void	handle_sigint_inter(int sig)
 {
 	(void)sig;
-
 	g_signalnum = 1;
 	ft_putstr_fd("^C", 2);
 	rl_replace_line("", 0);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
-
-/**
- * @brief function that changes the standard behaviour of terminal
- * to not print control sequences like ^\ or ^C if false
- * 
- * 1st the current set has to be catched
- * 2nd the new config (~ECHOCTL) has to be implemented
- * 3rd the new config has to be set
- * 
- * @param rl_antes a booelean value that determines 
- * wether to enable (true) printing control sequences or not (false)
-static int	ft_terminal_config(bool rl_antes)
-{
-	struct termios	termios_p;
-
-	(void) rl_antes;
-	if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
-		return (-1);
-	termios_p.c_lflag |= ECHOCTL;
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
-	{
-		perror("tcsetattr");
-		return (-1);
-	}
-	return (0);
-}
-*/
 
 /**
  * @brief in this function signal actions are coordinated
@@ -76,8 +69,7 @@ static int	ft_terminal_config(bool rl_antes)
  * @param sigaction Structure describing the action to be taken when 
  * a signal arrives.
  * It consists of:
- * @param __sighandler_t sa_handler;	write();
-
+ * @param __sighandler_t sa_handler
  * @param __sigset_t sa_mask - the signal blocking functions use 
  * a data structure (an array of integers) called a signal set 
  * to specify what signals are affected.
@@ -106,13 +98,21 @@ int	ft_handle_signals(bool heredoc)
 	return (0);
 }
 
+/**
+ * @brief  function to set the behaviour
+ * of SIGINT in child processes
+ */ 
 void	sig_handle_child(int sig_num)
 {
 	(void)sig_num;
 }
 
-/// @brief  TO REWRITE IT!!!!!
-/// @param  
+/**
+ * @brief  function that handles signal behaviour
+ * in child processes, here the sigquit (STRG+\) 
+ * as to be set to default behaviour
+ */ 
+
 void	ft_handle_signals_childs(void)
 {
 	struct sigaction	sa;
