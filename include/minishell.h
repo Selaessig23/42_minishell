@@ -134,7 +134,7 @@ void	ft_handle_signals_childs(void);
 
 // PARSING - LEXICAL ANALYSIS
 //lexer/lexer.c
-char	**create_nodes(char **readline_input);
+char	**create_cleanarr(char **readline_input);
 //lexer/lexer_cleaner.c
 void	ft_create_clean_input(char *dest, char *src);
 //lexer/lexer_op_check.c
@@ -224,8 +224,10 @@ void	ft_check_defaultpath(char *binary, char **binarypaths);
 //builtins/builtin_check.c
 int		check_parent_builtin(t_data *comm_info);
 int		check_child_builtin(t_data *comm_info);
+//builtins/builtin_exit.c
+void	ft_builtin_exit(t_data *comm_info, t_big *big);
 //builtins/exit.c
-void	ft_exit_minishell(t_data *comm_info, t_big *big);
+void	ft_exit_minishell(t_big *big, bool print_exit);
 //builtins/env.c
 void	ft_print_env(t_data *comm_info, t_big *big);
 //builtins/echo.c

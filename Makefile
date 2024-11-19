@@ -47,6 +47,7 @@ SRCS =	main.c \
 		command_creation/command_utils.c \
 		command_creation/check_def_env_paths.c \
 		builtins/builtin_check.c \
+		builtins/builtin_exit.c \
 		builtins/exit.c \
 		builtins/echo.c \
 		builtins/env.c \

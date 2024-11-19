@@ -94,7 +94,7 @@ int	ft_executer(t_big *big)
 	ft_executer_loop(big, curr);
 	exit_status_binary = get_exit_status_waitpid(big);
 	assign_exit_code(big->cmdlist, exit_status_binary, big);
-	ft_free_cl(&(big->cmdlist));
-	big->count_commds = 0;
+	// ft_free_cl(&(big->cmdlist));
+	// big->count_commds = 0;
 	return (0);
 }

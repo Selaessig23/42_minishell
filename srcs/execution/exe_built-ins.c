@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:43:45 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/18 14:29:18 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/19 09:29:14 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	exe_parent_builtin(t_data *comm_info, t_big *big)
 		else if (is_exact_string(argv[0], "unset"))
 			ft_unset(big, comm_info);
 		else if (is_exact_string(argv[0], "exit"))
-			ft_exit_minishell(comm_info, big);
+			ft_builtin_exit(comm_info, big);
 		else if (is_exact_string(argv[0], "help"))
 			ft_minishell_help(comm_info, big);
 	}

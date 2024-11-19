@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 09:42:56 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 20:15:36 by mpeshko          ###   ########.fr       */
+/*   Updated: 2024/11/19 10:36:05 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ static char	**ft_split_rlinput(char **readline_input, char *clean_input)
  * @param readline_input the input of command line read by function readline
  * @return: an array of strings with cleaned command line input
  */
-char	**create_nodes(char **readline_input)
+char	**create_cleanarr(char **readline_input)
 {
 	char	*clean_input;
 	char	**input_arr;
