@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_reader_02.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 22:23:23 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/18 14:04:34 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/19 14:52:51 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static int	w_waitpid(t_data *comm_info, int status,
 		waitpid(comm_info->id, &status, 0);
 		if (WIFSIGNALED(status))
 		{
-			if ((WTERMSIG(status) == 2 || WTERMSIG(status) == 3) && *signaled == false)
+			if ((WTERMSIG(status) == 2 || WTERMSIG(status) == 3) && 
+				*signaled == false)
 			{
 				if (WTERMSIG(status) == 3)
 					ft_dprintf("Quit (core dumped)");
@@ -77,7 +78,6 @@ int	get_exit_status_waitpid(t_big *big)
 	signaled = false;
 	while (curr != NULL)
 	{
-		//signaled = false;
 		comm_info = curr->content;
 		status = w_waitpid(comm_info, status, &signaled, &exitcode);
 		curr = curr->next;
