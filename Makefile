@@ -55,6 +55,7 @@ SRCS =	main.c \
 		09_builtin/env.c \
 		09_builtin/pwd.c \
 		09_builtin/cd.c \
+		09_builtin/cd_error.c \
 		09_builtin/export_1.c \
 		09_builtin/export_2.c \
 		09_builtin/export_3.c \

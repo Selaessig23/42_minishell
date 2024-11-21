@@ -44,6 +44,10 @@
 # define INPUT_ERROR "Not correct number of input arguments\
 to execute minishell\n"
 
+//for testing reasons:
+//valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes 
+//--track-fds=yes --suppressions=suppressions.supp ./minishell
+
 //define a global variable for signal-handling
 extern int	g_signalnum;
 
@@ -254,6 +258,8 @@ void		ft_echo(t_data *comm_info, t_big *big);
 void		ft_print_pwd(t_big *big, t_data *comm_info);
 //09_builtin/cd.c
 void		ft_cd(t_big *big, char **argv);
+//09_builtin/cd_error.c
+int			cd_error_check(char **argv);
 //09_builtin/export_1.c
 int			ft_export(t_big *big, t_data *comm_info);
 char		**ft_add_arr_back(char *str_to_add,
