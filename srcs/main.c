@@ -71,11 +71,14 @@ int	main(int argc, char **argv, char **envp)
 	t_big	*big;
 
 	(void)argv;
+	big = NULL;
 	rl_catch_signals = 0;
 	if (argc != 1)
 		error_and_exit(1);
 	else if (argc == 1)
 	{
+		if (!envp || *envp == NULL)
+			error_and_exit(5);
 		big = init_t_big(envp);
 		minishell_is_running(big);
 	}

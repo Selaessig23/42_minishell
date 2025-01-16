@@ -41,8 +41,8 @@
 // for S_ISDIR macro in is_valid_cmd_and_print_err function
 # include <sys/stat.h>
 //define error message
-# define INPUT_ERROR "Not correct number of input arguments\
-to execute minishell\n"
+# define INPUT_ERROR "Not correct number of input arguments \
+to execute minishell.\n"
 
 //for testing reasons:
 //valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes 

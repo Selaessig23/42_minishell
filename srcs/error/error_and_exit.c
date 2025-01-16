@@ -40,7 +40,12 @@ void	error_and_exit(int err)
 	}
 	else if (err == 4)
 		ft_putstr_fd("PATH not readable from ENVP\n", 2);
-	ft_putstr_fd("Error occurred! errno:\n", 2);
-	ft_putendl_fd(strerror(err), 2);
+	else if (err == 5)
+		ft_putstr_fd("Unable to start minishell without envp.\n", 2);
+	else
+	{
+		ft_putstr_fd("Error occurred! errno:\n", 2);
+		ft_putendl_fd(strerror(err), 2);
+	}
 	exit(EXIT_FAILURE);
 }
