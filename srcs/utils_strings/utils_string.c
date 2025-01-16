@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 20:29:49 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/19 14:42:04 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/01/16 15:04:15 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,14 @@ int	is_last_char(const char *str, char c)
 		return (0);
 }
 
+/**
+ * @brief helper function. it compares two strings and
+ * checks if they have same characters and same length
+ * 
+ * @param str_org original string that should be compared with
+ * @param str_cmp the string that should be checked
+ * @return returns 1 in case the string do not differ in content and size
+ */
 int	is_exact_string(const char *str_org, char *str_cmp)
 {
 	if (!ft_strncmp(str_org, str_cmp, ft_strlen(str_org)) 
