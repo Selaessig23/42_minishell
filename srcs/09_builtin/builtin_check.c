@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 19:59:10 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/14 19:59:20 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/01/29 16:59:46 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * Check if it is parent type built-ins
+ * Check if it is parent type built-ins (executed in parent, not child)
  * Parent type built-ins are built-ins that fully executable
  * only when it is only one command that executes without
  * forking.

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_cleaner.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:39:59 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 15:03:12 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:25:17 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

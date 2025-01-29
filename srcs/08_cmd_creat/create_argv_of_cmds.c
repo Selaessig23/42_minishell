@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_argv_of_cmds.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:54:04 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 20:14:19 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:28:39 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

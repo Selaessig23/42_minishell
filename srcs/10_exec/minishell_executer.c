@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_executer.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:43:57 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 20:15:10 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:33:02 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

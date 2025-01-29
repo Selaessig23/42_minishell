@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:30:24 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 15:41:33 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:59:47 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
  * that are required by more than one file of functions
  */
 
+/**
+ * @brief it sets the the following command struct 
+ * to have an infile with null input (/dev/null)
+ * and sets exit code to 1
+ */
 void	exe_fd_error(t_big *big, t_data *comm_info_next)
 {
 	big->exit_code = 1;
@@ -25,6 +30,10 @@ void	exe_fd_error(t_big *big, t_data *comm_info_next)
 		comm_info_next->fd_infile = open("/dev/null", O_RDONLY);
 }
 
+/**
+ * @brief function to get the content of the next node of a 
+ * linked list, if there is no next node, it returns NULL
+ */
 t_data	*ft_pointer_next_command(t_list	*curr)
 {
 	if (curr->next != NULL)

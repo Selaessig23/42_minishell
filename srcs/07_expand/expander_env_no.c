@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_env_no.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 14:37:36 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 20:15:15 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:27:39 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

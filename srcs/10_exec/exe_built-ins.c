@@ -6,15 +6,17 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:43:45 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/19 11:57:40 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:59:46 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// export, unset, cd, exit
-// execution IF exe is true
-// if exe is false - checking for errors and exit assigns exit code
+/** @brief these functions are executed in parent (not child)
+ * export, unset, cd, exit
+ * execution only IF big->exe is true
+ * if big->exe is false - checking for errors and exit assigns exit code
+*/
 void	exe_parent_builtin(t_data *comm_info, t_big *big)
 {
 	char	**argv;

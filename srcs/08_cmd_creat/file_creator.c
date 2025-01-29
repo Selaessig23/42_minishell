@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_creator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:26:43 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 20:14:39 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:28:59 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

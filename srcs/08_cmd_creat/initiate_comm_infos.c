@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initiate_comm_infos.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:52:23 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 20:14:42 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:29:17 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

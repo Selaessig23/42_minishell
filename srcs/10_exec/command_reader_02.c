@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   command_reader_02.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 22:23:23 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/19 14:52:51 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/01/29 16:59:42 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * DESCRIPTION:
+ * in this file exit code management and signal management in
+ * child processes is organised
+ */
 
 void	assign_exit_code(t_list	*cmdlist, int exit_status_binar, t_big *big)
 {
