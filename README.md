@@ -21,6 +21,29 @@ Our projects contains (number) of tokens.
 
 Before a command is executed, its input and output may be redirected using a special notation interpreted by the shell. Redirection allows commands’ file handles to be duplicated, opened, closed, made to refer to different files, and can change the files the command reads from and writes to.
 
+### Heredoc (`<< LIMITER`) in Mini-Shell
+
+The **heredoc** (`<< LIMITER`) feature allows users to provide multi-line input until a specified delimiter is encountered. It enables commands to receive input directly from the shell without requiring an external file (like in bash). This functionality is implemented in heredoc.c and involves handling input, environment variable expansion, signal handling and temporary file management.
+
+## How It Works
+
+### 1. Capturing Input
+- The shell prompts for input using `readline("> ")`.
+- Input continues until the user enters the specified **delimiter**.
+- If `CTRL+D` is pressed before the delimiter, it behaves as EOF and a warning is displayed.
+
+### 2. Environment Variable Expansion
+- If expansion is not disabled (e. g. cat << 'EOF'), variables within the heredoc input (e.g., `$HOME`) are replaced with their corresponding values.
+- Expansion is controlled based on `comm_info->heredoc_expander`.
+
+### 3. Temporary File Storage
+- The heredoc input is saved in a **temporary file** (`/tmp/heredoc_X`).
+- The filename is generated dynamically using `commands_no` for uniqueness.
+
+### 4. Handling Multiple Heredocs
+- The shell supports **multiple heredocs** in a single command.
+- Temporary files from previous heredocs are cleaned up to avoid conflicts.
+
 1. **`<` (Input Redirection):**
 
 ### The Builtins
