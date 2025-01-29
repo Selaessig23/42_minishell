@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 10:05:17 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/18 19:51:49 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/01/29 14:58:57 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	delete_heredoc(t_data *comm_info)
 	char	*cmd_no_str;
 
 	cmd_no_str = ft_itoa(comm_info->commands_no);
-	pathname = ft_strjoin(".heredoc_", cmd_no_str);
+	pathname = ft_strjoin("/tmp/heredoc_", cmd_no_str);
 	free(cmd_no_str);
 	unlink(pathname);
 	free(pathname);
@@ -147,7 +147,7 @@ int	heredoc_start(t_data *comm_info, char *limiter, t_big **p_big)
 	char	*cmd_no_str;
 
 	cmd_no_str = ft_itoa(comm_info->commands_no);
-	name = ft_strjoin(".heredoc_", cmd_no_str);
+	name = ft_strjoin("/tmp/heredoc_", cmd_no_str);
 	free(cmd_no_str);
 	fd = fd_here_creator(name, true);
 	here_read_helper(fd, limiter, p_big, comm_info);
