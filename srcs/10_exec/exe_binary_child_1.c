@@ -13,10 +13,15 @@
 #include "minishell.h"
 
 /**
+ * DESCRIPTION:
+ * in this file 
+ */
+
+/**
  * @brief Checks if a command exists in the provided folders and 
  * returns its path.
  * 
- * @param folders An array of folder paths.
+ * @param folders An array with all folder of env var 'PATH'.
  * @param cmd_name The name of the command to check.
  * @return The path to the executable if found, or NULL if not.
  */
@@ -38,7 +43,9 @@ char	*exe_exists(char **folders, char *cmd_name)
 }
 
 /**
- * @brief Retrieves the folders from the 'PATH' environment variable.
+ * @brief Retrieves all directories listed in the 'PATH' environment variable.
+ * It searches for the var name env_var_path in env and returns the content of this var
+ * (everything that follows '='), found in env, or NULL if not found
  * 
  * @param env_var_path The name of the environment variable (e.g., "PATH").
  * @param env The environment variables array.
@@ -74,8 +81,11 @@ char	*get_all_folders(const char *env_var_path, char **env)
 }
 
 /**
- * @brief Obtains the path of a command by searching the 'PATH' 
- * environment variable.
+ * @brief Obtains the path of a (binary) command by 
+ * 1st searching the content of 'PATH' environment variable 
+ * (= get all folders)
+ * 2nd checking in which diretory listed in PATH the binary is located
+ * (= exe_exists)
  * 
  * @param cmd_name The name of the command to locate.
  * @param env The environment variables array.
@@ -109,6 +119,11 @@ char	*get_path(char *cmd_name, char **env)
 	}
 }
 
+/**
+ * @brief this function checks if a binary file of the command exists
+ * in the paths listed in the env var PATH
+ * if YES, it executes th command, if not, it returns error code 127
+ */
 int	get_path_from_env_path_and_exe(char **cmd_plus_args, char *env[])
 {
 	char	*cmd_path;

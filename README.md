@@ -34,6 +34,7 @@ The **heredoc** (`<< LIMITER`) feature allows users to provide multi-line input 
 
 ### 2. Environment Variable Expansion
 - If expansion is not disabled (e. g. cat << 'EOF'), variables within the heredoc input (e.g., `$HOME`) are replaced with their corresponding values.
+- It is not possible to set a env variable as limiter, such as cat << $HOME (HOME as delimiter will not be expanded)
 - Expansion is controlled based on `comm_info->heredoc_expander`.
 
 ### 3. Temporary File Storage

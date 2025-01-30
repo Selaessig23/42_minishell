@@ -14,7 +14,7 @@
 
 /**
  * DESCRIPTION:
- * in this file exit code management and signal management in
+ * in this file exit code handling and signal handling of
  * child processes is organised
  */
 
