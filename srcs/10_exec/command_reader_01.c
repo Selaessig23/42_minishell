@@ -19,7 +19,7 @@
  */
 
 /**
- * Closing file descriptors in parent process in current
+ * @brief Closing file descriptors in parent process in current
  * t_data struct and deletes temporay heredoc-files (at /dev/)
  * before next iteration of the executer loop.
  */
@@ -38,7 +38,9 @@ static void	ft_executer_fd_close(t_data	*comm_info)
  * (echo, pwd, env, help, export (only sort!))
  * and if the command is valid
  * (if not: manipulates the following 
- * command struct to have an infile with null input, if there is one)
+ * command struct to have an infile with null input, if there is one
+ * by opening /dev/null)
+ * and calls functions to execute command in a child if valid
  */
 static void	exe_bin_ch_built_inval(t_big *big, t_data *comm_info, 
 	t_data *comm_info_next)
@@ -106,9 +108,7 @@ static void	ft_executer_loop(t_big *big, t_list *curr)
 
 /**
  * @brief function to organise the execution part
- * 1st it checks for builtin-functions
- * 2nd if there are no it prints out the command details
- * (2nd part has to be overwritten by execution-part)
+ * (executing the command and returning the correct exit code)
  *
  * @param big structure that holds all importand information
  * for execution part like cmdlist, env, last exit status

@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:43:57 by mstracke          #+#    #+#             */
-/*   Updated: 2025/01/29 15:33:02 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:39:48 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ void	ft_ms_executer(char *env[])
 		count += 1;
 	count_new = ft_itoa(count);
 	if (!count_new)
-		error_and_exit(1);
+		error_and_exit(1, NULL);
 	shlvl_new = ft_strjoin("SHLVL=", count_new);
 	if (!shlvl_new)
-		error_and_exit(1);
+		error_and_exit(1, NULL);
 	free(count_new);
 	*env = shlvl_new;
 	free (temp);

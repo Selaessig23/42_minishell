@@ -12,6 +12,15 @@
 
 #include "minishell.h"
 
+/**
+ * @brief function to setup the pipe and infile handling of 
+ * child processes depending on the the command struct of next command
+ * 1) if there is no outfile in current command and if there exists 
+ * a next command than write output to (write end of) pipe[1] 
+ * instead of using STDOUT
+ * 2) if there is an infile for current command, send it to STDIN
+ * 3) if there is an outfile for current command, sebd STDOUT to outfile
+ */
 void	setup_input_output_in_child(t_data *comm_info, t_data *c_i_next)
 {
 	if (c_i_next == NULL)
@@ -30,6 +39,12 @@ void	setup_input_output_in_child(t_data *comm_info, t_data *c_i_next)
 		dup2(comm_info->fd_outfile, STDOUT_FILENO);
 }
 
+/**
+ * @brief function to close all file descriptors 
+ * stored in the read end of the pipe by iterating 
+ * through the linked lists of commands and closing the
+ * read end of each command struct (fd_pipe[0])
+ */
 void	fd_cleanup_read_end_in_child(t_big *big)
 {
 	t_list	*linked_list;

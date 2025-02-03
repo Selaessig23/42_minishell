@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:27:57 by mstracke          #+#    #+#             */
-/*   Updated: 2025/01/29 15:28:21 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:37:48 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	ft_check_defaultpath(char *binary, char **binarypaths)
 		return ;
 	path_matches = ft_calloc((match_counter + 1), sizeof(char *));
 	if (!path_matches)
-		error_and_exit(1);
+		error_and_exit(1, NULL);
 	ft_match_filler(&path_matches, binary, binarypaths);
 	ft_print_error(match_counter, binary, path_matches);
 	ft_free(path_matches);

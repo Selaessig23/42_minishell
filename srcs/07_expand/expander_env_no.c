@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 14:37:36 by mstracke          #+#    #+#             */
-/*   Updated: 2025/01/29 15:27:39 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:37:57 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*delete_varname_from_value(char *value_old, char *wrongenvp)
 	i = (ft_strlen(value_old) - ft_strlen(wrongenvp));
 	value_new = ft_calloc((i + 1), sizeof(char));
 	if (!value_new)
-		error_and_exit(2);
+		error_and_exit(2, NULL);
 	i = 0;
 	while (value_old[i] && 
 		(!ft_strnstr(&(value_old[i]), wrongenvp, ft_strlen(wrongenvp))))

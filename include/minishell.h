@@ -142,7 +142,7 @@ char		**copy_envp(char **envp);
 int			ft_spacetabchecker(char *input);
 void		ft_welcome(void);
 //error/error_handling.c
-void		error_and_exit(int err);
+void		error_and_exit(int err, t_big *big);
 //02_sig/signals.c
 int			ft_handle_signals(bool rl_antes);
 void		ft_handle_signals_childs(void);
@@ -322,8 +322,8 @@ int			is_minishell_command(char *cmd, char *env[]);
 void		ft_ms_executer(char *env[]);
 //10_exec/exe_error_handling.c
 void		close_fd_with_error_handling(void);
-void		w_errpipe_close(int open_fd);
-void		w_errfork_close(int open_fd, int *pipe_fd);
+void		w_errpipe_close(int open_fd, t_big *big);
+void		w_errfork_close(int open_fd, int *pipe_fd, t_big *big);
 void		w_dup2(int dupfd, int newfd);
 //10_exec/exe_utils.c
 int			is_absolute_path(const char *str, const char *str_cmp, int nmb);

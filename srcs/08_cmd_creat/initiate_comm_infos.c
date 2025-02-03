@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:52:23 by mstracke          #+#    #+#             */
-/*   Updated: 2025/01/29 15:29:17 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:42:31 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ void	ft_init_clist(t_list **lexx, t_list **command_list, t_big **p_big)
 	node_content = curr_lexx->content;
 	comm_info = ft_calloc(1, sizeof(t_data));
 	if (!comm_info)
-		error_and_exit(2);
+		error_and_exit(2, NULL);
 	init_comm(&comm_info, *lexx);
 	while (curr_lexx != NULL && node_content->token != 1 
 		&& node_content->token != 2)

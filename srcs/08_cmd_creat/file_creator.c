@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:26:43 by mstracke          #+#    #+#             */
-/*   Updated: 2025/01/29 15:28:59 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:42:59 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,19 @@ int	fd_here_creator(char *filename, bool wr)
 	{
 		fd = open(filename, O_WRONLY | O_CREAT, 0644);
 		if (fd == -1)
-			error_and_exit(1);
+			error_and_exit(1, NULL);
 	}
 	else if (!access(filename, F_OK) && wr == true)
 	{
 		fd = open(filename, O_WRONLY | O_TRUNC);
 		if (fd == -1)
-			error_and_exit(1);
+			error_and_exit(1, NULL);
 	}
 	else if (!access(filename, F_OK))
 	{
 		fd = open(filename, O_RDONLY);
 		if (fd == -1)
-			error_and_exit(1);
+			error_and_exit(1, NULL);
 	}
 	return (fd);
 }
@@ -101,13 +101,13 @@ static int	ft_get_fd(bool appender, char *filename)
 	{
 		fd_out = open(filename, O_WRONLY | O_APPEND);
 		if (fd_out == -1)
-			error_and_exit(1);
+			error_and_exit(1, NULL);
 	}
 	else if (!access(filename, W_OK))
 	{
 		fd_out = open(filename, O_WRONLY | O_TRUNC);
 		if (fd_out == -1)
-			error_and_exit(1);
+			error_and_exit(1, NULL);
 	}
 	else
 	{
@@ -135,7 +135,7 @@ int	fd_out_creator(bool appender, char *filename)
 	{
 		fd_out = open(filename, O_WRONLY | O_RDONLY | O_CREAT, 0644);
 		if (fd_out == -1)
-			error_and_exit(1);
+			error_and_exit(1, NULL);
 	}
 	else
 	{

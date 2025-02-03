@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:11:56 by mstracke          #+#    #+#             */
-/*   Updated: 2025/01/29 15:25:21 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:38:00 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static char	*ft_clean_input(char *src)
 	if (!dest)
 	{
 		free(src);
-		error_and_exit(2);
+		error_and_exit(2, NULL);
 	}
 	ft_create_clean_input(dest, src);
 	trim_out_spaces(&dest);
@@ -137,7 +137,7 @@ char	**create_cleanarr(char **readline_input)
 	if (!clean_input)
 	{
 		ft_free(readline_input);
-		error_and_exit(2);
+		error_and_exit(2, NULL);
 	}
 	input_arr = ft_split_rlinput(readline_input, clean_input);
 	free(clean_input);

@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:54:04 by mstracke          #+#    #+#             */
-/*   Updated: 2025/01/29 15:28:39 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:37:43 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ void	ft_add_arr_end(char *token_value, t_data **p_comm_info)
 	count = ft_arrlen(command_array_old);
 	command_array_new = (char **)malloc(sizeof(char *) * (count + 2));
 	if (!command_array_new)
-		error_and_exit(2);
+		error_and_exit(2, NULL);
 	if (count > 0)
 		i += ft_arrcpy(&command_array_old, &command_array_new);
 	command_array_new[i] = ft_strdup(token_value);
 	if (!command_array_new[i])
-		error_and_exit(2);
+		error_and_exit(2, NULL);
 	i += 1;
 	command_array_new[i] = NULL;
 	comm_info->cmd = command_array_new;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 20:48:30 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/18 20:14:05 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/02/03 13:39:30 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	ft_rmv_var_array(t_big *big, char *str_to_rmv)
 	count = ft_arrlen(array_old);
 	array_new = (char **)malloc(sizeof(char *) * (count));
 	if (!array_new)
-		error_and_exit(2);
+		error_and_exit(2, NULL);
 	if (count > 0)
 		ft_rmv_var_array_2(array_old, array_new, str_to_rmv);
 	big->env = array_new;

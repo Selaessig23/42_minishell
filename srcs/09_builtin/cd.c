@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:50:02 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/21 15:06:13 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:39:14 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*ft_get_cwd(void)
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		error_and_exit(2);
+		error_and_exit(2, NULL);
 	return (pwd);
 }
 
@@ -75,7 +75,7 @@ static void	ft_update_env(t_big *big, char *oldpwd_old)
 		new_pwd = getcwd(NULL, 0);
 		free(old_pwd);
 		if (!new_pwd)
-			error_and_exit(2);
+			error_and_exit(2, NULL);
 		*envp = ft_strjoin("PWD=", new_pwd);
 		free(new_pwd);
 	}
@@ -115,7 +115,7 @@ void	ft_cd(t_big *big, char **argv)
 		if (chdir(argv[1]) < 0)
 		{
 			free(pwd_old);
-			error_and_exit(errno);
+			error_and_exit(errno, NULL);
 		}
 		ft_update_env(big, pwd_old);
 		free(pwd_old);

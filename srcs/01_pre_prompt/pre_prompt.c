@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pre_prompt.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:25:29 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/18 20:13:44 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/02/03 13:38:02 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,13 @@ char	**copy_envp(char **envp)
 	str_size = 0;
 	copy = ft_calloc(i + 1, sizeof(char *));
 	if (!copy)
-		error_and_exit(2);
+		error_and_exit(2, NULL);
 	while (envp[j])
 	{
 		str_size = ft_strlen(envp[j]) + 1;
 		copy[j] = ft_calloc(str_size, sizeof(char));
 		if (!copy[j])
-			error_and_exit(2);
+			error_and_exit(2, NULL);
 		copy[j] = ft_memcpy(copy[j], envp[j], str_size);
 		j++;
 	}
@@ -119,7 +119,7 @@ t_big	*init_t_big(char **envp)
 
 	big = ft_calloc(1, sizeof(t_big));
 	if (big == NULL)
-		error_and_exit(2);
+		error_and_exit(2, NULL);
 	big->cmdlist = NULL;
 	env = copy_envp(envp);
 	big->env = env;

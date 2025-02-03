@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:43:45 by mpeshko           #+#    #+#             */
-/*   Updated: 2025/01/29 16:59:46 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:45:54 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,38 +67,54 @@ void	exe_child_builtin(t_data *comm_info, t_big *big)
 	}
 }
 
+/**
+ * @brief function (in a child) to execute the child_builtins
+ * 
+ * CHECK: I have comment out a part as it seems to be not necessary
+ */
 void	setup_and_exe_builtin_in_child(t_data *comm_info, 
 	t_data *c_i_next, t_big *big)
 {
 	ft_handle_signals_childs();
 	setup_input_output_in_child(comm_info, c_i_next);
 	fd_cleanup_read_end_in_child(big);
-	if (c_i_next == NULL)
-	{
-		if (comm_info->fd_infile == 0 && comm_info->fd_outfile == 1)
-		{
-			exe_child_builtin(comm_info, big);
-			fd_cleanup_in_child(big);
-			free_t_big(big);
-			exit(EXIT_SUCCESS);
-		}
-	}
+	// if (c_i_next == NULL)
+	// {
+	// 	if (comm_info->fd_infile == 0 && comm_info->fd_outfile == 1)
+	// 	{
+	// 		exe_child_builtin(comm_info, big);
+	// 		fd_cleanup_in_child(big);
+	// 		free_t_big(big);
+	// 		exit(EXIT_SUCCESS);
+	// 	}
+	// }
 	exe_child_builtin(comm_info, big);
 	fd_cleanup_in_child(big);
 	free_t_big(big);
 	exit(EXIT_SUCCESS);
 }
 
+
+/**
+ * @brief function to execute valid child-builtin-commands by forking
+ * 
+ * @param comm_info all relevant information stored in a struct to execute the 
+ * current command
+ * @param c_i_next ll relevant information stored in a struct to execute the 
+ * next command (next node in the command list)
+ * @param big a struct that keeps all relevant information to run the 
+ * minishell and execute command line inputs
+ */
 int	fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, t_big *big)
 {
 	pid_t	pid;
 
 	if (pipe(comm_info->fd_pipe) == -1)
-		w_errpipe_close(comm_info->fd_infile);
+		w_errpipe_close(comm_info->fd_infile, big);
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
-		w_errfork_close(comm_info->fd_infile, comm_info->fd_pipe);
+		w_errfork_close(comm_info->fd_infile, comm_info->fd_pipe, big);
 	if (pid == 0)
 		setup_and_exe_builtin_in_child(comm_info, c_i_next, big);
 	close(comm_info->fd_pipe[1]);

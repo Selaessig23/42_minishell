@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:21:59 by mstracke          #+#    #+#             */
-/*   Updated: 2025/01/29 15:25:47 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:37:59 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	**ft_split_rlinput(char **readline_input, char *clean_input)
 		clean_input = NULL;
 		ft_free(readline_input);
 		readline_input = NULL;
-		error_and_exit(2);
+		error_and_exit(2, NULL);
 	}
 	return (input_arr);
 }

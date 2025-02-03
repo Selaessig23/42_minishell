@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_error_handling.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:27:35 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/17 23:15:51 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/02/03 12:25:58 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,29 +34,31 @@ void	w_dup2(int dupfd, int newfd)
 /**
  * @brief This function handles errors related to pipe creation.
  * It closes the provided file descriptor open_fd, prints an error message
- * related to pipe, and exits the program.
+ * related to pipe, frees all allocated memory and exits the program.
  */
-void	w_errpipe_close(int open_fd)
+void	w_errpipe_close(int open_fd, t_big *big)
 {
 	if (open_fd > 2)
 		close(open_fd);
 	perror("pipe");
+	free_t_big(big);
 	exit(EXIT_FAILURE);
 }
 
 /**
  * @brief This function handles errors during a fork operation.
  * When fork fails, it prints an error message, closes the file descriptor
- * "open_fd", closes both ends of a pipe (given by pipe_fd), and exits
- * the program.
+ * "open_fd", closes both ends of a pipe (given by pipe_fd), 
+ * frees all allocated memory, and exits the program.
  */
-void	w_errfork_close(int open_fd, int *pipe_fd)
+void	w_errfork_close(int open_fd, int *pipe_fd, t_big *big)
 {
 	perror("Fork Error");
 	if (open_fd > 2)
 		close(open_fd);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
+	free_t_big(big);
 	exit(EXIT_FAILURE);
 }
 

@@ -64,11 +64,11 @@ int	fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, t_big *big)
 	pid_t	pid;
 
 	if (pipe(comm_info->fd_pipe) == -1)
-		w_errpipe_close(comm_info->fd_infile);
+		w_errpipe_close(comm_info->fd_infile, big);
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
-		w_errfork_close(comm_info->fd_infile, comm_info->fd_pipe);
+		w_errfork_close(comm_info->fd_infile, comm_info->fd_pipe, big);
 	if (pid == 0)
 		setup_and_exe_binary_in_child(comm_info, c_i_next, big);
 	close(comm_info->fd_pipe[1]);
