@@ -92,7 +92,7 @@ static int	is_absolute_path_to_exe(const char *cmd)
  * @param argument The command and its arguments as a string.
  * @param env The environment variables array.
  */
-int	exe_child_binary(char **cmd_plus_args, char *env[])
+int	exe_child_binary(t_big *big, char **cmd_plus_args, char *env[])
 {
 	is_minishell_command(cmd_plus_args[0], env);
 	if (is_command_directory(cmd_plus_args[0]))
@@ -104,5 +104,5 @@ int	exe_child_binary(char **cmd_plus_args, char *env[])
 	else if (is_just_name_of_directory(cmd_plus_args[0]))
 		return (127);
 	else
-		return (get_path_from_env_path_and_exe(cmd_plus_args, env));
+		return (get_path_from_env_path_and_exe(big, cmd_plus_args, env));
 }

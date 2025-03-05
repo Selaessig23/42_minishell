@@ -138,7 +138,7 @@ typedef struct s_big
 
 //01_pre_prompt/pre_prompt.c
 t_big		*init_t_big(char **envp);
-char		**copy_envp(char **envp);
+char		**copy_envp(t_big *big, char **envp);
 int			ft_spacetabchecker(char *input);
 void		ft_welcome(void);
 //error/error_handling.c
@@ -305,12 +305,13 @@ int			fork_and_exe_binary(t_data *comm_info, t_data *c_i_next,
 void		setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, 
 				t_big *big);
 //10_exec/exe_binary_child_0.c
-int			exe_child_binary(char **cmd_plus_args, char *env[]);
+int			exe_child_binary(t_big *big, char **cmd_plus_args, char *env[]);
 
 //10_exec/exe_binary_child_1.c
-int			get_path_from_env_path_and_exe(char **cmd_plus_args, char *env[]);
-char		*get_path(char *cmd_name, char **env);
-char		*get_all_folders(const char *env_var_path, char **env);
+int			get_path_from_env_path_and_exe(t_big *big, 
+				char **cmd_plus_args, char *env[]);
+char		*get_path(t_big *big, char *cmd_name, char **env);
+char		*get_all_folders(t_big *big, const char *env_var_path, char **env);
 char		*build_cmd_path(const char *folder, const char *cmd_name);
 char		*exe_exists(char **folders, char *cmd_name);
 //10_exec/exe_child_fd_setup_cleanup.c

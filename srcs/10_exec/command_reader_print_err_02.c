@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_reader_print_err_02.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 21:56:16 by mpeshko           #+#    #+#             */
-/*   Updated: 2024/11/17 23:13:50 by mpeshko          ###   ########.fr       */
+/*   Updated: 2025/03/05 13:42:01 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	get_path_from_env_or_binarypaths(t_big *big, char **cmd_plus_args)
 
 	binarypaths = big->binarypaths;
 	c_env = big->env;
-	cmd_path = get_path(cmd_plus_args[0], c_env);
+	cmd_path = get_path(big, cmd_plus_args[0], c_env);
 	if (!cmd_path)
 	{
 		if (!no_path_in_env_check_binarypaths(cmd_plus_args[0], binarypaths))
