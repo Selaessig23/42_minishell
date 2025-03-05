@@ -74,7 +74,7 @@ int	main(int argc, char **argv, char **envp)
 	big = NULL;
 	rl_catch_signals = 0;
 	if (argc != 1)
-		error_and_exit(1, big);
+		error_and_exit(1, NULL);
 	else if (argc == 1)
 	{
 		if (!envp || *envp == NULL)

@@ -16,14 +16,15 @@ SRCS =	main.c \
 		error/error_and_exit.c \
 		02_sig/signals.c \
 		02_sig/signals_reset.c \
-		03_pars/parsing_1.c \
-		03_pars/parsing_2.c \
-		03_pars/incomplete_input.c \
-		04_lex/ft_split_ms.c \
-		04_lex/ft_split_specials.c \
-		04_lex/lexer_cleaner.c \
-		04_lex/lexer_op_check.c \
-		04_lex/lexer_str_utils.c \
+		03_pars/parsing.c \
+		03_pars/lexer/parsing_1.c \
+		03_pars/lexer/parsing_2.c \
+		03_pars/lexer/incomplete_input.c \
+		03_pars/lexer/ft_split_ms.c \
+		03_pars/lexer/ft_split_specials.c \
+		03_pars/lexer/lexer_cleaner.c \
+		03_pars/lexer/lexer_op_check.c \
+		03_pars/lexer/lexer_str_utils.c \
 		05_tokenizer/tokenizer.c \
 		05_tokenizer/tokenizer_utils.c \
 		05_tokenizer/tokenizer_strings.c \

@@ -13,6 +13,13 @@
 #include "minishell.h"
 
 /**
+ * DESCRIPTION:
+ * file to organise the request for further input in form of a new prompt
+ * This case happens if command line input ends with a pipe, e. g.
+ * (could be expanded to all cases of unclosed quotation marks)
+ */
+
+/**
  * The function that updates the current input when the | character
  * at the end. For instance, if the main input was "ls |" and
  * the extra prompt takes "pwd", this function concatenates it

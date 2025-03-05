@@ -150,29 +150,30 @@ void		ft_handle_signals_childs(void);
 void		signal_set_exitcode_and_reset(t_big *big);
 
 // PARSING - LEXICAL ANALYSIS
-//03_pars/parsing_1.c
+//03_pars/parsing.c
 int			minishell_parsing(char *input, t_big *big);
+//03_pars/lexer/parsing_1.c
 char		**create_cleanarr(char **readline_input);
-//03_pars/parsing_2.c
+//03_pars/lexer/parsing_2.c
 char		**ft_split_rlinput(char **readline_input, char *clean_input);
-//03_pars/is_incomplete_input.c
+//03_pars/lexer/is_incomplete_input.c
 int			is_incomplete_input(char *clean_input);
 void		to_complete_input(char **readline_input);
 char		*extra_prompt_reader(void);
 void		update_read_input(char **main, char *extra);
 
-//04_lex/lexer_cleaner.c
+//03_pars/lexer/lexer_cleaner.c
 void		ft_create_clean_input(char *dest, char *src);
-//04_lex/lexer_op_check.c
+//03_pars/lexer/lexer_op_check.c
 bool		single_operator_check(char c);
 bool		double_operator_check(char c, char k);
-//04_lex/ft_split_ms.c
+//03_pars/lexer/ft_split_ms.c
 char		**ft_split_quotes(char const *s, char c);
-//04_lex/ft_split_specials.c
+//03_pars/lexer/ft_split_specials.c
 int			ft_space_tab_jump(const char *s, char c, int i);
 int			ft_quo_handling(const char *s, int i);
 int			is_tab(char c);
-//04_lex/lexer_str_utils.c.c
+//03_pars/lexer/lexer_str_utils.c.c
 void		trim_out_spaces(char **str);
 
 //05_tokenizer/tokenizer.c
