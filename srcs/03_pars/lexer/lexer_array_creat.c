@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_2.c                                        :+:      :+:    :+:   */
+/*   lexer_array_creat.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:21:59 by mstracke          #+#    #+#             */
-/*   Updated: 2025/02/03 13:37:59 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:49:33 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * @param readline_input the genuine command line input string* 
  * @param clean_input the cleaned (prepared) command line input string
  */
-char	**ft_split_rlinput(char **readline_input, char *clean_input)
+char	**ft_split_rlinput(t_big *big, char **readline_input, char *clean_input)
 {
 	char	**input_arr;
 
@@ -31,7 +31,7 @@ char	**ft_split_rlinput(char **readline_input, char *clean_input)
 		clean_input = NULL;
 		ft_free(readline_input);
 		readline_input = NULL;
-		error_and_exit(2, NULL);
+		error_and_exit(2, big);
 	}
 	return (input_arr);
 }

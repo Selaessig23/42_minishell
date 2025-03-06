@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:11:56 by mstracke          #+#    #+#             */
-/*   Updated: 2025/03/06 10:21:41 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:50:15 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ static int	ft_count(char *src)
  * trim_out_spaces deletes not required spaces (not very important
  * as spaces and tabs will be deleted by split function afterwards anyhow)
  * 
- * @param src the source string to clean
+ * @param src the source string to clean (from command line | readline input)
  */
-static char	*ft_clean_input(char *src)
+static char	*ft_clean_input(t_big *big, char *src)
 {
 	char	*dest;
 	size_t	len;
@@ -100,10 +100,10 @@ static char	*ft_clean_input(char *src)
 	if (!dest)
 	{
 		free(src);
-		error_and_exit(2, NULL);
+		error_and_exit(2, big);
 	}
 	ft_create_clean_input(dest, src);
-	trim_out_spaces(&dest);
+	trim_out_spaces(big, src, &dest);
 	return (dest);
 }
 
@@ -133,13 +133,13 @@ char	**create_cleanarr(t_big *big, char **readline_input)
 		}
 		to_complete_input(big, readline_input);
 	}
-	clean_input = ft_clean_input(*readline_input);
+	clean_input = ft_clean_input(big, *readline_input);
 	if (!clean_input)
 	{
 		ft_free(readline_input);
 		error_and_exit(2, NULL);
 	}
-	input_arr = ft_split_rlinput(readline_input, clean_input);
+	input_arr = ft_split_rlinput(big, readline_input, clean_input);
 	free(clean_input);
 	clean_input = NULL;
 	return (input_arr);

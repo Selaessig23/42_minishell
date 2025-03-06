@@ -155,11 +155,11 @@ int			minishell_parsing(char *input, t_big *big);
 //03_pars/lexer/lexer.c
 char		**create_cleanarr(t_big *big, char **readline_input);
 //03_pars/lexer/lexer_array_creat.c
-char		**ft_split_rlinput(char **readline_input, char *clean_input);
+char		**ft_split_rlinput(t_big *big, 
+				char **readline_input, char *clean_input);
 //03_pars/lexer/is_incomplete_input.c
 int			is_incomplete_input(char *clean_input);
 void		to_complete_input(t_big *big, char **readline_input);
-
 //03_pars/lexer/lexer_cleaner.c
 void		ft_create_clean_input(char *dest, char *src);
 //03_pars/lexer/lexer_op_check.c
@@ -172,7 +172,7 @@ int			ft_space_tab_jump(const char *s, char c, int i);
 int			ft_quo_handling(const char *s, int i);
 int			is_tab(char c);
 //03_pars/lexer/lexer_str_trimmer.c
-void		trim_out_spaces(char **str);
+void		trim_out_spaces(t_big *big, char *rl_input_raw, char **str);
 
 //03_pars/tokenizer/tokenizer.c
 t_list		*ft_tokenizer(char **input_arr);

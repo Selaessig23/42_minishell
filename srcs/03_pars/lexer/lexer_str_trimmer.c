@@ -84,8 +84,12 @@ static void	trim_it(char **str, char **new)
  * To trim leading and trailing spaces from a string and then
  * update the original string pointer with the new trimmed string.
  * (c) Marina
+ * 
+ * @param big struct with all required data to run minishell
+ * @param rl_input_raw the readline input to free in case of error
+ * @param str string to trim
  */
-void	trim_out_spaces(char **str)
+void	trim_out_spaces(t_big *big, char *rl_input_raw, char **str)
 {
 	size_t	new_len;
 	char	*new;
@@ -96,8 +100,9 @@ void	trim_out_spaces(char **str)
 	new = ft_calloc(new_len + 1, sizeof(char));
 	if (!new)
 	{
-		perror ("ft_calloc error");
-		return ;
+		free(rl_input_raw);
+		free(*str);
+		error_and_exit(2, big);
 	}
 	trim_it(str, &new);
 	free(*str);
