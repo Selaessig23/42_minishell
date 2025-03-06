@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:11:56 by mstracke          #+#    #+#             */
-/*   Updated: 2025/03/06 10:50:15 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:54:19 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,11 @@ static char	*ft_clean_input(t_big *big, char *src)
 		error_and_exit(2, big);
 	}
 	ft_create_clean_input(dest, src);
+	if (!src)
+	{
+		free(src);
+		error_and_exit(2, big);
+	}
 	trim_out_spaces(big, src, &dest);
 	return (dest);
 }
