@@ -152,15 +152,13 @@ void		signal_set_exitcode_and_reset(t_big *big);
 // PARSING - LEXICAL ANALYSIS
 //03_pars/parsing.c
 int			minishell_parsing(char *input, t_big *big);
-//03_pars/lexer/parsing_1.c
-char		**create_cleanarr(char **readline_input);
-//03_pars/lexer/parsing_2.c
+//03_pars/lexer/lexer.c
+char		**create_cleanarr(t_big *big, char **readline_input);
+//03_pars/lexer/lexer_array_creat.c
 char		**ft_split_rlinput(char **readline_input, char *clean_input);
 //03_pars/lexer/is_incomplete_input.c
 int			is_incomplete_input(char *clean_input);
-void		to_complete_input(char **readline_input);
-char		*extra_prompt_reader(void);
-void		update_read_input(char **main, char *extra);
+void		to_complete_input(t_big *big, char **readline_input);
 
 //03_pars/lexer/lexer_cleaner.c
 void		ft_create_clean_input(char *dest, char *src);
@@ -173,161 +171,161 @@ char		**ft_split_quotes(char const *s, char c);
 int			ft_space_tab_jump(const char *s, char c, int i);
 int			ft_quo_handling(const char *s, int i);
 int			is_tab(char c);
-//03_pars/lexer/lexer_str_utils.c.c
+//03_pars/lexer/lexer_str_trimmer.c
 void		trim_out_spaces(char **str);
 
-//05_tokenizer/tokenizer.c
+//03_pars/tokenizer/tokenizer.c
 t_list		*ft_tokenizer(char **input_arr);
-//05_tokenizer/tokenizer_utils.c
+//03_pars/tokenizer/tokenizer_utils.c
 void		ft_free_ll(t_list **ll);
 int			ft_check_fstquote(char *content, char checker);
-//05_tokenizer/tokenizer_operators.c
+//03_pars/tokenizer/tokenizer_operators.c
 t_tokentype	ft_creat_redir_token(char *input_string);
 t_tokentype	ft_creat_operators_token(char *input_string);
-//05_tokenizer/tokenizer_strings.c
+//03_pars/tokenizer/tokenizer_strings.c
 t_tokentype	ft_creat_str_token(char *input_string);
-//05_tokenizer/tokenizer_qwords.c
+//03_pars/tokenizer/tokenizer_qwords.c
 void		ft_qword_quotecheck(char *input_string, t_tokentype *token_old);
 
 // PARSING - SYNTAX ANALYSIS
-//06_syntax/syntax.c
+//03_pars/syntax/syntax.c
 int			ft_syntax(t_list *lexx);
-//06_syntax/syntaxerrors.c
+//03_pars/syntax/syntaxerrors.c
 void		ft_syntax_errors(t_list *lexx, int errorno);
 
 // PARSING - EXPANDER
-//07_expand/expander.c
+//03_pars/expand/expander.c
 void		ft_expa_precond(t_list *lexx, t_big *big);
 void		ft_var_checker(void	**token, t_big *big);
-//07_expand/expander_quotes.c
+//03_pars/expand/expander_quotes.c
 void		ft_quote_checker(void **token);
-//07_expand/expander_env.c
+//03_pars/expand/expander_env.c
 char		*ft_var_creator(char *value_old, char **env);
-//07_expand/expander_env_no.c
+//03_pars/expand/expander_env_no.c
 char		*delete_varname_from_value(char *value_old, char *wrongenvp);
-//07_expand/expander_env_yes.c
+//03_pars/expand/expander_env_yes.c
 char		*add_env_to_value(char *value_old, char *env, char *env_name);
-//07_expand/expander_exit.c
+//03_pars/expand/expander_exit.c
 char		*ft_exit_expander(char *value_old, int exit_code);
-//07_expand/expander_utils.c
+//03_pars/expand/expander_utils.c
 char		*ft_givenbr(int nbr);
 int			ft_is_env_var(char c);
-//07_expand/expander_q.c
+//03_pars/expand/expander_q.c
 void		ft_q_word_handling(void **token, t_big *big);
-//07_expand/llist_to_string.c
+//03_pars/expand/llist_to_string.c
 char		*ft_listtostr(t_list *q_word_list);
 
 // COMMAND LIST CREATION AND READING
-//08_cmd_creat/command_list.c
+//04_cmd_creat/command_list.c
 void		ft_commands(t_list *lexx, t_big **big);
-//08_cmd_creat/initiate_comm_infos.c
+//04_cmd_creat/initiate_comm_infos.c
 void		ft_init_clist(t_list **lexx, t_list **comm, t_big **p_big);
-//08_cmd_creat/handle_redirections.c
+//04_cmd_creat/handle_redirections.c
 t_list		*ft_set_r_in(t_lexer *token, 
 				t_data **cominfo, t_list *lexx, t_big **p_big);
 t_list		*ft_set_r_out(t_lexer *token, 
 				t_data **cominfo, t_list *lexx, t_big **p_big);
-//08_cmd_creat/create_argv_of_cmds.c
+//04_cmd_creat/create_argv_of_cmds.c
 void		ft_add_arr_end(char *token_value, t_data **p_comm_info);
-//08_cmd_creat/file_creator.c
+//04_cmd_creat/file_creator.c
 int			fd_in_checker(t_data *comm_info, char *infile, t_big **p_big);
 int			fd_here_creator(char *filename, bool wr);
 int			fd_out_creator(bool appender, char *filename);
-//08_cmd_creat/heredoc.c
+//04_cmd_creat/heredoc.c
 int			heredoc_start(t_data *comm_info, char *limiter, t_big **p_big);
 void		delete_heredoc(t_data *comm_info);
-//08_cmd_creat/command_utils.c
+//04_cmd_creat/command_utils.c
 void		exe_fd_error(t_big *big, t_data *comm_info_next);
 t_data		*ft_pointer_next_command(t_list	*curr);
 void		ft_free_cl(t_list **ll);
-//08_cmd_creat/check_def_env_paths.c
+//04_cmd_creat/check_def_env_paths.c
 void		ft_check_defaultpath(char *binary, char **binarypaths);
 
 // BUILT-INS
-//09_builtin/builtin_check.c
+//05_builtin/builtin_check.c
 int			check_parent_builtin(t_data *comm_info);
 int			check_child_builtin(t_data *comm_info);
-//09_builtin/builtin_exit.c
+//05_builtin/builtin_exit.c
 void		ft_builtin_exit(t_data *comm_info, t_big *big);
-//09_builtin/exit.c
+//05_builtin/exit.c
 void		ft_exit_minishell(t_big *big, bool print_exit);
-//09_builtin/env.c
+//05_builtin/env.c
 void		ft_print_env(t_data *comm_info, t_big *big);
-//09_builtin/echo.c
+//05_builtin/echo.c
 void		ft_echo(t_data *comm_info, t_big *big);
-//09_builtin/pwd.c
+//05_builtin/pwd.c
 void		ft_print_pwd(t_big *big, t_data *comm_info);
-//09_builtin/cd.c
+//05_builtin/cd.c
 void		ft_cd(t_big *big, char **argv);
-//09_builtin/cd_error.c
+//05_builtin/cd_error.c
 int			cd_error_check(char **argv);
-//09_builtin/export_1.c
+//05_builtin/export_1.c
 int			ft_export(t_big *big, t_data *comm_info);
 char		**ft_add_arr_back(char *str_to_add,
 				char **array_old, char **array_new);
-//09_builtin/export_2.c
+//05_builtin/export_2.c
 void		ft_rmv_var_array(t_big *big, char *str_to_rmv);
 void		export_exit_status(t_big *big, char **cmd_arg);
 int			check_dash_in_var_name(char *argument);
-//09_builtin/export_3.c
+//05_builtin/export_3.c
 void		exp_replace_val(t_big *big, char *str_new_val);
-//09_builtin/export_sort.c
+//05_builtin/export_sort.c
 void		ft_export_sort(t_big *big);
-//09_builtin/unset.c
+//05_builtin/unset.c
 int			ft_unset(t_big *big, t_data *comm_info);
 size_t		count_till_char(char *str, char up_to);
-//09_builtin/help.c
+//05_builtin/help.c
 void		ft_minishell_help(t_data *comm_info, t_big *big);
 
 // EXECUTION
-//10_exec/command_reader_01.c
+//06_exec/command_reader_01.c
 int			ft_executer(t_big *big);
-//10_exec/command_reader_02.c
+//06_exec/command_reader_02.c
 int			get_exit_status_waitpid(t_big *big);
 void		assign_exit_code(t_list	*cmdlist, int exit_status_binar, 
 				t_big *big);
-//10_exec/command_reader_print_err_01.c
+//06_exec/command_reader_print_err_01.c
 int			is_valid_cmd_and_print_err(char **cmd_plus_args, t_big *big);
-//10_exec/command_reader_print_err_02.c
+//06_exec/command_reader_print_err_02.c
 int			is_dir_err_handling(char *cmd);
 int			err_handling_executable(char *executable);
 int			is_absolute_path_to_exe_err_handling(char *cmd);
 int			get_path_from_env_or_binarypaths(t_big *big, char **cmd_plus_args);
-//10_exec/exe_built-ins.c
+//06_exec/exe_built-ins.c
 void		exe_parent_builtin(t_data *comm_info, t_big *big);
 int			fork_and_exe_child_builtin(t_data *comm_info, t_data *c_i_next, 
 				t_big *big);
 void		setup_and_exe_builtin_in_child(t_data *comm_info, t_data *c_i_next, 
 				t_big *big);
 void		exe_child_builtin(t_data *comm_info, t_big *big);
-//10_exec/exe_binary.c
+//06_exec/exe_binary.c
 int			fork_and_exe_binary(t_data *comm_info, t_data *c_i_next, 
 				t_big *big);
 void		setup_and_exe_binary_in_child(t_data *comm_info, t_data *c_i_next, 
 				t_big *big);
-//10_exec/exe_binary_child_0.c
+//06_exec/exe_binary_child_0.c
 int			exe_child_binary(t_big *big, char **cmd_plus_args, char *env[]);
 
-//10_exec/exe_binary_child_1.c
+//06_exec/exe_binary_child_1.c
 int			get_path_from_env_path_and_exe(t_big *big, 
 				char **cmd_plus_args, char *env[]);
 char		*get_path(t_big *big, char *cmd_name, char **env);
 char		*get_all_folders(t_big *big, const char *env_var_path, char **env);
 char		*build_cmd_path(const char *folder, const char *cmd_name);
 char		*exe_exists(char **folders, char *cmd_name);
-//10_exec/exe_child_fd_setup_cleanup.c
+//06_exec/exe_child_fd_setup_cleanup.c
 void		fd_cleanup_in_child(t_big *big);
 void		fd_cleanup_read_end_in_child(t_big *big);
 void		setup_input_output_in_child(t_data *comm_info, t_data *c_i_next);
-//10_execn/minishell_executer.c
+//06_execn/minishell_executer.c
 int			is_minishell_command(char *cmd, char *env[]);
 void		ft_ms_executer(char *env[]);
-//10_exec/exe_error_handling.c
+//06_exec/exe_error_handling.c
 void		close_fd_with_error_handling(void);
 void		w_errpipe_close(int open_fd, t_big *big);
 void		w_errfork_close(int open_fd, int *pipe_fd, t_big *big);
 void		w_dup2(int dupfd, int newfd);
-//10_exec/exe_utils.c
+//06_exec/exe_utils.c
 int			is_absolute_path(const char *str, const char *str_cmp, int nmb);
 int			is_attempt_to_execute(const char *str, const char *str_cmp, 
 				int nmb);

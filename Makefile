@@ -17,64 +17,64 @@ SRCS =	main.c \
 		02_sig/signals.c \
 		02_sig/signals_reset.c \
 		03_pars/parsing.c \
-		03_pars/lexer/parsing_1.c \
-		03_pars/lexer/parsing_2.c \
+		03_pars/lexer/lexer.c \
+		03_pars/lexer/lexer_array_creat.c \
 		03_pars/lexer/incomplete_input.c \
 		03_pars/lexer/ft_split_ms.c \
 		03_pars/lexer/ft_split_specials.c \
 		03_pars/lexer/lexer_cleaner.c \
 		03_pars/lexer/lexer_op_check.c \
-		03_pars/lexer/lexer_str_utils.c \
-		05_tokenizer/tokenizer.c \
-		05_tokenizer/tokenizer_utils.c \
-		05_tokenizer/tokenizer_strings.c \
-		05_tokenizer/tokenizer_operators.c \
-		05_tokenizer/tokenizer_qwords.c \
-		06_syntax/syntax.c \
-		06_syntax/syntaxerrors.c \
-		07_expand/expander.c \
-		07_expand/expander_quotes.c \
-		07_expand/expander_env.c \
-		07_expand/expander_env_yes.c \
-		07_expand/expander_env_no.c \
-		07_expand/expander_exit.c \
-		07_expand/expander_utils.c \
-		07_expand/expander_q.c \
-		07_expand/llist_to_string.c \
-		08_cmd_creat/command_list.c \
-		08_cmd_creat/initiate_comm_infos.c \
-		08_cmd_creat/handle_redirections.c \
-		08_cmd_creat/file_creator.c \
-		08_cmd_creat/heredoc.c \
-		08_cmd_creat/create_argv_of_cmds.c \
-		08_cmd_creat/command_utils.c \
-		08_cmd_creat/check_def_env_paths.c \
-		09_builtin/builtin_check.c \
-		09_builtin/builtin_exit.c \
-		09_builtin/exit.c \
-		09_builtin/echo.c \
-		09_builtin/env.c \
-		09_builtin/pwd.c \
-		09_builtin/cd.c \
-		09_builtin/cd_error.c \
-		09_builtin/export_1.c \
-		09_builtin/export_2.c \
-		09_builtin/export_3.c \
-		09_builtin/export_sort.c \
-		09_builtin/unset.c \
-		09_builtin/help.c \
-		10_exec/command_reader_01.c \
-		10_exec/command_reader_02.c \
-		10_exec/command_reader_print_err_01.c \
-		10_exec/command_reader_print_err_02.c \
-		10_exec/exe_binary.c \
-		10_exec/exe_built-ins.c \
-		10_exec/exe_binary_child_0.c \
-		10_exec/exe_binary_child_1.c \
-		10_exec/exe_child_fd_setup_cleanup.c \
-		10_exec/minishell_executer.c \
-		10_exec/exe_error_handling.c \
-		10_exec/exe_utils.c \
+		03_pars/lexer/lexer_str_trimmer.c \
+		03_pars/tokenizer/tokenizer.c \
+		03_pars/tokenizer/tokenizer_utils.c \
+		03_pars/tokenizer/tokenizer_strings.c \
+		03_pars/tokenizer/tokenizer_operators.c \
+		03_pars/tokenizer/tokenizer_qwords.c \
+		03_pars/syntax/syntax.c \
+		03_pars/syntax/syntaxerrors.c \
+		03_pars/expand/expander.c \
+		03_pars/expand/expander_quotes.c \
+		03_pars/expand/expander_env.c \
+		03_pars/expand/expander_env_yes.c \
+		03_pars/expand/expander_env_no.c \
+		03_pars/expand/expander_exit.c \
+		03_pars/expand/expander_utils.c \
+		03_pars/expand/expander_q.c \
+		03_pars/expand/llist_to_string.c \
+		04_cmd_creat/command_list.c \
+		04_cmd_creat/initiate_comm_infos.c \
+		04_cmd_creat/handle_redirections.c \
+		04_cmd_creat/file_creator.c \
+		04_cmd_creat/heredoc.c \
+		04_cmd_creat/create_argv_of_cmds.c \
+		04_cmd_creat/command_utils.c \
+		04_cmd_creat/check_def_env_paths.c \
+		05_builtin/builtin_check.c \
+		05_builtin/builtin_exit.c \
+		05_builtin/exit.c \
+		05_builtin/echo.c \
+		05_builtin/env.c \
+		05_builtin/pwd.c \
+		05_builtin/cd.c \
+		05_builtin/cd_error.c \
+		05_builtin/export_1.c \
+		05_builtin/export_2.c \
+		05_builtin/export_3.c \
+		05_builtin/export_sort.c \
+		05_builtin/unset.c \
+		05_builtin/help.c \
+		06_exec/command_reader_01.c \
+		06_exec/command_reader_02.c \
+		06_exec/command_reader_print_err_01.c \
+		06_exec/command_reader_print_err_02.c \
+		06_exec/exe_binary.c \
+		06_exec/exe_built-ins.c \
+		06_exec/exe_binary_child_0.c \
+		06_exec/exe_binary_child_1.c \
+		06_exec/exe_child_fd_setup_cleanup.c \
+		06_exec/minishell_executer.c \
+		06_exec/exe_error_handling.c \
+		06_exec/exe_utils.c \
 		utils_strings/utils_string.c \
 		utils_binary_path/binary_path.c \
 		free/free.c

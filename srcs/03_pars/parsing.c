@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:17:15 by mstracke          #+#    #+#             */
-/*   Updated: 2025/03/05 14:17:56 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:21:48 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	minishell_parsing(char *input, t_big *big)
 	t_list	*lexx;
 
 	lexx = NULL;
-	input_arr = create_cleanarr(&input);
+	input_arr = create_cleanarr(big, &input);
 	free(input);
 	input = NULL;
 	if (!input_arr)

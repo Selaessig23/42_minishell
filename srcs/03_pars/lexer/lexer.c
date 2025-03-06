@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_1.c                                        :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:11:56 by mstracke          #+#    #+#             */
-/*   Updated: 2025/03/05 14:24:43 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:21:41 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ static char	*ft_clean_input(char *src)
  * @param readline_input the input of command line read by function readline
  * @return: an array of strings with cleaned command line input
  */
-char	**create_cleanarr(char **readline_input)
+char	**create_cleanarr(t_big *big, char **readline_input)
 {
 	char	*clean_input;
 	char	**input_arr;
@@ -131,7 +131,7 @@ char	**create_cleanarr(char **readline_input)
 			input_arr = NULL;
 			return (input_arr);
 		}
-		to_complete_input(readline_input);
+		to_complete_input(big, readline_input);
 	}
 	clean_input = ft_clean_input(*readline_input);
 	if (!clean_input)

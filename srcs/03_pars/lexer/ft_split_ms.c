@@ -83,7 +83,7 @@ static char	**ft_strcut(char **dest, const char *s, char c, size_t i)
 }
 
 /**
- * @brief this function counts occurance of c & tabs in s
+ * @brief this function counts occurance of c & spaces & tabs in s
  * respecitive how many strings have to been created for
  * required array of strings
  * 
@@ -115,7 +115,8 @@ static size_t	ft_amc(size_t i, const char *s, char c)
 
 /**
  * @brief function to organise malloc of return value char **
- * and content generation for return value (splitting s if c or tab)
+ * and content generation for return value (splitting s if c or 
+ * space or tab)
  * 
  * @param s the input string to split
  * @param c the delimiter used for splitting

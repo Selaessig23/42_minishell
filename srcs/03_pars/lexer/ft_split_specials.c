@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 09:53:34 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/12 10:36:45 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:16:05 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,27 @@
  * DESCRIPTION: 
  * in this file two special fuctions are listed, that 
  * enlarge functionality of genuine ft_split-function
- * of libft, required for minishell
+ * of libft, modified for minishell-purposes
  */
 
 /**
- * @brief function that checks the precense of tabs
+ * @brief function that checks the precense of tabs and spaces
  * 
  * @param c char to check for tabs
  */
 int	is_tab(char c)
 {
-	if (c >= 9 && c <= 13)
+	if ((c >= 9 && c <= 13)
+		|| c == ' ')
 		return (1);
 	else
 		return (0);
 }
 
 /**
- * @brief function that iterates s if spaces (= c) || tabs
+ * @brief function that iterates s if c | spaces || tabs
  * by doing so, it considers more than one separator 
- * (not only c, but also tabs)
+ * (not only c, but also spaces and tabs)
  * 
  * @param s string to search in
  * @param c char to search for (beside tabs)
@@ -44,7 +45,7 @@ int	is_tab(char c)
 int	ft_space_tab_jump(const char *s, char c, int i)
 {
 	while (s[i] && (s[i] == c 
-			|| is_tab(s[i])))
+			|| is_tab(s[i]) || s[i] == ' '))
 		i++;
 	return (i);
 }

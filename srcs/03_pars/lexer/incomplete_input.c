@@ -25,7 +25,7 @@
  * the extra prompt takes "pwd", this function concatenates it
  * into "ls |pwd".
  */
-void	update_read_input(char **main, char *extra)
+static void	update_read_input(t_big *big, char **main, char *extra)
 {
 	char	*new;
 	int		length;
@@ -34,8 +34,9 @@ void	update_read_input(char **main, char *extra)
 	new = ft_calloc(1, length);
 	if (new == NULL)
 	{
-		perror("Failed to allocate memory");
-		exit(EXIT_FAILURE);
+		free(*main);
+		free(extra);
+		error_and_exit(2, big);
 	}
 	ft_strlcpy(new, *main, ft_strlen(*main) + 1);
 	ft_strlcat(new, extra, length);
@@ -49,7 +50,7 @@ void	update_read_input(char **main, char *extra)
  * It implements behaviour of a bash that is waiting for input to
  * complete input.
  */
-char	*extra_prompt_reader(void)
+static char	*extra_prompt_reader(t_big *big)
 {
 	char	*input2;
 
@@ -62,7 +63,7 @@ char	*extra_prompt_reader(void)
 			ft_dprintf("minishell: ");
 			ft_dprintf("syntax error: unexpected end of file\n");
 			ft_dprintf("exit\n");
-			exit(2);
+			error_and_exit(0, big);
 		}
 		return (input2);
 	}
@@ -75,12 +76,12 @@ char	*extra_prompt_reader(void)
  * and it opens and extra prompt and waiting for additional
  * input.
  */
-void	to_complete_input(char **readline_input)
+void	to_complete_input(t_big *big, char **readline_input)
 {
 	char	*extra_input;
 
 	extra_input = NULL;
-	extra_input = extra_prompt_reader();
+	extra_input = extra_prompt_reader(big);
 	if (!extra_input)
 		return ;
 	if (extra_input)
@@ -90,7 +91,7 @@ void	to_complete_input(char **readline_input)
 			free(extra_input);
 			return ;
 		}
-		update_read_input(readline_input, extra_input);
+		update_read_input(big, readline_input, extra_input);
 	}
 }
 

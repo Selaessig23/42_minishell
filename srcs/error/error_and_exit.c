@@ -45,7 +45,7 @@ void	ft_print_error_messages_1(int err)
 		ft_putstr_fd("PATH not readable from ENVP\n", 2);
 	else if (err == 5)
 		ft_putstr_fd("Unable to start minishell without envp.\n", 2);
-	else
+	else if (err != 0)
 		ft_print_error_messages_2(err);
 }
 

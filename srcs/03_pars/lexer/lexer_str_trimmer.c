@@ -13,6 +13,14 @@
 #include "minishell.h"
 
 /**
+ * DESCRIPTION:
+ * in this file, not required spaces will be trimmed from spaces and tabs
+ * (not very important as spaces and tabs will be deleted 
+ * by ft_split function afterwards anyhow)
+ */
+
+/**
+ * helper function for trim_out_spaces
  * Counting a new length to allocate memory for a new trimmed string.
  */
 static int	count_trim_len(char *str)
@@ -43,6 +51,7 @@ static int	count_trim_len(char *str)
 }
 
 /**
+ * helper function for trim_out_spaces
  * To trim leading and trailing spaces from a string
  * (c) Maryna
  */
