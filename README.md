@@ -1,10 +1,29 @@
 # Project: 42-minishell
 
-(...)
+Minishell is a simplified Unix shell implemented as part of the [42 School](https://42berlin.de/de/) curriculum. It aims to reproduce the core behavior of a Bash-like shell, offering hands-on experience with process control, input parsing, and system-level programming in C.
 
-## This version of Minishell supports
+## 🚀 Project Goals
 
-(...)
+The objective of the project is to create a minimal working shell that behaves similarly to Bash, handling command execution, redirections, piping, environment variables, and more. It is an opportunity to deepen understanding of:
+
+- Process creation with `fork()`
+- Program execution with `execve()`
+- File descriptor duplication with `dup2()`
+- Inter-process communication using `pipe()`
+- Signal handling
+- Shell parsing and lexical analysis
+
+## ⚙️ Key Features
+
+- ✅ Interactive prompt
+- ✅ Built-in commands: `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`
+- ✅ Execution of external programs (with PATH resolution)
+- ✅ Quoting: single `'` and double `"` quote handling
+- ✅ Redirections: `<`, `>`, `>>`, `<<` (heredoc)
+- ✅ Pipes (`|`)
+- ✅ Environment variable expansion (`$VAR`)
+- ✅ Proper error handling and exit codes
+- ✅ Signal handling (`Ctrl+C`, `Ctrl+\`)
 
 ## Architecture
 Description of a all projects and structures we use.

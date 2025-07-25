@@ -57,12 +57,9 @@ static void	minishell_is_running(t_big	*big)
 }
 
 /**
- * Infinite loop to continuously query and process user input
- * using the 'readline' function. Inside a loop there are three 'if' statements.
- * 
- * The condition if (!input) occurs when the readline function returns NULL. 
- * This usually happens when the end-of-file (EOF) is reached, typically because 
- * the user pressed Ctrl+D (EOF) in the terminal. Exit normally.
+ * @brief Basic error checks are done before program's
+ * environment gets started and main loop is called
+ * (minishell_is_running)
  * 
  *  ft_welcome();
  */

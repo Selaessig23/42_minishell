@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 18:28:11 by mpeshko           #+#    #+#             */
-/*   Updated: 2025/03/05 13:48:29 by mstracke         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:56:57 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ char	*exe_exists(char **folders, char *cmd_name)
 
 /**
  * @brief Retrieves all directories listed in the 'PATH' environment variable.
- * It searches for the var name env_var_path in env and returns the content of this var
+ * It searches for the var name env_var_path in env and returns 
+ * the content of this var
  * (everything that follows '='), found in env, or NULL if not found
  * 
  * @param env_var_path The name of the environment variable (e.g., "PATH").
@@ -121,7 +122,8 @@ char	*get_path(t_big *big, char *cmd_name, char **env)
  * in the paths listed in the env var PATH
  * if YES, it executes th command, if not, it returns error code 127
  */
-int	get_path_from_env_path_and_exe(t_big *big, char **cmd_plus_args, char *env[])
+int	get_path_from_env_path_and_exe(t_big *big, 
+	char **cmd_plus_args, char *env[])
 {
 	char	*cmd_path;
 
