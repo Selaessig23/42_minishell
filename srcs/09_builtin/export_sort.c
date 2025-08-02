@@ -6,7 +6,7 @@
 /*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 17:14:03 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/14 15:38:17 by mstracke         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:41:11 by mstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,12 @@ static void	ft_export_addquotes_helper(char **p_env_var_new, char *env_var_old)
 		env_var_new[i] = env_var_old[i];
 		i += 1;
 	}
-	env_var_new[i] = env_var_old[i];
-	env_var_new[i + 1] = '\"';
-	i += 1;
+	if (env_var_old[i])
+	{
+		env_var_new[i] = env_var_old[i];
+		env_var_new[i + 1] = '\"';
+		i += 1;
+	}
 	while (env_var_old[i])
 	{
 		env_var_new[i + 1] = env_var_old[i];

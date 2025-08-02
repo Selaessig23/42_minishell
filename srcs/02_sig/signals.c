@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/19 14:49:39 by mstracke          #+#    #+#             */
+/*   Updated: 2024/11/19 15:09:49 by mstracke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -12,36 +24,31 @@
  * (wanted `$limiter')"
  * on non empty line nothing happens
  * >ctrl-\ (=sigquit) does nothing (do not quit!).
-*/
-/**
- * @brief function to reset the global variable
- * g_signalnum (it is only set to !0 if a signal was used)
- * and defines the exit code in case of a signal
  * 
- * @brief big struct with all necessary information to run a command, 
- * exit_codes are saved here
- */
-void	signal_set_exitcode_and_reset(t_big *big)
-{
-	g_signalnum = 0;
-	big->exit_code = 130;
-}
+ * in child processes the default behaviour should be implmented
+*/
 
-// !This is for heredoc readline
+/**
+ * @brief This is for heredoc readline
+ * different behaviour from main-readline-loop
+ * as it should exit the loop in case of CRTL+C
+ */ 
 static void	handle_sigint_non(int sig)
 {
 	(void) sig;
-
 	g_signalnum = 1;
 	ft_putstr_fd("^C", 2);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
-// this is for readline in main
+/**
+ *  @brief This is for readline in main
+ * here the rl-input has to be deleted as we do not exit the 
+ * loop and do not want to use the rl-input in case of CRTL+C
+ */ 
 static void	handle_sigint_inter(int sig)
 {
 	(void)sig;
-
 	g_signalnum = 1;
 	ft_putstr_fd("^C", 2);
 	rl_replace_line("", 0);
@@ -62,8 +69,7 @@ static void	handle_sigint_inter(int sig)
  * @param sigaction Structure describing the action to be taken when 
  * a signal arrives.
  * It consists of:
- * @param __sighandler_t sa_handler;	write();
-
+ * @param __sighandler_t sa_handler
  * @param __sigset_t sa_mask - the signal blocking functions use 
  * a data structure (an array of integers) called a signal set 
  * to specify what signals are affected.
@@ -92,13 +98,21 @@ int	ft_handle_signals(bool heredoc)
 	return (0);
 }
 
+/**
+ * @brief  function to set the behaviour
+ * of SIGINT in child processes
+ */ 
 void	sig_handle_child(int sig_num)
 {
 	(void)sig_num;
 }
 
-/// @brief  TO REWRITE IT!!!!!
-/// @param  
+/**
+ * @brief  function that handles signal behaviour
+ * in child processes, here the sigquit (STRG+\) 
+ * as to be set to default behaviour
+ */ 
+
 void	ft_handle_signals_childs(void)
 {
 	struct sigaction	sa;

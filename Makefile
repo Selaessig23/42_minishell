@@ -15,6 +15,7 @@ SRCS =	main.c \
 		01_pre_prompt/pre_prompt.c \
 		error/error_and_exit.c \
 		02_sig/signals.c \
+		02_sig/signals_reset.c \
 		03_pars/parsing_1.c \
 		03_pars/parsing_2.c \
 		03_pars/incomplete_input.c \
@@ -54,6 +55,7 @@ SRCS =	main.c \
 		09_builtin/env.c \
 		09_builtin/pwd.c \
 		09_builtin/cd.c \
+		09_builtin/cd_error.c \
 		09_builtin/export_1.c \
 		09_builtin/export_2.c \
 		09_builtin/export_3.c \

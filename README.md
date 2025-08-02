@@ -110,3 +110,9 @@ We didn't implement this case.
 
 1. check_binarypaths in case value of PATH env variable was changed.
 
+### How to check used function
+
+`nm -u ./minishell`
+
+
+

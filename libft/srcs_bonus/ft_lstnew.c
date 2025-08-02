@@ -13,7 +13,6 @@
 #include "libft_bonus.h"
 
 // This function creates and returns a new node for the linked list.
-
 t_list	*ft_lstnew(void *content)
 {
 	t_list	*new;
