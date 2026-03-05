@@ -1,6 +1,24 @@
 # Project: 42-minishell
 
-(...)
+A simple shell implementation project at 42 Berlin. 2024 year.
+
+**Authors:** Maryna Peshko (mpeshko) and mstracke
+
+## How to Run
+
+1. **Compile the project:**
+   ```bash
+   make
+   ```
+
+2. **Start minishell:**
+   ```bash
+   ./minishell
+   ```
+
+3. **Exit the shell:**
+   - Type `exit` and press Enter
+   - Or press `CTRL+D`
 
 ## This version of Minishell supports
 
@@ -20,6 +38,16 @@ Our projects contains (number) of tokens.
 ### Redirections
 
 Before a command is executed, its input and output may be redirected using a special notation interpreted by the shell. Redirection allows commands’ file handles to be duplicated, opened, closed, made to refer to different files, and can change the files the command reads from and writes to.
+
+### Signal Handling
+
+The shell handles the following signals:
+
+- **CTRL+C (SIGINT):** Displays `^C` and shows a new prompt on a new line. In heredoc mode, it terminates the heredoc input.
+- **CTRL+D (EOF):** Exits the shell when pressed on an empty line. In heredoc mode, it stops heredoc and displays a warning message if the delimiter wasn't reached.
+- **CTRL+\ (SIGQUIT):** Ignored in the parent shell (does nothing). In child processes, default behavior is restored.
+
+For detailed manual tests, see [`test/signal_tests.md`](test/signal_tests.md).
 
 ### Heredoc (`<< LIMITER`) in Mini-Shell
 
@@ -127,6 +155,7 @@ because write function displays "Broke pipe" on stderr, for example,
 in case of `cat | cat | ls`
 
 ### Big files
+
 "Writing more data than the pipe can hold"
 We didn't implement this case. 
 
