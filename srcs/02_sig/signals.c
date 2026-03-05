@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:49:39 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/19 15:09:49 by mstracke         ###   ########.fr       */
+/*   Updated: 2026/03/05 15:41:30 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 */
 
 /**
- * @brief This is for heredoc readline
+ * @brief This is for heredoc handler
  * different behaviour from main-readline-loop
  * as it should exit the loop in case of CRTL+C
  */ 
@@ -37,52 +37,82 @@ static void	handle_sigint_non(int sig)
 {
 	(void) sig;
 	g_signalnum = 1;
-	ft_putstr_fd("^C", 2);
-	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	ft_putstr_fd("\n", 1);
 }
 
 /**
- *  @brief This is for readline in main
- * here the rl-input has to be deleted as we do not exit the 
- * loop and do not want to use the rl-input in case of CRTL+C
+ * @brief Event hook for readline. Called repeatedly while readline waits.
+ * If a signal was received (g_signalnum == 1), forces readline to exit.
+ */
+static int	check_signal(void)
+{
+    if (g_signalnum == 1)
+    {
+        extern int rl_done;
+        rl_done = 1; // To finish readline
+        return (0);
+    }
+    return (0);
+}
+
+/**
+ * @brief Handles SIGINT (CTRL+C) for the main interactive prompt.
+ *
+ * This signal handler is triggered when the user presses CTRL+C while the
+ * shell is waiting for input. It performs the following actions:
+ * 1. Sets the global signal flag (g_signalnum = 1) to notify the main loop
+ *    that a signal has occurred.
+ * 2. Prints visual feedback: "^C" followed by a newline.
+ * 3. Updates readline's internal state: clears the current input buffer
+ *    using rl_replace_line("", 0) and tells readline to move to a new line
+ *    with rl_on_new_line().
+ *
+ * Note: The actual termination of readline is handled by the rl_event_hook
+ * (check_signal function), which monitors g_signalnum and sets rl_done = 1
+ * when a signal is detected. This approach avoids conflicts and ensures
+ * clean termination of readline across different environments.
  */ 
 static void	handle_sigint_inter(int sig)
 {
 	(void)sig;
 	g_signalnum = 1;
 	ft_putstr_fd("^C", 2);
+	ft_putstr_fd("\n", 1);
+	rl_on_new_line();
 	rl_replace_line("", 0);
-	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
 /**
- * @brief in this function signal actions are coordinated
- * 1st signalset is set to zero
- * 2nd signalsets are only set to those signals required (NECESSARY???)
- * 3rd signals sigquit and sigint are defined
- * 
- * @param heredoc a boolean value that determines if incoming signals should be
- * handled in commandline-input mode(false) or in heredoc-mode(true) 
- * as readline behaviour in heredoc needs special treatment 
- * (it also has to exit heredoc)
- * 
- * @param sigaction Structure describing the action to be taken when 
- * a signal arrives.
- * It consists of:
- * @param __sighandler_t sa_handler
- * @param __sigset_t sa_mask - the signal blocking functions use 
- * a data structure (an array of integers) called a signal set 
- * to specify what signals are affected.
- * @param sa_flags - it is int
+ * @brief Configures signal handlers for SIGINT (CTRL+C) and SIGQUIT (CTRL+\).
+ *
+ * This function sets up the behavior for signals depending on the shell's
+ * current state (interactive prompt vs. heredoc input).
+ * - SIGINT (CTRL+C) is handled by either `handle_sigint_inter` for the main
+ *   prompt or `handle_sigint_non` for heredoc.
+ * - SIGQUIT (CTRL+\) is always ignored in the parent shell.
+ *
+ * For the interactive mode (is_heredoc == false), this function also sets up
+ * the readline event hook (rl_event_hook) to point to check_signal(). This
+ * hook is called repeatedly by readline during input and allows for clean
+ * termination when g_signalnum is set by the signal handler.
+ *
+ * @param is_heredoc A boolean flag:
+ *                   - `false`: Use the handler for the interactive main prompt
+ *                              and set up the readline event hook.
+ *                   - `true`: Use the handler for heredoc input.
+ * @return Returns 0 on success, 1 on failure.
  */
-int	ft_handle_signals(bool heredoc)
+int	ft_handle_signals(bool is_heredoc)
 {
 	struct sigaction	action;
 
 	ft_memset(&action, 0, sizeof(action));
-	if (heredoc == false)
+	if (is_heredoc == false) {
 		action.sa_handler = &handle_sigint_inter;
-	else
+		extern int (*rl_event_hook)(void);
+        rl_event_hook = check_signal;
+	}
+	else // heredoc handler
 		action.sa_handler = &handle_sigint_non;
 	action.sa_flags = 0;
 	if (sigemptyset(&action.sa_mask) == -1)
