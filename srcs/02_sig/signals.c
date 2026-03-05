@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:49:39 by mstracke          #+#    #+#             */
-/*   Updated: 2024/11/19 15:09:49 by mstracke         ###   ########.fr       */
+/*   Updated: 2026/03/05 13:03:54 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ static void	handle_sigint_inter(int sig)
 	(void)sig;
 	g_signalnum = 1;
 	ft_putstr_fd("^C", 2);
+	ft_putstr_fd("\n", 1);
+	rl_on_new_line(); //Go to a new line
 	rl_replace_line("", 0);
-	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	rl_redisplay(); //Redisplay the prompt
 }
 
 /**

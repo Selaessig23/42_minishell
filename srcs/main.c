@@ -37,7 +37,6 @@ static void	minishell_is_running(t_big	*big)
 	{
 		ft_handle_signals(false);
 		input = readline("minishell$ ");
-		ft_handle_signals(true);
 		if (!input)
 			ft_exit_minishell(big, true);
 		else if (!*input || ft_spacetabchecker(input))
