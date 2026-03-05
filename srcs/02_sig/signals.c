@@ -6,7 +6,7 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:49:39 by mstracke          #+#    #+#             */
-/*   Updated: 2026/03/05 15:41:30 by mpeshko          ###   ########.fr       */
+/*   Updated: 2026/03/05 16:33:23 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,6 @@ int	ft_handle_signals(bool is_heredoc)
 		perror("sigemtyset\n");
 		return (1);
 	}
-	sigaddset(&action.sa_mask, SIGINT);
-	sigaddset(&action.sa_mask, SIGQUIT);
 	sigaction(SIGINT, &action, NULL);
 	action.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &action, NULL);

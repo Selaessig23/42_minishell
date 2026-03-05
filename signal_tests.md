@@ -1,6 +1,13 @@
-# Manual Tests for Signal Handling (CTRL+C / SIGINT)
+# Manual Tests for Signal Handling (CTRL+C / SIGINT and CTRL+\ / SIGQUIT)
 
 This document outlines manual tests to verify the correct behavior of CTRL+C in a minishell.
+
+IMPORTANT: VSCode's integrated terminal and Oh My Zsh sometimes have different stty (terminal) settings that control whether control characters are echoed. The ^C display is controlled by the terminal's echoctl flag. Verify this by `stty -a`
+
+Look for echoctl in the output. If you see -echoctl, it means control character echoing is disabled.
+
+In VSCode terminal, enable echoctl:
+`stty echoctl`
 
 ---
 
@@ -88,5 +95,17 @@ This document outlines manual tests to verify the correct behavior of CTRL+C in 
 - The shell returns to a new, empty prompt.
 - The shell does NOT exit.
 - The exit code should be 130 (`echo $?`).
+
+---
+
+### Test 6: CTRL+\ on a heredoc
+
+**Steps:**
+1. Open heredoc `<< LIM`
+2. Press Enter.
+3. Press `CTRL+\`.
+
+**Expected Outcome:**
+- It is ignored.
 
 ---
