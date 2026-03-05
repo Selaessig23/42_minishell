@@ -1,0 +1,11 @@
+.vscode/
+
+# Object files and intermediates
+obj/
+
+# Executable
+minishell
+
+# libft object files
+libft/objs*
+libft/libft.a
