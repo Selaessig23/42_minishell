@@ -173,7 +173,21 @@ static void	ft_init_llist(char **input_arr, t_list **lexx)
 		lexx_input->value = ft_strdup(*input_arr);
 		lexx_input->token = ft_creat_tokens(*input_arr);
 		ft_lstadd_back(lexx, ft_lstnew(lexx_input));
-		input_arr++;
+		if (lexx_input->token == 3)
+		{
+			input_arr += 1;
+			if (*input_arr)
+			{
+				lexx_input = ft_calloc(1, sizeof(t_lexer));
+				lexx_input->value = ft_strdup(*input_arr);
+				lexx_input->token = ft_creat_tokens(*input_arr);
+				if (lexx_input->token == 20)
+					lexx_input->token = 30;
+				ft_lstadd_back(lexx, ft_lstnew(lexx_input));
+			}
+		}
+		if (*input_arr)
+			input_arr += 1;
 	}
 }
 

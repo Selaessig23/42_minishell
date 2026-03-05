@@ -19,82 +19,26 @@
 static void	handle_sigint_non(int sig)
 {
 	(void) sig;
-	// struct termios	termios_p;
-
-	// if (sig == SIGINT)
-	// {
-		//when using get_next_line
-		// exit (0);
-		// ft_putstr_fd("^C\n", 1);
-		// ft_putstr_fd("test", 1);
-		//when using readline
-		// ft_putstr_fd("\n", 1);
-		// rl_replace_line("", 0); //clear the input line
-		// rl_on_new_line(); //Go to a new line
-		// rl_redisplay(); //Redisplay the prompt
-
-
-		signalnum = 3;
-		// if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
-		// 	perror("tcgetattr");
-	 	// termios_p.c_lflag |= ICANON;
-		// // termios_p.c_lflag &= ~ECHOCTL;
-		// if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
-		// {
-		// 	perror("tcsetattr");
-		// }
-		// // rl_done = 1;
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		// if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
-		// 	perror("tcgetattr");
-		// // termios_p.c_lflag |= ECHOCTL;
-		// termios_p.c_lflag |= ICANON;
-		// // termios_p.c_lflag &= ~ICANON;
-		// if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
-		// {
-		// 	perror("tcsetattr");
-		// }
-
-		// rl_replace_line("  ^C  ", 0); //clear the input line
-		// rl_on_new_line(); //Go to a new line
-		// rl_redisplay(); //Redisplay the prompt
-
-	// }
-	// else
-	// {
-	// 	// write(2, "\n", 1);
-	// 	rl_replace_line("", 0); //clear the input line
-	// 	rl_on_new_line(); //Go to a new line
-	// 	rl_redisplay(); //Redisplay the prompt
-	// 	signalnum = 2;
-	// 	// big->
-	// 	// ft_putstr_fd("do nothing\n", 1);
-	// }
+	ft_putstr_fd("^C\n", 1);
+	signalnum = 3;
 }
 
 static void	handle_sigint_inter(int sig)
 {
-	// (void) sig;
 	if (sig == SIGINT)
 	{
-		// rl_redisplay(); //Redisplay the prompt
-		// write(1, "^C", 2);
 		ft_putstr_fd("\n", 1);
 		rl_replace_line("", 0); //clear the input line
 		rl_on_new_line(); //Go to a new line
 		rl_redisplay(); //Redisplay the prompt
-		// rl_done = 1;
 		signalnum = 1;
 	}
 	else
 	{
-		// write(2, "\n", 1);
 		rl_replace_line("", 0); //clear the input line
 		rl_on_new_line(); //Go to a new line
 		rl_redisplay(); //Redisplay the prompt
 		signalnum = 2;
-		// big->
-		// ft_putstr_fd("do nothing\n", 1);
 	}
 }
 
@@ -114,21 +58,18 @@ int	ft_terminal_config(bool rl_antes)
 	struct termios	termios_p;
 	
 	(void) rl_antes;
-	// termios_p = NULL;
-	// ft_memset(termios_p, 0, sizeof(termios_p));
 	if (tcgetattr(STDIN_FILENO, &termios_p) == -1)
 		return (-1);
-	// if (rl_antes == true)
-	// {
-	termios_p.c_lflag |= ECHOCTL; 
-	
-	// termios_p.c_lflag &= ~ICANON;
-	// }
-	// else
-	// {
-	// 	termios_p.c_lflag |= ICANON;
-	// 	termios_p.c_lflag &= ~ECHOCTL;
-	// }
+	if (rl_antes == true)
+	{
+		termios_p.c_lflag |= ECHOCTL;
+		termios_p.c_lflag &= ~ICANON;
+	}
+	else
+	{
+		termios_p.c_lflag |= ICANON;
+		termios_p.c_lflag &= ~ECHOCTL;
+	}
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == -1)
 	{
 		perror("tcsetattr");
@@ -151,11 +92,9 @@ int	ft_terminal_config(bool rl_antes)
  */
 int	ft_handle_signals(bool heredoc)
 {
-	sigset_t set;
-	struct sigaction sa;
+	sigset_t			set;
+	struct sigaction	sa;
 
-	// int signum;
-	// (void) rl_antes;
 	ft_memset(&sa, 0, sizeof(sa));
 	if (heredoc == true)
 	{
@@ -187,6 +126,5 @@ int	ft_handle_signals(bool heredoc)
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
-	// handle_sigquit();
 	return (0);
 }

@@ -1,5 +1,28 @@
 #include "minishell.h"
 #include <sys/ioctl.h>
+#include <termios.h>
+
+
+
+/**
+ * @brief function to expand the heredoc file with env-var infos
+ */
+void	ft_expand_heredoc(char **str, t_big **p_big)
+{
+	t_lexer	*heredoc_input;
+	char	*temp;
+
+	temp = *str;
+	heredoc_input = ft_calloc(1, sizeof(t_lexer));
+	// lexx_input->value = ft_strdup(*input_arr);
+	heredoc_input->value = temp;
+	heredoc_input->token = 20;
+	// ft_lstadd_back(lexx, ft_lstnew(lexx_input));
+	heredoc_input->number_helper = 0;
+	ft_var_checker((void**)&heredoc_input, *p_big);
+	*str = heredoc_input->value;
+	free(heredoc_input);
+}
 
 static int	fd_here_creator(char *filename, bool wr)
 {
@@ -58,7 +81,7 @@ void	delete_heredoc(t_data *comm_info)
  * @param write_end: File descriptor for the file being written to.
  * @param lim: The delimiter string that marks the end of the input.
  */
-static int	here_read_helper(int write_end, char *lim)
+static int	here_read_helper(int write_end, char *lim, t_big **p_big, t_data *comm_info)
 {
 	char *str;
 	// char	*buf = NULL;
@@ -68,21 +91,22 @@ static int	here_read_helper(int write_end, char *lim)
 	{
 		// printf("signalnum A: %i\n", signalnum);
 		// printf("signalnum B: %i\n", signalnum);
+		ft_putstr_fd("> ", 1);
 		ft_handle_signals(false);
-		str = readline("> ");
-		if (!str)
+		str = get_next_line(0);
+		if (!str && signalnum != 3)
 		{
-			ft_putstr_fd("bash: warning: here-document at line 1 ", 2);
+			ft_putstr_fd("\nbash: warning: here-document at line 1 ", 2);
 			ft_putstr_fd("delimited by \"end-of-file (wanted `", 2);
 			ft_putstr_fd(lim, 2);
 			ft_putstr_fd("\')\n", 2);
 			signalnum = 3;
 		}
 		// dprintf(2, "print str: $%s$, count str: %zu\n", str, ft_strlen(str));
-		// if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
-		// 	&& str[ft_strlen(lim)] == 10)
 		if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
-			&& ft_strlen(lim) == ft_strlen(str))
+			&& str[ft_strlen(lim)] == 10)
+		// if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
+		// 	&& ft_strlen(lim) == ft_strlen(str))
 		{
 			free(str);
 			// printf("test\n");
@@ -92,8 +116,9 @@ static int	here_read_helper(int write_end, char *lim)
 		}
 		if (str)
 		{
+			if (comm_info->heredoc_expander == true)
+				ft_expand_heredoc(&str, p_big);
 			write(write_end, str, ft_strlen(str));
-			ft_putchar_fd('\n', write_end);
 			free(str);
 		}
 	}
@@ -119,7 +144,6 @@ static int here_read(char *name, char *lim)
 	int fd;
 
 	(void) lim;
-	
 	fd = fd_here_creator(name, true);
 	return (fd);
 }
@@ -135,7 +159,7 @@ static int here_read(char *name, char *lim)
  * information (stores the number of commands, "commands_no").
  * @param limiter: The string that serves as the stopping point for input.
  */
-int heredoc_start(t_data *comm_info, char *limiter)
+int	heredoc_start(t_data *comm_info, char *limiter, t_big **p_big)
 {
 	int fd;
 	char *name;
@@ -145,15 +169,10 @@ int heredoc_start(t_data *comm_info, char *limiter)
 	name = ft_strjoin(".heredoc", cmd_no_str);
 	free(cmd_no_str);
 	fd = here_read(name, limiter);
-	if (here_read_helper(fd, limiter))
-		return (-1);
-	// printf("fd heredoc write: %i\n", fd);
+	if (here_read_helper(fd, limiter, p_big, comm_info))
+		fd = -1;
 	close(fd);
 	fd = fd_here_creator(name, false);
-	// fd = open(name, O_RDONLY);
-	// if (fd == -1)
-	// 	perror("faulty");
-	// free(name);
-	// printf("fd heredoc read: %i\n", fd);
+	free(name);
 	return (fd);
 }

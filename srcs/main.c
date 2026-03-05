@@ -73,7 +73,12 @@ int	main(int argc, char **argv, char **envp)
 			else if (*input)
 			{
 				add_history(input);
-				// ft_printf("input length: %i\n", ft_strlen(input));
+				// if (signalnum == 1 || signalnum == 2)
+				// {
+				// 	signalnum = 0;
+				// 	continue;
+				// }
+				//ft_printf("input length: %i\n", ft_strlen(input));
 				input_arr = create_nodes(&input);
 				free(input);
 				input = NULL;
