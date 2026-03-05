@@ -6,11 +6,17 @@
 /*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 10:05:17 by mstracke          #+#    #+#             */
-/*   Updated: 2026/03/05 15:50:24 by mpeshko          ###   ########.fr       */
+/*   Updated: 2026/03/05 16:36:24 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// This will make ECHOCTL available and silence VSCode's warning.
+#define _DEFAULT_SOURCE	// is the modern way to enable BSD and SVID features 
+						// (including ECHOCTL)
+#define _BSD_SOURCE		// is the older way, kept for compatibility
+
 #include "minishell.h"
+#include <termios.h>
 
 /**
  * DESCRIPTION
@@ -80,15 +86,16 @@ int	ft_heredoc_error(char *lim)
  * @brief Reads input for a heredoc until a delimiter is found or a
  * signal (CTRL+C) is received.
  *
- * This function sets the signal handler for heredoc mode (`ft_handle_signals(true)`).
- * It then enters a loop, reading lines using `get_next_line`. 
- * The loop terminates if the input line matches the delimiter (`lim`) 
- * or if the global `g_signalnum` is set to 1 by a SIGINT signal.
+ * This function sets the signal handler for heredoc mode 
+ * (`ft_handle_signals(true)`). It then enters a loop, reading lines using 
+ * `get_next_line`.  * The loop terminates if the input line matches 
+ * the delimiter (`lim`) or if the global `g_signalnum` is set to 1 by 
+ * a SIGINT signal.
  * If CTRL+D is pressed (`get_next_line` returns NULL), it prints a warning.
  *
  * @param write_end File descriptor for the file being written to
  * @param lim The delimiter string that marks the end of the input
- * @param p_big a pointer to the big struct that holds all information to execute 
+ * @param p_big a pointer to the big struct that holds all info to execute 
  * the commands, here the env to expand heredoc in case it should be expandable
  * @param  comm_info A pointer to a structure containing command
  * information (stores the info if heredoc should be expandable).
@@ -97,9 +104,17 @@ static int	here_read_helper(int write_end, char *lim,
 	t_big **p_big, t_data *comm_info)
 {
 	char	*str;
+	struct termios	term;
+    struct termios	term_orig;
 
 	str = NULL;
 	ft_handle_signals(true);
+	// Disable echoing of SIGQUIT (CTRL+\)
+    tcgetattr(STDIN_FILENO, &term_orig);
+	term = term_orig;
+	// ECHOCTL is a flag that controls whether control chars (CTRL+) are echoed
+	term.c_lflag &= ~ECHOCTL;  // Disable control character echoing
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	while (g_signalnum != 1)
 	{
 		ft_putstr_fd("> ", 1);
@@ -121,6 +136,7 @@ static int	here_read_helper(int write_end, char *lim,
 			free(str);
 		}
 	}
+	tcsetattr(STDIN_FILENO, TCSANOW, &term_orig);
 	if (g_signalnum == 1)
         return (1);
 	return (0);
