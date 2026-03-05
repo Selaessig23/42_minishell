@@ -17,6 +17,7 @@ This document outlines manual tests to verify the correct behavior of CTRL+C in 
 - The current line is cleared.
 - A new, empty prompt is displayed on a new line.
 - The shell does NOT exit.
+- Check exit code `echo $?`. It must be 130.
 
 ---
 
@@ -29,11 +30,12 @@ This document outlines manual tests to verify the correct behavior of CTRL+C in 
 2. Type some text at the prompt (e.g., `echo hello world`) but DO NOT press Enter.
 3. Press `CTRL+C`.
 
-**Expected Outcome:**ft_handle_signals_childs
+**Expected Outcome:**
 - A `^C` might be displayed.
 - The line with `echo hello world` is cleared.
 - A new, empty prompt is displayed on a new line.
 - The shell does NOT exit.
+- Check exit code `echo $?`. It must be 130.
 
 ---
 
