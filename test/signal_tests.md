@@ -2,12 +2,18 @@
 
 This document outlines manual tests to verify the correct behavior of CTRL+C in a minishell.
 
-IMPORTANT: VSCode's integrated terminal and Oh My Zsh sometimes have different stty (terminal) settings that control whether control characters are echoed. The ^C display is controlled by the terminal's echoctl flag. Verify this by `stty -a`
+IMPORTANT: VSCode's integrated terminal and Oh My Zsh sometimes have different stty (terminal) settings that control whether control characters are echoed. The ^C display is controlled by the terminal's echoctl flag. Verify this by
+
+```bash
+stty -a
+```
 
 Look for echoctl in the output. If you see -echoctl, it means control character echoing is disabled.
 
 In VSCode terminal, enable echoctl:
-`stty echoctl`
+```bash
+stty echoctl
+```
 
 ---
 
