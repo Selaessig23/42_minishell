@@ -5,6 +5,7 @@ obj/
 
 # Executable
 minishell
+.heredoc_*
 
 # libft object files
 libft/objs*

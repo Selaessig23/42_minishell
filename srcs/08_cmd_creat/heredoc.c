@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstracke <mstracke@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mpeshko <mpeshko@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 10:05:17 by mstracke          #+#    #+#             */
-/*   Updated: 2025/01/29 16:59:44 by mstracke         ###   ########.fr       */
+/*   Updated: 2026/03/05 16:36:24 by mpeshko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// This will make ECHOCTL available and silence VSCode's warning.
+#define _DEFAULT_SOURCE	// is the modern way to enable BSD and SVID features 
+						// (including ECHOCTL)
+#define _BSD_SOURCE		// is the older way, kept for compatibility
+
 #include "minishell.h"
+#include <termios.h>
 
 /**
  * DESCRIPTION
@@ -77,39 +83,46 @@ int	ft_heredoc_error(char *lim)
 }
 
 /**
- * @brief Reads user input from the terminal and writes it to the file
- * until the limiter string is entered.
+ * @brief Reads input for a heredoc until a delimiter is found or a
+ * signal (CTRL+C) is received.
  *
- * This function enters an infinite loop, prompting the user with "> "
- * to enter input. It reads lines using get_next_line(0)
- * (from standard input), and checks if the line matches the limiter.
- * The condition 'str[ft_strlen(lim)] == 10' checks whether the next
- * character after the word LIMITER is '\n' which is 10 in ASCII.
+ * This function sets the signal handler for heredoc mode 
+ * (`ft_handle_signals(true)`). It then enters a loop, reading lines using 
+ * `get_next_line`.  * The loop terminates if the input line matches 
+ * the delimiter (`lim`) or if the global `g_signalnum` is set to 1 by 
+ * a SIGINT signal.
+ * If CTRL+D is pressed (`get_next_line` returns NULL), it prints a warning.
  *
- * 	// if (signalnum == 1)
- * // 	return (1);
- * 
  * @param write_end File descriptor for the file being written to
  * @param lim The delimiter string that marks the end of the input
- * @param p_big a pointer to the big struct 
- * that holds all information to execute the 
- * commands, here the env to expand heredoc in case it should be expandable
+ * @param p_big a pointer to the big struct that holds all info to execute 
+ * the commands, here the env to expand heredoc in case it should be expandable
  * @param  comm_info A pointer to a structure containing command
  * information (stores the info if heredoc should be expandable).
  */
-static int	here_read_helper(int write_end, char *lim, 
+static int	here_read_helper(int write_end, char *lim,
 	t_big **p_big, t_data *comm_info)
 {
 	char	*str;
+	struct termios	term;
+    struct termios	term_orig;
 
 	str = NULL;
+	ft_handle_signals(true);
+	// Disable echoing of SIGQUIT (CTRL+\)
+    tcgetattr(STDIN_FILENO, &term_orig);
+	term = term_orig;
+	// ECHOCTL is a flag that controls whether control chars (CTRL+) are echoed
+	term.c_lflag &= ~ECHOCTL;  // Disable control character echoing
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	while (g_signalnum != 1)
 	{
-		str = readline("> ");
-		if (!str)
+		ft_putstr_fd("> ", 1);
+		str = get_next_line(0);
+		if (!str && g_signalnum != 1)
 			return (ft_heredoc_error(lim));
 		if (str && ft_strncmp(str, lim, ft_strlen(lim)) == 0
-			&& ft_strlen(lim) == ft_strlen(str))
+			&& str[ft_strlen(lim)] == 10)
 		{
 			free(str);
 			return (0);
@@ -123,6 +136,9 @@ static int	here_read_helper(int write_end, char *lim,
 			free(str);
 		}
 	}
+	tcsetattr(STDIN_FILENO, TCSANOW, &term_orig);
+	if (g_signalnum == 1)
+        return (1);
 	return (0);
 }
 
