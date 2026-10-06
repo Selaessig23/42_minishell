@@ -1,4 +1,12 @@
+# VS Code editor configuration
 .vscode/
+
+# Vim temporary/swap files
+*.swp
+*.swo
+*.swn
+*.bak
+*~
 
 # Object files and intermediates
 obj/
