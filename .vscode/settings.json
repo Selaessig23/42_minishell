@@ -12,6 +12,7 @@
         "termios-c_lflag.h": "c",
         "sigset_t.h": "c",
         "ioctl.h": "c",
-        "stat.h": "c"
+        "stat.h": "c",
+        "wait.h": "c"
     }
 }
