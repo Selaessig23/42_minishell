@@ -4,11 +4,20 @@ A simple shell implementation project at 42 Berlin. 2024 year.
 
 **Authors:** Maryna Peshko (mpeshko) and mstracke
 
+## Prerequisites
+
+(...)
+
 ## How to Run
 
 1. **Compile the project:**
    ```bash
    make
+   ```
+
+   ```bash
+   # cleaning and rebuilding the project
+   make re
    ```
 
 2. **Start minishell:**
@@ -20,19 +29,30 @@ A simple shell implementation project at 42 Berlin. 2024 year.
    - Type `exit` and press Enter
    - Or press `CTRL+D`
 
+4. **Cleanup:**
+   ```bash
+   # removes the object files
+   make clean
+   # removes the object files and the executable
+   make fclean
+   ```
+
 ## This version of Minishell supports
 
 (...)
 
 ## Architecture
-Description of a all projects and structures we use.
+
+Description of the project's architecture and the structures we use.
 
 ### Set env Variables
+
 (Our choice: ...)
 
 ### Token
 
 A sequence of characters considered a single unit by the shell. It is either a word or an operator.
+
 Our projects contains (number) of tokens.
 
 ### Redirections
@@ -85,7 +105,7 @@ The **heredoc** (`<< LIMITER`) feature allows users to provide multi-line input 
 `export` - environment variables, create new ones and replace old ones.
 `unset` - use unset to remove some of environment variables.
 
-### exit statu (exit code)
+### exit status (exit code)
 
 > The value returned by a command to its caller. The value is restricted to eight bits, so the maximum value is 255. 
 
@@ -166,6 +186,3 @@ We didn't implement this case.
 ### How to check used function
 
 `nm -u ./minishell`
-
-
-
