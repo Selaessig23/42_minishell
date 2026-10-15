@@ -94,9 +94,15 @@ OBJS = $(SRCS:%.c=obj/%.o)
 #This target depends on $(NAME), making it the default target to build everything.
 all: $(NAME)
 
+check-readline:
+	@printf '#include <readline/readline.h>\nint main(void) { readline(""); return 0; }\n' \
+		| $(CC) -x c - -o /dev/null $(LDLIBS) >/dev/null 2>&1 \
+		|| (echo "GNU readline development files are required."; \
+			echo "See README.md for installation instructions."; exit 1)
+
 #to create a program:
-$(NAME): $(OBJS) $(LIBFT_LIBRARY)
-	$(CC) $(CFLAGS) $^ -o $@ $(RLFLAG)
+$(NAME): check-readline $(OBJS) $(LIBFT_LIBRARY)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT_LIBRARY) -o $@ $(LDLIBS)
 	@echo -- prog created, try it by using ./minishell
 
 # %.o rule will compile one .c file to its correspondig object (.o) file: without this rule it would not update correctly
@@ -135,4 +141,4 @@ fclean: clean
 re: fclean all
 
 #This line specifies that the listed targets (all, clean, fclean, re) are phony targets, meaning they don't represent actual files, and should always be considered out-of-date, triggering their recipes to be executed.
-.PHONY: all clean fclean re
+.PHONY: all check-readline clean fclean re
