@@ -5,8 +5,8 @@ CUR_DIR = $(shell pwd)
 LIBFT_PATH = $(CUR_DIR)/libft
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -Iinclude -Isrcs -Ireadline
-RLFLAG = -lreadline -lncurses -ltinfo
+CFLAGS = -Wall -Wextra -Werror -g -Iinclude -Isrcs
+LDLIBS = -lreadline
 
 #sources
 #VPATH = sources:include
