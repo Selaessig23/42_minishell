@@ -2,6 +2,21 @@
 
 (...)
 
+## Requirements
+
+This project requires the GNU Readline development package.
+
+Install it before running `make`:
+
+- Debian/Ubuntu: `sudo apt-get install libreadline-dev`
+- Fedora/RHEL: `sudo dnf install readline-devel`
+- Arch Linux: `sudo pacman -S readline`
+- Homebrew: `brew install readline`
+- Alpine Linux: `sudo apk add readline-dev`
+
+The Makefile checks that both the Readline header and library are available and
+points to this section if the check fails.
+
 ## This version of Minishell supports
 
 (...)
@@ -133,4 +148,3 @@ We didn't implement this case.
 ### Special features
 
 1. check_binarypaths in case value of PATH env variable was changed.
-
